@@ -1,12 +1,14 @@
 package com.clipclap.rego.controller;
 
 import com.clipclap.rego.config.auth.PrincipalDetails;
-import com.clipclap.rego.model.entitiy.TouristAttraction;
+import com.clipclap.rego.model.dto.TouristAttractionDTO;
 import com.clipclap.rego.model.entitiy.User;
-import com.clipclap.rego.repository.TouristAttractionRepository;
 import com.clipclap.rego.repository.UserRepository;
 import com.clipclap.rego.service.AuthService;
+import com.clipclap.rego.service.TouristAttractionService;
 import com.clipclap.rego.validation.JoinForm;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -34,7 +36,8 @@ public class IndexController {
 
 	private final UserRepository userRepository;
 	private final AuthService authService;
-	private final TouristAttractionRepository touristAttractionRepository;
+	private final TouristAttractionService touristAttractionService;
+	private final ObjectMapper objectMapper;
 
 
 	// 로그인이 완료되면 실행되는 페이지로 수정 X
@@ -127,21 +130,15 @@ public class IndexController {
 		return "redirect:/";
 	}
 
+
 	@GetMapping("/map")
-	public String map() {
+	public String map(Model model) throws JsonProcessingException {
+		List<TouristAttractionDTO> mallList = touristAttractionService.touristListTest();
+
+		String json = objectMapper.writeValueAsString(mallList);
+
+		model.addAttribute("mallList" , json);
+
 		return "googleMap";
-	}
-
-	@GetMapping("/map2")
-	public String map2(Model model) {
-		List<TouristAttraction> mallList = touristAttractionRepository.findAll();
-
-		for (TouristAttraction items : mallList){
-			System.out.println(items);
-		}
-
-		model.addAttribute("mallList" , mallList);
-
-		return "googleMap2";
 	}
 }
