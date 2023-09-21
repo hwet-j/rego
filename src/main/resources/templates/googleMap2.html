@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" th:inline="javascript" defer th:src="@{/index.js}"></script>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5xt-0-bficSVL6EP57aQseXSiPx8bx7E&callback=initMap&libraries=places"></script>
+</head>
+<body>
+<div id="mallList" th:data-variable="${mallList}"></div>
+
+<input
+        class="controls"
+        id="pac-input"
+        placeholder="Search Box"
+        type="text"/>
+<div id="map" style="height:800px;">
+</div>
+
+
+</body>
+</html>

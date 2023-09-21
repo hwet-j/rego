@@ -1,9 +1,9 @@
 package com.clipclap.rego.controller;
 
-import java.util.Iterator;
-
 import com.clipclap.rego.config.auth.PrincipalDetails;
+import com.clipclap.rego.model.entitiy.TouristAttraction;
 import com.clipclap.rego.model.entitiy.User;
+import com.clipclap.rego.repository.TouristAttractionRepository;
 import com.clipclap.rego.repository.UserRepository;
 import com.clipclap.rego.service.AuthService;
 import com.clipclap.rego.validation.JoinForm;
@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Iterator;
+import java.util.List;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -31,6 +34,7 @@ public class IndexController {
 
 	private final UserRepository userRepository;
 	private final AuthService authService;
+	private final TouristAttractionRepository touristAttractionRepository;
 
 
 	// 로그인이 완료되면 실행되는 페이지로 수정 X
@@ -126,5 +130,18 @@ public class IndexController {
 	@GetMapping("/map")
 	public String map() {
 		return "googleMap";
+	}
+
+	@GetMapping("/map2")
+	public String map2(Model model) {
+		List<TouristAttraction> mallList = touristAttractionRepository.findAll();
+
+		for (TouristAttraction items : mallList){
+			System.out.println(items);
+		}
+
+		model.addAttribute("mallList" , mallList);
+
+		return "googleMap2";
 	}
 }
