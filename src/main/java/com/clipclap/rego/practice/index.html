@@ -4,16 +4,12 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script defer src="./index.js"></script>
-    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5xt-0-bficSVL6EP57aQseXSiPx8bx7E&callback=initMap"></script>
-    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&libraries=places"></script>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5xt-0-bficSVL6EP57aQseXSiPx8bx7E&callback=initMap&libraries=places"></script>
 </head>
 <body>
-<input
-        class="controls"
-        id="pac-input"
-        placeholder="Search Box"
-        type="text"/>
-<div id="map" style="height:500px;">
+<input id="searchInput" placeholder="장소 검색" type="text">
+<button id="searchButton">검색</button>
+<div id="map" style="width:800px; height:800px;">
 </div>
 </body>
 </html>
