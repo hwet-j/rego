@@ -21,11 +21,12 @@ public class AuthServiceImpl implements AuthService {
         String rawPassword = joinForm.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
         apiInfo.setPassword(encPassword);
-        apiInfo.setRole("ROLE_USER");		// 기본 역할 'ROLE_USER'
+        apiInfo.setRole("ROLE_USER");		        // 기본 역할 'ROLE_USER'
         apiInfo.setNickname(joinForm.getNickname());
         apiInfo.setGender(joinForm.getGender());
         apiInfo.setBirthDate(joinForm.getBirthDate());
-        System.out.println("회원가입 진행 : " + apiInfo);
+        apiInfo.setWithdrawalRequest(false);        // 탈퇴요청 Default - false
+
         userRepository.save(apiInfo);
 
         return "";
