@@ -245,7 +245,40 @@ window.initMap=function(){
                 }
             });
 
+            const searchResultsElement = document.getElementById("searchResults");
+            searchResultsElement.innerHTML = ""; // 검색 결과 초기화
+
             if (results.length > 0) {
+                results.forEach(({ label, name, lat, lng, imageUrl }) => {
+                    const listItem = document.createElement("li");
+                    listItem.innerHTML = `
+                <a href="#" data-lat="${lat}" data-lng="${lng}">
+                    <img src="${imageUrl}" alt="${name}" width="40">
+                    ${name}
+                </a>
+            `;
+                    searchResultsElement.appendChild(listItem);
+
+                    // 검색 결과 항목을 클릭했을 때 지도 이동 및 정보 표시
+                    listItem.querySelector("a").addEventListener("click", (e) => {
+                        e.preventDefault();
+                        const clickedLat = parseFloat(e.target.getAttribute("data-lat"));
+                        const clickedLng = parseFloat(e.target.getAttribute("data-lng"));
+                        const resultMarker = markers.find((marker) => marker.label === label);
+
+                        if (resultMarker) {
+                            const { marker } = resultMarker;
+                            map.panTo({ lat: clickedLat, lng: clickedLng });
+                            google.maps.event.trigger(marker, "click");
+                        }
+                    });
+                });
+            } else {
+                searchResultsElement.innerHTML = "<li>검색된 장소가 없습니다.</li>";
+            }
+
+
+            /*if (results.length > 0) {
                 // 검색 결과가 있을 경우, 가장 첫 번째 결과를 선택하여 표시
                 const { label, name, lat, lng, imageUrl } = results[0];
                 const resultMarker = markers.find((marker) => marker.label === label);
@@ -257,7 +290,7 @@ window.initMap=function(){
                 }
             } else {
                 alert("검색된 장소가 없습니다.");
-            }
+            }*/
         }
 
     }
