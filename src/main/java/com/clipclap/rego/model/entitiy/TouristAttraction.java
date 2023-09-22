@@ -50,4 +50,8 @@ public class TouristAttraction {
     @Column(nullable = false)
     private String contentType;
 
+    @ManyToOne
+    @JoinColumn(name = "cityName", referencedColumnName = "cityName")
+    private City cityName ;
+
 }

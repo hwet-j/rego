@@ -2,6 +2,8 @@ package com.clipclap.rego.controller;
 
 import com.clipclap.rego.config.auth.PrincipalDetails;
 import com.clipclap.rego.model.dto.TouristAttractionDTO;
+import com.clipclap.rego.model.dto.TouristAttractionFullDTO;
+import com.clipclap.rego.model.entitiy.City;
 import com.clipclap.rego.model.entitiy.User;
 import com.clipclap.rego.repository.UserRepository;
 import com.clipclap.rego.service.AuthService;
@@ -133,7 +135,17 @@ public class IndexController {
 
 	@GetMapping("/map")
 	public String map(Model model) throws JsonProcessingException {
-		List<TouristAttractionDTO> mallList = touristAttractionService.touristListTest();
+		City city = new City();
+		city.setCityName("파리");
+
+		List<TouristAttractionFullDTO> test = touristAttractionService.getTouristAttractionsWithCityAndCountry();
+
+		System.out.println("================================");
+		System.out.println(test.size());
+		System.out.println(test.get(1));
+		System.out.println("================================");
+
+		List<TouristAttractionDTO> mallList = touristAttractionService.coutryAttractionList(city);
 
 		String json = objectMapper.writeValueAsString(mallList);
 
@@ -141,4 +153,15 @@ public class IndexController {
 
 		return "googleMap";
 	}
+
+
+	@GetMapping("/atDetail")
+	public String testAttractionDetail(Model model) {
+		List<TouristAttractionFullDTO> test = touristAttractionService.getTouristAttractionsWithCityAndCountry();
+
+		model.addAttribute("test" , test.get(1));
+
+		return "atDetail";
+	}
+
 }

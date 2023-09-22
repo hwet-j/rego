@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+    <style>
+        .custom-modal-width {
+            width: 1000px;
+        }
+    </style>
+</head>
+
+
+<body>
+<div th:text="${test.address}"></div>
+<div th:text="${test.image}"></div>
+<button id="showAlert" th:data-image-url="${imageUrl}">창띄우기</button>
+
+
+<!-- SweetAlert2 스크립트 추가 -->
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        const showAlertButton = document.getElementById('showAlert');
+
+        var imageUrl = /*[[${test.image}]]*/ '';
+        var touristAttractionName = /*[[${test.touristAttractionName}]]*/ '';
+        var introduction = /*[[${test.introduction}]]*/ '';
+
+        showAlertButton.addEventListener('click', function() {
+            Swal.fire({
+                title: touristAttractionName,
+                text: introduction,
+                imageUrl: imageUrl,
+                imageWidth: 1000,
+                imageHeight: 600,
+                imageAlt: 'Custom image',
+                customClass: {
+                    // 모달 창의 너비를 조정하는 사용자 정의 클래스를 지정
+                    popup: 'custom-modal-width',
+                },
+            })
+        });
+    });
+</script>
+</body>
+</html>

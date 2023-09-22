@@ -52,10 +52,12 @@ window.initMap=function(){
 
         marker.addListener("click",() => {
             map.panTo(marker.position);
+
             const content = `
                             <div>
                                 <img src="${imageUrl}" alt="${name}" width="200">
                                 <p>${name}</p>
+                                <button id="button-${label}">버튼</button>
                             </div>
                         `;
             infoWindow.setContent(content);
@@ -63,8 +65,31 @@ window.initMap=function(){
                 anchor:marker,
                 map
             });
+
+            const button = document.getElementById(`button-${label}`);
+
+            if (button) {
+                button.addEventListener('click', function() {
+                    // 클릭된 버튼에 대한 모달 창 열기
+                    Swal.fire({
+                        title: "ㄴㄴ",
+                        text: "introduction",
+                        imageUrl: imageUrl,
+                        imageWidth: 1000,
+                        imageHeight: 600,
+                        imageAlt: 'Custom image',
+                        customClass: {
+                            popup: 'custom-modal-width',
+                        },
+                    });
+                });
+            } else {
+                console.error(`Element with ID "button-${label}" not found.`);
+            }
+
+
         });
-        
+
         markers.push({ label, name, marker });
     });
 
@@ -89,8 +114,8 @@ window.initMap=function(){
         });
 
         var index = 0;                  // 마커의 위치
-        var distanceToTravel = 0.01;    // 고정된 이동 거리
-        var speed = 40;                 // 마커 이동 속도
+        var distanceToTravel = 0.0001;    // 고정된 이동 거리
+        var speed = 10;                 // 마커 이동 속도
         var rotation = 0;
 
         function moveMarker() {
@@ -277,22 +302,23 @@ window.initMap=function(){
                 searchResultsElement.innerHTML = "<li>검색된 장소가 없습니다.</li>";
             }
 
-
-            /*if (results.length > 0) {
-                // 검색 결과가 있을 경우, 가장 첫 번째 결과를 선택하여 표시
-                const { label, name, lat, lng, imageUrl } = results[0];
-                const resultMarker = markers.find((marker) => marker.label === label);
-
-                if (resultMarker) {
-                    const { marker } = resultMarker;
-                    map.panTo(marker.position);
-                    google.maps.event.trigger(marker, "click");
-                }
-            } else {
-                alert("검색된 장소가 없습니다.");
-            }*/
         }
+        document.getElementById("centerOnIcon").addEventListener("click", centerOnIcon);
 
+        let iconCentered = false;
+        function centerOnIcon() {
+            if (!iconCentered) {
+                // 아이콘의 현재 위치를 가져와서 지도를 그 위치로 이동
+                const iconPosition = marker.getPosition();
+                map.panTo(iconPosition);
+                iconCentered = true;
+                document.getElementById("centerOnIcon").textContent = "아이콘 배치 취소";
+            } else {
+                iconCentered = false;
+                document.getElementById("centerOnIcon").textContent = "아이콘 중앙 배치";
+            }
+        }
     }
 
 }
+

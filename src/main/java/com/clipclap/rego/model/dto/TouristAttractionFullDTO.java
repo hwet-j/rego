@@ -5,29 +5,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TouristAttractionDTO {
-
+public class TouristAttractionFullDTO {
     private Long touristAttractionId;
-
     private String address;
-
-    private String name;
-
+    private String touristAttractionName;
     private String image;
-
     private String introduction;
-
     private double latitude;
-
     private double longitude;
-
     private String contentType;
-
     private String cityName;
+    private String countryName;
 
 }
