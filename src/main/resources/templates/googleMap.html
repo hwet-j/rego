@@ -5,9 +5,18 @@
     <title>Title</title>
     <script type="text/javascript" th:inline="javascript" defer th:src="@{/index.js}"></script>
     <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5xt-0-bficSVL6EP57aQseXSiPx8bx7E&callback=initMap&libraries=&&libraries=geometry"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <style>
+        /* SweetAlert창 크기 */
+        .custom-modal-width {
+            width: 1000px;
+        }
+    </style>
 </head>
 <body>
 <div id="mallList" th:data-variable="${mallList}"></div>
+<button id="centerOnIcon">아이콘 중앙 배치</button>
+
 <input id="searchInput" placeholder="장소 검색" type="text">
 <button id="searchButton">검색</button>
 <ul id="searchResults"></ul>
