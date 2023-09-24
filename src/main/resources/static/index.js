@@ -28,7 +28,9 @@ window.initMap=function(){
             name: mall.name,                                // 마커 클릭 시 표시되는 정보에 사용될 이름(관광지 이름)
             lat: parseFloat(mall.latitude),                 // 위도 (실수 형태로 변환필요)
             lng: parseFloat(mall.longitude),                // 경도 (실수 형태로 변환필요)
-            imageUrl: mall.image.toString()                 // 이미지 경로
+            imageUrl: mall.image.toString(),                // 이미지 경로
+            address: mall.address.toString(),               // 주소
+            introduction: mall.introduction.toString()      // 소개글
         });
     });
 
@@ -42,7 +44,7 @@ window.initMap=function(){
     const markers = [];
 
     /* 모든 정보에 마커 및 정보창 설정 */
-    malls.forEach(({label,name,lat,lng,imageUrl}) => {
+    malls.forEach(({label,name,lat,lng,imageUrl, introduction}) => {
         const marker=new google.maps.Marker({
             position: {lat,lng},
             label,
@@ -50,44 +52,44 @@ window.initMap=function(){
         });
         bounds.extend(marker.position);
 
-        marker.addListener("click",() => {
+        marker.addListener("click", () => {
             map.panTo(marker.position);
 
-            const content = `
-                            <div>
-                                <img src="${imageUrl}" alt="${name}" width="200">
-                                <p>${name}</p>
-                                <button id="button-${label}">버튼</button>
-                            </div>
-                        `;
-            infoWindow.setContent(content);
-            infoWindow.open({
-                anchor:marker,
-                map
-            });
+            const content = document.createElement("div");
 
-            const button = document.getElementById(`button-${label}`);
+            // 이미지 추가
+            const image = document.createElement("img");
+            image.src = imageUrl;
+            image.alt = name;
+            image.width = 200;
+            content.appendChild(image);
 
-            if (button) {
-                button.addEventListener('click', function() {
-                    // 클릭된 버튼에 대한 모달 창 열기
-                    Swal.fire({
-                        title: "ㄴㄴ",
-                        text: "introduction",
-                        imageUrl: imageUrl,
-                        imageWidth: 1000,
-                        imageHeight: 600,
-                        imageAlt: 'Custom image',
-                        customClass: {
-                            popup: 'custom-modal-width',
-                        },
-                    });
+            // 관광지 이름 추가
+            const title = document.createElement("p");
+            title.textContent = name;
+            content.appendChild(title);
+
+            // 버튼 추가
+            const button = document.createElement("button");
+            button.textContent = "자세히보기";
+            button.addEventListener("click", () => {
+                // 버튼 클릭 시 동작
+                Swal.fire({
+                    title: `${name}`,
+                    text: `${introduction}`,
+                    imageUrl: `${imageUrl}`,
+                    imageWidth: 1000,
+                    imageHeight: 600,
+                    customClass: {
+                        popup: 'custom-modal-width',        // 팝업창의 크기를 조절하기 위한 설정
+                    },
                 });
-            } else {
-                console.error(`Element with ID "button-${label}" not found.`);
-            }
 
+            });
+            content.appendChild(button);
 
+            infoWindow.setContent(content);
+            infoWindow.open(map, marker);
         });
 
         markers.push({ label, name, marker });
