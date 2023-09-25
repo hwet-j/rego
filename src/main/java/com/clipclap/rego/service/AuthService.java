@@ -5,4 +5,6 @@ import com.clipclap.rego.validation.JoinForm;
 public interface AuthService {
 
     String join(JoinForm loginForm);
+
+    String nicknameDuplicateCheck(String nickname);
 }

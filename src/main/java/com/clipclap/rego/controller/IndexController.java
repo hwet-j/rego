@@ -24,6 +24,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -116,8 +117,16 @@ public class IndexController {
 	public String joinProc(@Valid JoinForm form,
 						   BindingResult bindingResult, Model model) {
 
+
 		if (bindingResult.hasErrors()){
 			model.addAttribute("user", userRepository.findByEmail(form.getEmail()));
+			return "join";
+		}
+	
+		/* 닉네임 중복 체크 */
+		if (authService.nicknameDuplicateCheck(form.getNickname()).equals("Duplicate")){
+			model.addAttribute("user", userRepository.findByEmail(form.getEmail()));
+			bindingResult.addError(new FieldError("duplicate","nickname", "닉네임은 이미 사용중입니다."));
 			return "join";
 		}
 

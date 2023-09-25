@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -31,4 +33,17 @@ public class AuthServiceImpl implements AuthService {
 
         return "";
     }
+
+
+    @Override
+    public String nicknameDuplicateCheck(String nickname) {
+        Optional<User> optionalUser = userRepository.findByNickname(nickname);
+
+        if(optionalUser.isPresent()){
+            return "Duplicate";
+        } else {
+            return "No_Duplicate";
+        }
+    }
+
 }
