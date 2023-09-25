@@ -100,7 +100,6 @@ window.initMap=function(){
     // 선 그리기 함수 호출
     drawPolyline(map);
 
-
     // 선 그리기 함수
     function drawPolyline(map) {
 
@@ -116,9 +115,9 @@ window.initMap=function(){
         });
 
         var index = 0;                  // 마커의 위치
-        var distanceToTravel = 0.0001;    // 고정된 이동 거리
-        var speed = 10;                 // 마커 이동 속도
-        var rotation = 0;
+        var distanceToTravel = 0.001;    // 고정된 이동 거리
+        var speed = 30;                 // 마커 이동 속도
+        var rotation = "";
 
         function moveMarker() {
 
@@ -137,9 +136,14 @@ window.initMap=function(){
                 var lngStep = lngDiff / numSteps;
 
                 if (fraction === 0) {
-                    // console.log("방향전환")
-                    rotation = calculateRotation(start, end);
-                    var initialIconUrl = getIconUrlByRotation(rotation);
+                    // 방향전환
+                    if (start.lng < end.lng) {
+                        // 좌측에서 우측으로
+                        initialIconUrl = "https://github-production-user-asset-6210df.s3.amazonaws.com/81364742/269530380-4c8c756c-bb05-447a-83dc-bf6464a2fc92.gif";
+                    } else if (start.lng > end.lng) {
+                        // 우측에서 좌측으로
+                        initialIconUrl = "https://github.com/hwet-j/hwet-j.github.io/assets/81364742/ef2f4530-9c23-4b1c-aae7-8054e46bd2a7";
+                    }
 
                     var initialIcon = {
                         url: initialIconUrl,
@@ -170,27 +174,6 @@ window.initMap=function(){
             }
         }
 
-
-        /* 두 지점 간의 방향을 계산하는 함수 */
-        function calculateRotation(start, end) {
-            var latDiff = end.lat - start.lat;
-            var lngDiff = end.lng - start.lng;
-            var angle = (Math.atan2(latDiff, lngDiff) * 180) / Math.PI;
-            return (angle + 360) % 360;
-        }
-
-        /* 방향에 따라 다른 아이콘 URL을 반환하는 함수 */
-        function getIconUrlByRotation(rotation) {
-            // 방향에 따라 다른 이미지 URL을 반환합니다.
-            // 예를 들어, 0도에서 180도 사이이면 "오른쪽을 가리키는 이미지 URL"을 반환하고,
-            // 그 외의 경우에는 "왼쪽을 가리키는 이미지 URL"을 반환합니다.
-            if (rotation >= 0 && rotation <= 180) {
-                return "https://github-production-user-asset-6210df.s3.amazonaws.com/81364742/269530380-4c8c756c-bb05-447a-83dc-bf6464a2fc92.gif";
-            } else {
-                return "https://github.com/hwet-j/hwet-j.github.io/assets/81364742/ef2f4530-9c23-4b1c-aae7-8054e46bd2a7";
-            }
-        }
-
         moveMarker();
 
         /* 화살표 형식으로 선긋기 */
@@ -203,6 +186,7 @@ window.initMap=function(){
                 scale: 3, // 화살표 크기
                 strokeColor: "#9900ff" // 화살표의 색상
             };
+
 
             /* 이 기능을 활용하면 이동방식에 따른 항공,기차 등을 구현 가능할듯함 */
             var line = new google.maps.Polyline({

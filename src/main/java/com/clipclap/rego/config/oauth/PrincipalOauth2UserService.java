@@ -1,8 +1,5 @@
 package com.clipclap.rego.config.oauth;
 
-import java.util.Map;
-import java.util.Optional;
-
 import com.clipclap.rego.config.auth.PrincipalDetails;
 import com.clipclap.rego.config.oauth.provider.GoogleUserInfo;
 import com.clipclap.rego.config.oauth.provider.KakaoUserInfo;
@@ -18,6 +15,9 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+import java.util.Optional;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -28,7 +28,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 	// userRequest 는 code를 받아서 accessToken을 응답 받은 객체
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-		OAuth2User oAuth2User = super.loadUser(userRequest); // google의 회원 프로필 조회
+		OAuth2User oAuth2User = super.loadUser(userRequest);
 
 		// code를 통해 구성한 정보
 		// System.out.println("userRequest clientRegistration : " + userRequest.getClientRegistration());
