@@ -1,0 +1,109 @@
+@charset "UTF-8";
+h2 { font-weight: normal; }
+.hr1 { border: 0;
+height: 2px;
+background:  #d3d3d3;}
+    .grey {
+     color: #727272;}
+     #strong { font-weight: 900;}
+
+           .table {
+               width: 1200px;
+               border-top: 1px solid #d3d3d3;
+               border-collapse: collapse;
+               margin: 0 auto; /* 수평 가운데 정렬을 위해 추가 */
+           }
+            th { background-color: #d3d3d3 ;
+            border-top: 3px solid #727272;
+            }
+            th, td {
+            border-bottom: 1px solid #d3d3d3;
+            padding: 10px;
+            }
+
+  .layout {
+    text-align:center;
+  }
+
+
+  .greylist {
+  width: 50px;
+  height: 30px;
+  font-weight: 900;
+  color: white;
+  text-align: center;
+  background: grey;
+  border: solid 2px white;
+  border-radius: 5px;
+  }
+  .gradient {
+  width: 80px;
+  height: 30px;
+  font-weight: 900;
+  color: white;
+  text-align: center;
+  background: linear-gradient( to bottom, grey, black );
+  border: solid 2px white;
+  border-radius: 5px;
+  }
+
+            .left {text-align: left;}
+            .right {  float: right;}
+            .center { text-align: center;}
+
+a {color:black;
+text-decoration-line : none;}
+
+
+/* page-item 클래스 스타일 */
+.page-item {
+    display: inline-block; /* 인라인 블록 요소로 표시 */
+    margin: 5px; /* 페이지 아이템 간의 간격 설정 */
+    padding: 8px 12px; /* 페이지 아이템 내부 여백 설정 */
+    background-color: #e1eaf3; /* 배경색 설정 */
+    color: #fff; /* 텍스트 색상 설정 */
+    border-radius: 5px; /* 모서리를 둥글게 만들기 */
+    text-decoration: none; /* 밑줄 없애기 */
+    font-weight: bold; /* 폰트 굵기 설정 */
+}
+
+/* 활성화된 페이지 아이템 스타일 */
+.page-item.active {
+    background-color: #FFFFFF; /* 활성화된 페이지 아이템의 배경색 변경 */
+}
+
+/* 마우스 호버 시 스타일 변경 */
+.page-item:hover {
+    background-color: #0056b3; /* 호버 시 배경색 변경 */
+    transition: background-color 0.3s; /* 부드러운 전환 효과 추가 */
+}
+
+/* 이전 및 다음 버튼 스타일 및 가운데 정렬 */
+.page-item.prev, .page-item.next {
+    background-color: #e1eaf3; /* 이전 및 다음 버튼 배경색 설정 */
+    text-align: center; /* 버튼 내의 텍스트 가운데 정렬 */
+    display: block; /* 블록 요소로 표시하여 가로 중앙 정렬 */
+}
+
+/* 이전 및 다음 버튼 텍스트 색상 */
+.page-item.prev a, .page-item.next a {
+    color: #fff; /* 텍스트 색상 설정 */
+    text-decoration: none; /* 밑줄 없애기 */
+    font-weight: bold; /* 폰트 굵기 설정 */
+}
+
+.pagenation {
+    text-align:center;
+}
+
+.questionBtn{
+    float:right;
+    margin-right: 60px;
+}
+
+.questionSubmit{
+
+    width: 100%;
+    height: 50px;
+}
+
