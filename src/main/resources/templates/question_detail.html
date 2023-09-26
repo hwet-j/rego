@@ -1,0 +1,167 @@
+<html layout:decorate="~{layout}" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<div layout:fragment="content" class="container my-3">
+    <!-- 질문 -->
+    <h2 class="border-bottom py-2" th:text="${question.subject}"></h2>
+    <div class="card my-3">
+        <div class="card-body"> <!-- white-space:pre-line; 줄바꿈 인식하고, 공백은 앞쪽만 인식 -->
+          <div class="card-text" style="white-space:pre-line;" th:text="${question.content}"></div>
+            <div class="d-flex justify-content-end">  <!--d-flex:한개의 row를 block레벨로 처리-->
+                <div class="badge bg-light text-dark p-2 text-start">
+                    <div th:if="${question.writer!=null}"  th:text="${question.writer.username}"></div>
+                </div>
+                <div th:text="${#temporals.format(question.createDate,'yyyy-MM-dd HH:mm')}"/>
+            </div>
+            <div class="my-3">
+                <!-- 질문수정버튼 - 로그인해야지만 수정가능, 로그인한유저가 글쓴이와 동일해야만 한다 -->
+                <a th:href="@{|/question/modify/${question.id}|}"
+                   class="btn btn-sm btn-outline-secondary"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${ question.writer!=null and #authentication.getPrincipal().getUsername()==question.writer.username}"
+                   th:text="수정"></a>
+                <!-- 질문삭제버튼 - 로그인해야지만 삭제가능, 로그인한유저가 글쓴이와 동일해야만 한다-->
+                <a href="javascript:void(0);"   th:data-uri="@{|/question/delete/${question.id}|}"
+                   class="delete btn btn-sm btn-outline-secondary"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${ question.writer!=null and #authentication.getPrincipal().getUsername()==question.writer.username}"
+                   th:text="삭제"></a>
+                <!-- 질문추천버튼 -->
+                <a href="javascript:void(0);"   th:data-uri="@{|/question/vote/${question.id}|}"
+                   class="recommend btn btn-sm btn-outline-secondary">추천
+                   <span class="badge rounded-pill bg-success"
+                         th:text="${#lists.size(question.voter)}"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- 답변갯수 출력 -->
+    <h5 th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
+    <!-- 반복:답변목록시작 -->
+    <div class="card my-3">
+        <div class="card-body" th:each="answer:${question.answerList}" >
+            <div class="card-text" style="white-space:pre-line;"  th:text="${answer.content}"></div>
+            <div class="d-flex justify-content-end">
+                <div class="badge bg-light text-dark p-2 text-start">
+                    <div class="my-2">
+                      <span th:if="${answer.writer!=null}"  th:text="${answer.writer.username}"></span>
+                    </div>
+                    <div th:text="${#temporals.format(answer.createDate,'yyyy-MM-dd HH:mm')}"/>
+                </div>
+            </div>
+            <!-- 답변수정버튼 - 로그인해야지만 수정가능, 로그인한유저가 글쓴이와 동일해야만 한다-->
+            <a th:href="@{|/answer/modify/${answer.id}|}"
+               class="btn btn-sm btn-outline-secondary"
+               sec:authorize="isAuthenticated()"
+               th:if="${answer.writer!=null and #authentication.getPrincipal().getUsername()==answer.writer.username}"
+               th:text="수정"></a>
+            <!-- 답변삭제버튼 - 로그인해야지만 삭제가능, 로그인한유저가 글쓴이와 동일해야만 한다 -->
+            <a href="javascript:void(0);" th:data-uri="@{|/answer/delete/${answer.id}|}"
+               class="delete btn btn-sm btn-outline-secondary"
+               sec:authorize="isAuthenticated()"
+               th:if="${answer.writer!=null and #authentication.getPrincipal().getUsername()==answer.writer.username}"
+               th:text="삭제"></a>
+            <!-- 답변추천버튼
+            .badge class는 together with a contextual class (like .bg-secondary) within <span> elements to create rectangular badges. Note that badges scale to match the size of the parent element (if any)
+            .rounded-pill class to make the badges more round-->
+            <a href="javascript:void(0);"   th:data-uri="@{|/answer/vote/${answer.id}|}"
+               class="recommend btn btn-sm btn-outline-secondary">추천
+                <span class="badge rounded-pill bg-success"
+                      th:text="${#lists.size(answer.voter)}"></span>
+            </a>
+        </div>
+    </div>  <!-- 반복:답변목록끝 -->
+    <!-- 답변등록폼 -->
+    <form id="answerForm" class="my-3" th:object="${answerForm}" th:action="@{|/answer/add/${question.id}|}"  method="post">
+    <!--<form id="answerForm" class="my-3" action="/answer/add" method="post">-->
+        <!--<input type="text" name="id" value="301"/>-->
+        <!-- 유효성검사시 에러메세지 출력영역 -->
+<!--        <div th:replace="~{form_errors::formErrorsFragment}"></div>-->
+        <!-- 타임리프의 security이용
+                    sec:authorize="isAnonymous()"은 로그인하지않는 경우-> 답변등록사용불가
+                    sec:authorize="isAuthenticated()"은 로그인한 경유-> 답변등록사용가능-->
+        <textarea  sec:authorize="isAnonymous()" th:field="*{content}" disabled="disabled" rows="8" class="form-control"></textarea>
+        <textarea  sec:authorize="isAuthenticated()" th:field="*{content}"  rows="8" class="form-control"></textarea>
+        <input type="submit" value="답변등록" class="btn btn-primary my-2"/>
+    </form>
+</div>
+
+<!-- javascript부분 -- ----------------------------->
+<script layout:fragment="script">
+    //(질문,답변)삭제버튼클릭시 호출
+    const delElements = document.getElementsByClassName("delete");
+    Array.from(delElements).forEach(function(element){
+
+        //$(".delete").on("click",function(){ alert("정말삭제할거여?"); });
+        element.addEventListener("click",function(){
+            if(confirm("정말로 삭제할거임?")){//확인버튼을 클릭하면
+                //click이벤트가 발생한 a요소의  data-uri속성의 값을 가져와
+                //location객체의 href속성의 값으로 적용해라
+                //=>현재 browser의 URL주소를 변경해라
+                location.href=this.dataset.uri;
+                //location.href="/question/delete/${question.id}";//질문삭제요청
+                //location.href="/answer/delete/${answer.id}";//답변삭제요청
+            };
+        });
+    });
+
+    //(질문,답변)추천버튼클릭시 호출
+    const recElements = document.getElementsByClassName("recommend");
+    Array.from(recElements).forEach(function(element){
+
+        //$(".recommend").on("click",function(){ alert("추천하시겠습니까?"); });
+        element.addEventListener("click",function(){
+            if(confirm("추천하시겠습니까?")){//확인버튼을 클릭하면
+                //click이벤트가 발생한 a요소의  data-uri속성의 값을 가져와
+                //location객체의 href속성의 값으로 적용해라
+                //=>현재 browser의 URL주소를 변경해라
+                location.href=this.dataset.uri;
+                //location.href="/question/vote/${question.id}";//질문추천요청
+                //location.href="/answer/vote/${answer.id}";//답변추천요청
+            };
+        });
+    });
+
+
+</script>
+
+<!-- 기본 기능
+  th:text="${}"
+  th:href="@{}"
+  th:with="${}"
+  th:value="${}"
+
+-Layout
+  xmlns:layout="", layout:decorator=""
+  th:block
+  th:fragment=""
+  th:replace="~{파일경로 :: 조각이름}"
+  th:insert="~{파일경로 :: 조각이름}"
+
+-Form
+  th:action="@{}"
+  th:object="${}"
+  th:field="*{}"
+
+-조건문과 반복문
+  th:if="${}", th:unless="${}"
+  th:each="변수 : ${list}"
+  th:switch, th:case
+
+-Number.sequest
+  #numbers.sequest(start, end, step)
+
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
