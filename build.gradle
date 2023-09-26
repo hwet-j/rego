@@ -35,6 +35,10 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
+
 
 	// xml 받는 구현체
 	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.0'

@@ -43,6 +43,13 @@ public class IndexController {
 	private final ObjectMapper objectMapper;
 
 
+
+	@GetMapping("email")
+	public String emailForm(){
+		return "email";
+	}
+
+
 	// 로그인이 완료되면 실행되는 페이지로 수정 X
 	// API로 로그인한 경우에 DB정보를 확인해서 회원가입한 이력이 있다면, 로그인 그렇지않으면 회원가입창으로 이동
 	@GetMapping({ "", "/" })
