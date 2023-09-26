@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Drag and Drop List</title>
+    <style>
+
+        .item {
+            background-color: #f0f0f0;
+            padding: 5px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        #output {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<ul class="list">
+    <li class="item" draggable="true">R</li>
+    <li class="item" draggable="true">E</li>
+    <li class="item" draggable="true">A</li>
+    <li class="item" draggable="true">S</li>
+    <li class="item" draggable="true">O</li>
+    <li class="item" draggable="true">N</li>
+</ul>
+
+<input type="text" id="output">
+
+<script>
+    const list = document.querySelector('.list');
+    const output = document.getElementById('output');
+    let currentItemIndex = null;
+    let currentItem = null;
+
+    list.addEventListener('dragstart', (e) => {
+        currentItem = e.target;
+        const listArr = [...currentItem.parentElement.children];
+        currentItemIndex = listArr.indexOf(currentItem);
+        e.dataTransfer.setData('text/plain', currentItem.textContent);
+    });
+
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+
+    function drop(event) {
+        event.preventDefault();
+
+        if (event.target.classList.contains('item')) {
+            const currentDropItem = event.target;
+            const listArr = [...currentItem.parentElement.children];
+            const dropItemIndex = listArr.indexOf(currentDropItem);
+
+            if (currentItemIndex < dropItemIndex) {
+                currentDropItem.after(currentItem);
+            } else {
+                currentDropItem.before(currentItem);
+            }
+
+            // 모든 LI 태그의 내용을 가져와서 순서대로 INPUT에 추가
+            const liElements = document.querySelectorAll('.item');
+            let inputText = '';
+            liElements.forEach((li) => {
+                inputText += li.textContent;
+            });
+
+            output.value = inputText;
+        }
+    }
+
+    // body 요소에 드래그 앤 드롭 이벤트 핸들러 추가
+    document.body.addEventListener('dragover', allowDrop);
+    document.body.addEventListener('drop', drop);
+</script>
+</body>
+</html>

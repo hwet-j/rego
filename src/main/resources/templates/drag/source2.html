@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Drag and Drop to Input</title>
+    <style>
+        .item {
+            background-color: #f0f0f0;
+            padding: 5px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        #output {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        #input-li {
+            width: 300px;
+            height: 300px;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+<ul class="list">
+    <li class="item" draggable="true">R</li>
+    <li class="item" draggable="true">E</li>
+    <li class="item" draggable="true">A</li>
+    <li class="item" draggable="true">S</li>
+    <li class="item" draggable="true">O</li>
+    <li class="item" draggable="true">N</li>
+</ul>
+
+<input type="text" id="output">
+
+
+<div id="input-li" droppable="true"></div>
+
+<script>
+    const list = document.querySelector('.list');
+    const output = document.getElementById('output');
+    const inputLi = document.getElementById('input-li');
+    let currentItemIndex = null;
+    let currentItem = null;
+
+    list.addEventListener('dragstart', (e) => {
+        currentItem = e.target;
+        const listArr = [...currentItem.parentElement.children];
+        currentItemIndex = listArr.indexOf(currentItem);
+        e.dataTransfer.setData('text/plain', currentItem.textContent);
+    });
+
+    list.addEventListener('dragover', (e) => {
+        e.preventDefault();
+    });
+
+    list.addEventListener('drop', (e) => {
+        e.preventDefault();
+
+        if (e.target.classList.contains('item')) {
+            const currentDropItem = e.target;
+            const listArr = [...currentItem.parentElement.children];
+            const dropItemIndex = listArr.indexOf(currentDropItem);
+
+            if (currentItemIndex < dropItemIndex) {
+                currentDropItem.after(currentItem);
+            } else {
+                currentDropItem.before(currentItem);
+            }
+        }
+    });
+
+    inputLi.addEventListener('dragover', (e) => {
+        e.preventDefault();
+    });
+
+    inputLi.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const draggedText = e.dataTransfer.getData('text/plain');
+        output.value = draggedText; // 드래그한 텍스트를 출력 input 요소에 설정
+    });
+</script>
+
+</body>
+</html>
