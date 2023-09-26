@@ -1,0 +1,19 @@
+<html layout:decorate="~{layout}"  xmlns:th="http://www.thymeleaf.org">
+<div layout:fragment="content" class="container">
+    <h5 class="my-3 border-bottom pb-2">답변수정</h5>
+    <!--CSRF자동생성을 하기위해 th:action속성은  제거,
+        CSRF값을 설정하기위한 hidden을 추가한다
+        폼의 action속성의 값은 question_form의 브라우저의 현재 URL을 기준으로 설정된다.
+         즉 수정버튼을 클릭해서 폼이 보여지는 경우는 action="/answer/modify/질문번호" method="post"-->
+    <form id="answerForm" th:object="${answerForm}"  method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <!-- 유효성검사시 에러메세지 출력영역 -->
+        <div th:replace="~{form_errors::formErrorsFragment}"></div>
+        <div class="mb-3">
+            <label for="content" class="form-label">내용</label>
+            <textarea th:field="*{content}" class="form-control" rows="8"></textarea>
+        </div>
+        <input type="submit" value="답변저장(수정)" class="btn btn-primary my-2"/>
+    </form>
+</div>
+</html>
