@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <script src='../static/index.global.js'></script>
+  <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
+  <script src='https://code.jquery.com/ui/1.12.1/jquery-ui.js'></script>
+  <!-- SweetAlert CDN 추가 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+      var externalEventsListEl = document.getElementById('external-events-list');
+
+      // Drag할 요소들을 리스트로 가져와 Drag 가능하도록 설정
+      new FullCalendar.Draggable(externalEventsListEl, {
+        itemSelector: '.fc-event',
+        eventData: function(eventEl) {
+          return {
+            title: eventEl.querySelector('.fc-event-main').getAttribute('data-title'),
+            image: eventEl.querySelector('.fc-event-main').getAttribute('data-image')
+          }
+        }
+      });
+
+      var today = new Date();
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        initialDate: today,
+        navLinks: true,
+        selectable: true,
+        selectMirror: true,
+        select: function(arg) {
+          Swal.fire({
+            title: 'Event Title:',
+            input: 'text',
+            showCancelButton: true,
+            confirmButtonText: 'Add Event',
+            cancelButtonText: 'Cancel',
+            inputValidator: (value) => {
+              if (!value) {
+                return 'Event title is required';
+              } else {
+                calendar.addEvent({
+                  title: value,
+                  start: arg.start,
+                  end: arg.end,
+                  allDay: arg.allDay,
+                  id: generateEventId()
+                });
+              }
+            }
+          }).then((result) => {
+            calendar.unselect();
+          });
+        },
+        eventClick: function(arg) {
+          var eventId = arg.event.id;
+          var eventImage = arg.event.extendedProps.image;
+          openDialog(eventId, arg.event.title, calendar, eventImage);
+        },
+        editable: true,
+        dayMaxEvents: true,
+        defaultView: 'timeGridWeek',
+        events: [
+        ]
+      });
+
+      calendar.render();
+
+      /* 계획 생성 시 1씩 증가 */
+      let currentEventId = 1;
+
+      function generateEventId() {
+        return String(currentEventId++);
+      }
+
+    });
+
+    /* 작성된 계획을 클릭하여 수정 또는 삭제 작업을 위한 함수 */
+    function openDialog(eventId, eventTitle, calendar, eventImage) {
+      const hasImage = eventImage; // 이미지가 있는지 여부를 체크
+
+
+      if (hasImage){
+        Swal.fire({
+          title: '이 정보는 수정이 불가능합니다.',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          imageUrl: eventImage, // 이미지가 있을 경우에만 이미지를 표시합니다.
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Delete',
+          showCloseButton: true,
+        }).then((result) => {
+          if (result.dismiss === Swal.DismissReason.cancel) {
+            // 삭제 버튼 클릭 시, 이벤트 삭제
+            var event = calendar.getEventById(eventId);
+            event.remove();
+          }
+        });
+      } else {
+        Swal.fire({
+          title: '수정 또는 삭제',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Edit',
+          cancelButtonText: 'Delete',
+          showCloseButton: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // 수정 버튼이 보이는 경우에만 아래 로직을 실행합니다.
+            Swal.fire({
+              title: 'Edit Event',
+              input: 'text',
+              inputValue: eventTitle,
+              showCancelButton: true,
+              confirmButtonText: 'Save',
+              cancelButtonText: 'Cancel',
+              inputValidator: (value) => {
+                if (!value) {
+                  return 'Event title is required';
+                } else {
+                  // 수정된 이벤트 제목을 적용
+                  var event = calendar.getEventById(eventId);
+                  event.setProp('title', value);
+                  calendar.refetchEvents();
+                }
+              }
+            });
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            // 삭제 버튼 클릭 시, 이벤트 삭제
+            var event = calendar.getEventById(eventId);
+            event.remove();
+          }
+        });
+      }
+    }
+
+
+
+
+  </script>
+  <style>
+    body {
+      margin: 40px 10px;
+      padding: 0;
+      font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+      font-size: 14px;
+    }
+
+    #wrap {
+      display: flex;
+      flex-direction: row;
+    }
+
+    #external-events {
+      flex: 1;
+      margin-right: 20px;
+    }
+
+    #calendar-wrap {
+      flex: 5;
+    }
+
+    #external-events h4 {
+      font-size: 16px;
+      margin-top: 0;
+      padding-top: 1em;
+    }
+
+    #external-events .fc-event {
+      margin: 3px 0;
+      cursor: move;
+    }
+
+    #calendar {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+<div id='wrap'>
+  <div id='external-events'>
+    <h4>Draggable Events</h4>
+    <div id='external-events-list'>
+      <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+        <div class='fc-event-main' data-title="에펠탑" data-image="https://github.com/hwet-j/hwet-j.github.io/assets/81364742/b82b1dd6-8359-4809-b87d-75e172024abd">My Event 1</div>
+      </div>
+      <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+        <div class='fc-event-main' data-title="디즈니랜드" data-image="https://github.com/hwet-j/hwet-j.github.io/assets/81364742/43a1da48-1530-46a2-b6d8-a10024f87d09">My Event 2</div>
+      </div>
+      <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+        <div class='fc-event-main'  data-title="피카소 미술관" data-image="https://github.com/hwet-j/hwet-j.github.io/assets/81364742/b1dba09c-f86d-4a42-9676-7339e5f9bfe1">My Event 3</div>
+      </div>
+      <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+        <div class='fc-event-main' data-title="로댕 미술관" data-image="https://github.com/hwet-j/hwet-j.github.io/assets/81364742/fb0d91bf-d2f9-4c8c-a659-a67032039a93">My Event 4</div>
+      </div>
+      <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+        <div class='fc-event-main' data-title="노트르담 대성당" data-image="https://github.com/hwet-j/hwet-j.github.io/assets/81364742/57000fdf-664e-45cd-91b5-d9bd2f1eb453">My Event 5</div>
+      </div>
+    </div>
+    <p>
+      <input type='checkbox' id='drop-remove' />
+      <label for='drop-remove'>remove after drop</label>
+    </p>
+  </div>
+  <div id='calendar-wrap'>
+    <div id='calendar'></div>
+  </div>
+</div>
+<div id='eventDialog' style='display: none;'></div>
+</body>
+</html>
