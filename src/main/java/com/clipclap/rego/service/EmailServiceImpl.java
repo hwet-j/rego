@@ -71,11 +71,12 @@ public class EmailServiceImpl implements EmailService{
         }
         return key.toString();
     }
+
     @Override
     public String sendSimpleMessage(String to)throws Exception {
         // TODO Auto-generated method stub
         MimeMessage message = createMessage(to);
-        try{//예외처리
+        try{    //예외처리
             emailSender.send(message);
         }catch(MailException es){
             es.printStackTrace();

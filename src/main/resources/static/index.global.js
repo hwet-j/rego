@@ -14658,7 +14658,8 @@ window.initMap=function(){
         center: { lat:37.5639635, lng:127},
         zoom:12,
         minZoom:3,
-        maxZoom:30
+        maxZoom:30,
+        mapTypeControl: false // 지도 타입 컨트롤 비활성화
     });
 
     /* 관광지 목록을 저장할 변수 */
@@ -14886,6 +14887,8 @@ window.initMap=function(){
             if (event.key === "Enter") {
                 const query = searchInput.value.trim();
                 if (query) {
+                    searchResultsElement.style.display = "block";
+                    cancelButton.style.display = "block";
                     handleSearch(query);
                 }
             }
@@ -14897,6 +14900,24 @@ window.initMap=function(){
             if (query) {
                 handleSearch(query);
             }
+        });
+
+        const cancelButton = document.getElementById("cancelButton");
+        const searchResultsElement = document.getElementById("searchResults");
+
+        searchButton.addEventListener("click", function () {
+            // 검색 버튼 클릭 시 검색 결과를 보이도록 설정
+            searchResultsElement.style.display = "block";
+            cancelButton.style.display = "block";
+
+            // 검색 결과를 처리하고 표시하는 함수 호출
+            handleSearch(searchInput.value);
+        });
+
+        cancelButton.addEventListener("click", function () {
+            // 검색 취소 버튼 클릭 시 검색 결과를 숨김
+            searchResultsElement.style.display = "none";
+            cancelButton.style.display = "none";
         });
 
         function handleSearch(query) {
@@ -14916,11 +14937,11 @@ window.initMap=function(){
                 results.forEach(({ label, name, lat, lng, imageUrl }) => {
                     const listItem = document.createElement("li");
                     listItem.innerHTML = `
-                <a href="#" data-lat="${lat}" data-lng="${lng}">
-                    <img src="${imageUrl}" alt="${name}" width="40">
-                    ${name}
-                </a>
-            `;
+                              <a href="#" data-lat="${lat}" data-lng="${lng}">
+                                <img src="${imageUrl}" alt="${name}" width="40">
+                                ${name}
+                              </a>
+                            `;
                     searchResultsElement.appendChild(listItem);
 
                     // 검색 결과 항목을 클릭했을 때 지도 이동 및 정보 표시
@@ -14941,21 +14962,7 @@ window.initMap=function(){
                 searchResultsElement.innerHTML = "<li>검색된 장소가 없습니다.</li>";
             }
 
-        }
-        document.getElementById("centerOnIcon").addEventListener("click", centerOnIcon);
 
-        let iconCentered = false;
-        function centerOnIcon() {
-            if (!iconCentered) {
-                // 아이콘의 현재 위치를 가져와서 지도를 그 위치로 이동
-                const iconPosition = marker.getPosition();
-                map.panTo(iconPosition);
-                iconCentered = true;
-                document.getElementById("centerOnIcon").textContent = "아이콘 배치 취소";
-            } else {
-                iconCentered = false;
-                document.getElementById("centerOnIcon").textContent = "아이콘 중앙 배치";
-            }
         }
     }
 
