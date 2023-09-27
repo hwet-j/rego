@@ -142,7 +142,7 @@ public class IndexController {
 		if (result.equals("password")){
 
 		} else if (result.equals("id")){
-			System.out.println("");
+			System.out.println();
 		}
 
 		return "redirect:/";
@@ -161,11 +161,12 @@ public class IndexController {
 		System.out.println(test.get(1));
 		System.out.println("================================");
 
-		List<TouristAttractionDTO> mallList = touristAttractionService.coutryAttractionList(city);
+		List<TouristAttractionDTO> touristAttractionList = touristAttractionService.coutryAttractionList(city);
 
-		String json = objectMapper.writeValueAsString(mallList);
+		String json = objectMapper.writeValueAsString(touristAttractionList);
 
-		model.addAttribute("mallList" , json);
+		model.addAttribute("touristAttractionListJson" , json);
+		model.addAttribute("touristAttractionList" , touristAttractionList);
 
 		return "googleMap";
 	}
