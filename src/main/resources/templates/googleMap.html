@@ -194,6 +194,15 @@
         #calendar-wrap{
             flex:1;
         }
+
+        #searchResults {
+            background-color: rgba(255, 255, 255, 0.9); /* 흰 배경색 및 투명도 설정 */
+            border: 1px solid #ccc; /* 테두리 설정 */
+            border-radius: 5px; /* 둥근 테두리 설정 */
+            padding: 10px; /* 내부 여백 설정 */
+            max-height: 300px; /* 최대 높이 설정 (내용이 너무 길 경우 스크롤 표시) */
+            overflow-y: auto; /* 세로 스크롤바 표시 (내용이 길 경우) */
+        }
     </style>
 </head>
 <body>
@@ -205,9 +214,9 @@
     <div id="map-container" style="position: relative;">
         <!-- 검색창 -->
         <input id="searchInput" placeholder="장소 검색" style="position: absolute; top: 10px; left: 10px; z-index: 1;" type="text">
-        <button id="searchButton" style="position: absolute; top: 10px; left: 200px; z-index: 1;">검색</button>
-        <ul id="searchResults" style="position: absolute; top: 50px; left: 10px; z-index: 1;"></ul>
-
+        <button id="searchButton" style="position: absolute; top: 10px; left: 190px; z-index: 1;">검색</button>
+        <button id="cancelButton" style="position: absolute; top: 10px; left: 240px; z-index: 1; display: none;">검색 취소</button>
+        <ul id="searchResults" style="position: absolute; top: 50px; left: 10px; z-index: 1; display: none;"></ul>
         <!-- 지도 -->
         <div id="map"></div>
     </div>

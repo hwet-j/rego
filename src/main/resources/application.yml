@@ -8,20 +8,6 @@ server:
 #      force: true
 
 spring:
-  # Google Email
-  mail:
-    host: smtp.gmail.com # 1
-    port: 587 # 2
-    username: test # 3
-    password: hxajnrtlawaegomu
-    properties:
-      mail:
-        smtp:
-          auth: true # 5
-          timeout: 5000 # 6
-          starttls:
-            enable: true # 7
-
   # Data Base Setting (MySQL)
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
