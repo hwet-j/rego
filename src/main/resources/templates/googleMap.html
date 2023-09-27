@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset='utf-8' />
+    <meta charset='utf-8'/>
     <script defer th:inline="javascript" th:src="@{/index.global.js}" type="text/javascript"></script>
-    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5xt-0-bficSVL6EP57aQseXSiPx8bx7E&callback=initMap&libraries=&&libraries=geometry&libraries=places"></script>
+    <script defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5xt-0-bficSVL6EP57aQseXSiPx8bx7E&callback=initMap&libraries=&&libraries=geometry&libraries=places"></script>
     <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
     <script src='https://code.jquery.com/ui/1.12.1/jquery-ui.js'></script>
     <!-- SweetAlert CDN 추가 -->
@@ -11,143 +12,255 @@
 
     <script>
 
-        document.addEventListener('DOMContentLoaded', function() {
-          var calendarEl = document.getElementById('calendar');
-          var externalEventsListEl = document.getElementById('external-events-list');
+        document.addEventListener('DOMContentLoaded', function () {
 
-          // Drag할 요소들을 리스트로 가져와 Drag 가능하도록 설정
-          new FullCalendar.Draggable(externalEventsListEl, {
-            itemSelector: '.fc-event',
-            eventData: function(eventEl) {
-              return {
-                title: eventEl.querySelector('.fc-event-main').getAttribute('data-title'),
-                image: eventEl.querySelector('.fc-event-main').getAttribute('data-image')
-              }
-            }
-          });
+            var calendarEl = document.getElementById('calendar');
+            var externalEventsListEl = document.getElementById('external-events-list');
 
-          var today = new Date();
-          var calendar = new FullCalendar.Calendar(calendarEl, {
-            headerToolbar: {
-              left: 'prev,next today',
-              center: 'title',
-              right: 'dayGridMonth,timeGridWeek,timeGridDay'
-            },
-            initialDate: today,
-            navLinks: true,
-            selectable: true,
-            selectMirror: true,
-            select: function(arg) {
-              Swal.fire({
-                title: 'Event Title:',
-                input: 'text',
-                showCancelButton: true,
-                confirmButtonText: 'Add Event',
-                cancelButtonText: 'Cancel',
-                inputValidator: (value) => {
-                  if (!value) {
-                    return 'Event title is required';
-                  } else {
-                    calendar.addEvent({
-                      title: value,
-                      start: arg.start,
-                      end: arg.end,
-                      allDay: arg.allDay,
-                      id: generateEventId()
-                    });
-                  }
+
+            /* 관광지 목록을 저장할 변수 */
+            const malls = [];
+
+            /*
+            Controller -> Html -> Js 로 받아온 정보 (Html에서 Js로 받아올 경우 String으로 변환되어 온다.
+            Controller에서 JSON형식으로 변환하여 전송해 JS에서 String으로 받아온 정보를 JSON타입으로 변환하여 사용한다.
+            */
+            // HTML로 부터 String 타입으로 데이터를 전달 받는다.
+            var mallListData = document.getElementById('mallList').getAttribute('data-variable');
+
+            // JSON 타입으로 변환한다. (String의 형식이 JSON형식이여야지 가능하다.)
+            var jsonObject = JSON.parse(mallListData);
+
+            // ForEach문을 사용해서 JS에서 사용할 수 있도록 변수에 저장한다.
+            jsonObject.forEach(function (mall) {
+                malls.push({
+                    label: mall.touristAttractionId.toString(),     // 마커 중앙에 표시될 문자 (문자열로 받는거같은데 문자열로 변환을 해줘야 작동함)
+                    name: mall.name,                                // 마커 클릭 시 표시되는 정보에 사용될 이름(관광지 이름)
+                    lat: parseFloat(mall.latitude),                 // 위도 (실수 형태로 변환필요)
+                    lng: parseFloat(mall.longitude),                // 경도 (실수 형태로 변환필요)
+                    imageUrl: mall.image.toString(),                // 이미지 경로
+                    address: mall.address.toString(),               // 주소
+                    introduction: mall.introduction.toString()      // 소개글
+                });
+            });
+
+            /************************************************/
+            /* Drag할 요소들을 리스트로 가져와 Drag 가능하도록 설정 */
+            /************************************************/
+            new FullCalendar.Draggable(externalEventsListEl, {
+                itemSelector: '.fc-event',
+                eventData: function (eventEl) {
+                    return {
+                        title: eventEl.querySelector('.fc-event-main').getAttribute('data-title'),
+                        image: eventEl.querySelector('.fc-event-main').getAttribute('data-image')
+                    }
                 }
-              }).then((result) => {
-                calendar.unselect();
-              });
-            },
-            eventClick: function(arg) {
-              var eventId = arg.event.id;
-              var eventImage = arg.event.extendedProps.image;
-              openDialog(eventId, arg.event.title, calendar, eventImage);
-            },
-            editable: true,
-            dayMaxEvents: true,
-            defaultView: 'timeGridWeek',
-            events: [
-            ]
-          });
+            });
 
-          calendar.render();
+            /****************/
+            /* 초기 날짜 설정 */
+            /****************/
+            var today = new Date();
 
-          /* 계획 생성 시 1씩 증가 */
-          let currentEventId = 1;
+            /*************/
+            /* 캘린더 설정 */
+            /*************/
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                initialDate: today,
+                navLinks: true,
+                selectable: true,
+                selectMirror: true,
+                select: function (arg) {
+                    Swal.fire({
+                        title: '일정 관리',
+                        html: '<div id="image-preview"><img src="/pictures/base.jpg" style="width: 800px; height:800px;" onerror="this.src=\'/pictures/base.jpg\';"></div>' + getSelectOptions(malls) + '<input id="event-title" placeholder="계획을 입력하세요.">',
+                        showCancelButton: true,
+                        showCloseButton: true,
+                        confirmButtonText: '추가',
+                        cancelButtonText: '취소',
+                        customClass: {
+                            popup: 'custom-modal-width',        // 팝업창의 크기를 조절하기 위한 설정(HTML파일에서 Style설정도 해야함)
+                        },
+                        onBeforeOpen: () => {
+                            const eventTypeSelect = document.getElementById('event-type');
+                            const selectedImage = document.getElementById('selected-image');
 
-          function generateEventId() {
-            return String(currentEventId++);
-          }
+                            eventTypeSelect.addEventListener('change', function () {
+                                const selectedValue = eventTypeSelect.value;
+                                const selectedMall = malls.find((mall) => mall.label === selectedValue);
+
+                                if (selectedMall) {
+                                    selectedImage.src = selectedMall.imageUrl;
+                                } else {
+                                    selectedImage.src = '/pictures/base.jpg'; // 선택된 이미지가 없을 경우 기본 이미지 표시
+                                }
+                            });
+                        },
+                        preConfirm: () => {
+                            const eventTitle = document.getElementById('event-title').value;
+                            const eventType = document.getElementById('event-type').value;
+                            const selectedMall = malls.find((mall) => mall.label === eventType);
+
+                            if (!eventTitle) {
+                                Swal.showValidationMessage('계획 정보가 입력되지 않았습니다.');
+                            } else {
+                                calendar.addEvent({
+                                    title: eventTitle,
+                                    start: arg.start,
+                                    end: arg.end,
+                                    allDay: arg.allDay,
+                                    id: generateEventId(),
+                                    type: eventType ? eventType : '',
+                                    image: selectedMall ? selectedMall.imageUrl : '',
+                                });
+                            }
+                        },
+                    }).then((result) => {
+                        calendar.unselect();
+                    });
+
+                    const imagePreview = document.getElementById('image-preview');
+                    const eventTypeSelect = document.getElementById('event-type');
+
+                    eventTypeSelect.addEventListener('change', function () {
+                        const selectedValue = eventTypeSelect.value;
+                        const selectedMall = malls.find((mall) => mall.label === selectedValue);
+
+                        if (selectedMall) {
+                            imagePreview.innerHTML = `<img src="${selectedMall.imageUrl}" alt="${selectedMall.name}"  style="width: 800px; height:800px;" onerror="this.src=\'/pictures/base.jpg\';"/>`;
+                        } else {
+                            imagePreview.innerHTML = `<img src="/pictures/base.jpg" style="width: 800px; height:800px;" onerror="this.src=\'/pictures/base.jpg\';"/>`;
+                        }
+                    });
+
+                    function getSelectOptions(malls) {
+                        let selectOptions = '<div><select id="event-type" class="swal2-select"><option value="">선택하지 않음</option>';
+                        malls.forEach((mall) => {
+                            selectOptions += `<option value="${mall.label}">${mall.name}</option>`;
+                        });
+                        selectOptions += '</select></div>';
+                        return selectOptions;
+                    }
+                },
+                eventClick: function (arg) {
+                    var eventId = arg.event.id;
+                    var eventImage = arg.event.extendedProps.image;
+                    openDialog(eventId, arg.event.title, calendar, eventImage, arg);
+                },
+                editable: true,
+                dayMaxEvents: true,
+                initialView: 'timeGridWeek',        // 초기 달력 상태 (dayGridMonth,timeGridWeek,timeGridDay)
+                events: []
+            });
+
+            calendar.render();
+
+            /* 계획 생성 시 1씩 증가 */
+            let currentEventId = 1;
+
+            function generateEventId() {
+                return String(currentEventId++);
+            }
+
+            /************************************************/
+            /* 작성된 계획을 클릭하여 수정 또는 삭제 작업을 위한 함수 */
+            /************************************************/
+            function openDialog(eventId, eventTitle, calendar, eventImage, arg) {
+                Swal.fire({
+                    title: '일정 관리',
+                    html: `
+                            <div id="image-preview">
+                                <img src="${eventImage}" alt="Selected Image" style="width: 800px; height: 800px;" onerror="this.src='/pictures/base.jpg';">
+                            </div>
+                            ${getSelectOptions(malls, eventTitle)}
+                            <input id="event-title" class="swal2-input" value="${eventTitle}" placeholder="계획을 입력하세요."/>
+                        `,
+                    showCancelButton: true,
+                    showCloseButton: true,
+                    confirmButtonText: '수정',
+                    cancelButtonText: '삭제',
+                    customClass: {
+                        popup: 'custom-modal-width',
+                    },
+                    onBeforeOpen: () => {
+                        const eventTypeSelect = document.getElementById('event-type');
+                        const selectedImage = document.getElementById('selected-image');
+
+                        eventTypeSelect.addEventListener('change', function () {
+                            const selectedValue = eventTypeSelect.value;
+                            const selectedMall = malls.find((mall) => mall.label === selectedValue);
+
+                            if (selectedMall) {
+                                selectedImage.src = selectedMall.imageUrl;
+                            } else {
+                                selectedImage.src = '/pictures/base.jpg'; // 선택된 이미지가 없을 경우 기본 이미지 표시
+                            }
+                        });
+                    },
+                    preConfirm: () => {
+                        const newEventTitle = document.getElementById('event-title').value;
+                        const selectedMallLabel = document.getElementById('event-type').value;
+                        const selectedMall = malls.find((mall) => mall.label === selectedMallLabel);
+
+                        if (!newEventTitle) {
+                            Swal.showValidationMessage('계획 정보가 입력되지 않았습니다.');
+                        } else {
+                            // 수정된 이벤트 제목과 이미지를 적용
+                            const event = calendar.getEventById(eventId);
+                            event.setProp('title', newEventTitle);
+                            event.setExtendedProp('image', selectedMall ? selectedMall.imageUrl : '');
+                            calendar.refetchEvents();
+                        }
+                    },
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // 수정 버튼 클릭 시
+                        // 수정 로직이 이미 preConfirm 함수에서 처리되었으므로 따로 처리할 내용은 없습니다.
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        // 삭제 버튼 클릭 시, 이벤트 삭제
+                        const event = calendar.getEventById(eventId);
+                        event.remove();
+                    }
+                });
+
+                const imagePreview = document.getElementById('image-preview');
+                const eventTypeSelect = document.getElementById('event-type');
+
+                eventTypeSelect.addEventListener('change', function () {
+                    const selectedValue = eventTypeSelect.value;
+                    const selectedMall = malls.find((mall) => mall.label === selectedValue);
+
+                    if (selectedMall) {
+                        imagePreview.innerHTML = `<img src="${selectedMall.imageUrl}" alt="${selectedMall.name}"  style="width: 800px; height:800px;" onerror="this.src='/pictures/base.jpg';"/>`;
+                    } else {
+                        imagePreview.innerHTML = `<img src="/pictures/base.jpg" style="width: 800px; height:800px;" onerror="this.src='/pictures/base.jpg';"/>`;
+                    }
+                });
+
+                function getSelectOptions(malls, eventTitle) {
+                    let selectOptions = '<div><select id="event-type" class="swal2-select"><option value="">선택하지 않음</option>';
+                    malls.forEach((mall) => {
+                        selectOptions += `<option value="${mall.label}"${eventTitle === mall.label ? ' selected' : ''}>${mall.name}</option>`;
+                    });
+                    selectOptions += '</select></div>';
+                    return selectOptions;
+                }
+            }
+
 
         });
-
-        /* 작성된 계획을 클릭하여 수정 또는 삭제 작업을 위한 함수 */
-        function openDialog(eventId, eventTitle, calendar, eventImage) {
-          const hasImage = eventImage; // 이미지가 있는지 여부를 체크
-
-
-          if (hasImage){
-            Swal.fire({
-              title: '이 정보는 수정이 불가능합니다.',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              imageUrl: eventImage, // 이미지가 있을 경우에만 이미지를 표시합니다.
-              cancelButtonColor: '#d33',
-              cancelButtonText: 'Delete',
-              showCloseButton: true,
-            }).then((result) => {
-              if (result.dismiss === Swal.DismissReason.cancel) {
-                // 삭제 버튼 클릭 시, 이벤트 삭제
-                var event = calendar.getEventById(eventId);
-                event.remove();
-              }
-            });
-          } else {
-            Swal.fire({
-              title: '수정 또는 삭제',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Edit',
-              cancelButtonText: 'Delete',
-              showCloseButton: true,
-            }).then((result) => {
-              if (result.isConfirmed) {
-                // 수정 버튼이 보이는 경우에만 아래 로직을 실행합니다.
-                Swal.fire({
-                  title: 'Edit Event',
-                  input: 'text',
-                  inputValue: eventTitle,
-                  showCancelButton: true,
-                  confirmButtonText: 'Save',
-                  cancelButtonText: 'Cancel',
-                  inputValidator: (value) => {
-                    if (!value) {
-                      return 'Event title is required';
-                    } else {
-                      // 수정된 이벤트 제목을 적용
-                      var event = calendar.getEventById(eventId);
-                      event.setProp('title', value);
-                      calendar.refetchEvents();
-                    }
-                  }
-                });
-              } else if (result.dismiss === Swal.DismissReason.cancel) {
-                // 삭제 버튼 클릭 시, 이벤트 삭제
-                var event = calendar.getEventById(eventId);
-                event.remove();
-              }
-            });
-          }
-        }
 
 
 
 
     </script>
+
+
     <style>
         /* SweetAlert창 크기 */
         .custom-modal-width {
@@ -155,41 +268,43 @@
         }
 
         body {
-          margin: 40px 10px;
-          padding: 0;
-          font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-          font-size: 14px;
+            margin: 40px 10px;
+            padding: 0;
+            font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+            font-size: 14px;
         }
 
         #external-events h4 {
-          font-size: 16px;
-          margin-top: 0;
-          padding-top: 1em;
+            font-size: 16px;
+            margin-top: 0;
+            padding-top: 1em;
         }
 
         #external-events .fc-event {
-          margin: 3px 0;
-          cursor: move;
+            margin: 3px 0;
+            cursor: move;
         }
 
         #calendar {
-          max-width: 1000px;
-          margin: 0 auto;
+
+            width: 500px;
+            height: 500px;
+            margin: 0 auto;
         }
 
-        .contain{
-            display:flex;
-            margin:100px;
+        .contain {
+            display: flex;
+            margin: 100px;
         }
 
-        #map{
-            flex:1;
-            width: 800px;
-            height: 800px;
+        #map {
+            flex: 1;
+            width: 500px;
+            height: 500px;
         }
 
-        #calendar-wrap{
-            flex:1;
+        #calendar-wrap {
+            flex: 1;
         }
 
         #searchResults {
@@ -200,19 +315,30 @@
             max-height: 300px; /* 최대 높이 설정 (내용이 너무 길 경우 스크롤 표시) */
             overflow-y: auto; /* 세로 스크롤바 표시 (내용이 길 경우) */
         }
+
+        /* 알림창 내용 input 태그  */
+        #event-title {
+            width: 80%;
+            padding: 5px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
 
-<div id="mallList" th:data-variable="${mallList}"></div>
+<div id="mallList" th:data-variable="${touristAttractionListJson}"></div>
 
 
 <div class="contain" style="display: flex;">
     <div id="map-container" style="position: relative;">
         <!-- 검색창 -->
-        <input id="searchInput" placeholder="장소 검색" style="position: absolute; top: 10px; left: 10px; z-index: 1;" type="text">
+        <input id="searchInput" placeholder="장소 검색" style="position: absolute; top: 10px; left: 10px; z-index: 1;"
+               type="text">
         <button id="searchButton" style="position: absolute; top: 10px; left: 190px; z-index: 1;">검색</button>
-        <button id="cancelButton" style="position: absolute; top: 10px; left: 240px; z-index: 1; display: none;">검색 취소</button>
+        <button id="cancelButton" style="position: absolute; top: 10px; left: 240px; z-index: 1; display: none;">검색 취소
+        </button>
         <ul id="searchResults" style="position: absolute; top: 50px; left: 10px; z-index: 1; display: none;"></ul>
         <!-- 지도 -->
         <div id="map"></div>
@@ -224,19 +350,23 @@
 </div>
 
 <div id='wrap'>
-    <div id='external-events' >
+    <div id='external-events'>
         <h4>Draggable Events</h4>
         <div id='external-events-list' style="display: flex; flex-direction: row; overflow-x: auto;">
-            <div class='fc-event'  th:each="touristAttraction : ${touristAttractionList}">
-                <div class='fc-event-main' th:data-image="${touristAttraction.image}" th:data-title="${touristAttraction.name}"><img style="width:200px; height:200px;" th:src="${touristAttraction.image}"><div style="text-align: center;" th:text="${touristAttraction.name}"></div></div>
+            <div class='fc-event' th:each="touristAttraction : ${touristAttractionList}">
+                <div class='fc-event-main' th:data-image="${touristAttraction.image}"
+                     th:data-title="${touristAttraction.name}"><img style="width:200px; height:200px;"
+                                                                    th:src="${touristAttraction.image}">
+                    <div style="text-align: center;" th:text="${touristAttraction.name}"></div>
+                </div>
             </div>
         </div>
 
         <p>
-            <input id='drop-remove' type='checkbox' />
+            <input id='drop-remove' type='checkbox'/>
             <label for='drop-remove'>remove after drop</label>
         </p>
-</div>
+    </div>
 </div>
 
 
