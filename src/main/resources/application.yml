@@ -8,6 +8,8 @@ server:
 #      force: true
 
 spring:
+  jackson:
+    time-zone: Asia/Seoul
   # Data Base Setting (MySQL)
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

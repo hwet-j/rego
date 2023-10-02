@@ -8,8 +8,7 @@ import java.util.List;
 
 public interface TouristAttractionService {
 
-    // Test
-    List<TouristAttractionDTO> touristListTest();
+    List<TouristAttractionDTO> touristListAll();
 
     List<TouristAttractionDTO> coutryAttractionList(City cityName);
 
