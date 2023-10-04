@@ -3,7 +3,7 @@ package com.clipclap.rego.model.entitiy;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /*
 
@@ -39,15 +39,14 @@ public class PlannerDetail {
     @Column(nullable = false)
     private String content;
 
-    private double latitude;
-
-    private double longitude;
+    @Column(nullable = false)
+    private LocalDateTime startTime;
 
     @Column(nullable = false)
-    private LocalDate startTime;
+    private boolean allday;
 
     @Column(nullable = false)
-    private LocalDate endTime;
+    private LocalDateTime endTime;
 
     @ManyToOne
     @JoinColumn(name = "touristAttraction", referencedColumnName = "touristAttractionId")
