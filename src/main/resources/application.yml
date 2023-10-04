@@ -20,7 +20,7 @@ spring:
   # JPA (Java Persistance API) Setting
   jpa:
     hibernate:
-      ddl-auto: update      # 엔티티 파일이 수정되었을 때 작동 정보 (create, update, none.....)
+      ddl-auto: none      # 엔티티 파일이 수정되었을 때 작동 정보 (create, update, none.....)
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
