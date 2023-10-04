@@ -20,4 +20,8 @@ public interface TouristAttractionRepository extends JpaRepository<TouristAttrac
             "JOIN c.countryName co")
     List<TouristAttractionFullDTO> getTouristAttractionsWithCityAndCountry();
 
+
+    @Query("SELECT DISTINCT t.cityName.cityName FROM TouristAttraction t")
+    List<String> findDistinctCityNames();
+
 }

@@ -17,9 +17,10 @@
             var calendarEl = document.getElementById('calendar');
             var externalEventsListEl = document.getElementById('external-events-list');
 
-            /* 관광지 목록을 저장할 변수 */
-            const malls = [];
+
             const detailData = [];
+            /* 관광지 목록을 저장할 변수 */
+            const attractionData = [];
 
             /*
             Controller -> Html -> Js 로 받아온 정보 (Html에서 Js로 받아올 경우 String으로 변환되어 온다.
@@ -27,30 +28,34 @@
             */
 
             // HTML로 부터 String 타입으로 데이터를 전달 받는다.
-            var mallListData = document.getElementById('mallList').getAttribute('data-variable');
             var detailList = document.getElementById('detailList').getAttribute('data-variable');
+            var attractionList = document.getElementById('attractionList').getAttribute('data-variable');
+            var detailIdMax = document.getElementById('detailIdMax').getAttribute('data-variable');
 
             // JSON 타입으로 변환한다. (String의 형식이 JSON형식이여야지 가능하다.)
-            var jsonObject = JSON.parse(mallListData);
             var jsonObject2 = JSON.parse(detailList);
-            console.log(jsonObject2);
+            var jsonAttractionList = JSON.parse(attractionList);
 
-            // ForEach문을 사용해서 JS에서 사용할 수 있도록 변수에 저장한다.
-            jsonObject.forEach(function (mall) {
-                malls.push({
-                    label: mall.touristAttractionId.toString(),     // 마커 중앙에 표시될 문자 (문자열로 받는거같은데 문자열로 변환을 해줘야 작동함)
-                    name: mall.name,                                // 마커 클릭 시 표시되는 정보에 사용될 이름(관광지 이름)
-                    lat: parseFloat(mall.latitude),                 // 위도 (실수 형태로 변환필요)
-                    lng: parseFloat(mall.longitude),                // 경도 (실수 형태로 변환필요)
-                    imageUrl: mall.image.toString(),                // 이미지 경로
-                    address: mall.address.toString(),               // 주소
-                    introduction: mall.introduction.toString()      // 소개글
+            /* 관광지 정보를 관광지ID 값으로 검색하기 위해 객체 생성 */
+            jsonAttractionList.forEach(function (attraction) {
+                attractionData.push({
+                    touristAttractionId : attraction.touristAttractionId.toString(),
+                    address : attraction.address.toString(),
+                    name : attraction.name.toString(),
+                    imageUrl : attraction.image.toString(),
+                    introduction : attraction.introduction.toString(),
+                    latitude : parseFloat(attraction.latitude),
+                    longitude : parseFloat(attraction.longitude),
+                    contentType : attraction.contentType.toString(),
+                    cityName : attraction.cityName.toString()
                 });
             });
+
 
             // DB에 있는 정보를 캘린더에 출력하기 위한 객체
             jsonObject2.forEach(function (detail) {
                 detailData.push({
+                    id:detail.detailPlanId,
                     title: detail.content.toString(),
                     start: detail.startTime,
                     end: detail.endTime,
@@ -93,7 +98,7 @@
                 select: function (arg) {
                     Swal.fire({
                         title: '일정 관리',
-                        html: '<div id="image-preview"><img src="/pictures/base.jpg" style="width: 800px; height:800px;" onerror="this.src=\'/pictures/base.jpg\';"></div>' + getSelectOptions(malls) + '<input id="event-title" placeholder="계획을 입력하세요.">',
+                        html: '<div id="image-preview"><img src="/pictures/base.jpg" style="width: 800px; height:800px;" onerror="this.src=\'/pictures/base.jpg\';"></div>' + getSelectOptions(attractionData) + '<input id="event-title" placeholder="계획을 입력하세요.">',
                         showCancelButton: true,
                         showCloseButton: true,
                         confirmButtonText: '추가',
@@ -101,38 +106,37 @@
                         customClass: {
                             popup: 'custom-modal-width',        // 팝업창의 크기를 조절하기 위한 설정(HTML파일에서 Style설정도 해야함)
                         },
-                        onBeforeOpen: () => {
+                        didOpen: () => {        // 창이 열려있는동안 설정할 작업
                             const eventTypeSelect = document.getElementById('event-type');
                             const selectedImage = document.getElementById('selected-image');
 
                             eventTypeSelect.addEventListener('change', function () {
                                 const selectedValue = eventTypeSelect.value;
-                                const selectedMall = malls.find((mall) => mall.label === selectedValue);
+                                const selectedAttraction = attractionData.find((attraction) => attraction.touristAttractionId === selectedValue);
 
-                                if (selectedMall) {
-                                    selectedImage.src = selectedMall.imageUrl;
+                                if (selectedAttraction) {
+                                    selectedImage.src = selectedAttraction.imageUrl;
                                 } else {
                                     selectedImage.src = '/pictures/base.jpg'; // 선택된 이미지가 없을 경우 기본 이미지 표시
                                 }
                             });
                         },
-                        preConfirm: () => {
+                        preConfirm: () => {         // 확인(수정) 버튼을 눌렀을 때 설정할 작업
                             const eventTitle = document.getElementById('event-title').value;
                             const eventType = document.getElementById('event-type').value;
-                            const selectedMall = malls.find((mall) => mall.label === eventType);
+                            const selectedAttraction = attractionData.find((attraction) => attraction.touristAttractionId === eventType);
 
                             if (!eventTitle) {
                                 Swal.showValidationMessage('계획 정보가 입력되지 않았습니다.');
                             } else {
                                 calendar.addEvent({
-
                                     title: eventTitle,
                                     start: arg.start,
                                     end: arg.end,
                                     allDay: arg.allDay,
                                     id: generateEventId(),
                                     type: eventType ? eventType : '',
-                                    image: selectedMall ? selectedMall.imageUrl : '',
+                                    image: selectedAttraction ? selectedAttraction.imageUrl : '',
                                 });
 
                                 // Controller에 데이터 전달
@@ -146,7 +150,7 @@
                                         startTime: arg.start,
                                         endTime: arg.end,
                                         allDay: arg.allDay,
-                                        image: selectedMall ? selectedMall.imageUrl : ''
+                                        image: selectedAttraction ? selectedAttraction.imageUrl : ''
                                     }), // 데이터를 JSON 형식으로 보냄
                                     contentType: "application/json; charset=UTF-8",
                                     dataType: "text",
@@ -168,21 +172,22 @@
                     const imagePreview = document.getElementById('image-preview');
                     const eventTypeSelect = document.getElementById('event-type');
 
+                    /* 이미지를 변경할때 사용되는 부분 */
                     eventTypeSelect.addEventListener('change', function () {
                         const selectedValue = eventTypeSelect.value;
-                        const selectedMall = malls.find((mall) => mall.label === selectedValue);
+                        const selectedAttraction = attractionData.find((attraction) => attraction.touristAttractionId === selectedValue);
 
-                        if (selectedMall) {
-                            imagePreview.innerHTML = `<img src="${selectedMall.imageUrl}" alt="${selectedMall.name}"  style="width: 800px; height:800px;" onerror="this.src=\'/pictures/base.jpg\';"/>`;
+                        if (selectedAttraction) {
+                            imagePreview.innerHTML = `<img src="${selectedAttraction.imageUrl}" alt="${selectedAttraction.name}"  style="width: 800px; height:800px;" onerror="this.src=\'/pictures/base.jpg\';"/>`;
                         } else {
                             imagePreview.innerHTML = `<img src="/pictures/base.jpg" style="width: 800px; height:800px;" onerror="this.src=\'/pictures/base.jpg\';"/>`;
                         }
                     });
 
-                    function getSelectOptions(malls) {
+                    function getSelectOptions(attractionData) {
                         let selectOptions = '<div><select id="event-type" class="swal2-select"><option value="">선택하지 않음</option>';
-                        malls.forEach((mall) => {
-                            selectOptions += `<option value="${mall.label}">${mall.name}</option>`;
+                        attractionData.forEach((attraction) => {
+                            selectOptions += `<option value="${attraction.touristAttractionId}">${attraction.name}</option>`;
                         });
                         selectOptions += '</select></div>';
                         return selectOptions;
@@ -190,19 +195,33 @@
                 },
                 eventClick: function (arg) {
                     var eventId = arg.event.id;
+                    console.log(eventId);
                     var eventImage = arg.event.extendedProps.image;
                     openDialog(eventId, arg.event.title, calendar, eventImage, arg);
                 },
                 editable: true,
                 dayMaxEvents: true,
-                initialView: 'timeGridWeek',        // 초기 달력 상태 (dayGridMonth,timeGridWeek,timeGridDay)
-                events: detailData
+                initialView: 'dayGridMonth',        // 초기 달력 상태 (dayGridMonth,timeGridWeek,timeGridDay)
+                events: detailData,
+                drop: function (info, arg) {
+                    // 외부 이벤트를 드롭했을 때 실행되는 콜백 함수
+                    const draggedImageSrc = info.draggedEl.querySelector('img').getAttribute('src');
+                    const dataTitle = info.draggedEl.querySelector('div').textContent;
+
+                    console.log(draggedImageSrc);
+                    console.log('Text:', dataTitle);
+
+                    //var eventImage = info.event.extendedProps.image;
+                    console.log(info.draggedEl);
+                    console.log(JSON.stringify(info));
+                    // console.log('성공: ' + JSON.stringify(info) + ' 이벤트를 캘린더에 추가했습니다.');
+                },
             });
 
             calendar.render();
 
             /* 계획 생성 시 1씩 증가 */
-            let currentEventId = 1;
+            let currentEventId = parseInt(detailIdMax) + 1;
 
             function generateEventId() {
                 return String(currentEventId++);
@@ -218,7 +237,7 @@
                             <div id="image-preview">
                                 <img src="${eventImage}" alt="Selected Image" style="width: 800px; height: 800px;" onerror="this.src='/pictures/base.jpg';">
                             </div>
-                            ${getSelectOptions(malls, eventTitle)}
+                            ${getSelectOptions(attractionData, eventTitle)}
                             <input id="event-title" class="swal2-input" value="${eventTitle}" placeholder="계획을 입력하세요."/>
                         `,
                     showCancelButton: true,
@@ -230,16 +249,16 @@
                     customClass: {
                         popup: 'custom-modal-width',
                     },
-                    onBeforeOpen: () => {
+                    didOpen: () => {
                         const eventTypeSelect = document.getElementById('event-type');
                         const selectedImage = document.getElementById('selected-image');
 
                         eventTypeSelect.addEventListener('change', function () {
                             const selectedValue = eventTypeSelect.value;
-                            const selectedMall = malls.find((mall) => mall.label === selectedValue);
+                            const selectedAttraction = attractionData.find((attraction) => attraction.touristAttractionId === selectedValue);
 
-                            if (selectedMall) {
-                                selectedImage.src = selectedMall.imageUrl;
+                            if (selectedAttraction) {
+                                selectedImage.src = selectedAttraction.imageUrl;
                             } else {
                                 selectedImage.src = '/pictures/base.jpg'; // 선택된 이미지가 없을 경우 기본 이미지 표시
                             }
@@ -247,8 +266,8 @@
                     },
                     preConfirm: () => {
                         const newEventTitle = document.getElementById('event-title').value;
-                        const selectedMallLabel = document.getElementById('event-type').value;
-                        const selectedMall = malls.find((mall) => mall.label === selectedMallLabel);
+                        const selectedAttractionId = document.getElementById('event-type').value;
+                        const selectedAttraction = attractionData.find((attraction) => attraction.touristAttractionId === selectedAttractionId);
 
                         if (!newEventTitle) {
                             Swal.showValidationMessage('계획 정보가 입력되지 않았습니다.');
@@ -256,7 +275,7 @@
                             // 수정된 이벤트 제목과 이미지를 적용
                             const event = calendar.getEventById(eventId);
                             event.setProp('title', newEventTitle);
-                            event.setExtendedProp('image', selectedMall ? selectedMall.imageUrl : '');
+                            event.setExtendedProp('image', selectedAttraction ? selectedAttraction.imageUrl : '');
                             calendar.refetchEvents();
                         }
                     },
@@ -273,23 +292,23 @@
 
                 const imagePreview = document.getElementById('image-preview');
                 const eventTypeSelect = document.getElementById('event-type');
-                console.log(eventTypeSelect);
+
 
                 eventTypeSelect.addEventListener('change', function () {
                     const selectedValue = eventTypeSelect.value;
-                    const selectedMall = malls.find((mall) => mall.label === selectedValue);
+                    const selectedAttraction = attractionData.find((attraction) => attraction.touristAttractionId === selectedValue);
 
-                    if (selectedMall) {
-                        imagePreview.innerHTML = `<img src="${selectedMall.imageUrl}" alt="${selectedMall.name}"  style="width: 800px; height:800px;" onerror="this.src='/pictures/base.jpg';"/>`;
+                    if (selectedAttraction) {
+                        imagePreview.innerHTML = `<img src="${selectedAttraction.imageUrl}" alt="${selectedAttraction.name}"  style="width: 800px; height:800px;" onerror="this.src='/pictures/base.jpg';"/>`;
                     } else {
                         imagePreview.innerHTML = `<img src="/pictures/base.jpg" style="width: 800px; height:800px;" onerror="this.src='/pictures/base.jpg';"/>`;
                     }
                 });
 
-                function getSelectOptions(malls, eventTitle) {
+                function getSelectOptions(attractionData, eventTitle) {
                     let selectOptions = '<div><select id="event-type" class="swal2-select"><option value="">선택하지 않음</option>';
-                    malls.forEach((mall) => {
-                        selectOptions += `<option value="${mall.label}"${eventTitle === mall.label ? ' selected' : ''}>${mall.name}</option>`;
+                    attractionData.forEach((attraction) => {
+                        selectOptions += `<option value="${attraction.touristAttractionId}"${eventTitle === attraction.touristAttractionId ? ' selected' : ''}>${attraction.name}</option>`;
                     });
                     selectOptions += '</select></div>';
                     return selectOptions;
@@ -336,12 +355,13 @@
                             externalEventsList.appendChild(draggableEl);
 
                             // 드래그 가능한 외부 이벤트로 만들기
-                            new FullCalendar.Draggable(draggableEl, {
+                            var draggableEvent =  new FullCalendar.Draggable(draggableEl, {
                                 eventData: {
                                     title: attraction.name,
-                                    image: attraction.image
+                                    image: attraction.image,
                                 }
                             });
+
                         }
                     },
                     error: function () {
@@ -353,6 +373,7 @@
             // 페이지 로딩 후 검색 버튼을 자동으로 클릭
             searchButton.click();
         });
+
     </script>
 
 
@@ -425,8 +446,10 @@
 </head>
 <body>
 
-<div id="mallList" th:data-variable="${touristAttractionListJson}"></div>
 <div id="detailList" th:data-variable="${detailPlan}"></div>
+<div id="mallList" th:data-variable="${touristAttractionListJson}"></div>
+<div id="attractionList" th:data-variable="${attractionList}"></div>
+<div id="detailIdMax" th:data-variable="${detailIdMax}"></div>
 
 
 
@@ -451,12 +474,14 @@
     </div>
 </div>
 
+
 <select id="searchSelect">
-    <option value="">전체</option>
-    <option value="파리">파리</option>
-    <option value="보르도">보르도</option>
-    <option value="마르세유">마르세유</option>
+    <option value="" th:text="'전체'">전체</option>
+    <option th:each="city : ${cityList}"
+            th:value="${city}"
+            th:text="${city}"></option>
 </select>
+
 
 <button id="searchButton2">Search</button>
 
