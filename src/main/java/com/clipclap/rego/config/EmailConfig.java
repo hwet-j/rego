@@ -13,6 +13,7 @@ import java.util.Properties;
 @PropertySource("classpath:email.properties")
 public class EmailConfig {
 
+    /* 필드에 설정된 Value의 값은 @PropertySource에 설정한 파일의 정보를 읽어와 설정된다.  */
     @Value("${mail.smtp.port}")
     private int port;
     @Value("${mail.smtp.socketFactory.port}")
@@ -41,8 +42,8 @@ public class EmailConfig {
         javaMailSender.setDefaultEncoding("UTF-8");
         return javaMailSender;
     }
-    private Properties getMailProperties()
-    {
+
+    private Properties getMailProperties() {
         Properties pt = new Properties();
         pt.put("mail.smtp.socketFactory.port", socketPort);
         pt.put("mail.smtp.auth", auth);

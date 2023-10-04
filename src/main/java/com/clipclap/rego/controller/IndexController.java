@@ -4,7 +4,9 @@ import com.clipclap.rego.config.auth.PrincipalDetails;
 import com.clipclap.rego.model.dto.TouristAttractionDTO;
 import com.clipclap.rego.model.dto.TouristAttractionFullDTO;
 import com.clipclap.rego.model.entitiy.City;
+import com.clipclap.rego.model.entitiy.PlannerDetail;
 import com.clipclap.rego.model.entitiy.User;
+import com.clipclap.rego.repository.DetailPlanRepository;
 import com.clipclap.rego.repository.UserRepository;
 import com.clipclap.rego.service.AuthService;
 import com.clipclap.rego.service.TouristAttractionService;
@@ -41,6 +43,7 @@ public class IndexController {
 	private final AuthService authService;
 	private final TouristAttractionService touristAttractionService;
 	private final ObjectMapper objectMapper;
+	private final DetailPlanRepository detailPlanRepository;
 
 
 
@@ -165,7 +168,13 @@ public class IndexController {
 
 		String json = objectMapper.writeValueAsString(touristAttractionList);
 
+		List<PlannerDetail> detailList = detailPlanRepository.findAll();
+
+		String json2 = objectMapper.writeValueAsString(detailList);
+		System.out.println(json2);
+
 		model.addAttribute("touristAttractionListJson" , json);
+		model.addAttribute("detailPlan" , json2);
 		model.addAttribute("touristAttractionList" , touristAttractionList);
 
 		return "googleMap";
