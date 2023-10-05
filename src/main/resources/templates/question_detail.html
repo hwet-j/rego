@@ -1,8 +1,9 @@
-<html layout:decorate="~{layout}" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
-<div layout:fragment="content" class="container my-3">
+<html xmlns:th="http://www.w3.org/1999/xhtml"  xmlns:sec="http://www.w3.org/1999/xhtml">
+<div  class="container">
+    <link rel="stylesheet"  href="/css/question_detail.css">
     <!-- 질문 -->
-    <h2 class="border-bottom py-2" th:text="${question.subject}"></h2>
-    <div class="card my-3">
+    <h2 class="title" th:text="${question.subject}"></h2>
+    <div class="card">
         <div class="card-body"> <!-- white-space:pre-line; 줄바꿈 인식하고, 공백은 앞쪽만 인식 -->
           <div class="card-text" style="white-space:pre-line;" th:text="${question.content}"></div>
             <div class="d-flex justify-content-end">  <!--d-flex:한개의 row를 block레벨로 처리-->
@@ -11,22 +12,25 @@
                 </div>
                 <div th:text="${#temporals.format(question.createDate,'yyyy-MM-dd HH:mm')}"/>
             </div>
-            <div class="my-3">
+
+            <div class="container">
                 <!-- 질문수정버튼 - 로그인해야지만 수정가능, 로그인한유저가 글쓴이와 동일해야만 한다 -->
                 <a th:href="@{|/question/modify/${question.id}|}"
-                   class="btn btn-sm btn-outline-secondary"
+                   class="update btn"
                    sec:authorize="isAuthenticated()"
                    th:if="${ question.writer!=null and #authentication.getPrincipal().getUsername()==question.writer.username}"
                    th:text="수정"></a>
+
                 <!-- 질문삭제버튼 - 로그인해야지만 삭제가능, 로그인한유저가 글쓴이와 동일해야만 한다-->
                 <a href="javascript:void(0);"   th:data-uri="@{|/question/delete/${question.id}|}"
-                   class="delete btn btn-sm btn-outline-secondary"
+                   class="delete btn"
                    sec:authorize="isAuthenticated()"
                    th:if="${ question.writer!=null and #authentication.getPrincipal().getUsername()==question.writer.username}"
                    th:text="삭제"></a>
+
                 <!-- 질문추천버튼 -->
                 <a href="javascript:void(0);"   th:data-uri="@{|/question/vote/${question.id}|}"
-                   class="recommend btn btn-sm btn-outline-secondary">추천
+                   class="recommend btn">추천
                    <span class="badge rounded-pill bg-success"
                          th:text="${#lists.size(question.voter)}"></span>
                 </a>
@@ -36,9 +40,9 @@
     <!-- 답변갯수 출력 -->
     <h5 th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
     <!-- 반복:답변목록시작 -->
-    <div class="card my-3">
-        <div class="card-body" th:each="answer:${question.answerList}" >
-            <div class="card-text" style="white-space:pre-line;"  th:text="${answer.content}"></div>
+    <div class="reply-insert">
+        <div class="reply-list" th:each="answer:${question.answerList}" >
+            <div class="reply-text" style="white-space:pre-line;"  th:text="${answer.content}"></div>
             <div class="d-flex justify-content-end">
                 <div class="badge bg-light text-dark p-2 text-start">
                     <div class="my-2">
@@ -47,15 +51,16 @@
                     <div th:text="${#temporals.format(answer.createDate,'yyyy-MM-dd HH:mm')}"/>
                 </div>
             </div>
+
             <!-- 답변수정버튼 - 로그인해야지만 수정가능, 로그인한유저가 글쓴이와 동일해야만 한다-->
             <a th:href="@{|/answer/modify/${answer.id}|}"
-               class="btn btn-sm btn-outline-secondary"
+               class="reply update-btn"
                sec:authorize="isAuthenticated()"
                th:if="${answer.writer!=null and #authentication.getPrincipal().getUsername()==answer.writer.username}"
                th:text="수정"></a>
             <!-- 답변삭제버튼 - 로그인해야지만 삭제가능, 로그인한유저가 글쓴이와 동일해야만 한다 -->
             <a href="javascript:void(0);" th:data-uri="@{|/answer/delete/${answer.id}|}"
-               class="delete btn btn-sm btn-outline-secondary"
+               class="delete btn"
                sec:authorize="isAuthenticated()"
                th:if="${answer.writer!=null and #authentication.getPrincipal().getUsername()==answer.writer.username}"
                th:text="삭제"></a>
@@ -85,7 +90,7 @@
 </div>
 
 <!-- javascript부분 -- ----------------------------->
-<script layout:fragment="script">
+<script>
     //(질문,답변)삭제버튼클릭시 호출
     const delElements = document.getElementsByClassName("delete");
     Array.from(delElements).forEach(function(element){

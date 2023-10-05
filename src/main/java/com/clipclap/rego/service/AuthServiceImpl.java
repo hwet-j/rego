@@ -34,6 +34,28 @@ public class AuthServiceImpl implements AuthService {
         return "";
     }
 
+    // 이메일 매개변수를 사용하는 메서드의 이름을 변경합니다.
+    @Override
+    public User getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            return user;
+        } else {
+            throw new DataNotFoundException("User NOT FOUND");
+        }
+    }
+
+    // 유저네임 매개변수를 사용하는 메서드는 그대로 둡니다.
+    @Override
+    public User getUser(String username) {
+        Optional<User> userOptional = Optional.ofNullable(userRepository.findByUsername(username));
+        if (userOptional.isPresent()) {
+            return userOptional.get();
+        } else {
+            throw new DataNotFoundException("User NOT FOUND");
+        }
+    }
+
 
     @Override
     public String nicknameDuplicateCheck(String nickname) {

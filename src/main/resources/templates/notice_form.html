@@ -1,0 +1,41 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet"  href="/css/noticeForm.css">
+<div  class="container">
+
+    <!-- 모바일에서 화면배율을 디바이스 크기 기준으로 설정 -->
+    <!-- 이게 안되면 pc에서의 100px과 모바일에서의 100px이 디바이스 성능에 따라 달라집니다. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- 제이쿼리 불러오기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- 폰트어썸 불러오기 -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    <!-- XEIcon 폰트 불러오기 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+
+    <h1 class="box">공지 등록</h1>
+    <form id="noticeForm" th:object="${noticeForm}" class="add-inquiry" name="addressInquiry" action="" method="post" data-aos="fade">
+        <fieldset>
+
+                <div class="label-box">
+                    <label>
+                        <div for="subject" class="title">제목</div>
+                        <input class="input-content" type="text" th:field="*{subject}" placeholder="제목을 입력해주세요">
+                    </label>
+                </div>
+                <div class="label-box">
+                    <label>
+                        <div for="content" class="title">공지 내용</div>
+                        <textarea  class="textarea-content" name="content" th:field="*{content}"placeholder="공지 내용을 입력해주세요"></textarea>
+                    </label>
+                </div>
+
+                <input class="btn" type="submit" name="submit" value="작성하기">
+
+            </div>
+        </fieldset>
+    </form>
+</div>
+</html>

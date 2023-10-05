@@ -1,7 +1,11 @@
-<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
-<link rel="stylesheet"  href="/css/questionForm.css">
-<div layout:fragment="content" class="container">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<link rel="stylesheet"  href="/css/question_Form.css">
+
+
+<div class="background"></div>
+<div class="background2"></div>
+
+<div class="container">
 
     <!-- 모바일에서 화면배율을 디바이스 크기 기준으로 설정 -->
     <!-- 이게 안되면 pc에서의 100px과 모바일에서의 100px이 디바이스 성능에 따라 달라집니다. -->
@@ -16,36 +20,57 @@
     <!-- XEIcon 폰트 불러오기 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 
-    <h1 class="box">질문 등록</h1>
+
+
+    <h1 class="box">1:1 문의하기</h1>
     <form id="questionForm" th:object="${questionForm}" class="add-inquiry" name="addressInquiry" action="" method="post" data-aos="fade">
-        <fieldset>
-            <legend>Contact me 이메일 문의</legend>
+
+
+            <div class="label-box">
+            <div class="search-title">
+                <label for="search-type" hidden>검색 유형</label>
+                <select class="form-control" id="search-type" name="searchType">
+                    <option>종류 선택</option>
+                    <option>항공</option>
+                    <option>일정</option>
+                    <option>장소</option>
+                    <option>기타</option>
+                </select>
+            </div>
+            </div>
+
+
             <div class="inquiry-con">
 
                 <div class="label-box">
                     <label>
-                        <div class="title">이메일</div>
+                        <div class="title"></div>
                         <input class="input-content" type="text" placeholder="이메일을 입력해주세요">
                     </label>
                 </div>
 
                 <div class="label-box">
                     <label>
-                        <div for="subject" class="title">제목</div>
+                        <div for="subject" class="title"></div>
                         <input class="input-content" type="text" th:field="*{subject}" placeholder="제목을 입력해주세요">
                     </label>
                 </div>
                 <div class="label-box">
                     <label>
-                        <div for="content" class="title">문의 내용</div>
+                        <div for="content" class="title"></div>
                         <textarea  class="textarea-content" name="content" th:field="*{content}"placeholder="문의 내용을 입력해주세요"></textarea>
                     </label>
                 </div>
 
-                        <input class="btn" type="submit" name="submit" value="보내기">
+                        <input class="btn" type="submit" name="submit" value="작성완료">
 
             </div>
-        </fieldset>
+
     </form>
+
+    <div class="side-img">
+
+    </div>
+
 </div>
 </html>

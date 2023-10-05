@@ -1,0 +1,81 @@
+@charset "UTF-8";
+
+.container {
+    border-collapse: collapse;
+    width:100%;
+}
+
+.title {
+
+}
+
+.card-text {
+
+}
+
+
+#outer {width: 800px; margin: auto;}
+#wrap {width: 780px; margin: 100px auto;}
+
+h3 { border-bottom-style : solid;
+		border-bottom-width : 2px;
+		border-bottom-color : black;
+		padding: 10px 20px 10px 20px;}
+
+card {border-collapse: collapse;
+			width:100%;}
+
+card, td{border-bottom-style : solid;
+			     border-bottom-width : 1px;
+			     border-bottom-color : #ebebeb;
+			     padding : 10px 20px;}
+
+ .date {width : 30%; text-align:right;}
+
+ .content{height : 500px;
+ 					background-color : #fafafa;}
+
+
+
+button{background-color: white; color: black;
+			  padding: 5px 30px;
+			  margin: 4px 2px;
+			  cursor: pointer;
+			  text-align: center;
+			  border : 1px solid gray;
+			  border-radius: 12px; }
+
+
+
+
+
+
+
+
+/* 버튼 스타일 */
+.btn {
+    /* 다른 버튼 스타일 */
+     margin: 5px;
+    border: 2px solid transparent; /* 테두리를 투명으로 설정 */
+    transition: border-color 0.3s; /* 테두리 색상 변경 시 부드러운 전환 효과 추가 */
+    border-radius: 5px; /* 모서리를 둥글게 만들기 */
+    padding: 8px 12px; /* 페이지 아이템 내부 여백 설정 */
+    font-weight: bold; /* 폰트 굵기 설정 */
+}
+
+/* 버튼에 호버 시 테두리 색상 변경 */
+.btn:hover {
+    border-color: #0056b3; /* 호버 시 테두리 색상 설정 */
+     transition: background-color 0.3s; /* 부드러운 전환 효과 추가 */
+}
+
+/* 버튼에 포커스 시 테두리 색상 변경 */
+.btn:focus {
+    border-color: #0056b3; /* 포커스 시 테두리 색상 설정 */
+    outline: none; /* 포커스 테두리 제거 */
+}
+
+/* 버튼에 클릭 시 테두리 색상 변경 */
+.btn:active {
+    border-color: #0056b3; /* 클릭 시 테두리 색상 설정 */
+}
