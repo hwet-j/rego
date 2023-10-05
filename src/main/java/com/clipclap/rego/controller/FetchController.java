@@ -10,6 +10,9 @@ import org.springframework.web.client.RestTemplate;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +27,13 @@ public class FetchController {
     public String fetchData(
             @RequestParam(value = "departureAirport", required = false) String departureAirport,
             @RequestParam(value = "arrivalAirport", required = false) String arrivalAirport,
+            @RequestParam(value = "startDate", required = false) LocalDateTime startDate,
+            @RequestParam(value = "endDate", required = false) LocalDateTime endDate,
             Model model) throws URISyntaxException, UnsupportedEncodingException {
+
+
+
+
 
 
         List<String> departureAirportAndSchedule = new ArrayList<>();
@@ -34,7 +43,7 @@ public class FetchController {
         String departuresApiUrl = "http://apis.data.go.kr/B551177/StatusOfPassengerFlightsDSOdp/getPassengerDeparturesDSOdp?serviceKey=1aSaBDjtGv7lreIFCaI7K016XZYvLOvDcgTpPEGAOcp1TjOJY%2B9%2BxV9QkH5cA75XF1xpbVoZUC1WBE7XaNbAsw%3D%3D&type=xml";  // your departuresApiUrl here
 
         if (departureAirport != null && !departureAirport.trim().isEmpty()) {
-            List<String> departureSchedules = departureFetchAirportAndScheduleFromApi(departuresApiUrl);
+            List<String> departureSchedules = departureFetchAirportAndScheduleFromApi(departuresApiUrl, startDate, endDate);
             departureAirportAndSchedule.addAll(
                     departureSchedules.stream()
                             .filter(s -> s.startsWith(departureAirport + " - "))
@@ -47,7 +56,7 @@ public class FetchController {
         String arrivalsApiUrl = "http://apis.data.go.kr/B551177/StatusOfPassengerFlightsDSOdp/getPassengerArrivalsDSOdp?serviceKey=1aSaBDjtGv7lreIFCaI7K016XZYvLOvDcgTpPEGAOcp1TjOJY%2B9%2BxV9QkH5cA75XF1xpbVoZUC1WBE7XaNbAsw%3D%3D&type=xml";  // your arrivalsApiUrl here
 
         if (arrivalAirport != null && !arrivalAirport.trim().isEmpty()) {
-            List<String> arrivalSchedules = arrivalFetchAirportAndScheduleFromApi(arrivalsApiUrl);
+            List<String> arrivalSchedules = arrivalFetchAirportAndScheduleFromApi(arrivalsApiUrl, startDate, endDate);
             arrivalAirportAndSchedule.addAll(
                     arrivalSchedules.stream()
                             .filter(s -> s.startsWith(arrivalAirport + " - "))
@@ -63,7 +72,7 @@ public class FetchController {
 
 
 
-    private List<String> departureFetchAirportAndScheduleFromApi(String ApiUrl) throws URISyntaxException {
+    private List<String> departureFetchAirportAndScheduleFromApi(String ApiUrl, LocalDateTime startDate, LocalDateTime endDate) throws URISyntaxException {
         List<String> departureAirportAndScheduleList = new ArrayList<>();
 
         URI uri = new URI(ApiUrl);
@@ -81,16 +90,36 @@ public class FetchController {
             itemList.add(singleItem);
         }
 
+//        for (Map<String, String> item : itemList) {
+//            String departureAirport = item.get("airport");
+//            String departureScheduleDateTime = item.get("scheduleDateTime");
+//            departureAirportAndScheduleList.add(departureAirport + " - " + departureScheduleDateTime);
+//
+//        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
         for (Map<String, String> item : itemList) {
             String departureAirport = item.get("airport");
             String departureScheduleDateTime = item.get("scheduleDateTime");
-            departureAirportAndScheduleList.add(departureAirport + " - " + departureScheduleDateTime);
+
+            LocalDateTime parsedDateTime;
+            try {
+                parsedDateTime = LocalDateTime.parse(departureScheduleDateTime, formatter);
+            } catch (DateTimeParseException e) {
+                System.err.println("Failed to parse datetime string: " + departureScheduleDateTime);
+                continue;
+            }
+
+            if ((startDate == null || !parsedDateTime.isBefore(startDate)) &&
+                    (endDate == null || !parsedDateTime.isAfter(endDate))) {
+                departureAirportAndScheduleList.add(departureAirport + " - " + departureScheduleDateTime);
+            }
         }
 
         return departureAirportAndScheduleList;
     }
 
-    private List<String> arrivalFetchAirportAndScheduleFromApi(String ApiUrl) throws URISyntaxException {
+    private List<String> arrivalFetchAirportAndScheduleFromApi(String ApiUrl, LocalDateTime startDate, LocalDateTime endDate) throws URISyntaxException {
         List<String> arrivalAirportAndScheduleList = new ArrayList<>();
 
         URI uri = new URI(ApiUrl);
@@ -108,10 +137,29 @@ public class FetchController {
             itemList.add(singleItem);
         }
 
+//        for (Map<String, String> item : itemList) {
+//            String arrivalAirport = item.get("airport");
+//            String arrivalScheduleDateTime = item.get("scheduleDateTime");
+//            arrivalAirportAndScheduleList.add(arrivalAirport + " - " + arrivalScheduleDateTime);
+//        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
         for (Map<String, String> item : itemList) {
             String arrivalAirport = item.get("airport");
             String arrivalScheduleDateTime = item.get("scheduleDateTime");
-            arrivalAirportAndScheduleList.add(arrivalAirport + " - " + arrivalScheduleDateTime);
+
+            LocalDateTime parsedDateTime;
+            try {
+                parsedDateTime = LocalDateTime.parse(arrivalScheduleDateTime, formatter);
+            } catch (DateTimeParseException e) {
+                System.err.println("Failed to parse datetime string: " + arrivalScheduleDateTime);
+                continue;
+            }
+
+            if ((startDate == null || !parsedDateTime.isBefore(startDate)) &&
+                    (endDate == null || !parsedDateTime.isAfter(endDate))) {
+                arrivalAirportAndScheduleList.add(arrivalAirport + " - " + arrivalScheduleDateTime);
+            }
         }
 
         return arrivalAirportAndScheduleList;
