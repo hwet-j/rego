@@ -1,6 +1,6 @@
-<html layout:decorate="~{layout}" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet"  href="/css/question_list.css">
-<div layout:fragment="content" class="layout">
+<div class="layout">
     <h1 class="box">Q&A</h1>
  <table class="table">
      <thead class="">
@@ -52,7 +52,7 @@
          </tr><!--1페이지당 출력할 게시물수만큼 반복끝-->
      </tbody>
  </table>
- <div class="questionSubmit"><a th:href="@{/question/add}" class="questionBtn">질문등록하기</a></div>
+ <div class="questionSubmit"><a th:href="@{/question/add}" class="Btn">질문등록하기</a></div>
 
     <!-- Pagenation 부분 영역 시작-->
     <div class= "pagenation" th:if="${ !questionPage.isEmpty() }">
