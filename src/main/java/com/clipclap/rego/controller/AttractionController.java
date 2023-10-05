@@ -42,7 +42,7 @@ public class AttractionController {
 
 		System.out.println(detailPlanDTO);
 
-		// detailPlanService.makeDetailPlan();
+		detailPlanService.makeDetailPlan(detailPlanDTO);
 
 		return null;
 	}

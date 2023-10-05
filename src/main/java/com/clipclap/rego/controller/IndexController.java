@@ -1,15 +1,16 @@
 package com.clipclap.rego.controller;
 
 import com.clipclap.rego.config.auth.PrincipalDetails;
+import com.clipclap.rego.model.dto.DetailPlanDTO;
 import com.clipclap.rego.model.dto.TouristAttractionDTO;
 import com.clipclap.rego.model.dto.TouristAttractionFullDTO;
 import com.clipclap.rego.model.entitiy.City;
-import com.clipclap.rego.model.entitiy.PlannerDetail;
 import com.clipclap.rego.model.entitiy.User;
 import com.clipclap.rego.repository.DetailPlanRepository;
 import com.clipclap.rego.repository.TouristAttractionRepository;
 import com.clipclap.rego.repository.UserRepository;
 import com.clipclap.rego.service.AuthService;
+import com.clipclap.rego.service.DetailPlanService;
 import com.clipclap.rego.service.TouristAttractionService;
 import com.clipclap.rego.validation.JoinForm;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -46,6 +47,7 @@ public class IndexController {
 	private final TouristAttractionRepository touristAttractionRepository;
 	private final ObjectMapper objectMapper;
 	private final DetailPlanRepository detailPlanRepository;
+	private final DetailPlanService detailPlanService;
 
 
 
@@ -162,10 +164,6 @@ public class IndexController {
 
 		List<TouristAttractionFullDTO> test = touristAttractionService.getTouristAttractionsWithCityAndCountry();
 
-		System.out.println("================================");
-		System.out.println(test.size());
-		System.out.println(test.get(1));
-		System.out.println("================================");
 
 		List<TouristAttractionDTO> touristAttractionList = touristAttractionService.countryAttractionList(city);
 		List<TouristAttractionDTO> touristAttractionListAll = touristAttractionService.touristListAll();
@@ -173,9 +171,10 @@ public class IndexController {
 		String json = objectMapper.writeValueAsString(touristAttractionList);
 		String listAll = objectMapper.writeValueAsString(touristAttractionListAll);
 
-		List<PlannerDetail> detailList = detailPlanRepository.findAll();
+		List<DetailPlanDTO> detailList = detailPlanService.findAllByPlan(1L);
 
 		String detailPlan = objectMapper.writeValueAsString(detailList);
+		System.out.println(detailPlan);
 
 		model.addAttribute("touristAttractionListJson" , json);
 		model.addAttribute("detailPlan" , detailPlan);
