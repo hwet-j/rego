@@ -1,7 +1,8 @@
-package com.clipclap.rego.crawler;
+package com.clipclap.rego.service;
 
+import com.clipclap.rego.model.dto.FlightInfo;
+import com.clipclap.rego.model.dto.RouteInfo;
 import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,12 +17,14 @@ import java.util.List;
 
 @Service
 public class CrawlService {
+
     public List<FlightInfo> getFlightInfo(String departureAirportName, String arrivalAirportName, String departureDay, String arrivalDay){
         // 검색할 링크
         /*String htmlLink = "https://m-flight.naver.com/flights/international/SEL-CDG-20231010/CDG-SEL-20231025?adult=2&isDirect=true&fareType=N%252";*/
         String htmlLink = "https://m-flight.naver.com/flights/international/"
                 +departureAirportName+"-"+arrivalAirportName+"-"+departureDay+"/"
-                +arrivalAirportName+"-"+departureAirportName+"-"+arrivalDay;
+                +arrivalAirportName+"-"+departureAirportName+"-"+arrivalDay
+                +"?isDrirect=true";
         System.out.println(htmlLink);
         // 크롬 드라이버 경로 설정
         System.setProperty("webdriver.chrome.driver", "C:\\coding\\driver\\chromedriver.exe");
@@ -38,16 +41,19 @@ public class CrawlService {
         WebDriver driver = new ChromeDriver(options);
         driver.get(htmlLink);
 
-        WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(2));
-        boolean progressVisible = true;
-
-        while (progressVisible) {
-            try {
-                shortWait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div[class*='progress']")));
-            } catch (TimeoutException e) {
-                progressVisible = false;
-            }
+        // ===== 여기에 5초 대기 코드 추가 =====
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
+        // ===== 여기에 "전 세계 항공편 가격비교 중입니다" 메시지가 사라질 때까지 대기 코드 추가 =====
+        WebDriverWait longWait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        By loadingMessageLocator = By.xpath("//*[contains(text(), '전 세계 항공편 가격비교 중입니다')]");
+        longWait.until(ExpectedConditions.invisibilityOfElementLocated(loadingMessageLocator));
+        // ===========================================================
+
 
         List<WebElement> flightDivs = driver.findElements(By.cssSelector(".concurrent_ConcurrentItemContainer__2lQVG"));
         for (WebElement flightDiv : flightDivs) {

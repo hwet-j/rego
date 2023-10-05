@@ -1,4 +1,4 @@
-package com.clipclap.rego.crawler;
+package com.clipclap.rego.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
