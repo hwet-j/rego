@@ -8,4 +8,7 @@ public interface DetailPlanRepository extends JpaRepository<PlannerDetail, Integ
     @Query("SELECT MAX(d.detailPlanId) FROM PlannerDetail d")
     Long findMaxDetailPlanId();
 
+
+    void deleteByDetailPlanId(Integer detailPlanId);
+
 }

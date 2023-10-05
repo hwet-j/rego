@@ -30,7 +30,7 @@ public class PlannerDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long detailPlanId;
+    private Integer detailPlanId;
 
     @ManyToOne
     @JoinColumn(name = "planId", referencedColumnName = "planId")

@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 public class LikeAttraction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likeId;
+    private Integer likeId;
 
     @ManyToOne
     @JoinColumn(name = "userEmail", referencedColumnName = "email")

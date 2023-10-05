@@ -137,13 +137,14 @@
                             if (!eventTitle) {
                                 Swal.showValidationMessage('계획 정보가 입력되지 않았습니다.');
                             } else {
+                                var newId = generateEventId();
                                 calendar.addEvent({
                                     title: eventTitle,
                                     start: arg.start,
                                     touristAttractionId:eventType,
                                     end: arg.end,
                                     allDay: arg.allDay,
-                                    id: generateEventId(),
+                                    id: newId,
                                     type: eventType ? eventType : '',
                                     image: selectedAttraction ? selectedAttraction.imageUrl : '',
                                 });
@@ -159,14 +160,12 @@
                                         startTime: arg.start,
                                         endTime: arg.end,
                                         allDay: arg.allDay,
-                                        image: selectedAttraction ? selectedAttraction.imageUrl : ''
                                     }), // 데이터를 JSON 형식으로 보냄
                                     contentType: "application/json; charset=UTF-8",
                                     dataType: "text",
                                     success: function (response) {
-
                                         detailData.push({
-                                            id: newDetailPlanId, // 새로 생성된 id
+                                            id: newId, // 새로 생성된 id
                                             title: eventTitle,   // 내용
                                             start: arg.start,
                                             end: arg.end,
@@ -237,7 +236,6 @@
             /* 작성된 계획을 클릭하여 수정 또는 삭제 작업을 위한 함수 */
             /************************************************/
             function openDialog(eventId, calendar) {
-
                 const selectedPlan = detailData.find((plan) => plan.id == eventId);
                 const selectedAttraction = attractionData.find((attraction) => attraction.touristAttractionId == selectedPlan.touristAttractionId);
 
@@ -287,9 +285,40 @@
 
                             event.setProp('title', newEventTitle);
                             event.setExtendedProp('image', selectedAttraction ? selectedAttraction.imageUrl : '');
-                            // event.setExtendedProp('type', selectedAttractionId);
 
                             calendar.refetchEvents();
+
+                            /* 수정 */
+                            $.ajax({
+                                type: "POST",
+                                url: "/insertPlan",
+                                data: JSON.stringify({
+                                    detailPlanId:eventId,
+                                    touristAttractionId:selectedAttractionId,
+                                    content: newEventTitle, // 내용
+                                }), // 데이터를 JSON 형식으로 보냄
+                                contentType: "application/json; charset=UTF-8",
+                                dataType: "text",
+                                success: function (response) {
+
+                                    /* 수정작업이 완료되면 JS의 List정보 수정 */
+                                    var itemToUpdate = detailData.find(function (item) {
+                                        return item.id == eventId;
+                                    });
+
+                                    if (itemToUpdate) {
+                                        itemToUpdate.title = newEventTitle;
+                                        itemToUpdate.touristAttractionId = selectedAttractionId;
+
+                                    } else {
+                                        console.error("ID가 " + itemToUpdate + "인 항목을 찾을 수 없음.");
+                                    }
+
+                                },
+                                error: function () {
+                                    // 오류 처리
+                                }
+                            });
                         }
                     },
                 }).then((result) => {
@@ -300,6 +329,20 @@
                         // 삭제 버튼 클릭 시, 이벤트 삭제
                         const event = calendar.getEventById(eventId);
                         event.remove();
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/deletePlan",
+                            data: {
+                                detailPlanId:eventId,
+                            }, // 데이터를 JSON 형식으로 보냄
+                            success: function (response) {
+
+                            },
+                            error: function () {
+                                // 오류 처리
+                            }
+                        });
                     }
                 });
 

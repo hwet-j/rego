@@ -29,7 +29,7 @@ public class TouristAttraction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long touristAttractionId;
+    private Integer touristAttractionId;
 
     @Column(nullable = false)
     private String address;

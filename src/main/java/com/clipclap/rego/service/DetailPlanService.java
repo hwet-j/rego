@@ -9,4 +9,6 @@ public interface DetailPlanService {
     void makeDetailPlan(DetailPlanDTO detail);
 
     List<DetailPlanDTO> findAllByPlan(Long planId);
+
+    DetailPlanDTO findById(Integer id);
 }
