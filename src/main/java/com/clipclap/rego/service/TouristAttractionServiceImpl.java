@@ -20,15 +20,20 @@ public class TouristAttractionServiceImpl implements TouristAttractionService {
     private final TouristAttractionRepository touristAttractionRepository;
 
     @Override
-    public List<TouristAttractionDTO> touristListTest() {
-        List<TouristAttraction>  touristAttractions = touristAttractionRepository.findAll();
+    public List<TouristAttractionDTO> touristListAll() {
+        List<TouristAttraction> touristAttractions = touristAttractionRepository.findAll();
 
         List<TouristAttractionDTO> touristAttractionDTOs = touristAttractions.stream()
-                .map(TouristAttractionMapper::entityToDto) // Entity를 DTO로 변환
+                .map(entity -> {
+                    TouristAttractionDTO dto = TouristAttractionMapper.entityToDto(entity);
+                    dto.setCityName(entity.getCityName().getCityName()); // cityName 설정
+                    return dto;
+                })
                 .collect(Collectors.toList());
 
         return touristAttractionDTOs;
     }
+
 
 
     @Override
@@ -37,7 +42,11 @@ public class TouristAttractionServiceImpl implements TouristAttractionService {
         List<TouristAttraction>  touristAttractions = touristAttractionRepository.findByCityName(cityName);
 
         List<TouristAttractionDTO> touristAttractionDTOs = touristAttractions.stream()
-                .map(TouristAttractionMapper::entityToDto) // Entity를 DTO로 변환
+                .map(entity -> {
+                    TouristAttractionDTO dto = TouristAttractionMapper.entityToDto(entity);
+                    dto.setCityName(entity.getCityName().getCityName()); // cityName 설정
+                    return dto;
+                })
                 .collect(Collectors.toList());
 
         return touristAttractionDTOs;

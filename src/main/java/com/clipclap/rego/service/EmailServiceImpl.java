@@ -19,12 +19,11 @@ public class EmailServiceImpl implements EmailService{
     public static final String ePw = createKey();
 
     private MimeMessage createMessage(String to)throws Exception{
-        System.out.println("보내는 대상 : "+ to);
-        System.out.println("인증 번호 : "+ePw);
         MimeMessage  message = emailSender.createMimeMessage();
 
+        /* 메일로 전송할 내용 설정 */
         message.addRecipients(RecipientType.TO, to); //보내는 대상
-        message.setSubject("이메일 인증 테스트");//제목
+        message.setSubject("이메일 인증 테스트");       //제목
 
         String msgg="";
         msgg+= "<div style='margin:20px;'>";
@@ -40,13 +39,16 @@ public class EmailServiceImpl implements EmailService{
         msgg+= "CODE : <strong>";
         msgg+= ePw+"</strong><div><br/> ";
         msgg+= "</div>";
+        
         message.setText(msgg, "utf-8", "html");//내용
-        // 보내는이 정보
-        message.setFrom(new InternetAddress("cjswoghks@gmail.com","PlanIT 관리자"));//보내는 사람
+
+        // 보내는 사람 정보 -> 파라미터1 : 이메일 주소같지만 설정해도 어디서 변화가일어나는지 모르겠음 / 파라미터2 : 보내는 사람 이름 설정
+        message.setFrom(new InternetAddress("cjswoghks@gmail.com","PlanIT 관리자"));
 
         return message;
     }
 
+    /* 인증키 생성 (Random) */
     public static String createKey() {
         StringBuffer key = new StringBuffer();
         Random rnd = new Random();
@@ -74,9 +76,8 @@ public class EmailServiceImpl implements EmailService{
 
     @Override
     public String sendSimpleMessage(String to)throws Exception {
-        // TODO Auto-generated method stub
         MimeMessage message = createMessage(to);
-        try{    //예외처리
+        try{
             emailSender.send(message);
         }catch(MailException es){
             es.printStackTrace();

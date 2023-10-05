@@ -14669,6 +14669,7 @@ window.initMap=function(){
     Controller -> Html -> Js 로 받아온 정보 (Html에서 Js로 받아올 경우 String으로 변환되어 온다.
     Controller에서 JSON형식으로 변환하여 전송해 JS에서 String으로 받아온 정보를 JSON타입으로 변환하여 사용한다.
     */
+
     // HTML로 부터 String 타입으로 데이터를 전달 받는다.
     var mallListData = document.getElementById('mallList').getAttribute('data-variable');
 

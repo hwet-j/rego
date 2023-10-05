@@ -4,7 +4,10 @@ import com.clipclap.rego.config.auth.PrincipalDetails;
 import com.clipclap.rego.model.dto.TouristAttractionDTO;
 import com.clipclap.rego.model.dto.TouristAttractionFullDTO;
 import com.clipclap.rego.model.entitiy.City;
+import com.clipclap.rego.model.entitiy.PlannerDetail;
 import com.clipclap.rego.model.entitiy.User;
+import com.clipclap.rego.repository.DetailPlanRepository;
+import com.clipclap.rego.repository.TouristAttractionRepository;
 import com.clipclap.rego.repository.UserRepository;
 import com.clipclap.rego.service.AuthService;
 import com.clipclap.rego.service.TouristAttractionService;
@@ -40,7 +43,10 @@ public class IndexController {
 	private final UserRepository userRepository;
 	private final AuthService authService;
 	private final TouristAttractionService touristAttractionService;
+	private final TouristAttractionRepository touristAttractionRepository;
 	private final ObjectMapper objectMapper;
+	private final DetailPlanRepository detailPlanRepository;
+
 
 
 
@@ -152,7 +158,7 @@ public class IndexController {
 	@GetMapping("/map")
 	public String map(Model model) throws JsonProcessingException {
 		City city = new City();
-		city.setCityName("파리");
+		city.setCityName("삿포로");
 
 		List<TouristAttractionFullDTO> test = touristAttractionService.getTouristAttractionsWithCityAndCountry();
 
@@ -162,11 +168,21 @@ public class IndexController {
 		System.out.println("================================");
 
 		List<TouristAttractionDTO> touristAttractionList = touristAttractionService.coutryAttractionList(city);
+		List<TouristAttractionDTO> touristAttractionListAll = touristAttractionService.touristListAll();
 
 		String json = objectMapper.writeValueAsString(touristAttractionList);
+		String listAll = objectMapper.writeValueAsString(touristAttractionListAll);
+
+		List<PlannerDetail> detailList = detailPlanRepository.findAll();
+
+		String detailPlan = objectMapper.writeValueAsString(detailList);
 
 		model.addAttribute("touristAttractionListJson" , json);
+		model.addAttribute("detailPlan" , detailPlan);
 		model.addAttribute("touristAttractionList" , touristAttractionList);
+		model.addAttribute("attractionList" , listAll);
+		model.addAttribute("cityList" , touristAttractionRepository.findDistinctCityNames());
+		model.addAttribute("detailIdMax" , detailPlanRepository.findMaxDetailPlanId());
 
 		return "googleMap";
 	}
