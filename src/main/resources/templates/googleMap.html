@@ -60,8 +60,16 @@
                     start: detail.startTime,
                     end: detail.endTime,
                     allDay: detail.allDay,
+                    touristAttractionId:detail.touristAttractionId,
                 });
             });
+
+            /* 계획 생성 시 1씩 증가 */
+            let currentEventId = parseInt(detailIdMax) + 1;
+
+            function generateEventId() {
+                return String(currentEventId++);
+            }
 
 
             /************************************************/
@@ -72,7 +80,7 @@
                 eventData: function (eventEl) {
                     return {
                         title: eventEl.querySelector('.fc-event-main').getAttribute('data-title'),
-                        image: eventEl.querySelector('.fc-event-main').getAttribute('data-image')
+                        image: eventEl.querySelector('.fc-event-main').getAttribute('data-image'),
                     }
                 }
             });
@@ -132,6 +140,7 @@
                                 calendar.addEvent({
                                     title: eventTitle,
                                     start: arg.start,
+                                    touristAttractionId:eventType,
                                     end: arg.end,
                                     allDay: arg.allDay,
                                     id: generateEventId(),
@@ -145,7 +154,7 @@
                                     url: "/insertPlan",
                                     data: JSON.stringify({
                                         // detailPlanId     // insert에서 필요없을듯함
-                                        touristAttractionId:1,  // 임시로 1로 지정
+                                        touristAttractionId:eventType,  // 임시로 1로 지정
                                         content: eventTitle, // 내용
                                         startTime: arg.start,
                                         endTime: arg.end,
@@ -155,6 +164,15 @@
                                     contentType: "application/json; charset=UTF-8",
                                     dataType: "text",
                                     success: function (response) {
+
+                                        detailData.push({
+                                            id: newDetailPlanId, // 새로 생성된 id
+                                            title: eventTitle,   // 내용
+                                            start: arg.start,
+                                            end: arg.end,
+                                            allDay: arg.allDay,
+                                            touristAttractionId: eventType
+                                        });
                                         // 성공적으로 서버에 데이터를 전송한 후 실행할 코드
                                     },
                                     error: function () {
@@ -197,7 +215,7 @@
                     var eventId = arg.event.id;
                     console.log(eventId);
                     var eventImage = arg.event.extendedProps.image;
-                    openDialog(eventId, arg.event.title, calendar, eventImage, arg);
+                    openDialog(eventId, calendar);
                 },
                 editable: true,
                 dayMaxEvents: true,
@@ -208,37 +226,29 @@
                     const draggedImageSrc = info.draggedEl.querySelector('img').getAttribute('src');
                     const dataTitle = info.draggedEl.querySelector('div').textContent;
 
-                    console.log(draggedImageSrc);
-                    console.log('Text:', dataTitle);
-
-                    //var eventImage = info.event.extendedProps.image;
-                    console.log(info.draggedEl);
                     console.log(JSON.stringify(info));
-                    // console.log('성공: ' + JSON.stringify(info) + ' 이벤트를 캘린더에 추가했습니다.');
                 },
             });
 
             calendar.render();
 
-            /* 계획 생성 시 1씩 증가 */
-            let currentEventId = parseInt(detailIdMax) + 1;
-
-            function generateEventId() {
-                return String(currentEventId++);
-            }
 
             /************************************************/
             /* 작성된 계획을 클릭하여 수정 또는 삭제 작업을 위한 함수 */
             /************************************************/
-            function openDialog(eventId, eventTitle, calendar, eventImage, arg) {
+            function openDialog(eventId, calendar) {
+
+                const selectedPlan = detailData.find((plan) => plan.id == eventId);
+                const selectedAttraction = attractionData.find((attraction) => attraction.touristAttractionId == selectedPlan.touristAttractionId);
+
                 Swal.fire({
                     title: '일정 관리',
                     html: `
                             <div id="image-preview">
-                                <img src="${eventImage}" alt="Selected Image" style="width: 800px; height: 800px;" onerror="this.src='/pictures/base.jpg';">
+                                <img src="${selectedAttraction.imageUrl}" alt="Selected Image" style="width: 800px; height: 800px;" onerror="this.src='/pictures/base.jpg';">
                             </div>
-                            ${getSelectOptions(attractionData, eventTitle)}
-                            <input id="event-title" class="swal2-input" value="${eventTitle}" placeholder="계획을 입력하세요."/>
+                            ${getSelectOptions(attractionData, selectedAttraction.touristAttractionId)}
+                            <input id="event-title" class="swal2-input" value="${selectedPlan.title}" placeholder="계획을 입력하세요."/>
                         `,
                     showCancelButton: true,
                     showDenyButton: true,
@@ -274,8 +284,11 @@
                         } else {
                             // 수정된 이벤트 제목과 이미지를 적용
                             const event = calendar.getEventById(eventId);
+
                             event.setProp('title', newEventTitle);
                             event.setExtendedProp('image', selectedAttraction ? selectedAttraction.imageUrl : '');
+                            // event.setExtendedProp('type', selectedAttractionId);
+
                             calendar.refetchEvents();
                         }
                     },
@@ -305,10 +318,10 @@
                     }
                 });
 
-                function getSelectOptions(attractionData, eventTitle) {
+                function getSelectOptions(attractionData, attrationId) {
                     let selectOptions = '<div><select id="event-type" class="swal2-select"><option value="">선택하지 않음</option>';
                     attractionData.forEach((attraction) => {
-                        selectOptions += `<option value="${attraction.touristAttractionId}"${eventTitle === attraction.touristAttractionId ? ' selected' : ''}>${attraction.name}</option>`;
+                        selectOptions += `<option value="${attraction.touristAttractionId}"${attrationId === attraction.touristAttractionId ? ' selected' : ''}>${attraction.name}</option>`;
                     });
                     selectOptions += '</select></div>';
                     return selectOptions;
@@ -325,54 +338,66 @@
     <script>
         <!-- 관광지를 도시별로 검색 -->
         document.addEventListener("DOMContentLoaded", function () {
-            var searchSelect = document.getElementById("searchSelect");
-            var searchButton = document.getElementById("searchButton2");
-            var externalEventsList = document.getElementById("external-events-list");
+    var searchSelect = document.getElementById("searchSelect");
+    var externalEventsList = document.getElementById("external-events-list");
+    var contentTypeButtons = document.querySelectorAll(".content-type-button");
 
-            searchButton.addEventListener("click", function () {
-                var selectedKeyword = searchSelect.value; // 선택된 검색어 가져오기
+    // 선택된 contentType 값을 초기화
+    var selectedContentType = "";
 
-                // 서버로 선택된 검색어를 전송하고 결과를 받아올 수 있는 AJAX 요청 보내기
-                $.ajax({
-                    url: '/selectAttraction?keyword=' + selectedKeyword, // 서버의 URL
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function (data) {
-                        // 받아온 JSON 데이터를 사용하여 external-events 업데이트
-                        externalEventsList.innerHTML = ""; // 기존 목록 비우기
-
-                        for (var i = 0; i < data.length; i++) {
-                            var attraction = data[i];
-                            // external-events를 업데이트하는 로직을 작성
-                            var eventHtml = '<div class="fc-event" data-image="' + attraction.image + '" ' +
-                                'data-title="' + attraction.name + '">' +
-                                '<img style="width:200px; height:200px;" src="' + attraction.image + '">' +
-                                '<div style="text-align: center;">' + attraction.name + '</div>' +
-                                '</div>';
-
-                            var draggableEl = document.createElement('div');
-                            draggableEl.innerHTML = eventHtml;
-                            externalEventsList.appendChild(draggableEl);
-
-                            // 드래그 가능한 외부 이벤트로 만들기
-                            var draggableEvent =  new FullCalendar.Draggable(draggableEl, {
-                                eventData: {
-                                    title: attraction.name,
-                                    image: attraction.image,
-                                }
-                            });
-
-                        }
-                    },
-                    error: function () {
-                        console.error('데이터를 가져오는 중에 오류가 발생했습니다.');
-                    }
-                });
-            });
-
-            // 페이지 로딩 후 검색 버튼을 자동으로 클릭
-            searchButton.click();
+    // 각 contentType 버튼에 대한 클릭 이벤트 리스너 등록
+    contentTypeButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            selectedContentType = button.getAttribute("data-content-type");
+            // 버튼을 클릭할 때 선택된 contentType 값을 저장
+            fetchData(); // 버튼 클릭 시 데이터 가져오는 함수 호출
         });
+    });
+
+    // 페이지 로딩 시 자동으로 데이터를 가져오도록 함수 호출
+    fetchData();
+
+    // 데이터를 가져와서 external-events 업데이트하는 함수
+    function fetchData() {
+        var selectedKeyword = searchSelect.value; // 선택된 검색어 가져오기
+
+        // 서버로 선택된 검색어와 contentType 값을 전송하고 결과를 받아올 수 있는 AJAX 요청 보내기
+        $.ajax({
+            url: '/selectAttraction?keyword=' + selectedKeyword + '&contentType=' + selectedContentType, // 서버의 URL
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                // 받아온 JSON 데이터를 사용하여 external-events 업데이트
+                externalEventsList.innerHTML = ""; // 기존 목록 비우기
+
+                for (var i = 0; i < data.length; i++) {
+                    var attraction = data[i];
+                    // external-events를 업데이트하는 로직을 작성
+                    var eventHtml = '<div class="fc-event" data-image="' + attraction.image + '" ' +
+                        'data-title="' + attraction.name + '">' +
+                        '<img style="width:200px; height:200px;" src="' + attraction.image + '">' +
+                        '<div style="text-align: center;">' + attraction.name + '</div>' +
+                        '</div>';
+
+                    var draggableEl = document.createElement('div');
+                    draggableEl.innerHTML = eventHtml;
+                    externalEventsList.appendChild(draggableEl);
+
+                    // 드래그 가능한 외부 이벤트로 만들기
+                    var draggableEvent = new FullCalendar.Draggable(draggableEl, {
+                        eventData: {
+                            title: attraction.name,
+                            image: attraction.image,
+                        }
+                    });
+                }
+            },
+            error: function () {
+                console.error('데이터를 가져오는 중에 오류가 발생했습니다.');
+            }
+        });
+    }
+});
 
     </script>
 
@@ -419,6 +444,9 @@
             flex: 1;
             width: 500px;
             height: 500px;
+        }
+        #wrap,#searchSelect {
+            margin:0px 0px 0px 100px;
         }
 
         #calendar-wrap {
@@ -476,25 +504,26 @@
 
 
 <select id="searchSelect">
-    <option value="" th:text="'전체'">전체</option>
+    <option th:text="'전체'" value="">전체</option>
     <option th:each="city : ${cityList}"
-            th:value="${city}"
-            th:text="${city}"></option>
+            th:text="${city}"
+            th:value="${city}"></option>
 </select>
 
 
-<button id="searchButton2">Search</button>
-
 <div id="searchResult"></div>
 
-<div id='wrap'>
-    <div id='external-events'>
+<div id='wrap' style="display: flex;  overflow-x: auto;">
+    <div style="margin-top:10px;">
+        <button class="content-type-button" data-content-type="관광지" id="tourAttraction" style="width:100px; height:70px;">관광지</button><br>
+        <button class="content-type-button" data-content-type="식당" id="restaurant" style="width:100px; height:70px;">식당</button><br>
+        <button class="content-type-button" data-content-type="호텔" id="hotel" style="width:100px; height:70px;">호텔</button>
+    </div>
+    <div id='external-events' style="margin:10px;">
         <div id='external-events-list' style="display: flex; flex-direction: row; overflow-x: auto;">
-
         </div>
     </div>
 </div>
-
 
 </body>
 </html>
