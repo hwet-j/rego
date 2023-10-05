@@ -7,8 +7,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Roboto:wght@300;400;500;700;900&display=swap"
           rel="stylesheet">
-    <title>Hello Thymeleaf</title>
-</head>
+
+    <script src="/main.js"></script>
+
+
 
 <style>
     a {
@@ -24,6 +26,20 @@ a:hover {
     outline: none; /* 클릭 시에 표시되는 외곽선 제거 */
 }
 </style>
+
+<script>
+    let currentSlide = 0;
+const slides = document.querySelectorAll(".slide");
+const totalSlides = slides.length;
+
+setInterval(function() {
+    slides[currentSlide].style.opacity = 0;
+    currentSlide = (currentSlide + 1) % totalSlides;
+    slides[currentSlide].style.opacity = 1;
+}, 3000); // 3초 간격으로 이미지 전환
+</script>
+
+</head>
 <body>
 <!--<h1 th:text="${data}"></h1>-->
 
