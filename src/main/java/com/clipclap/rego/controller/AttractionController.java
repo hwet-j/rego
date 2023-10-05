@@ -41,19 +41,29 @@ public class AttractionController {
 	}
 
 
-
+	@Transactional
 	@PostMapping(value ="/insertPlan",  produces = "application/json")
 	public List<TouristAttractionDTO> insertDetail(@RequestBody DetailPlanDTO detailPlanDTO) {
 
-		System.out.println(detailPlanDTO);
-
+		System.out.println(detailPlanDTO.isAllDay());
+		// 일반 수정
 		if (detailPlanDTO.getStartTime() == null){
 			DetailPlanDTO originDetail = detailPlanService.findById(detailPlanDTO.getDetailPlanId());
 			detailPlanDTO.setStartTime(originDetail.getStartTime());
 			detailPlanDTO.setEndTime(originDetail.getEndTime());
 			detailPlanDTO.setAllDay(originDetail.isAllDay());
 		}
+		
+		// 이벤트 드래그 수정 / 이벤트 길이 조절
+		if (detailPlanDTO.getContent() == null){
+			DetailPlanDTO originDetail = detailPlanService.findById(detailPlanDTO.getDetailPlanId());
+			detailPlanDTO.setContent(originDetail.getContent());
+			detailPlanDTO.setTouristAttractionId(originDetail.getTouristAttractionId());
+			detailPlanDTO.setAllDay(originDetail.isAllDay());
+		}
 
+
+		System.out.println(detailPlanDTO.isAllDay());
 		detailPlanService.makeDetailPlan(detailPlanDTO);
 
 		return null;
@@ -63,9 +73,6 @@ public class AttractionController {
 	@PostMapping(value ="/deletePlan")
 	public List<TouristAttractionDTO> insertDetail(Integer detailPlanId) {
 
-		System.out.println(detailPlanId);
-		System.out.println(detailPlanId);
-		System.out.println(detailPlanId);
 		detailPlanRepository.deleteByDetailPlanId(detailPlanId);
 		return null;
 	}
