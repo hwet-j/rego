@@ -7,11 +7,13 @@ background:  #d3d3d3;}
      color: #727272;}
      #strong { font-weight: 900;}
 
-           .table {
-               width: 1200px;
+       .table {
+               width: 100%;
+               border-collapse: collapse;
+               margin-top: 20px;
                border-top: 1px solid #d3d3d3;
                border-collapse: collapse;
-               margin: 0 auto; /* 수평 가운데 정렬을 위해 추가 */
+
            }
             th { background-color: #d3d3d3 ;
             border-top: 3px solid #727272;
@@ -20,11 +22,6 @@ background:  #d3d3d3;}
             border-bottom: 1px solid #d3d3d3;
             padding: 10px;
             }
-
-  .layout {
-    text-align:center;
-  }
-
 
   .greylist {
   width: 50px;
@@ -51,59 +48,121 @@ background:  #d3d3d3;}
             .right {  float: right;}
             .center { text-align: center;}
 
-a {color:black;
-text-decoration-line : none;}
 
 
-/* page-item 클래스 스타일 */
-.page-item {
-    display: inline-block; /* 인라인 블록 요소로 표시 */
-    margin: 5px; /* 페이지 아이템 간의 간격 설정 */
-    padding: 8px 12px; /* 페이지 아이템 내부 여백 설정 */
-    background-color: #e1eaf3; /* 배경색 설정 */
-    color: #fff; /* 텍스트 색상 설정 */
-    border-radius: 5px; /* 모서리를 둥글게 만들기 */
-    text-decoration: none; /* 밑줄 없애기 */
-    font-weight: bold; /* 폰트 굵기 설정 */
+
+/* 기본 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+
 }
 
-/* 활성화된 페이지 아이템 스타일 */
-.page-item.active {
-    background-color: #FFFFFF; /* 활성화된 페이지 아이템의 배경색 변경 */
+.layout {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* 마우스 호버 시 스타일 변경 */
-.page-item:hover {
-    background-color: #0056b3; /* 호버 시 배경색 변경 */
-    transition: background-color 0.3s; /* 부드러운 전환 효과 추가 */
+/* 제목 스타일 */
+h1.box {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-/* 이전 및 다음 버튼 스타일 및 가운데 정렬 */
-.page-item.prev, .page-item.next {
-    background-color: #e1eaf3; /* 이전 및 다음 버튼 배경색 설정 */
-    text-align: center; /* 버튼 내의 텍스트 가운데 정렬 */
-    display: block; /* 블록 요소로 표시하여 가로 중앙 정렬 */
-}
-
-/* 이전 및 다음 버튼 텍스트 색상 */
-.page-item.prev a, .page-item.next a {
-    color: #fff; /* 텍스트 색상 설정 */
-    text-decoration: none; /* 밑줄 없애기 */
-    font-weight: bold; /* 폰트 굵기 설정 */
-}
-
-.pagenation {
-    text-align:center;
-}
-
-.questionBtn{
-    float:right;
-    margin-right: 60px;
-}
-
-.questionSubmit{
-
+/* 테이블 스타일 */
+.table {
     width: 100%;
-    height: 50px;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
+
+
+/* 링크 스타일 */
+a {
+    text-decoration-line : none;
+    text-decoration: none;
+    color: #007bff;
+    text-color:#212121;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* 페이지네이션 스타일 */
+.pagenation {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination {
+    display: inline-block;
+}
+
+.page-item {
+
+    list-style: none;
+    display: inline;
+    margin-right: 5px;
+}
+
+.page-link {
+    text-decoration: none;
+    color: #007bff;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.page-link:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.page-item.disabled .page-link {
+    pointer-events: none;
+    color: #ccc;
+}
+
+
+.Btn{
+       display: block;
+        width: 100%;
+        padding: 10px;
+        margin: 5px;
+        transition: border-color 0.3s; /* 테두리 색상 변경 시 부드러운 전환 효과 추가 */
+        border-radius: 5px; /* 모서리를 둥글게 만들기 */
+        font-weight: bold; /* 폰트 굵기 설정 */
+        font-size: 16px;
+        text-align: right;
+        text-color:
+        cursor: pointer;
+        margin-top: 20px;
+}
+
+
+/* 버튼에 호버 시 테두리 색상 변경 */
+.btn:hover {
+    border-color: #0056b3; /* 호버 시 테두리 색상 설정 */
+     transition: background-color 0.3s; /* 부드러운 전환 효과 추가 */
+}
+
+
+
+.Btn:focus {
+    border-color: #0056b3; /* 포커스 시 테두리 색상 설정 */
+    outline: none; /* 포커스 테두리 제거 */
+}
+
+
+
+
 

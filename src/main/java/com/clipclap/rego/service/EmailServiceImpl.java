@@ -85,4 +85,33 @@ public class EmailServiceImpl implements EmailService{
         }
         return ePw;
     }
+
+
+
+    private MimeMessage createMessage(String to, String s, String content) {
+        MimeMessage message = emailSender.createMimeMessage();
+        return message;
+    }
+
+
+    public void sendResponseEmail(String to, String content) {
+        try {
+            MimeMessage message = createMessage(to, "문의 답변이 등록 완료되었습니다.", content);
+            emailSender.send(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // 이메일 보내기 추가
+    public void sendInfoEmail(String to, String content) {
+        try {
+            MimeMessage message = createMessage(to, "문의 작성글 내용의 답변이 등록 완료되었습니다.", content);
+            emailSender.send(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
