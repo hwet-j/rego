@@ -10,7 +10,9 @@ public interface TouristAttractionService {
 
     List<TouristAttractionDTO> touristListAll();
 
-    List<TouristAttractionDTO> coutryAttractionList(City cityName);
+    List<TouristAttractionDTO> countryAttractionList(City cityName);
+
+    List<TouristAttractionDTO> cityContentTypeList(City cityName, String contentType);
 
     List<TouristAttractionFullDTO> getTouristAttractionsWithCityAndCountry();
 }
