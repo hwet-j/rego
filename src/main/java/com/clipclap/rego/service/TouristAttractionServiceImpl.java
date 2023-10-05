@@ -21,12 +21,14 @@ public class TouristAttractionServiceImpl implements TouristAttractionService {
 
     @Override
     public List<TouristAttractionDTO> touristListAll() {
-        List<TouristAttraction> touristAttractions = touristAttractionRepository.findAll();
+        List<TouristAttraction> touristAttractions = touristAttractionRepository.findByLatitudeIsNotNullAndLongitudeIsNotNull();
 
         List<TouristAttractionDTO> touristAttractionDTOs = touristAttractions.stream()
                 .map(entity -> {
                     TouristAttractionDTO dto = TouristAttractionMapper.entityToDto(entity);
-                    dto.setCityName(entity.getCityName().getCityName()); // cityName 설정
+                    if (entity.getCityName() != null){
+                        dto.setCityName(entity.getCityName().getCityName()); // cityName 설정
+                    }
                     return dto;
                 })
                 .collect(Collectors.toList());
