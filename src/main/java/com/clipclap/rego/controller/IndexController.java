@@ -167,7 +167,7 @@ public class IndexController {
 		System.out.println(test.get(1));
 		System.out.println("================================");
 
-		List<TouristAttractionDTO> touristAttractionList = touristAttractionService.coutryAttractionList(city);
+		List<TouristAttractionDTO> touristAttractionList = touristAttractionService.countryAttractionList(city);
 		List<TouristAttractionDTO> touristAttractionListAll = touristAttractionService.touristListAll();
 
 		String json = objectMapper.writeValueAsString(touristAttractionList);
