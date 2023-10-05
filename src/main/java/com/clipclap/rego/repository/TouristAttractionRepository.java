@@ -24,4 +24,9 @@ public interface TouristAttractionRepository extends JpaRepository<TouristAttrac
     @Query("SELECT DISTINCT t.cityName.cityName FROM TouristAttraction t")
     List<String> findDistinctCityNames();
 
+    List<TouristAttraction> findByCityNameAndContentType(City cityName, String contentType);
+
+    List<TouristAttraction> findByLatitudeIsNotNullAndLongitudeIsNotNull();
+
+
 }

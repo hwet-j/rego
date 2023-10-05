@@ -31,7 +31,7 @@ public class Planner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long planId;
+    private Integer planId;
 
     @ManyToOne
     @JoinColumn(name = "userEmail", referencedColumnName = "email")

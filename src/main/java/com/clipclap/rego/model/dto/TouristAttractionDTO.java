@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TouristAttractionDTO {
 
-    private Long touristAttractionId;
+    private Integer touristAttractionId;
 
     private String address;
 
@@ -22,9 +22,9 @@ public class TouristAttractionDTO {
 
     private String introduction;
 
-    private double latitude;
+    private Double latitude;
 
-    private double longitude;
+    private Double longitude;
 
     private String contentType;
 

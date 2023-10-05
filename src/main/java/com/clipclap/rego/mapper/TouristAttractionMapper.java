@@ -2,7 +2,9 @@ package com.clipclap.rego.mapper;
 
 import com.clipclap.rego.model.dto.TouristAttractionDTO;
 import com.clipclap.rego.model.entitiy.TouristAttraction;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TouristAttractionMapper {
 
     public static TouristAttractionDTO entityToDto(TouristAttraction entity) {

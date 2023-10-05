@@ -21,7 +21,27 @@ public class TouristAttractionServiceImpl implements TouristAttractionService {
 
     @Override
     public List<TouristAttractionDTO> touristListAll() {
-        List<TouristAttraction> touristAttractions = touristAttractionRepository.findAll();
+        List<TouristAttraction> touristAttractions = touristAttractionRepository.findByLatitudeIsNotNullAndLongitudeIsNotNull();
+
+        List<TouristAttractionDTO> touristAttractionDTOs = touristAttractions.stream()
+                .map(entity -> {
+                    TouristAttractionDTO dto = TouristAttractionMapper.entityToDto(entity);
+                    if (entity.getCityName() != null){
+                        dto.setCityName(entity.getCityName().getCityName()); // cityName 설정
+                    }
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        return touristAttractionDTOs;
+    }
+
+
+
+    @Override
+    public List<TouristAttractionDTO> countryAttractionList(City cityName) {
+
+        List<TouristAttraction>  touristAttractions = touristAttractionRepository.findByCityName(cityName);
 
         List<TouristAttractionDTO> touristAttractionDTOs = touristAttractions.stream()
                 .map(entity -> {
@@ -33,13 +53,10 @@ public class TouristAttractionServiceImpl implements TouristAttractionService {
 
         return touristAttractionDTOs;
     }
-
-
-
     @Override
-    public List<TouristAttractionDTO> coutryAttractionList(City cityName) {
+    public List<TouristAttractionDTO> cityContentTypeList(City cityName, String contentType) {
 
-        List<TouristAttraction>  touristAttractions = touristAttractionRepository.findByCityName(cityName);
+        List<TouristAttraction>  touristAttractions = touristAttractionRepository.findByCityNameAndContentType(cityName,contentType);
 
         List<TouristAttractionDTO> touristAttractionDTOs = touristAttractions.stream()
                 .map(entity -> {
