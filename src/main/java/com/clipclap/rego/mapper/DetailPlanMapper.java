@@ -24,7 +24,9 @@ public class DetailPlanMapper {
         dto.setStartTime(entity.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")));
         dto.setEndTime(entity.getEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")));
         dto.setAllDay(entity.isAllday());
-        dto.setTouristAttractionId(entity.getTouristAttraction().getTouristAttractionId());
+        if (entity.getTouristAttraction() != null){
+            dto.setTouristAttractionId(entity.getTouristAttraction().getTouristAttractionId());
+        }
 
         return dto;
     }

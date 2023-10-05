@@ -31,7 +31,6 @@ public class TouristAttraction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer touristAttractionId;
 
-    @Column(nullable = false)
     private String address;
 
     @Column(nullable = false)
@@ -42,13 +41,10 @@ public class TouristAttraction {
     @Column(columnDefinition = "TEXT")
     private String introduction;
 
-    @Column(nullable = false)
-    private double latitude;
+    private Double latitude;
 
-    @Column(nullable = false)
-    private double longitude;
+    private Double longitude;
 
-    @Column(nullable = false)
     private String contentType;
 
     @ManyToOne
