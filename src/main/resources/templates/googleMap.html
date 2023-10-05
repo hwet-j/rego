@@ -52,6 +52,19 @@
             });
 
 
+            attractionData.push({
+                touristAttractionId : 0,
+                address : '',
+                name : '',
+                imageUrl : 'https://github.com/hwet-j/rego/assets/125880480/20c539ee-6568-468e-919d-3ed42cb6c56a',
+                introduction : '',
+                latitude : '',
+                longitude : '',
+                contentType : '',
+                cityName : ''
+            });
+
+
             // DB에 있는 정보를 캘린더에 출력하기 위한 객체
             jsonObject2.forEach(function (detail) {
                 detailData.push({
@@ -324,8 +337,12 @@
             /************************************************/
             function openDialog(eventId, calendar) {
                 const selectedPlan = detailData.find((plan) => plan.id == eventId);
-                const selectedAttraction = attractionData.find((attraction) => attraction.touristAttractionId == selectedPlan.touristAttractionId);
-
+                var selectedAttraction = null;
+                if(selectedPlan.touristAttractionId == null){
+                    selectedAttraction = 0;
+                } else {
+                    selectedAttraction = attractionData.find((attraction) => attraction.touristAttractionId == selectedPlan.touristAttractionId);
+                }
                 Swal.fire({
                     title: '일정 관리',
                     html: `

@@ -22,9 +22,9 @@ public class TouristAttractionDTO {
 
     private String introduction;
 
-    private double latitude;
+    private Double latitude;
 
-    private double longitude;
+    private Double longitude;
 
     private String contentType;
 

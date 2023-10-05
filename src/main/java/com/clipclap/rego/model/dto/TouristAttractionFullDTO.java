@@ -15,8 +15,8 @@ public class TouristAttractionFullDTO {
     private String touristAttractionName;
     private String image;
     private String introduction;
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
     private String contentType;
     private String cityName;
     private String countryName;
