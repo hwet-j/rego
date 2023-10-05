@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -36,5 +37,18 @@ public class DetailPlanServiceImpl implements DetailPlanService {
 
 
         return dtoList;
+    }
+
+    @Override
+    public DetailPlanDTO findById(Integer id) {
+        Optional<PlannerDetail> optionalPlannerDetail =  detailPlanRepository.findById(id);
+        if(optionalPlannerDetail.isPresent()){
+            DetailPlanDTO detail = detailPlanMapper.entityToDto(optionalPlannerDetail.get());
+            return detail;
+        } else {
+            return null;
+        }
+
+
     }
 }

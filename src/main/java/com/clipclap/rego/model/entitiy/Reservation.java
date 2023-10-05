@@ -38,7 +38,7 @@ public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reservationId;
+    private Integer reservationId;
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "userEmail", referencedColumnName = "email")
@@ -74,7 +74,7 @@ public class Reservation {
     @Column(nullable = false)
     private String operationInfo;
 
-    private Long returnReservationId;
+    private Integer returnReservationId;
 
     @Column(nullable = false)
     private String status;
