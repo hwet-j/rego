@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Airlines</title>
+</head>
+<body>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Airline</th>
+        <th>Departure</th>
+        <th>Arrival</th>
+        <th>Duration</th>
+        <th>Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="flight : ${flights}">
+        <!-- 첫 번째 루트 (편도) -->
+        <tr>
+            <td><img th:src="${flight.routes[0].airlineImg}" alt="${flight.routes[0].airlineName}" width="50"> <span th:text="${flight.routes[0].airlineName}"></span></td>
+            <td th:text="${flight.routes[0].departureTime} + ' (' + ${flight.routes[0].departureAirport} + ')'"></td>
+            <td th:text="${flight.routes[0].arrivalTime} + ' (' + ${flight.routes[0].arrivalAirport} + ')'"></td>
+            <td th:text="${flight.routes[0].duration}"></td>
+            <td rowspan="2" th:text="${flight.price}"></td>
+        </tr>
+        <!-- 두 번째 루트 (복귀) -->
+        <tr>
+            <td><img th:src="${flight.routes[1].airlineImg}" alt="${flight.routes[1].airlineName}" width="50"> <span th:text="${flight.routes[1].airlineName}"></span></td>
+            <td th:text="${flight.routes[1].departureTime} + ' (' + ${flight.routes[1].departureAirport} + ')'"></td>
+            <td th:text="${flight.routes[1].arrivalTime} + ' (' + ${flight.routes[1].arrivalAirport} + ')'"></td>
+            <td th:text="${flight.routes[1].duration}"></td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+</body>
+</html>
