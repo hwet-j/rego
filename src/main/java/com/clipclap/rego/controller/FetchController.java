@@ -29,11 +29,17 @@ public class FetchController {
             @RequestParam(value = "arrivalAirport", required = false) String arrivalAirport,
             @RequestParam(value = "startDate", required = false) LocalDateTime startDate,
             @RequestParam(value = "endDate", required = false) LocalDateTime endDate,
+            @RequestParam(value = "startDate2", required = false) LocalDateTime startDate2,
+            @RequestParam(value = "endDate2", required = false) LocalDateTime endDate2,
             Model model) throws URISyntaxException, UnsupportedEncodingException {
 
 
-
-
+        System.out.println(departureAirport);
+        System.out.println(arrivalAirport);
+        System.out.println(startDate);
+        System.out.println(endDate);
+        System.out.println(startDate2);
+        System.out.println(endDate2);
 
 
         List<String> departureAirportAndSchedule = new ArrayList<>();
@@ -56,7 +62,7 @@ public class FetchController {
         String arrivalsApiUrl = "http://apis.data.go.kr/B551177/StatusOfPassengerFlightsDSOdp/getPassengerArrivalsDSOdp?serviceKey=1aSaBDjtGv7lreIFCaI7K016XZYvLOvDcgTpPEGAOcp1TjOJY%2B9%2BxV9QkH5cA75XF1xpbVoZUC1WBE7XaNbAsw%3D%3D&type=xml";  // your arrivalsApiUrl here
 
         if (arrivalAirport != null && !arrivalAirport.trim().isEmpty()) {
-            List<String> arrivalSchedules = arrivalFetchAirportAndScheduleFromApi(arrivalsApiUrl, startDate, endDate);
+            List<String> arrivalSchedules = arrivalFetchAirportAndScheduleFromApi(arrivalsApiUrl, startDate2, endDate2);
             arrivalAirportAndSchedule.addAll(
                     arrivalSchedules.stream()
                             .filter(s -> s.startsWith(arrivalAirport + " - "))
