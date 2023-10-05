@@ -43,6 +43,9 @@ dependencies {
 	// xml 받는 구현체
 	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.0'
 
+	// selenium
+	implementation 'org.seleniumhq.selenium:selenium-java:4.1.2'
+	implementation 'org.seleniumhq.selenium:selenium-devtools-v86:4.5.3'
 
 }
 

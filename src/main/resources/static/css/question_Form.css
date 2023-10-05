@@ -30,17 +30,25 @@ width:100%;
     height:88%;
     margin: 0 auto;
     padding: 20px;
-   background-color: white;
-   z-index: 100;
+    background-color: white;
+    z-index: 100;
     border-radius: 0 0 20px 20px ;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+
+.bbox{
+   margin-left: 130px;
+}
+
 /* 제목 스타일 */
 h1.box {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 20px;
+    font-size: 30px;
+        color: #464DB7;
+        margin-bottom: -100px;
+        margin-left: 290px;
+        margin-right: 10px;
+        margin-top: 155px;
 }
 
 
@@ -65,15 +73,16 @@ h1.box {
 /* 폼 스타일 */
 #questionForm {
     padding: 120px;
+
 }
 
 /* 검색 유형 스타일 */
 .search-title select {
-    width: 500px;
-    padding: 10px;
+    width: 510px;
+    padding: 15px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f7f7f7;
+    border-radius: 10px;
+    background-color: #ffffff;
     font-size: 14px;
     color: #333;
     outline: none;
@@ -81,27 +90,27 @@ h1.box {
 
 /* 입력 상자 스타일 */
 .input-content {
-    width: 500px;
-    padding: 10px;
+    width: 510px;
+    padding: 15px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f7f7f7;
+    border-radius: 10px;
+    background-color: #ffffff;
     font-size: 14px;
     color: #333;
-    margin-top: 10px;
+    margin-top: 20px;
     outline: none;
 }
 
 /* 텍스트 영역 스타일 */
 .textarea-content {
-    width: 500px;
-    padding: 10px;
+    width: 510px;
+    padding: 115px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f7f7f7;
+    border-radius: 10px;
+    background-color: #ffffff;
     font-size: 14px;
     color: #333;
-    margin-top: 30px;
+    margin-top: 20px;
     outline: none;
 }
 
@@ -138,20 +147,26 @@ h1.box {
 /* 버튼 스타일 */
 .btn {
     display: block;
-    width: 80px;
+    width: 125px;
+    height:45px;
     padding: 10px;
-    margin: 5px;
-     border: 2px solid transparent; /* 테두리를 투명으로 설정 */
-     transition: border-color 0.3s; /* 테두리 색상 변경 시 부드러운 전환 효과 추가 */
-     border-radius: 5px; /* 모서리를 둥글게 만들기 */
-     padding: 8px 12px; /* 페이지 아이템 내부 여백 설정 */
-     font-weight: bold; /* 폰트 굵기 설정 */
-    border-radius: 5px;
-    font-size: 16px;
+    margin: 385px;
+    border: 2px solid transparent; /* 테두리를 투명으로 설정 */
+    transition: border-color 0.3s; /* 테두리 색상 변경 시 부드러운 전환 효과 추가 */
+    border-radius: 5px; /* 모서리를 둥글게 만들기 */
+    padding: 8px 8px; /* 페이지 아이템 내부 여백 설정 */
+    font-weight: bold; /* 폰트 굵기 설정 */
+    border-radius: 15px;
+    font-size: 14px;
     text-align: center;
     cursor: pointer;
     margin-top: 20px;
+    border-color: #59BAFF;
+    background-color: #FFFFFF;
+}
 
+.btn[type="submit"][value="작성완료"] {
+    color: #59BAFF;
 }
 
 .btn:hover {
@@ -166,13 +181,25 @@ h1.box {
 }
 
 .side-img {
-   width:521px;
-       height:672px;
-        position: absolute;
-        top: 100px;
-        left: 1000px;
-        z-index: 101;
-       background-image: url('/img/side.png');
+   width:520px;
+   height:655px;
+   position: absolute;
+   top: 130px;
+   left: 1080px;
+   z-index: 101;
+   background-image: url('/img/side.png');
 
+
+}
+
+.vertical-line {
+
+margin-left: 850px;
+position:absolute;
+margin-top: -1040px;
+width:1px;
+height:515px;
+background-color:#EEEFF2;
+z-index:999;
 
 }
