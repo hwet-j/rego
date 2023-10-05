@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+
     <title>Flight Schedule</title>
     <style>
         .left-table {
             float: left;
             margin-right: 20px;
         }
+
+
+
     </style>
-    <script>
-        function syncInputValues() {
-            var departure = document.getElementById("departureAirport");
-            var arrival = document.getElementById("arrivalAirport");
-            arrival.value = departure.value;
-        }
-    </script>
+
 </head>
 
 <body>
@@ -23,11 +27,27 @@
 
 <form action="/fetch" method="get">
     <label for="departureAirport">목적지</label>
-    <input type="text" id="departureAirport" name="departureAirport" oninput="syncInputValues()">
+    <input type="text" id="departureAirport" name="departureAirport">
+
+
+    <!-- startDate와 endDate는 사용자에게 직접 보여주지 않고 daterangepicker로부터 값을 받아와 저장합니다 -->
+    <input type="hidden" id="startDate" name="startDate">
+    <input type="hidden" id="endDate" name="endDate">
+
+
+    <!-- 사용자에게는 daterangepicker로 날짜와 시간 범위를 선택할 수 있는 인터페이스를 제공합니다 -->
+    <input type="text" id="demo1" name="demo1" value="날짜를 선택해주세요"/>
+
+
+
 
     <label for="arrivalAirport"></label>
-    <input type="hidden" id="arrivalAirport" name="arrivalAirport">
+    <input type="text" id="arrivalAirport" name="arrivalAirport">
 
+    <input type="text" id="startDate2" name="startDate2">
+    <input type="text" id="endDate2" name="endDate2">
+
+    <input type="text" id="demo2" name="demo2" value="날짜를 선택해주세요"/>
     <input type="submit">
 </form>
 
@@ -40,28 +60,105 @@
         <th>도착공항</th>
     </tr>
 
-    <tr th:each="schedule : ${departureAirportAndSchedule}">
+    <tr th:each="schedule : ${departureAirportAndSchedule}" data-date="${schedule.split(' - ')[1]}">
         <td>인천</td>
         <td th:text="${schedule.split(' - ')[1]}"></td>
         <td th:text="${schedule.split(' - ')[0]}"></td>
     </tr>
 </table>
 
-<table border="1">
+
+
+
+
+<table border="1" class="right-table">
     <tr>
         <th>출발공항</th>
         <th>날짜와시간</th>
         <th>도착공항</th>
     </tr>
 
-    <tr th:each="schedule : ${arrivalAirportAndSchedule}">
+    <tr th:each="schedule : ${arrivalAirportAndSchedule}" data-date="${schedule.split(' - ')[1]}">
         <td th:text="${schedule.split(' - ')[0]}"></td>
         <td th:text="${schedule.split(' - ')[1]}"></td>
         <td>인천</td>
     </tr>
 </table>
 
+
+
+
+
+
 <div style="clear:both;"></div>
+
+
+<script>
+    var currentDate = new Date();
+    var maxDate = new Date(currentDate);
+    maxDate.setDate(currentDate.getDate() + 5);
+
+    function initializeDateRangePicker(elementID, updateElementID, startDateInputID, endDateInputID, tableSelector) {
+        $(elementID).daterangepicker({
+            "locale": {
+                "format": "YYYY-MM-DD HH:mm",
+                "separator": " ~ ",
+                "applyLabel": "확인",
+                "cancelLabel": "취소",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel": "W",
+                "daysOfWeek": ["일", "월", "화", "수", "목", "금", "토"],
+                "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+                "firstDay": 1
+            },
+            "drops": "down",
+            "opens": "right",
+            "minDate": currentDate,
+            "maxDate": maxDate,
+            "linkedCalendars": false,
+            "autoUpdateInput": false,
+            "singleDatePicker": true,
+            "timePicker": true,
+            "timePicker24Hour": true,
+            "timePickerIncrement": 30,
+            "startDate": currentDate,
+            "endDate": maxDate
+        },  function(start) {
+        var end = start.clone().hours(23).minutes(59);
+        $('#' + startDateInputID).val(start.format('YYYY-MM-DDTHH:mm'));
+        $('#' + endDateInputID).val(end.format('YYYY-MM-DDTHH:mm'));
+        var selectedRange = start.format('YYYY-MM-DD HH:mm') + ' ~ ' + end.format('YYYY-MM-DD HH:mm');
+        $(updateElementID).val(selectedRange);
+        filterRowsByDate(start, end, tableSelector);
+    });
+}
+
+    function filterRowsByDate(start, end, tableSelector) {
+        $(tableSelector + ' tr[data-date]').each(function() {
+            var rowDataDate = moment($(this).attr('data-date'), 'YYYY-MM-DD HH:mm');
+            if (rowDataDate.isBetween(start, end, null, '[]')) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+
+    // Initialize the two date range pickers
+    initializeDateRangePicker('#demo1', '#demo1', 'startDate', 'endDate', '.left-table');
+    initializeDateRangePicker('#demo2', '#demo2', 'startDate2', 'endDate2', '.right-table');
+
+
+    $('#demo2').on('apply.daterangepicker', function() {
+    alert('Demo2 event triggered!');
+});
+</script>
+
+
+
+
 
 </body>
 </html>
