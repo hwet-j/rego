@@ -39,6 +39,7 @@ public class TouristAttraction {
 
     private String image;
 
+    @Column(columnDefinition = "TEXT")
     private String introduction;
 
     @Column(nullable = false)

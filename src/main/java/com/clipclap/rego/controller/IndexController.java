@@ -181,7 +181,7 @@ public class IndexController {
 		model.addAttribute("touristAttractionList" , touristAttractionList);
 		model.addAttribute("attractionList" , listAll);
 		model.addAttribute("cityList" , touristAttractionRepository.findDistinctCityNames());
-		model.addAttribute("detailIdMax" , detailPlanRepository.findMaxDetailPlanId());
+		model.addAttribute("detailIdMax" , detailPlanRepository.findNextAutoIncrementValue());
 
 		return "googleMap";
 	}
