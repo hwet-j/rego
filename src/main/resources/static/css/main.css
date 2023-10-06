@@ -1,0 +1,569 @@
+body {
+    margin:0;
+    padding:0;
+}
+
+button {
+    background: none;       /* 배경색 제거 */
+    border: none;           /* 테두리 제거 */
+    padding: 0;             /* 패딩 제거 */
+    margin: 0;              /* 마진 제거 */
+    font-family: inherit;   /* 글꼴 상속 */
+    font-size: inherit;     /* 글꼴 크기 상속 */
+    cursor: pointer;        /* 포인터 커서 표시 */
+    outline: none;          /* 포커스 아웃라인 제거 */
+    -webkit-appearance: none;  /* 웹킷 브라우저에서의 기본 스타일 제거 */
+    -moz-appearance: none;     /* 파이어폭스에서의 기본 스타일 제거 */
+    appearance: none;          /* 기타 브라우저에서의 기본 스타일 제거 */
+}
+
+.content {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+    /* Assuming you want it centered in the full viewport height */
+ }
+
+
+
+.middle-box {
+    text-align: center;
+    width: 1700px;
+    height: 2700px;
+    background-color: white;
+    padding-top: 100px;
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
+}
+
+
+
+
+.slider { float:left;
+    width: 40px;
+    overflow: hidden;
+}
+
+.slide {
+    margin-top: -35px;
+    position: absolute;
+    width: 1600px;
+    height: 800px;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.slide:nth-child(1) { opacity: 1; } /* 시작 시 첫 번째 이미지가 보이도록 설정 */
+
+
+.slider-controls {
+
+    z-index: -1;
+    top: -50px; /* 이 값은 이미지 크기에 따라 조절해야 할 수 있습니다. */
+    text-align: center;
+}
+
+
+#prevSlide {
+    float:left;
+    margin-left:20px;
+    margin-top: 350px;
+    width: 10px;
+    height:20px;
+    background-image: url('/img/prev.png');
+    background-repeat: no-repeat;
+    z-index: 100;
+}
+
+#nextSlide {
+    float:right;
+    margin-right:20px;
+    margin-top: 350px;
+    width: 10px;
+    height:20px;
+    background-image: url('/img/next.png');
+    background-repeat: no-repeat;
+    z-index: 100;
+}
+
+
+
+
+
+.slider-indicators {
+    text-align: center;
+    margin-top: 780px;
+}
+.slider-indicators .indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 0 5px;
+    background-color: none;
+    cursor: pointer;
+    border: 1px solid #4F54B4;
+    opacity: 0.8;
+}
+.slider-indicators .indicator.active {
+    background-color: #4F54B4;
+    opacity: 0.8;
+}
+
+
+
+
+.flight {
+    position:absolute;
+    top: 150px;
+    left: 310px;
+    width: 1270px;
+    height: 155px;
+box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.3);
+}
+
+  .flight-content {
+        width: 1020px;
+        height: 155px;
+        display: flex;  /* Flexbox를 사용 */
+        justify-content: space-between; /* 항목들 사이의 공간을 균등하게 분배 */
+        align-items: center;  /* 세로 중앙 정렬 */
+        background-color: rgba(54, 78, 155, 0.8);  /* 배경색에 투명도 적용 */
+    }
+
+    .flight-item {
+        display: flex;
+        align-items: center;  /* 항목들을 세로 중앙에 정렬 */
+        margin-right: 20px;  /* 항목들 사이의 간격 */
+    }
+
+    .flight-item:last-child {
+        margin-right: 0;  /* 마지막 항목에는 마진 제거 */
+    }
+
+
+
+.submit-btn {
+   margin-left: auto;  /* 왼쪽 마진을 자동으로 설정하여 오른쪽 정렬 */
+   float: right;
+   background-color: white;
+   width: 245px;
+   height: 155px;
+   margin-right: -250px;
+   font-size: 24px;
+   border: none;
+   font-family: 'Nunito', sans-serif;
+   letter-spacing: 2px;
+   font-weight: 700;
+   cursor: pointer;
+}
+
+
+.flight-box {
+    font-family: 'Nunito', sans-serif;
+    color: white;
+    width:247px;
+    height:140px;
+    background-color:#364E9B;
+    margin-left: 6px;
+    line-height: 50px;          /* 텍스트의 수직 위치를 조정 */
+}
+
+
+
+#departureAirport {
+
+    position: absolute;
+    margin-top: 40px;
+    text-align:center;
+    font-family: 'Nunito', sans-serif;
+    color: white;
+    font-size: 36px;
+    width: 247px;
+    height: 100px;
+    background-color: #364E9B;
+    margin-left: 6px;
+    border:none;               /* 기본 테두리 제거 */
+    -webkit-appearance: none;   /* Chrome, Safari에서 기본 디자인 제거 */
+    -moz-appearance: none;      /* Firefox에서 기본 디자인 제거 */
+    appearance: none;           /* 표준화된 브라우저 디자인 제거 */
+    padding: 10px;              /* 내부 패딩 추가 */
+    line-height: normal;        /* line-height 재설정 */
+    cursor: pointer;            /* 마우스 오버시 커서 변경 */
+}
+
+#departureAirport::-ms-expand {
+    display: none;
+}
+
+
+#departureAirport option {
+    font-size: 18px; /* 원하는 크기로 설정 */
+    border:none;
+}
+
+#departureAirport:focus {
+    outline: none;   /* 기본 테두리 제거 */
+    border: none;    /* 기본 보더 제거 */
+}
+
+
+
+
+
+
+
+
+
+
+
+#arrivalAirport {
+    position: absolute;
+    left: 253px;
+        margin-top: 40px;
+        text-align:center;
+        font-family: 'Nunito', sans-serif;
+        color: white;
+        font-size: 36px;
+        width: 247px;
+        height: 100px;
+        background-color: #364E9B;
+        margin-left: 6px;
+        border:none;               /* 기본 테두리 제거 */
+        -webkit-appearance: none;   /* Chrome, Safari에서 기본 디자인 제거 */
+        -moz-appearance: none;      /* Firefox에서 기본 디자인 제거 */
+        appearance: none;           /* 표준화된 브라우저 디자인 제거 */
+        padding: 10px;              /* 내부 패딩 추가 */
+        line-height: normal;        /* line-height 재설정 */
+        cursor: pointer;            /* 마우스 오버시 커서 변경 */
+}
+
+#arrivalAirport::-ms-expand {
+    display: none;
+}
+
+
+#arrivalAirport option {
+    font-size: 18px; /* 원하는 크기로 설정 */
+    border:none;
+}
+
+#arrivalAirport:focus {
+    outline: none;   /* 기본 테두리 제거 */
+    border: none;    /* 기본 보더 제거 */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#departureDate {
+caret-color: transparent;
+position: absolute;
+    left: 512px;
+ margin-top: 40px;
+    text-align: center;
+    font-family: 'Nunito', sans-serif;
+    color: white;
+    font-size: 24px;
+    background-color: #364E9B;
+    border: none;  /* 기본 테두리 제거 */
+    -webkit-appearance: none;  /* Chrome, Safari에서 기본 디자인 제거 */
+    -moz-appearance: none;  /* Firefox에서 기본 디자인 제거 */
+    appearance: none;  /* 표준화된 브라우저 디자인 제거 */
+    padding: 10px;  /* 내부 패딩 추가 */
+    line-height: normal;  /* line-height 재설정 */
+    cursor: pointer;  /* 마우스 오버시 커서 변경 */
+    width: 225px;  /* 너비 지정 */
+    height: 80px;  /* 높이 지정 */
+}
+
+
+#arrivalDate {
+   caret-color: transparent;
+   position: absolute;
+       left: 765px;
+    margin-top: 40px;
+       text-align: center;
+       font-family: 'Nunito', sans-serif;
+       color: white;
+       font-size: 24px;
+       background-color: #364E9B;
+       border: none;  /* 기본 테두리 제거 */
+       -webkit-appearance: none;  /* Chrome, Safari에서 기본 디자인 제거 */
+       -moz-appearance: none;  /* Firefox에서 기본 디자인 제거 */
+       appearance: none;  /* 표준화된 브라우저 디자인 제거 */
+       padding: 10px;  /* 내부 패딩 추가 */
+       line-height: normal;  /* line-height 재설정 */
+       cursor: pointer;  /* 마우스 오버시 커서 변경 */
+       width: 225px;  /* 너비 지정 */
+       height: 80px;  /* 높이 지정 */
+}
+
+
+
+
+#departureDate:focus, #arrivalDate:focus {
+    outline: none;  /* 기본 테두리 제거 */
+    border: none;  /* 기본 보더 제거 */
+
+}
+
+
+
+
+.daterangepicker {
+    position: absolute;
+    color: inherit;
+    background-color: #364E9B !important;
+    border-radius: 4px;
+    border: none !important;
+    width: 247px !important;
+    max-width: none;
+    padding: 0;
+    margin-top: 7px;
+    top: 285px !important;
+    left: 20px;
+    z-index: 100;
+    display: none;
+    ffont-family: 'Nunito', sans-serif !important;
+    font-size: 15px;
+    line-height: 1em;
+     border: none !important;
+}
+
+.daterangepicker .calendar-table {
+      background-color: #364E9B !important;
+       border: 1px solid #364E9B !important;
+ }
+
+ .daterangepicker .calendar-table td, .daterangepicker .calendar-table th {
+        color: white;
+        border: 1px solid #364E9B !important;
+        white-space: nowrap;
+        text-align: center;
+        vertical-align: middle;
+        min-width: 29px !important;
+        width: 29px !important;
+        height: 29px !important;
+        line-height: 29px!important;
+        font-size: 11px !important;
+        font-weight: 300 !important;
+        border-radius: 20px !important;
+        border: 0px solid transparent !important;
+        white-space: nowrap;
+        cursor: pointer;
+ }
+
+
+.daterangepicker .drp-calendar.left {
+
+    background-color: #364E9B !important;
+    color: #364E9B !important;
+    border: 1px solid #364E9B !important;
+}
+
+/*취소확인버튼*/
+.daterangepicker .drp-buttons .btn {
+    margin-left: 8px;
+    font-size: 11px !important;
+    font-weight: bold;
+    padding: 4px 8px;
+    color: white;
+    border: 1px solid #364E9B !important;
+}
+
+.daterangepicker .drp-buttons {
+    clear: both;
+    color: white;
+    background-color: #364E9B !important;
+    text-align: right;
+    padding: 8px;
+    border: 1px solid #364E9B !important;
+    display: none;
+    line-height: 12px;
+    vertical-align: middle;
+}
+
+.daterangepicker.opensright:before {
+    display:none !important;
+    background-color: #364E9B !important;
+}
+
+.daterangepicker:after {
+    top: -6px;
+    border:none !important;
+}
+
+
+.daterangepicker td.off, .daterangepicker td.off.in-range, .daterangepicker td.off.start-date, .daterangepicker td.off.end-date {
+    background-color: #364E9B !important;
+    border-color: transparent;
+    color: #4C61AD !important;
+}
+
+.daterangepicker .calendar-table .next span {
+    color: #364E9B !important;
+    border: solid white !important;
+    border-width: 0 2px 2px 0 !important;
+    border-radius: 0 !important;
+    display: inline-block !important;
+    padding: 3px !important;
+}
+
+
+.daterangepicker .calendar-table .prev span{
+    color: #364E9B !important;
+    border: solid white !important;
+    border-width: 0 2px 2px 0 !important;
+    border-radius: 0 !important;
+    display: inline-block !important;
+    padding: 3px !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     .bg1{
+                position:fixed;
+                top: 0px;
+                width: 100%;
+                height: 1050px;
+                background-image:url('/img/bg1.png');
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-size: cover;
+                /*이 속성을 써 줘야지만 위에 결과물을 낼수가 있습니다.*/
+                background-attachment: fixed;
+                z-index:-999;
+
+             }
+
+
+     .bg2{
+            position:absolute;
+                width: 100%;
+                height:1000px;
+                margin-top: 1050px;
+
+                background-image:url('/img/bg2.png');
+                background-repeat: no-repeat;
+                background-position: bottom center;
+                background-size: cover;
+                /*이 속성을 써 줘야지만 위에 결과물을 낼수가 있습니다.*/
+                background-attachment: fixed;
+                z-index:-999;
+             }
+
+   .bg3{
+                width: 100%;
+                height: 1000px;
+                margin-top: 2950px;
+                position:absolute;
+                background-image:url('/img/bg3.png');
+                background-repeat: no-repeat;
+                background-position: bottom center;
+                background-size: cover;
+                /*이 속성을 써 줘야지만 위에 결과물을 낼수가 있습니다.*/
+                background-attachment: fixed;
+                z-index:-999;
+             }
+
+
+
+   .bg4{
+                width: 100%;
+                height: 1100px;
+                margin-top: 3150px;
+                position:absolute;
+                background-image:url('/img/bg1.png');
+                background-repeat: no-repeat;
+                background-position: bottom center;
+                background-size: cover;
+                /*이 속성을 써 줘야지만 위에 결과물을 낼수가 있습니다.*/
+                background-attachment: fixed;
+                z-index:-999;
+             }
+
+
+   .bg5{
+                width: 100%;
+                height: 1000px;
+                margin-top: 4250px;
+                position:absolute;
+                background-image:url('/img/bg2.png');
+                background-repeat: no-repeat;
+                background-position: bottom center;
+                background-size: cover;
+                /*이 속성을 써 줘야지만 위에 결과물을 낼수가 있습니다.*/
+                background-attachment: fixed;
+                z-index:-999;
+             }
+
+
+
+   .bg6{
+                width: 100%;
+                height: 1000px;
+                margin-top: 5250px;
+                position:absolute;
+                background-image:url('/img/bg3.png');
+                background-repeat: no-repeat;
+                background-position: bottom center;
+                background-size: cover;
+                /*이 속성을 써 줘야지만 위에 결과물을 낼수가 있습니다.*/
+                background-attachment: fixed;
+                z-index:-999;
+             }
+
+
+
+.bg-blue {
+    top:0px;
+    background-color:#1b4995;
+    opacity:0.5;
+    width:100%;
+    height:7000px;
+    position:absolute;
+    z-index:-998;
+
+}

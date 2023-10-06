@@ -1,0 +1,16 @@
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+    a:link, a:visited, a:hover, a:active, a:focus {
+    color: inherit; /* 상속받은 색상을 사용합니다. */
+    outline: none; /* 클릭 시에 표시되는 외곽선 제거 */
+}
+
+.navEmptyBox{
+     margin-top: 110px;
+}
