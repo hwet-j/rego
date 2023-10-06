@@ -29,10 +29,26 @@
             var detailList = document.getElementById('detailList').getAttribute('data-variable');
             var attractionList = document.getElementById('attractionList').getAttribute('data-variable');
             var detailIdMax = document.getElementById('detailIdMax').getAttribute('data-variable');
+            var planID = document.getElementById('planID').getAttribute('data-variable');
 
             // JSON 타입으로 변환한다. (String의 형식이 JSON형식이여야지 가능하다.)
             var jsonDetailList = JSON.parse(detailList);
             var jsonAttractionList = JSON.parse(attractionList);
+
+
+            /* 관광지를 선택하지 않았을 경우를 대비하기 위해서 임의로 작성 */
+            attractionData.push({
+                touristAttractionId : 0,
+                address : '',
+                name : '선택하지 않음',
+                imageUrl : 'https://github.com/hwet-j/rego/assets/125880480/20c539ee-6568-468e-919d-3ed42cb6c56a',
+                introduction : '',
+                latitude : '',
+                longitude : '',
+                contentType : '',
+                cityName : ''
+            });
+
 
             /* 관광지 정보를 관광지ID 값으로 검색하기 위해 객체 생성 - 관광지 목록 변수에 저장 */
             jsonAttractionList.forEach(function (attraction) {
@@ -49,19 +65,6 @@
                 });
             });
 
-            /* 관광지를 선택하지 않았을 경우를 대비하기 위해서 임의로 작성 */
-            attractionData.push({
-                touristAttractionId : 0,
-                address : '',
-                name : '메모',
-                imageUrl : 'https://github.com/hwet-j/rego/assets/125880480/20c539ee-6568-468e-919d-3ed42cb6c56a',
-                introduction : '',
-                latitude : '',
-                longitude : '',
-                contentType : '',
-                cityName : ''
-            });
-
 
             /* DB에 있는 정보를 캘린더에 출력하기 위한 객체 - 상세 일정 변수에 저장 */
             jsonDetailList.forEach(function (detail) {
@@ -76,7 +79,7 @@
             });
 
             /* 계획 생성 시 사용할 ID값 (다음으로 사용될 DetailPlan PK 값을 가져온다) */
-            let currentEventId = parseInt(detailIdMax);
+            let currentEventId = parseInt(detailIdMax) + 1;
             /* INSERT문이 작동될 때(계획을 생성할 때) +1 */
             function generateEventId() {
                 return String(currentEventId++);
@@ -153,8 +156,10 @@
                                     type: "POST",
                                     url: "/insertPlan",
                                     data: JSON.stringify({
+                                        detailPlanId: newId,
                                         touristAttractionId:eventType,
                                         content: eventTitle, // 내용
+                                        planId: planID,
                                         startTime: arg.start,
                                         endTime: arg.end,
                                         allDay: arg.allDay,
@@ -199,7 +204,7 @@
                     });
 
                     function getSelectOptions(attractionData) {
-                        let selectOptions = '<div><select id="event-type" class="swal2-select"><option value="">선택하지 않음</option>';
+                        let selectOptions = '<div><select id="event-type" class="swal2-select">';
                         attractionData.forEach((attraction) => {
                             selectOptions += `<option value="${attraction.touristAttractionId}">${attraction.name}</option>`;
                         });
@@ -209,7 +214,7 @@
                 },
                 eventClick: function (arg) {            // 이벤트를 클릭했을때
                     var eventId = arg.event.id;
-                    // console.log(eventId);
+                    console.log(eventId);
                     var eventImage = arg.event.extendedProps.image;
                     openDialog(eventId, calendar);      // 수정창을 연다.
                 },
@@ -220,13 +225,18 @@
                 eventReceive: function (info) {         // 외부 객체를 Drag & Drop 했을 경우에 발생하는 EVENT
                     var newEvent = info.event;
                     var newId= generateEventId();
-                    newEvent.setProp('id', newId);
-                    newEvent.setExtendedProp('touristAttractionId', info.event._def.extendedProps.touristAttractionId);
 
-                    const originalStart = new Date(info.event._instance.range.start);
+                    console.log('before : ' + JSON.stringify(newEvent));
+
+                    newEvent.setProp('id', newId);
+                    // newEvent.setExtendedProp('touristAttractionId', info.event._def.extendedProps.touristAttractionId);
+
+                    console.log('before : ' + JSON.stringify(newEvent));
+
+                    const originalStart = new Date(newEvent.start);
                     const modifiedStart = new Date(originalStart.getTime() - (9 * 60 * 60 * 1000));
 
-                    const originalEnd = new Date(info.event._instance.range.end);
+                    const originalEnd = new Date(newEvent.end);
                     const modifiedEnd = new Date(originalEnd.getTime() - (9 * 60 * 60 * 1000));
 
                     // console.log(info);
@@ -234,22 +244,24 @@
                         type: "POST",
                         url: "/insertPlan",
                         data: JSON.stringify({
-                            touristAttractionId:info.event._def.extendedProps.touristAttractionId,
-                            content: info.event._def.title,
+                            detailPlanId: newId,
+                            touristAttractionId:newEvent.extendedProps.touristAttractionId,
+                            content: newEvent.title,
                             startTime: modifiedStart,
-                            endTime: modifiedEnd,
-                            allDay: info.event._def.allDay,
+                            planId: planID,
+                            // endTime: modifiedEnd,
+                            allDay: newEvent.allDay,
                         }), // 데이터를 JSON 형식으로 보냄
                         contentType: "application/json; charset=UTF-8",
                         dataType: "text",
                         success: function (response) {
                             detailData.push({
                                 id: newId, // 새로 생성된 id
-                                title: info.event._def.title,   // 내용
+                                title: newEvent.title,   // 내용
                                 start: modifiedStart,
                                 end: modifiedEnd,
-                                allDay: info.event._def.allDay,
-                                touristAttractionId: info.event._def.extendedProps.touristAttractionId
+                                allDay: newEvent.allDay,
+                                touristAttractionId: newEvent.extendedProps.touristAttractionId
                             });
                         },
                         error: function () {
@@ -428,6 +440,7 @@
                     } else if (result.dismiss === Swal.DismissReason.isDenied) {
                         // 삭제 버튼 클릭 시, 이벤트 삭제
                         const event = calendar.getEventById(eventId);
+                        // alert(JSON.stringify(event));
                         event.remove();
 
                         $.ajax({
@@ -462,7 +475,7 @@
                 });
 
                 function getSelectOptions(attractionData, attrationId) {
-                    let selectOptions = '<div><select id="event-type" class="swal2-select"><option value="">선택하지 않음</option>';
+                    let selectOptions = '<div><select id="event-type" class="swal2-select">';
                     attractionData.forEach((attraction) => {
                         selectOptions += `<option value="${attraction.touristAttractionId}"${attrationId === attraction.touristAttractionId ? ' selected' : ''}>${attraction.name}</option>`;
                     });
@@ -622,6 +635,7 @@
 <div id="mallList" th:data-variable="${touristAttractionListJson}"></div>
 <div id="attractionList" th:data-variable="${attractionList}"></div>
 <div id="detailIdMax" th:data-variable="${detailIdMax}"></div>
+<div id="planID" th:data-variable="${planID}"></div>
 
 
 

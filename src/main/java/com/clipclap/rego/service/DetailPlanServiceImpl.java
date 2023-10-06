@@ -48,7 +48,15 @@ public class DetailPlanServiceImpl implements DetailPlanService {
         } else {
             return null;
         }
+    }
 
-
+    @Override
+    public Integer findMaxDetailPlanIdByPlanId(Integer planId) {
+        Integer id = detailPlanRepository.findMaxDetailPlanIdByPlanId(planId);
+        if(id == null){
+            return 0;
+        } else {
+            return id;
+        }
     }
 }

@@ -31,6 +31,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Iterator;
@@ -158,7 +159,9 @@ public class IndexController {
 
 
 	@GetMapping("/map")
-	public String map(Model model) throws JsonProcessingException {
+	public String map(@RequestParam(required = false) Integer planId, Model model) throws JsonProcessingException {
+		planId = 100;
+
 		City city = new City();
 		city.setCityName("삿포로");
 
@@ -177,11 +180,18 @@ public class IndexController {
 		System.out.println(detailPlan);
 
 		model.addAttribute("touristAttractionListJson" , json);
+
 		model.addAttribute("detailPlan" , detailPlan);
+
 		model.addAttribute("touristAttractionList" , touristAttractionList);
+
 		model.addAttribute("attractionList" , listAll);
+
 		model.addAttribute("cityList" , touristAttractionRepository.findDistinctCityNames());
-		model.addAttribute("detailIdMax" , detailPlanRepository.findNextAutoIncrementValue());
+
+		model.addAttribute("detailIdMax" , detailPlanRepository.findMaxDetailPlanIdByPlanId(planId));
+
+		model.addAttribute("planID" , planId);
 
 		return "googleMap";
 	}
