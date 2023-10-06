@@ -8,7 +8,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Nunito:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script src="main.js"></script>
 
 
@@ -101,6 +104,10 @@
 
         <form action="/flightResult" method="get" class="flight">
             <div class="flight-content">
+                <div class="flight-box">Departures</div>
+                <div class="flight-box">Arrivals</div>
+                <div class="flight-box">Outbound Flight</div>
+                <div class="flight-box">Return Flight</div>
                 <!-- 출발 공항 선택 -->
                 <label for="departureAirport"></label>
                 <select name="departureAirport" id="departureAirport">
@@ -109,6 +116,7 @@
                     <option value="KIX">KIX</option>
                     <option value="LHR">LHR</option>
                 </select>
+
 
                 <!-- 도착 공항 선택 -->
                 <label for="arrivalAirport"></label>
@@ -121,13 +129,13 @@
 
                 <!-- 출발 날짜 선택 -->
                 <label for="departureDate"></label>
-                <input type="date" id="departureDate" name="departureDate" onchange="formatDate(this)" required>
+                <input type="text" class="departureDate" id="departureDate" name="departureDate" onchange="formatDate(this)" required autocomplete="off">
 
                 <!-- 도착 날짜 선택 -->
                 <label for="arrivalDate"></label>
-                <input type="date" id="arrivalDate" name="arrivalDate" onchange="formatDate(this)" required>
-            <!-- 제출 버튼 -->
-            <input type="submit" value="FIND NOW" class="submit-btn">
+                <input type="text" class="arrivalDate"id="arrivalDate" name="arrivalDate" onchange="formatDate(this)" required autocomplete="off">
+                <!-- 제출 버튼 -->
+                <input type="submit" value="FIND NOW" class="submit-btn">
             </div>
         </form>
 
@@ -146,6 +154,46 @@
 
 </div>
 
+
+
+<script>
+
+    $(document).ready(function() {
+
+       // 출발 날짜 선택
+       $('#departureDate').daterangepicker({
+           "singleDatePicker": true,  // 단일 날짜 선택
+           "showDropdowns": true,     // 월/연도 드롭다운 보이기
+           "locale": {
+               "format": "YYYY-MM-DD",
+
+               "weekLabel": "W",
+               "daysOfWeek": ["S", "M", "T", "W", "T", "F", "S"],
+               "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+               "firstDay": 0
+           }
+       });
+ });
+
+$(document).ready(function() {
+       // 도착 날짜 선택
+       $('#arrivalDate').daterangepicker({
+           "singleDatePicker": true,  // 단일 날짜 선택
+           "showDropdowns": true,     // 월/연도 드롭다운 보이기
+           "locale": {
+               "format": "YYYY-MM-DD",
+
+               "weekLabel": "W",
+               "daysOfWeek": ["S", "M", "T", "W", "T", "F", "S"],
+               "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+               "firstDay": 0
+           }
+       });
+ });
+
+
+
+</script>
 </body>
 
 </html>
