@@ -27,7 +27,11 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Integer id;//글번호. 1씩증가.pk
 
+
     //@Column : 컬럼
+    @Column(length = 50)
+    private String category;//카테고리
+
     @Column(length = 200)
     private String subject;//제목
 
@@ -57,7 +61,14 @@ public class Question {
     @ManyToMany
     Set<User> voter;
 
+
+
+
+    // 생성자, 게터, 세터, 기타 메서드
+
     //constuctor
 
     //method
 }
+
+

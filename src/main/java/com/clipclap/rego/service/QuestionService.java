@@ -24,6 +24,7 @@ public class QuestionService {
 
     private final QuestionRepository questionReprository;
 
+
     //DTO -> Entity로 변환
     public Question toEntity(QuestionDTO qeustionDTO){
         Question question = new Question();
@@ -57,23 +58,26 @@ public class QuestionService {
     //질문등록처리
     public void addDTO(QuestionDTO qeustionDTO) {
         Question question = toEntity(qeustionDTO);
+        questionReprository.save(question);
 //        Question question = new Question();
+//        question.setCategory(qeustionDTO.getCategory());
 //        question.setSubject(qeustionDTO.getSubject());
 //        question.setContent(qeustionDTO.getContent());
 //        question.setCreateDate(qeustionDTO.getCreateDate());
-        questionReprository.save(question);
+
     }
+
 
 
     //질문등록처리
     //SiteUser siteUser : 질문작성자의 정보
-    public void add(String subject, String content, User user){
+    public void add(String category, String subject, String content, User user){
         Question question = new Question();
+        question.setCategory(category);
         question.setSubject(subject);
         question.setContent(content);
         question.setCreateDate(LocalDateTime.now());
         question.setWriter(user);
-        System.out.println("질문서비스 question="+question);
         questionReprository.save(question);
     }
 
@@ -115,7 +119,7 @@ public class QuestionService {
         //Question entity의 createDate속성을 내림차순정렬
         //정렬조건을 추가하고 싶다면  sorts.add()한다
         sorts.add(Sort.Order.desc("createDate"));
-        Pageable pageable = PageRequest.of(page,10,Sort.by(sorts));
+        Pageable pageable = PageRequest.of(page,5,Sort.by(sorts));
         return questionReprository.findAll(pageable);
     }
 
@@ -127,4 +131,6 @@ public class QuestionService {
         question.getVoter().add(user);
         questionReprository.save(question);
     }
+
+
 }
