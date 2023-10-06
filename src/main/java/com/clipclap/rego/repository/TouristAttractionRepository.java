@@ -21,7 +21,7 @@ public interface TouristAttractionRepository extends JpaRepository<TouristAttrac
     List<TouristAttractionFullDTO> getTouristAttractionsWithCityAndCountry();
 
 
-    @Query("SELECT DISTINCT t.cityName.cityName FROM TouristAttraction t")
+    @Query("SELECT DISTINCT t.cityName.cityName FROM TouristAttraction t WHERE t.cityName.cityName != '-' ")
     List<String> findDistinctCityNames();
 
     List<TouristAttraction> findByCityNameAndContentType(City cityName, String contentType);
