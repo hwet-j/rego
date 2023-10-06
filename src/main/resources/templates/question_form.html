@@ -1,79 +1,135 @@
-<html xmlns:th="http://www.w3.org/1999/xhtml">
-<link rel="stylesheet"  href="/css/question_Form.css">
-
-
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" href="/css/question_Form.css">
+</head>
+<body>
 <div class="background"></div>
 <div class="background2"></div>
 
 <div class="container">
 
-    <!-- 모바일에서 화면배율을 디바이스 크기 기준으로 설정 -->
-    <!-- 이게 안되면 pc에서의 100px과 모바일에서의 100px이 디바이스 성능에 따라 달라집니다. -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <div class="nav">
 
-    <!-- 제이쿼리 불러오기 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <!-- 폰트어썸 불러오기 -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-
-    <!-- XEIcon 폰트 불러오기 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+            <ul class="" style="list-style-type:none;">
+                <li class="">
+                    <!-- 타임리프의 security이용
+                    sec:authorize="isAnonymous()은 로그인하지않는 경우->로그인 출력
+                    sec:authorize="isAuthenticated()은 로그인한 경유->로그아웃 출력
+                    -->
+                    <a class="logo" th:href="@{/}"><img src="/img/logo.png"
+                                                        style="float: left; width: 63px; height: 58px; margin-left: 10px; background-repeat: no-repeat;"></a>
 
 
-    <div class="bbox">
-    <h1 class="box">1:1 문의하기</h1>
-    <form id="questionForm" th:object="${questionForm}" class="add-inquiry" name="addressInquiry" action="" method="post" data-aos="fade">
+                    <div class="nav-left"
+                         style="float:left;   margin-left: 470px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 500;">
+                        <a class="" th:href="@{/}"
+                           style="margin-right: 50px; color:#4F54B4;">HOME</a>
+                        <a class="" th:href="@{/}"
+                           style="margin-right: 50px; color:#4F54B4;">AIRPORT</a>
+                        <a class="" th:href="@{/}"
+                           style="margin-right: 50px; color:#4F54B4;">START PLAN</a>
+                        <a class="" th:href="@{/}"
+                           style="color:#4F54B4;">RECOMMEND</a>
+                    </div>
+                    <div class="nav-right"
+                         style="float:right;    margin-right: 35px; margin-top: 27px;  font-size: 12px;  font-family: 'Roboto', sans-serif; font-weight: 600;">
+                        <a class="" th:href="@{/}"
+                           style="margin-right: 20px; color:#4F54B4;">고객센터</a>
+                        <a class="loginBtn" sec:authorize="isAnonymous()" th:href="@{/login}"
+                           style="margin-right: 20px; color:#4F54B4;">로그인</a>
+                        <a class="" sec:authorize="isAuthenticated()" th:href="@{/}"
+                           style="margin-right: 20px; color:#4F54B4;">마이페이지</a>
+                        <a class="" sec:authorize="isAuthenticated()" th:href="@{/}"
+                           style="margin-right: 20px; color:#4F54B4;">로그아웃</a>
+                        <a class="" sec:authorize="hasRole('ADMIN')" th:href="@{/}"
+                           style="color:#4F54B4;">ADMIN</a>
+                    </div>
+                </li>
 
-
-            <div class="label-box">
-            <div class="search-title">
-                <label for="search-type" hidden>검색 유형</label>
-                <select class="form-control" id="search-type" name="searchType">
-                    <option>종류 선택</option>
-                    <option>항공</option>
-                    <option>일정</option>
-                    <option>장소</option>
-                    <option>기타</option>
-                </select>
-            </div>
-            </div>
-
-
-            <div class="inquiry-con">
-
-                <div class="label-box">
-                    <label>
-                        <div class="title"></div>
-                        <input class="input-content" type="text" placeholder="이메일을 입력해주세요">
-                    </label>
-                </div>
-
-                <div class="label-box">
-                    <label>
-                        <div for="subject" class="title"></div>
-                        <input class="input-content" type="text" th:field="*{subject}" placeholder="제목을 입력해주세요">
-                    </label>
-                </div>
-                <div class="label-box">
-                    <label>
-                        <div for="content" class="title"></div>
-                        <textarea  class="textarea-content" name="content" th:field="*{content}"placeholder=""></textarea>
-                    </label>
-                </div>
-
-                        <input class="btn" type="submit" name="submit" value="작성완료">
+            </ul>
+            <div>
 
             </div>
 
-    </form>
+
+
+
+
+
+
+        <!-- 모바일에서 화면배율을 디바이스 크기 기준으로 설정 -->
+        <!-- 이게 안되면 pc에서의 100px과 모바일에서의 100px이 디바이스 성능에 따라 달라집니다. -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- 제이쿼리 불러오기 -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <!-- 폰트어썸 불러오기 -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+              integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+              crossorigin="anonymous">
+
+        <!-- XEIcon 폰트 불러오기 -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+
+
+        <div class="bbox">
+            <h1 class="box">1:1 문의하기</h1>
+            <form id="questionForm" th:object="${questionForm}" class="add-inquiry" name="addressInquiry" action=""
+                  method="post" data-aos="fade">
+
+
+                <div class="label-box">
+                    <div class="search-title">
+                        <label for="search-type" hidden>검색 유형</label>
+                        <select class="form-control" id="search-type" name="searchType">
+                            <option>종류 선택</option>
+                            <option>항공</option>
+                            <option>일정</option>
+                            <option>장소</option>
+                            <option>기타</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="inquiry-con">
+
+                    <div class="label-box">
+                        <label>
+                            <div class="title"></div>
+                            <input class="input-content" type="text" placeholder="이메일을 입력해주세요">
+                        </label>
+                    </div>
+
+                    <div class="label-box">
+                        <label>
+                            <div for="subject" class="title"></div>
+                            <input class="input-content" type="text" th:field="*{subject}" placeholder="제목을 입력해주세요">
+                        </label>
+                    </div>
+                    <div class="label-box">
+                        <label>
+                            <div for="content" class="title"></div>
+                            <textarea class="textarea-content" name="content" th:field="*{content}"
+                                      placeholder=""></textarea>
+                        </label>
+                    </div>
+
+                    <input class="btn" type="submit" name="submit" value="작성완료">
+
+                </div>
+
+            </form>
+        </div>
+
+        <div class="vertical-line"></div>
+
+        <div class="side-img">
+
+        </div>
+
     </div>
-
-    <div class="vertical-line"></div>
-
-    <div class="side-img">
-
-    </div>
-
 </div>
+</body>
 </html>
