@@ -4,9 +4,7 @@ package com.clipclap.rego.controller;
 import com.clipclap.rego.model.entitiy.Answer;
 import com.clipclap.rego.model.entitiy.Question;
 import com.clipclap.rego.model.entitiy.User;
-import com.clipclap.rego.service.AnswerService;
-import com.clipclap.rego.service.QuestionService;
-import com.clipclap.rego.service.UserService;
+import com.clipclap.rego.service.*;
 import com.clipclap.rego.validation.AnswerForm;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
@@ -31,6 +26,7 @@ public class AnswerController {
     private final QuestionService questionService;
     private final AnswerService answerService;
     private final UserService userService; // UserService 주입
+    private final EmailService emailService;
 
     // 답변 추천
     @PreAuthorize("isAuthenticated()")
@@ -69,9 +65,20 @@ public class AnswerController {
     }
 
     // 답변 등록 처리
+
+
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/add/{id}")
     public String addAnswer(@PathVariable("id") Integer id, Model model, @Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal) {
+
+
+        // 이메일 보내기
+        String toEmail = "recipient@example.com";
+        String subject = "새로운 답변이 등록되었습니다.";
+        String message = "새로운 답변 내용: " + answerForm.getContent();
+
+        emailService.sendEmail(toEmail, subject, message);
+
         Question question = questionService.getQuestion(id);
         if (bindingResult.hasErrors()) {
             model.addAttribute("question", question);
@@ -81,4 +88,5 @@ public class AnswerController {
         answerService.add(question, answerForm.getContent(), user);
         return String.format("redirect:/question/detail/%d", id);
     }
+
 }
