@@ -14,3 +14,35 @@ a:hover {
 .navEmptyBox{
      margin-top: 110px;
 }
+
+
+.content {
+    text-align: center;  /* 텍스트와 인라인 요소를 가운데 정렬 */
+    display: flex;       /* 플렉스박스 사용 */
+    flex-direction: column;  /* 위에서 아래로 쌓기 */
+    align-items: center; /* 플렉스박스의 자식 요소들을 좌우 중앙에 배치 */
+}
+
+.resultBox{
+    display:flex;
+    align-items: flex-start;
+}
+
+.flight-box-wrapper {
+    border: 3px solid black; /* 박스 외곽선 */
+    margin:10px;
+    padding:10px;
+}
+
+.resultBox table {
+    border-collapse: collapse;  /* 셀 경계를 합침 */
+    width: 100%;  /* 테이블의 너비를 100%로 설정 (원하는대로 조절 가능) */
+}
+
+.resultBoxRight{
+
+}
+
+.resultBoxLeft{
+
+}
