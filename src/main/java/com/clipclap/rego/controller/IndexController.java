@@ -11,6 +11,7 @@ import com.clipclap.rego.repository.TouristAttractionRepository;
 import com.clipclap.rego.repository.UserRepository;
 import com.clipclap.rego.service.AuthService;
 import com.clipclap.rego.service.DetailPlanService;
+import com.clipclap.rego.service.PlannerService;
 import com.clipclap.rego.service.TouristAttractionService;
 import com.clipclap.rego.validation.JoinForm;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -49,6 +50,7 @@ public class IndexController {
 	private final ObjectMapper objectMapper;
 	private final DetailPlanRepository detailPlanRepository;
 	private final DetailPlanService detailPlanService;
+	private final PlannerService plannerService;
 
 
 
@@ -192,6 +194,8 @@ public class IndexController {
 		model.addAttribute("detailIdMax" , detailPlanRepository.findMaxDetailPlanIdByPlanId(planId));
 
 		model.addAttribute("planID" , planId);
+
+		model.addAttribute("startDate" , plannerService.findStartTimeByPlanId(planId));
 
 		return "googleMap";
 	}

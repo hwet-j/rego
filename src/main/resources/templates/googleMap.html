@@ -30,6 +30,7 @@
             var attractionList = document.getElementById('attractionList').getAttribute('data-variable');
             var detailIdMax = document.getElementById('detailIdMax').getAttribute('data-variable');
             var planID = document.getElementById('planID').getAttribute('data-variable');
+            var startDate = document.getElementById('startDate').getAttribute('data-variable');
 
             // JSON 타입으로 변환한다. (String의 형식이 JSON형식이여야지 가능하다.)
             var jsonDetailList = JSON.parse(detailList);
@@ -99,7 +100,7 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                initialDate: today,                 // 초기 날짜 지정
+                initialDate: startDate,                 // 초기 날짜 지정
                 eventColor : '#b263ff',             // 이벤트 색상
                 // eventBorderColor : '#5c6a96',       // 이벤트 테두리 색상
                 navLinks: true,
@@ -120,7 +121,7 @@
                             const eventTypeSelect = document.getElementById('event-type');
                             const selectedImage = document.getElementById('selected-image');
 
-                            eventTypeSelect.addEventListener('change', function () {
+                            /*eventTypeSelect.addEventListener('change', function () {
                                 const selectedValue = eventTypeSelect.value;
                                 const selectedAttraction = attractionData.find((attraction) => attraction.touristAttractionId === selectedValue);
 
@@ -129,7 +130,7 @@
                                 } else {
                                     selectedImage.src = '/pictures/base.jpg';       // 선택된 이미지가 없을 경우 기본 이미지 표시
                                 }
-                            });
+                            });*/
                         },
                         preConfirm: () => {         // 확인(수정) 버튼을 눌렀을 때 설정할 작업
                             const eventTitle = document.getElementById('event-title').value;
@@ -142,6 +143,7 @@
                                 var newId = generateEventId();
                                 calendar.addEvent({
                                     title: eventTitle,
+                                    backgroundColor : '#63fff2',        // 색상 설정하는 방법
                                     start: arg.start,
                                     touristAttractionId:eventType,
                                     end: arg.end,
@@ -233,8 +235,8 @@
 
                     console.log('before : ' + JSON.stringify(newEvent));
 
-                    const originalStart = new Date(newEvent.start);
-                    const modifiedStart = new Date(originalStart.getTime() - (9 * 60 * 60 * 1000));
+                    // const originalStart = new Date(newEvent.start);
+                    // const modifiedStart = new Date(originalStart.getTime() - (9 * 60 * 60 * 1000));
 
                     const originalEnd = new Date(newEvent.end);
                     const modifiedEnd = new Date(originalEnd.getTime() - (9 * 60 * 60 * 1000));
@@ -247,7 +249,7 @@
                             detailPlanId: newId,
                             touristAttractionId:newEvent.extendedProps.touristAttractionId,
                             content: newEvent.title,
-                            startTime: modifiedStart,
+                            startTime: newEvent.start,
                             planId: planID,
                             // endTime: modifiedEnd,
                             allDay: newEvent.allDay,
@@ -258,7 +260,7 @@
                             detailData.push({
                                 id: newId, // 새로 생성된 id
                                 title: newEvent.title,   // 내용
-                                start: modifiedStart,
+                                start: newEvent.start,
                                 end: modifiedEnd,
                                 allDay: newEvent.allDay,
                                 touristAttractionId: newEvent.extendedProps.touristAttractionId
@@ -373,7 +375,7 @@
                         const eventTypeSelect = document.getElementById('event-type');
                         const selectedImage = document.getElementById('selected-image');
 
-                        eventTypeSelect.addEventListener('change', function () {
+                        /*eventTypeSelect.addEventListener('change', function () {
                             const selectedValue = eventTypeSelect.value;
                             const selectedAttraction = attractionData.find((attraction) => attraction.touristAttractionId === selectedValue);
 
@@ -382,7 +384,7 @@
                             } else {
                                 selectedImage.src = '/pictures/base.jpg'; // 선택된 이미지가 없을 경우 기본 이미지 표시
                             }
-                        });
+                        });*/
                     },
                     preConfirm: () => {
                         const newEventTitle = document.getElementById('event-title').value;
@@ -636,6 +638,7 @@
 <div id="attractionList" th:data-variable="${attractionList}"></div>
 <div id="detailIdMax" th:data-variable="${detailIdMax}"></div>
 <div id="planID" th:data-variable="${planID}"></div>
+<div id="startDate" th:data-variable="${startDate}"></div>
 
 
 
