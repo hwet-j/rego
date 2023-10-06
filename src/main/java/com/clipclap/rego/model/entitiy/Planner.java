@@ -37,6 +37,7 @@ public class Planner {
     @JoinColumn(name = "userEmail", referencedColumnName = "email")
     private User userEmail;
 
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @Column(nullable = false)

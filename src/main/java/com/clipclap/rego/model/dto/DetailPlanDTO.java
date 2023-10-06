@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class DetailPlanDTO {
     private Integer detailPlanId;
+    private Integer planId;
     private String content;
     private String startTime;
     private String endTime;
