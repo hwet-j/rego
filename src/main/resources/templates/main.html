@@ -5,39 +5,31 @@
     <link href="/css/main.css" rel="stylesheet" type="text/css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Roboto:wght@300;400;500;700;900&display=swap"
-          rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Nunito:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="main.js"></script>
 
-    <script src="/main.js"></script>
 
+    <style>
+        a {
+        text-decoration: none;
+    }
 
+    a:hover {
+        text-decoration: none;
+    }
 
-<style>
-    a {
-    text-decoration: none;
-}
+        a:link, a:visited, a:hover, a:active, a:focus {
+        color: inherit; /* 상속받은 색상을 사용합니다. */
+        outline: none; /* 클릭 시에 표시되는 외곽선 제거 */
+    }
+    </style>
 
-a:hover {
-    text-decoration: none;
-}
-
-    a:link, a:visited, a:hover, a:active, a:focus {
-    color: inherit; /* 상속받은 색상을 사용합니다. */
-    outline: none; /* 클릭 시에 표시되는 외곽선 제거 */
-}
-</style>
-
-<script>
-    let currentSlide = 0;
-const slides = document.querySelectorAll(".slide");
-const totalSlides = slides.length;
-
-setInterval(function() {
-    slides[currentSlide].style.opacity = 0;
-    currentSlide = (currentSlide + 1) % totalSlides;
-    slides[currentSlide].style.opacity = 1;
-}, 3000); // 3초 간격으로 이미지 전환
-</script>
 
 </head>
 <body>
@@ -45,7 +37,7 @@ setInterval(function() {
 
 <div class="content">
     <div class="nav"
-         style=" box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); padding-bottom: 15px; background-color: white; width: 1700px; height: 73px;  text-align: center; position:fixed; top: 0px;">
+         style="z-index:999; box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); padding-bottom: 15px; background-color: white; width: 1700px; height: 73px;  text-align: center; position:fixed; top: 0px;">
 
         <ul class="" style="list-style-type:none;">
             <li class="">
@@ -92,45 +84,59 @@ setInterval(function() {
 
 
     <div class="middle-box">
+        <div class="slider-controls">
+            <button id="prevSlide"></button>
 
-        <div class="slider">
-            <img class="slide" src="img/bg1.png" alt="Image 1">
-            <img class="slide" src="img/bg2.png" alt="Image 2">
-            <img class="slide" src="img/bg3.png" alt="Image 3">
-            <img class="slide" src="img/bg1.png" alt="Image 4">
-            <img class="slide" src="img/bg2.png" alt="Image 5">
+            <div class="slider">
+                <img class="slide" src="img/bg1.png" alt="Image 1">
+                <img class="slide" src="img/bg2.png" alt="Image 2">
+                <img class="slide" src="img/bg3.png" alt="Image 3">
+                <img class="slide" src="img/bg1.png" alt="Image 4">
+                <img class="slide" src="img/bg2.png" alt="Image 5">
+            </div>
+
+            <button id="nextSlide"></button>
+        </div>
+        <div class="slider-indicators">
+            <!-- JavaScript로 인디케이터를 동적으로 추가합니다. -->
         </div>
 
 
-        <form action="/flightResult" method="get">
-            <!-- 출발 공항 선택 -->
-            <label for="departureAirport">출발 공항:</label>
-            <select name="departureAirport" id="departureAirport">
-                <option value="SEL">SEL</option>
-                <option value="CDG">CDG</option>
-                <option value="KIX">KIX</option>
-                <option value="LHR">LHR</option>
-            </select>
+        <form action="/flightResult" method="get" class="flight">
+            <div class="flight-content">
+                <div class="flight-box">Departures</div>
+                <div class="flight-box">Arrivals</div>
+                <div class="flight-box">Outbound Flight</div>
+                <div class="flight-box">Return Flight</div>
+                <!-- 출발 공항 선택 -->
+                <label for="departureAirport"></label>
+                <select name="departureAirport" id="departureAirport">
+                    <option value="SEL">SEL</option>
+                    <option value="CDG">CDG</option>
+                    <option value="KIX">KIX</option>
+                    <option value="LHR">LHR</option>
+                </select>
 
-            <!-- 도착 공항 선택 -->
-            <label for="arrivalAirport">도착 공항:</label>
-            <select name="arrivalAirport" id="arrivalAirport">
-                <option value="SEL">SEL</option>
-                <option value="CDG">CDG</option>
-                <option value="KIX">KIX</option>
-                <option value="LHR">LHR</option>
-            </select>
 
-            <!-- 출발 날짜 선택 -->
-            <label for="departureDate">출발 날짜:</label>
-            <input type="date" id="departureDate" name="departureDate" onchange="formatDate(this)" required>
+                <!-- 도착 공항 선택 -->
+                <label for="arrivalAirport"></label>
+                <select name="arrivalAirport" id="arrivalAirport">
+                    <option value="SEL">SEL</option>
+                    <option value="CDG">CDG</option>
+                    <option value="KIX">KIX</option>
+                    <option value="LHR">LHR</option>
+                </select>
 
-            <!-- 도착 날짜 선택 -->
-            <label for="arrivalDate">도착 날짜:</label>
-            <input type="date" id="arrivalDate" name="arrivalDate" onchange="formatDate(this)" required>
+                <!-- 출발 날짜 선택 -->
+                <label for="departureDate"></label>
+                <input type="text" class="departureDate" id="departureDate" name="departureDate" onchange="formatDate(this)" required autocomplete="off">
 
-            <!-- 제출 버튼 -->
-            <input type="submit" value="제출">
+                <!-- 도착 날짜 선택 -->
+                <label for="arrivalDate"></label>
+                <input type="text" class="arrivalDate"id="arrivalDate" name="arrivalDate" onchange="formatDate(this)" required autocomplete="off">
+                <!-- 제출 버튼 -->
+                <input type="submit" value="FIND NOW" class="submit-btn">
+            </div>
         </form>
 
 
@@ -147,5 +153,47 @@ setInterval(function() {
 
 
 </div>
+
+
+
+<script>
+
+    $(document).ready(function() {
+
+       // 출발 날짜 선택
+       $('#departureDate').daterangepicker({
+           "singleDatePicker": true,  // 단일 날짜 선택
+           "showDropdowns": true,     // 월/연도 드롭다운 보이기
+           "locale": {
+               "format": "YYYY-MM-DD",
+
+               "weekLabel": "W",
+               "daysOfWeek": ["S", "M", "T", "W", "T", "F", "S"],
+               "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+               "firstDay": 0
+           }
+       });
+ });
+
+$(document).ready(function() {
+       // 도착 날짜 선택
+       $('#arrivalDate').daterangepicker({
+           "singleDatePicker": true,  // 단일 날짜 선택
+           "showDropdowns": true,     // 월/연도 드롭다운 보이기
+           "locale": {
+               "format": "YYYY-MM-DD",
+
+               "weekLabel": "W",
+               "daysOfWeek": ["S", "M", "T", "W", "T", "F", "S"],
+               "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+               "firstDay": 0
+           }
+       });
+ });
+
+
+
+</script>
 </body>
+
 </html>
