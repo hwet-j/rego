@@ -32,7 +32,8 @@ public class SecurityConfig {
 					.requestMatchers(new AntPathRequestMatcher("/admin/**")).access("hasRole('ROLE_ADMIN')"))
 			.headers((headers) -> headers.addHeaderWriter(new XFrameOptionsHeaderWriter(
 					XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
-			.formLogin((formLogin)->formLogin.loginPage("/login")
+			.formLogin((formLogin)->formLogin
+					.loginPage("/login")
 					.loginProcessingUrl("/loginProc")
 					.defaultSuccessUrl("/"))
 			.oauth2Login(oauth2Login -> oauth2Login

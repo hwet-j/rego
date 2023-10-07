@@ -69,7 +69,7 @@ public class IndexController {
 
 		if (authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
 
-			User user = userRepository.findByUsername(authentication.getName());
+			User user = userRepository.findByEmail(authentication.getName());
 			// 비밀번호가 설정되어있지 않으면 로그인 불가
 			if (user.getPassword() == null){
 
