@@ -3,7 +3,6 @@ package com.clipclap.rego.service;
 import com.clipclap.rego.mapper.PlannerMapper;
 import com.clipclap.rego.model.dto.PlannerDTO;
 import com.clipclap.rego.model.entitiy.Planner;
-import com.clipclap.rego.model.entitiy.User;
 import com.clipclap.rego.repository.PlannerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,12 +28,12 @@ public class PlannerServiceImpl implements PlannerService {
     }
 
     @Override
-    public List<PlannerDTO> findByUserEmail(User userEmail) {
-        List<Planner> plannerEntities = plannerRepository.findByUserEmail(userEmail);
+    public List<PlannerDTO> findByUserEmail(String userEmail) {
+        List<Planner> plannerEntities = plannerRepository.findByUserEmail_Email(userEmail);
 
         List<PlannerDTO> plannerDTOs = plannerEntities.stream()
-                .map(PlannerMapper::entityToDto) // 엔티티를 DTO로 변환
-                .collect(Collectors.toList()); // DTO 목록으로 수집
+                .map(PlannerMapper::entityToDto)        // 엔티티를 DTO로 변환
+                .collect(Collectors.toList());          // DTO 목록으로 수집
         return plannerDTOs;
     }
 }

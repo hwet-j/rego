@@ -37,7 +37,7 @@ public class AnswerController {
     @GetMapping("/vote/{id}")
     public String answerVote(@PathVariable("id") Integer id, Principal principal, Model model) {
         Answer answer = answerService.getAnswer(id);
-        User user = userService.getUser(principal.getName()); // userService를 사용하여 User 객체 가져옴
+        User user = userService.getUserByEmail(principal.getName()); // userService를 사용하여 User 객체 가져옴
         answerService.vote(answer, user);
         return String.format("redirect:/question/detail/%d", answer.getQuestion().getId());
     }
@@ -46,7 +46,7 @@ public class AnswerController {
     @GetMapping("/delete/{id}")
     public String answerDelete(@PathVariable("id") Integer id, Principal principal) {
         Answer answer = answerService.getAnswer(id);
-        if (!answer.getWriter().getUsername().equals(principal.getName())) {
+        if (!answer.getWriter().getEmail().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다.");
         }
         answerService.delete(answer);
@@ -61,7 +61,7 @@ public class AnswerController {
             return "answer_form";
         }
         Answer answer = answerService.getAnswer(id);
-        if (!answer.getWriter().getUsername().equals(principal.getName())) {
+        if (!answer.getWriter().getEmail().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
         }
         answerService.modify(answer, answerForm.getContent());
@@ -77,7 +77,7 @@ public class AnswerController {
             model.addAttribute("question", question);
             return "question_detail";
         }
-        User user = userService.getUser(principal.getName());
+        User user = userService.getUserByEmail(principal.getName());
         answerService.add(question, answerForm.getContent(), user);
         return String.format("redirect:/question/detail/%d", id);
     }

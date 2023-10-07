@@ -100,7 +100,7 @@
 
              </td>
 
-             <td  th:if="${question.writer!=null}" th:text="${question.writer.username}"></td>
+             <td  th:if="${question.writer!=null}" th:text="${question.writer.email}"></td>
              <!-- temporals.format(날짜대상,"date포맷") -->
              <td th:text="${#temporals.format(question.createDate,'yyyy-MM-dd HH:mm')}"></td>
          </tr><!--1페이지당 출력할 게시물수만큼 반복끝-->

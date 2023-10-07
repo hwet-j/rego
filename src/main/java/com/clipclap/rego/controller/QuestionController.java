@@ -30,7 +30,7 @@ public class QuestionController {
     @GetMapping("/delete/{id}")
     public String questionDelete(@PathVariable("id") Integer id, Principal principal) {
         Question question = questionService.getQuestion(id);
-        if (!question.getWriter().getUsername().equals(principal.getName())) {
+        if (!question.getWriter().getEmail().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다.");
         }
         questionService.delete(question);
@@ -45,7 +45,7 @@ public class QuestionController {
         //1.파라미터받기
         //2.비즈니스로직수행
         Question question = questionService.getQuestion(id); //질문상세
-        if ( !question.getWriter().getUsername().equals(principal.getName()) ) {
+        if ( !question.getWriter().getEmail().equals(principal.getName()) ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"수정권한이 없습니다.");
         }
         questionForm.setSubject(question.getSubject());
@@ -61,7 +61,7 @@ public class QuestionController {
             return "question_form";
         }
         Question question = questionService.getQuestion(id);
-        if (!question.getWriter().getUsername().equals(principal.getName())) {
+        if (!question.getWriter().getEmail().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
         }
         questionService.modify(question, questionForm.getSubject(), questionForm.getContent());
@@ -83,7 +83,7 @@ public class QuestionController {
         if (bindingResult.hasErrors()) {
             return "question_form";
         }
-        User user = userService.getUser(principal.getName());
+        User user = userService.getUserByEmail(principal.getName());
         questionService.add(questionForm.getSubject(), questionForm.getContent(), user);
         return "redirect:/question/list";
     }
@@ -111,7 +111,7 @@ public class QuestionController {
     @GetMapping("/vote/{id}")
     public String questionVote(@PathVariable("id") Integer id, Principal principal) {
         Question question = questionService.getQuestion(id);
-        User user = userService.getUser(principal.getName());
+        User user = userService.getUserByEmail(principal.getName());
         questionService.vote(question, user);
         return String.format("redirect:/question/detail/%d", id);
     }

@@ -8,7 +8,7 @@
           <div class="card-text" style="white-space:pre-line;" th:text="${question.content}"></div>
             <div class="d-flex justify-content-end">  <!--d-flex:한개의 row를 block레벨로 처리-->
                 <div class="badge bg-light text-dark p-2 text-start">
-                    <div th:if="${question.writer!=null}"  th:text="${question.writer.username}"></div>
+                    <div th:if="${question.writer!=null}"  th:text="${question.writer.email}"></div>
                 </div>
                 <div th:text="${#temporals.format(question.createDate,'yyyy-MM-dd HH:mm')}"/>
             </div>
@@ -18,14 +18,14 @@
                 <a th:href="@{|/question/modify/${question.id}|}"
                    class="update btn"
                    sec:authorize="isAuthenticated()"
-                   th:if="${ question.writer!=null and #authentication.getPrincipal().getUsername()==question.writer.username}"
+                   th:if="${ question.writer!=null and #authentication.getPrincipal().getUsername()==question.writer.email}"
                    th:text="수정"></a>
 
                 <!-- 질문삭제버튼 - 로그인해야지만 삭제가능, 로그인한유저가 글쓴이와 동일해야만 한다-->
                 <a href="javascript:void(0);"   th:data-uri="@{|/question/delete/${question.id}|}"
                    class="delete btn"
                    sec:authorize="isAuthenticated()"
-                   th:if="${ question.writer!=null and #authentication.getPrincipal().getUsername()==question.writer.username}"
+                   th:if="${ question.writer!=null and #authentication.getPrincipal().getUsername()==question.writer.email}"
                    th:text="삭제"></a>
 
                 <!-- 질문추천버튼 -->
@@ -46,7 +46,7 @@
             <div class="d-flex justify-content-end">
                 <div class="badge bg-light text-dark p-2 text-start">
                     <div class="my-2">
-                      <span th:if="${answer.writer!=null}"  th:text="${answer.writer.username}"></span>
+                      <span th:if="${answer.writer!=null}"  th:text="${answer.writer.email}"></span>
                     </div>
                     <div th:text="${#temporals.format(answer.createDate,'yyyy-MM-dd HH:mm')}"/>
                 </div>
@@ -56,13 +56,13 @@
             <a th:href="@{|/answer/modify/${answer.id}|}"
                class="reply update-btn"
                sec:authorize="isAuthenticated()"
-               th:if="${answer.writer!=null and #authentication.getPrincipal().getUsername()==answer.writer.username}"
+               th:if="${answer.writer!=null and #authentication.getPrincipal().getUsername()==answer.writer.email}"
                th:text="수정"></a>
             <!-- 답변삭제버튼 - 로그인해야지만 삭제가능, 로그인한유저가 글쓴이와 동일해야만 한다 -->
             <a href="javascript:void(0);" th:data-uri="@{|/answer/delete/${answer.id}|}"
                class="delete btn"
                sec:authorize="isAuthenticated()"
-               th:if="${answer.writer!=null and #authentication.getPrincipal().getUsername()==answer.writer.username}"
+               th:if="${answer.writer!=null and #authentication.getPrincipal().getUsername()==answer.writer.email}"
                th:text="삭제"></a>
             <!-- 답변추천버튼
             .badge class는 together with a contextual class (like .bg-secondary) within <span> elements to create rectangular badges. Note that badges scale to match the size of the parent element (if any)
