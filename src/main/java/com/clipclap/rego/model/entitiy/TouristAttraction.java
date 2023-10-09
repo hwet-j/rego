@@ -3,6 +3,8 @@ package com.clipclap.rego.model.entitiy;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 
 /*
 
@@ -50,5 +52,9 @@ public class TouristAttraction {
     @ManyToOne
     @JoinColumn(name = "cityName", referencedColumnName = "cityName")
     private City cityName ;
+
+
+    @OneToMany(mappedBy = "attraction", cascade = CascadeType.REMOVE)
+    private List<LikeAttraction> likeAttractions;
 
 }

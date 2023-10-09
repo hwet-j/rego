@@ -1,10 +1,9 @@
 package com.clipclap.rego.model.entitiy;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 
 @Entity
@@ -24,6 +23,9 @@ public class Country {
 
     private String flag;
 
+
+    @OneToMany(mappedBy = "countryName", cascade = CascadeType.REMOVE)
+    private List<City> citys;
 }
 
 

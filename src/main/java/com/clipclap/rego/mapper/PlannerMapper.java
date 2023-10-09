@@ -10,7 +10,7 @@ public class PlannerMapper {
     public static PlannerDTO entityToDto(Planner entity) {
         PlannerDTO dto = new PlannerDTO();
         dto.setPlanId(entity.getPlanId());
-        dto.setUserEmail(entity.getUserEmail().getEmail()); // User 엔티티의 이메일 주소 가져오기
+        dto.setUserEmail(entity.getUser().getEmail()); // User 엔티티의 이메일 주소 가져오기
         dto.setContent(entity.getContent());
         dto.setStartDate(entity.getStartDate());
         dto.setEndDate(entity.getEndDate());
@@ -26,7 +26,7 @@ public class PlannerMapper {
         // User 엔티티 생성 및 이메일 주소 설정
         User user = new User();
         user.setEmail(dto.getUserEmail());
-        entity.setUserEmail(user);
+        entity.setUser(user);
         entity.setContent(dto.getContent());
         entity.setStartDate(dto.getStartDate());
         entity.setEndDate(dto.getEndDate());
