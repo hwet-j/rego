@@ -1,6 +1,10 @@
 package com.clipclap.rego.controller;
 
+import com.clipclap.rego.model.dto.DetailPlanDTO;
 import com.clipclap.rego.model.dto.PlannerDTO;
+import com.clipclap.rego.model.dto.TouristAttractionDTO;
+import com.clipclap.rego.model.dto.TouristAttractionFullDTO;
+import com.clipclap.rego.model.entitiy.City;
 import com.clipclap.rego.repository.DetailPlanRepository;
 import com.clipclap.rego.repository.TouristAttractionRepository;
 import com.clipclap.rego.repository.UserRepository;
@@ -8,6 +12,7 @@ import com.clipclap.rego.service.AuthService;
 import com.clipclap.rego.service.DetailPlanService;
 import com.clipclap.rego.service.PlannerService;
 import com.clipclap.rego.service.TouristAttractionService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -78,6 +80,44 @@ public class PlanController {
 		System.out.println(plannerDTO);
 
 		return "redirect:/plan/list";
+	}
+
+	@GetMapping("/detail")
+	public String map(@RequestParam(required = false) Integer planId, Model model) throws JsonProcessingException {
+		planId = 100;
+
+		City city = new City();
+		city.setCityName("삿포로");
+
+		List<TouristAttractionFullDTO> test = touristAttractionService.getTouristAttractionsWithCityAndCountry();
+
+
+		List<TouristAttractionDTO> touristAttractionList = touristAttractionService.countryAttractionList(city);
+		List<TouristAttractionDTO> touristAttractionListAll = touristAttractionService.touristListAll();
+
+		String json = objectMapper.writeValueAsString(touristAttractionList);
+		String listAll = objectMapper.writeValueAsString(touristAttractionListAll);
+
+		List<DetailPlanDTO> detailList = detailPlanService.findAllByPlan(1L);
+
+		String detailPlan = objectMapper.writeValueAsString(detailList);
+		System.out.println(detailPlan);
+
+		model.addAttribute("touristAttractionListJson" , json);
+		// 상세플랜 목록
+		model.addAttribute("detailPlan" , detailPlan);
+		// 전체 관광지 리스트
+		model.addAttribute("attractionList" , listAll);
+		// 도시 리스트 (검색)
+		model.addAttribute("cityList" , touristAttractionRepository.findDistinctCityNames());
+		// 현재 사용중인 PK 번호 최대
+		model.addAttribute("detailIdMax" , detailPlanRepository.findMaxDetailPlanIdByPlanId(planId));
+		// 이후에 정보를 받아오면 필요없을듯
+		model.addAttribute("planID" , planId);
+		// 플래너의 시작날짜 (이것도 굳이 필요없을 수도)
+		model.addAttribute("startDate" , plannerService.findStartTimeByPlanId(planId));
+
+		return "plan/planDetail";
 	}
 
 

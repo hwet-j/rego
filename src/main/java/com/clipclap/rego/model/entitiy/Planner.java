@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /*
 
@@ -34,8 +35,8 @@ public class Planner {
     private Integer planId;
 
     @ManyToOne
-    @JoinColumn(name = "userEmail", referencedColumnName = "email")
-    private User userEmail;
+    @JoinColumn(name = "user", referencedColumnName = "email")
+    private User user;
 
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -52,4 +53,10 @@ public class Planner {
     @Column(nullable = false)
     private String type;
 
+
+    @OneToMany(mappedBy = "detailPlanId", cascade = CascadeType.REMOVE)
+    private List<PlannerDetail> detailPlans;
+
+    @OneToMany(mappedBy = "plan", cascade = CascadeType.REMOVE)
+    private List<LikePlan> likePlans;
 }

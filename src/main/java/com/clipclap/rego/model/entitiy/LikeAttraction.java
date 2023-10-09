@@ -29,8 +29,8 @@ public class LikeAttraction {
     private Integer likeId;
 
     @ManyToOne
-    @JoinColumn(name = "userEmail", referencedColumnName = "email")
-    private User userEmail;
+    @JoinColumn(name = "user", referencedColumnName = "email")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "attractionId", referencedColumnName = "touristAttractionId")

@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 /* 항공 예약
@@ -78,5 +79,8 @@ public class Reservation {
 
     @Column(nullable = false)
     private String status;
+
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.REMOVE)
+    private List<Payment> Payments;
 
 }
