@@ -12,7 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Raleway:wght@600;700;800;900&family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
     body {
-     background-color: #000000;
+     background-color: #ffffff;
       font-family: 'Noto Sans KR', sans-serif;
        font-family: 'Roboto', sans-serif;
     }
@@ -23,7 +23,7 @@
     .phoneNumber{
     min-width:150px;}
         .btn{
-     border-color:#fff;}
+     border-color:#4F54B4;}
 </style>
 <script>
     function checkAll(source) {
@@ -107,8 +107,8 @@ deleteForm.submit(); // form 제출
     <div style="margin:200px;" >
         <div class="container">
 
-            <form action="/user/" method="post" th:object="${user}">
-                <table border="1" class="table table-dark table-striped" style="text-align: center;">
+            <form action="/user/delete" method="post" th:object="${user}">
+                <table border="1" class="table table-light table-striped" style="text-align: center;">
                     <thead>
                     <tr>
                         <th><input class="checkBox" name="selectedUsers" onclick="checkAll(this)" type="checkbox" value="${user.userId}"></th>
@@ -138,21 +138,21 @@ deleteForm.submit(); // form 제출
                         <td name="role" th:text="${user.role}"></td>
                         <td><span th:if="${user.withdrawalRequest}">Y</span>
                             <span th:unless="${user.withdrawalRequest}">N</span></td>
-                        <td class="Box"><a class="btn btn-dark" th:href="@{|/user/edit/${user.userId}|}" th:text="수정" ></a></td>
+                        <td class="Box"><a class="btn btn-light" th:href="@{|/user/edit/${user.userId}|}" th:text="수정" ></a></td>
                     </tr>
 
                     </tbody>
                 </table><div style="text-align: left;">
-                <button class="btn btn-dark delete-button" type="submit" >삭제</button>
-                <button class="btn btn-dark" onclick="location.href='/user/Ylist';" type="button" >탈퇴회원 목록</button>
+                <button class="btn btn-light delete-button" type="submit" >삭제</button>
+                <button class="btn btn-light" onclick="location.href='/user/Ylist';" type="button" >탈퇴회원 목록</button>
             </div>
                 <div style="text-align: center;">
-                    <a class="btn btn-dark" th:href="@{/user/list(page=${firstPage})}"  th:if="${page!=firstPage}" th:text="'처음'" ></a>
+                    <a class="btn btn-light" th:href="@{/user/list(page=${firstPage})}"  th:if="${page!=firstPage}" th:text="'처음'" ></a>
                     <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
-                        <a class="btn btn-dark" th:href="@{/user/list(page=${page-1})}"  th:if="${page != nowPage}" th:text="${page}" ></a>
-                        <strong class="btn btn-primary" style="background-color:#5F23E5; border-color:#5F23E5;" th:if="${page == nowPage}" th:text="${page}"></strong>
+                        <a class="btn btn-light" th:href="@{/user/list(page=${page-1})}"  th:if="${page != nowPage}" th:text="${page}" ></a>
+                        <strong class="btn btn-primary" style="background-color:#4F54B4; border-color:#4F54B4;" th:if="${page == nowPage}" th:text="${page}"></strong>
                     </th:block>
-                    <a class="btn btn-dark" th:href="@{/user/list(page=${lastPage})}" th:if="${page != lastPage}" th:text="'끝'" ></a>
+                    <a class="btn btn-light" th:href="@{/user/list(page=${lastPage})}" th:if="${page != lastPage}" th:text="'끝'" ></a>
                 </div>
             </form>
 

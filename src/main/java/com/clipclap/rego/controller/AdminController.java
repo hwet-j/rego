@@ -1,6 +1,7 @@
 package com.clipclap.rego.controller;
 
 
+import com.clipclap.rego.model.dto.AdminUserDTO;
 import com.clipclap.rego.model.entitiy.User;
 import com.clipclap.rego.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -34,6 +37,34 @@ public class AdminController {
         model.addAttribute("firstPage",firstPage);
         model.addAttribute("lastPage",lastPage);
 
-        return "admin_member";
+        return "admin_user";
     }
+    @GetMapping("/user/edit/{userId}")
+    public String UserDetail(@PathVariable("userId")Integer userId, Model model) throws Exception {
+        User user=authService.getUserDetail(userId);
+        model.addAttribute("user",user);
+        return "/admin_userEdit";
+    }
+    //회원 상세페이지 수정
+    @PostMapping("/user/edit/{userId}")
+    public String AdminEditUser(@PathVariable("userId") Integer userId, @ModelAttribute AdminUserDTO adminUserDTO) throws Exception{
+        authService.AdminUserEdit(adminUserDTO,userId);
+        return "redirect:/user/edit/"+userId;
+    }
+
+    @GetMapping("/user/delete")
+    public String AdminDeleteUser(@RequestParam("userId")Integer userId) throws Exception {
+        authService.deleteUser(userId);
+        return "redirect:/user/list";
+    }
+
+    //체크박스 회원 삭제
+    @PostMapping("/user/delete")
+    public String deleteUsers(@RequestParam("selectedUsers") List<Integer> userIds) throws Exception {
+        authService.deleteUsers(userIds);
+        return "redirect:/user/list";
+    }
+
+
+
 }

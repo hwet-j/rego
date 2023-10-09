@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.rtl.min.css" integrity="sha384-PRrgQVJ8NNHGieOA1grGdCTIt4h21CzJs6SnWH4YMQ6G5F5+IEzOHz67L4SQaF0o" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title></title>
+</head>
+<script th:inline="javascript">
+    function deleteUser(userId) {
+       location.href = '/user/delete?userId='+ userId;
+   }
+</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Raleway:wght@600;700;800;900&family=Roboto:wght@300;400;500;700;900&display=swap">
+<style>
+    body {
+     background-color: #ffffff;
+      font-family: 'Noto Sans KR', sans-serif;
+       font-family: 'Roboto', sans-serif;
+       .btn,.table{
+     border-color:#4F54B4;}
+    }
+</style>
+    <body>
+    <div class="nav">
+
+        <ul class="" style="list-style-type:none;">
+            <li class="">
+                <!-- 타임리프의 security이용
+                sec:authorize="isAnonymous()은 로그인하지않는 경우->로그인 출력
+                sec:authorize="isAuthenticated()은 로그인한 경유->로그아웃 출력
+                -->
+                <a class="logo" th:href="@{/}"><img src="/img/logo.png"
+                                                    style="float: left; width: 63px; height: 58px; margin-left: 10px; background-repeat: no-repeat;"></a>
+
+
+                <div class="nav-left"
+                     style="float:left;   margin-left: 470px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 500;">
+                    <a class="" style="margin-right: 50px; color:#4F54B4;"
+                       th:href="@{/}">HOME</a>
+                    <a class="" style="margin-right: 50px; color:#4F54B4;"
+                       th:href="@{/}">AIRPORT</a>
+                    <a class="" style="margin-right: 50px; color:#4F54B4;"
+                       th:href="@{/}">START PLAN</a>
+                    <a class="" style="color:#4F54B4;"
+                       th:href="@{/}">RECOMMEND</a>
+                </div>
+
+                <div class="nav-right"
+                     style="float:right;    margin-right: 35px; margin-top: 27px;  font-size: 12px;  font-family: 'Roboto', sans-serif; font-weight: 600;">
+                    <a class="" style="margin-right: 20px; color:#4F54B4;"
+                       th:href="@{/}">고객센터</a>
+                    <a class="loginBtn" sec:authorize="isAnonymous()" style="margin-right: 20px; color:#4F54B4;"
+                       th:href="@{/login}">로그인</a>
+                    <a class="" sec:authorize="isAuthenticated()" style="margin-right: 20px; color:#4F54B4;"
+                       th:href="@{/}">마이페이지</a>
+                    <a class="" sec:authorize="isAuthenticated()" style="margin-right: 20px; color:#4F54B4;"
+                       th:href="@{/}">로그아웃</a>
+                    <a class="" sec:authorize="hasRole('ADMIN')" style="color:#4F54B4;"
+                       th:href="@{/}">ADMIN</a>
+                </div>
+            </li>
+
+        </ul>
+        <div>
+
+        </div>
+
+
+    <div style="margin:200px;">
+        <div class="container" >
+            <form method="post" th:object="${user}"  th:action="@{/user/edit/__${user.userId}__}">
+                <table border="1"  class="table table-light table-striped" style="text-align: center;">
+                        <input type="hidden" th:value="${user.email}" th:field="*{email}">
+                        <input type="hidden" th:value="${user.password}" th:field="*{password}">
+                        <input type="hidden" th:value="${user.createDate}" th:field="*{createDate}">
+                    <thead class="table-light">
+                    <tr>
+                        <td>번호</td><td th:text="${user.userId}"></td>
+                    </tr>
+                    <tr>
+                        <td>이메일</td>
+                        <td th:text="${user.email}"></td>
+                    </tr>
+                    <tr>
+                        <td>닉네임</td>
+                        <td th:textarea="${user.nickname}"><input type="text" th:value="${user.nickname}" th:field="*{nickname}"></td>
+                    </tr>
+                    <tr>
+                        <td>비밀번호</td>
+                        <td th:text="${user.password}"></td>
+                    </tr>
+
+                    <tr>
+                        <td>성별</td>
+                        <td>
+                        <input type="radio" name="gender" value="남자" th:checked="${user.gender}=='남자'"}>남자
+                        <input type="radio" name="gender" value="여자" th:checked="${user.gender}!='남자'">여자
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>생일</td>
+                        <td th:textarea="${user.birthDate}"><input type="text" th:value="${user.birthDate}" th:field="*{birthDate}"></td>
+                    </tr>
+                    <tr>
+                        <td>생성일</td>
+                        <td th:text="${user.createDate}"></td>
+                    </tr>
+                    <tr>
+                        <td>권한</td>
+                        <td>
+                            <input type="radio" name="role" value="ROLE_ADMIN" th:checked="${user.role}!='ROLE_USER'"}>ROLE_ADMIN
+                            <input type="radio" name="role" value="ROLE_USER" th:checked="${user.role}==ROLE_USER">ROLE_USER
+                        </td>
+                    </tr>
+                   <tr>
+                        <td>탈퇴여부</td>
+                        <td>
+                            <input type="radio" name="withdrawalRequest" value="1" th:checked="${user.withdrawalRequest}==true"}>Y
+                            <input type="radio" name="withdrawalRequest" value="0" th:checked="${user.withdrawalRequest}!=true">N
+                        </td>
+                    </tr>
+                    </thead>
+                </table>
+                <button type="button" onclick="location.href='/user/list'" class="btn btn-light">목록</button>
+                <button type="submit" class="btn btn-light">수정</button>
+                <button type="button" th:onclick="'deleteUser(' +${user.userId}+')'" class="btn btn-light delete-button">삭제</button>
+
+
+            </form>
+        </div>
+    </div>
+    </div>
+    </body>
+</nav>
+</html>
