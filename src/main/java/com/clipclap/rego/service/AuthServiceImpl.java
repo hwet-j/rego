@@ -4,6 +4,8 @@ import com.clipclap.rego.model.entitiy.User;
 import com.clipclap.rego.repository.UserRepository;
 import com.clipclap.rego.validation.JoinForm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -68,4 +70,9 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+    @Override
+    public Page<User> getMemberList(Pageable pageable){
+        Page<User> memberList=userRepository.findAll(pageable);
+        return memberList;
+    }
 }

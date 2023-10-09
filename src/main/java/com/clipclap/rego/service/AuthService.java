@@ -2,6 +2,8 @@ package com.clipclap.rego.service;
 
 import com.clipclap.rego.model.entitiy.User;
 import com.clipclap.rego.validation.JoinForm;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface AuthService {
 
@@ -13,4 +15,6 @@ public interface AuthService {
 
 
     String nicknameDuplicateCheck(String nickname);
+
+    Page<User> getMemberList(Pageable pageable);
 }
