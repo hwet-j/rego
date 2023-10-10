@@ -13,4 +13,5 @@ public interface DetailPlanService {
     DetailPlanDTO findById(Integer id);
 
     Integer findMaxDetailPlanIdByPlanId(Integer planId);
+
 }

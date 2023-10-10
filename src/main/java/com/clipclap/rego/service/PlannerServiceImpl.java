@@ -3,6 +3,7 @@ package com.clipclap.rego.service;
 import com.clipclap.rego.mapper.PlannerMapper;
 import com.clipclap.rego.model.dto.PlannerDTO;
 import com.clipclap.rego.model.entitiy.Planner;
+import com.clipclap.rego.repository.DetailPlanRepository;
 import com.clipclap.rego.repository.PlannerRepository;
 import com.clipclap.rego.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class PlannerServiceImpl implements PlannerService {
 
     private final PlannerRepository plannerRepository;
+    private final DetailPlanRepository detailPlanRepository;
     private final PlannerMapper plannerMapper;
     private final UserRepository userRepository;
 
@@ -58,4 +60,5 @@ public class PlannerServiceImpl implements PlannerService {
         Planner planner = plannerMapper.dtoToEntity(dto, userRepository);
         plannerRepository.save(planner);
     }
+
 }
