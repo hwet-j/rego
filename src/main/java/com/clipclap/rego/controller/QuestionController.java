@@ -79,7 +79,7 @@ public class QuestionController {
         UserDetails userDetail = (UserDetails) auth.getPrincipal();
 
         String username = userDetail.getUsername();
-        User user= userService.getUser(username);
+        User user= userService.getUserByEmail(username);
         String email = user.getEmail();
         System.out.println("불러온 이메일"+email);
 

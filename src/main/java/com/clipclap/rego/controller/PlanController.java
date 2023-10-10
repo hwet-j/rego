@@ -3,8 +3,6 @@ package com.clipclap.rego.controller;
 import com.clipclap.rego.model.dto.DetailPlanDTO;
 import com.clipclap.rego.model.dto.PlannerDTO;
 import com.clipclap.rego.model.dto.TouristAttractionDTO;
-import com.clipclap.rego.model.dto.TouristAttractionFullDTO;
-import com.clipclap.rego.model.entitiy.City;
 import com.clipclap.rego.repository.DetailPlanRepository;
 import com.clipclap.rego.repository.TouristAttractionRepository;
 import com.clipclap.rego.repository.UserRepository;
@@ -76,34 +74,26 @@ public class PlanController {
 			plannerDTO.setUserEmail(principal.getName());
 		}
 
-
 		System.out.println(plannerDTO);
-
+		plannerService.save(plannerDTO);
 		return "redirect:/plan/list";
 	}
 
 	@GetMapping("/detail")
 	public String map(@RequestParam(required = false) Integer planId, Model model) throws JsonProcessingException {
-		planId = 100;
+		PlannerDTO plannerDTO = plannerService.findById(planId);
+		if (plannerDTO == null){
+			return "redirect:/";
+		}
 
-		City city = new City();
-		city.setCityName("삿포로");
-
-		List<TouristAttractionFullDTO> test = touristAttractionService.getTouristAttractionsWithCityAndCountry();
-
-
-		List<TouristAttractionDTO> touristAttractionList = touristAttractionService.countryAttractionList(city);
 		List<TouristAttractionDTO> touristAttractionListAll = touristAttractionService.touristListAll();
 
-		String json = objectMapper.writeValueAsString(touristAttractionList);
 		String listAll = objectMapper.writeValueAsString(touristAttractionListAll);
 
-		List<DetailPlanDTO> detailList = detailPlanService.findAllByPlan(1L);
+		List<DetailPlanDTO> detailList = detailPlanService.findAllByPlan(planId);
 
 		String detailPlan = objectMapper.writeValueAsString(detailList);
-		System.out.println(detailPlan);
 
-		model.addAttribute("touristAttractionListJson" , json);
 		// 상세플랜 목록
 		model.addAttribute("detailPlan" , detailPlan);
 		// 전체 관광지 리스트

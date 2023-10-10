@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface DetailPlanRepository extends JpaRepository<PlannerDetail, Integer> {
 
     void deleteByDetailPlanId(Integer detailPlanId);
@@ -14,6 +16,9 @@ public interface DetailPlanRepository extends JpaRepository<PlannerDetail, Integ
 
     @Query("SELECT MAX(p.detailPlanId) FROM PlannerDetail p WHERE p.plan.planId = :planId")
     Integer findMaxDetailPlanIdByPlanId(@Param("planId") Integer planId);
+
+    List<PlannerDetail> findByPlan_PlanId(Integer planId);
+
 
 
 }
