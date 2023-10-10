@@ -131,8 +131,11 @@ public class CrawlService {
                 Thread.sleep(7000); // 페이지 로딩을 위한 대기
 
                 List<WebElement> flightDivs = driver.findElements(By.cssSelector(".concurrent_ConcurrentItemContainer__2lQVG"));
-
+                int flightcount =0;
                 for (WebElement flightDiv : flightDivs) {
+                    if(flightcount++>=30){
+                        break;
+                    }
                     List<RouteInfo> routes = new ArrayList<>();
 
                     List<WebElement> airlineDivs = flightDiv.findElements(By.cssSelector(".concurrent_RoundDiffAL__22zB4, .concurrent_RoundSameAL__1Y3j3"));

@@ -1,3 +1,9 @@
+body {
+    font-family: 'Noto Sans KR', 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center; /* 좌우 중앙 정렬 */
+}
+
 a {
     text-decoration: none;
 }
@@ -21,6 +27,8 @@ a:hover {
     display: flex;       /* 플렉스박스 사용 */
     flex-direction: column;  /* 위에서 아래로 쌓기 */
     align-items: center; /* 플렉스박스의 자식 요소들을 좌우 중앙에 배치 */
+    background-color: #F0F1F2;
+    width:1700px;
 }
 
 .resultBox{
@@ -29,14 +37,12 @@ a:hover {
 }
 
 .flight-box-wrapper {
-    border: 3px solid black; /* 박스 외곽선 */
-    margin:10px;
-    padding:10px;
-}
-
-.resultBox table {
-    border-collapse: collapse;  /* 셀 경계를 합침 */
-    width: 100%;  /* 테이블의 너비를 100%로 설정 (원하는대로 조절 가능) */
+    /*border: 3px solid black; *//* 박스 외곽선 */
+    margin: 10px;
+    padding: 10px;
+    border-radius: 15px; /* 둥근 모서리 효과. 원하는 값으로 조정 가능 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과. 원하는 값으로 조정 가능 */
+    background-color: white; /* 흰 배경 */
 }
 
 .resultBoxRight{
@@ -45,4 +51,77 @@ a:hover {
 
 .resultBoxLeft{
 
+}
+
+.center-content {
+    display: flex;
+    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
+}
+
+.center-content > span.duration + img {
+    margin-left: 5px;
+    margin-right:5px;
+}
+
+td.price{
+    border-left: 2px dashed #ccc;
+    margin-left:5px;
+}
+
+.flight-box-wrapper table {
+    border-collapse: separate;
+    border-spacing: 40px 10px;
+    width:100%
+}
+
+.money{
+ margin-left:55px;
+}
+
+.price .money {
+    text-align: center; /* 내용물을 수평 가운데 정렬 */
+    font-size:25px;
+    font-weight:500;
+}
+
+.price .money span {
+    display: block; /* 블록 요소로 변경하여 줄 바꿈 처리 */
+    margin: 0 auto; /* 수평 가운데 정렬 */
+}
+
+.price .money button {
+    margin: 10px auto; /* 버튼을 수평 가운데 정렬 */
+}
+
+.depart {
+    display: flex;
+    flex-direction: column; /* 수직으로 요소 나열 */
+    align-items: flex-end; /* 요소를 오른쪽 정렬 */
+}
+
+.depart span {
+    margin-left: auto; /* 왼쪽 여백을 자동으로 채워 오른쪽 정렬 */
+}
+
+.depart span:first-child {
+    font-size: 30px; /* depart 클래스 내부의 첫 번째 span에 글꼴 크기를 20px로 설정 */
+}
+
+.arrive {
+    display: flex;
+    flex-direction: column; /* 수직으로 요소 나열 */
+    align-items: flex-start; /* 요소를 왼쪽 정렬 */
+}
+
+.arrive span {
+    margin-right: auto; /* 오른쪽 여백을 자동으로 채워 왼쪽 정렬 */
+}
+
+.arrive span:first-child {
+    font-size:30px;
+}
+
+.airlineName{
+    font-size:10px;
 }
