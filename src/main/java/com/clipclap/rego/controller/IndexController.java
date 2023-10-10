@@ -176,7 +176,7 @@ public class IndexController {
 		String json = objectMapper.writeValueAsString(touristAttractionList);
 		String listAll = objectMapper.writeValueAsString(touristAttractionListAll);
 
-		List<DetailPlanDTO> detailList = detailPlanService.findAllByPlan(1L);
+		List<DetailPlanDTO> detailList = detailPlanService.findAllByPlan(planId);
 
 		String detailPlan = objectMapper.writeValueAsString(detailList);
 		System.out.println(detailPlan);

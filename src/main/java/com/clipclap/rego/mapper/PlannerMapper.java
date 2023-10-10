@@ -3,6 +3,7 @@ package com.clipclap.rego.mapper;
 import com.clipclap.rego.model.dto.PlannerDTO;
 import com.clipclap.rego.model.entitiy.Planner;
 import com.clipclap.rego.model.entitiy.User;
+import com.clipclap.rego.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,13 +20,12 @@ public class PlannerMapper {
         return dto;
     }
 
-    public static Planner dtoToEntity(PlannerDTO dto) {
+    public static Planner dtoToEntity(PlannerDTO dto, UserRepository userRepository) {
         Planner entity = new Planner();
         entity.setPlanId(dto.getPlanId());
 
         // User 엔티티 생성 및 이메일 주소 설정
-        User user = new User();
-        user.setEmail(dto.getUserEmail());
+        User user = userRepository.findByEmail(dto.getUserEmail());
         entity.setUser(user);
         entity.setContent(dto.getContent());
         entity.setStartDate(dto.getStartDate());
