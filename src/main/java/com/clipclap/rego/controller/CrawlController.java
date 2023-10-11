@@ -1,11 +1,13 @@
 package com.clipclap.rego.controller;
 
-import com.clipclap.rego.service.CrawlService;
 import com.clipclap.rego.model.dto.FlightInfo;
+import com.clipclap.rego.service.CrawlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
@@ -23,7 +25,7 @@ public class CrawlController {
     }
 
     @GetMapping("/flightResult")
-    public String noArgRoundCrawl(Model model
+    public String ArgRoundCrawl(Model model
                                 , @RequestParam String departureAirport
                                 , @RequestParam String arrivalAirport
                                 , @RequestParam String departureDate
@@ -39,6 +41,11 @@ public class CrawlController {
         return "crawl/roundCrawl";
     }
 
+    @RequestMapping("/bookFlight")
+    public String flightBook(Model model, @ModelAttribute FlightInfo flightInfo){
+        model.addAttribute("flightInfo",flightInfo);
+        return "crawl/flightBookCheck";
+    }
 
 
 }
