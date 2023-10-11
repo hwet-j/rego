@@ -65,19 +65,20 @@
                     <div th:text="${#temporals.format(notice.createDate,'yyyy-MM-dd HH:mm')}"/>
                 </div>
 
+
                 <div class="box">
                     <div th:object="${notice}">
-                        <!-- 공지수정버튼 - 로그인해야지만 수정가능, 로그인한유저가 글쓴이와 동일해야만 한다 -->
+                        <!-- 공지 수정버튼 - 관리자로 로그인한 경우에만 보이도록 설정 -->
                         <a th:href="@{|/notice/modify/${notice.id}|}"
                            class="update btn"
-                           sec:authorize="isAuthenticated() and ( #authentication.getPrincipal().getUsername() == notice.writer.email or hasRole('ADMIN') )"
+                           sec:authorize="hasRole('ROLE_ADMIN')"
                            th:text="수정"></a>
 
-                        <!-- 공지삭제버튼 - 로그인해야지만 삭제가능, 로그인한유저가 글쓴이와 동일해야만 한다-->
-                        <a  th:href="@{|/notice/delete/${notice.id}|}"
-                            class="delete btn"
-                            sec:authorize="isAuthenticated() and ( #authentication.getPrincipal().getUsername() == notice.writer.email or hasRole('ADMIN') )"
-                            th:text="삭제"></a>
+                        <!-- 공지 삭제버튼 - 관리자로 로그인한 경우에만 보이도록 설정 -->
+                        <a th:href="@{|/notice/delete/${notice.id}|}"
+                           class="delete btn"
+                           sec:authorize="hasRole('ROLE_ADMIN')"
+                           th:text="삭제"></a>
                     </div>
                 </div>
 
