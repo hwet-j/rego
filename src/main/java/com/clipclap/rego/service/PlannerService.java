@@ -10,4 +10,10 @@ public interface PlannerService {
     LocalDate findStartTimeByPlanId(Integer planId);
 
     List<PlannerDTO> findByUserEmail(String userEmail);
+
+    PlannerDTO findById(Integer planId);
+
+    void save(PlannerDTO dto);
+
+
 }

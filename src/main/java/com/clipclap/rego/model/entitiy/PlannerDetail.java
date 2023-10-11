@@ -2,6 +2,8 @@ package com.clipclap.rego.model.entitiy;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -32,6 +34,7 @@ public class PlannerDetail {
 
     @ManyToOne
     @JoinColumn(name = "planId", referencedColumnName = "planId")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Planner plan;
 
     @Column(nullable = false, columnDefinition = "TEXT")

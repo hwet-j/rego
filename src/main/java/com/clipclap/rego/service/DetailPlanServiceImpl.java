@@ -28,13 +28,12 @@ public class DetailPlanServiceImpl implements DetailPlanService {
     }
 
     @Override
-    public List<DetailPlanDTO> findAllByPlan(Long planId) {
-        List<PlannerDetail> entityList = detailPlanRepository.findAll();
+    public List<DetailPlanDTO> findAllByPlan(Integer planId) {
+        List<PlannerDetail> entityList = detailPlanRepository.findByPlan_PlanId(planId);
 
         List<DetailPlanDTO> dtoList = entityList.stream()
                 .map(DetailPlanMapper::entityToDto)
                 .collect(Collectors.toList());
-
 
         return dtoList;
     }
