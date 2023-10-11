@@ -32,9 +32,9 @@ public class SecurityConfig {
 
 		http
 			.authorizeRequests((authorizeHttpRequests) -> authorizeHttpRequests
-					.requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
-					.requestMatchers(new AntPathRequestMatcher("/question/list")).authenticated()
+					.requestMatchers(new AntPathRequestMatcher("/question/add")).authenticated()
 					.requestMatchers(new AntPathRequestMatcher("/admin/**")).access("hasRole('ROLE_ADMIN')")
+					.requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
 					.anyRequest().authenticated() )
 			.headers((headers) -> headers.addHeaderWriter(new XFrameOptionsHeaderWriter(
 					XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
@@ -47,7 +47,10 @@ public class SecurityConfig {
 					.loginPage("/login")
 					.userInfoEndpoint(userInfo -> userInfo
 							.userService(principalOauth2UserService))
-			).csrf(csrf -> csrf.disable());
+			)
+				.logout((logout) -> logout
+						.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+						.logoutSuccessUrl("/").invalidateHttpSession(true)).csrf(csrf -> csrf.disable());
 
 		return http.build();
 	}

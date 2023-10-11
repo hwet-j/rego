@@ -81,12 +81,7 @@
                    th:if="${ question.writer!=null and #authentication.getPrincipal().getUsername()==question.writer.email}"
                    th:text="삭제"></a>
 
-                <!-- 질문추천버튼 -->
-                <a href="javascript:void(0);"   th:data-uri="@{|/question/vote/${question.id}|}"
-                   class="recommend btn">추천
-                   <span class="badge rounded-pill bg-success"
-                         th:text="${#lists.size(question.voter)}"></span>
-                </a>
+
             </div>
         </div>
     </div>
@@ -123,20 +118,13 @@
                        th:if="${answer.writer!=null and #authentication.getPrincipal().getUsername()==answer.writer.email}"
                        th:text="삭제"></a>
 
-                    <!-- 답변추천버튼
-                    .badge class는 together with a contextual class (like .bg-secondary) within <span> elements to create rectangular badges. Note that badges scale to match the size of the parent element (if any)
-                    .rounded-pill class to make the badges more round-->
-                    <a href="javascript:void(0);"   th:data-uri="@{|/answer/vote/${answer.id}|}"
-                       class="recommend btn btn-sm btn-outline-secondary">추천
-                        <span class="badge rounded-pill bg-success"
-                              th:text="${#lists.size(answer.voter)}"></span>
-                    </a>
+
                 </div>
             </div>
 
 
     <!-- 답변등록폼 -->
-    <form id="answerForm" class="my-3" th:object="${answerForm}" th:action="@{|/answer/add/${question.id}|}"  method="post">
+    <form id="answerForm" class="my-3" th:object="${answerForm}" th:action="@{|/answer/add/${question.id}|}"  method="post" sec:authorize="isAuthenticated()">
     <!--<form id="answerForm" class="my-3" action="/answer/add" method="post">-->
         <!--<input type="text" name="id" value="301"/>-->
         <!-- 유효성검사시 에러메세지 출력영역 -->
