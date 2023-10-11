@@ -1,0 +1,66 @@
+body {
+    font-family: 'Noto Sans KR', 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center; /* 좌우 중앙 정렬 */
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+    a:link, a:visited, a:hover, a:active, a:focus {
+    color: inherit; /* 상속받은 색상을 사용합니다. */
+    outline: none; /* 클릭 시에 표시되는 외곽선 제거 */
+}
+
+.navEmptyBox{
+     margin-top: 83px;
+}
+
+
+.content {
+    text-align: center;  /* 텍스트와 인라인 요소를 가운데 정렬 */
+    display: flex;       /* 플렉스박스 사용 */
+    flex-direction: column;  /* 위에서 아래로 쌓기 */
+    align-items: center; /* 플렉스박스의 자식 요소들을 좌우 중앙에 배치 */
+    background-color: #F0F1F2;
+    width:1700px;
+}
+
+.routeBox {
+    width: 1700px;
+    height: 200px;
+    background-image: url('/css/mainCountry/Spain/madrid.webp');
+    background-repeat: no-repeat;
+    background-position: center center; /* 이미지 중앙을 요소의 중앙에 배치합니다. */
+    background-size: cover; /* 이미지를 확대/축소하여 요소를 꽉 채웁니다. */
+    display:flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+}
+
+.routeText{
+    color:white;
+    font-size: 80px; /* 글꼴 크기 설정 */
+    text-shadow: 2px 2px 4px #000000; /* 텍스트 그림자 적용 */
+}
+
+.flightInfoBox{
+    width:1700px;
+    display:flex;
+    flex-direction:row;
+}
+
+.flightInfo{
+    width:1000px;
+    display:flex;
+    flex-direction:column;
+}
+
+.flightPrice{
+    width:700px;
+}
