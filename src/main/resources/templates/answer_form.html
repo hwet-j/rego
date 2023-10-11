@@ -1,19 +1,74 @@
 <html   xmlns:th="http://www.thymeleaf.org">
-<div  class="container">
+
+<head>
+    <link rel="stylesheet" href="/css/answer_Form.css">
+</head>
+<body>
+<div class="background"></div>
+<div class="background2"></div>
+
+<div class="container">
+    <div class="nav">
+
+        <ul class="" style="list-style-type:none;">
+            <li class="">
+                <!-- 타임리프의 security이용
+                sec:authorize="isAnonymous()은 로그인하지않는 경우->로그인 출력
+                sec:authorize="isAuthenticated()은 로그인한 경유->로그아웃 출력
+                -->
+                <a class="logo" th:href="@{/}"><img src="/img/logo.png"
+                                                    style="float: left; width: 63px; height: 58px; margin-left: 10px; background-repeat: no-repeat;"></a>
+
+
+                <div class="nav-left"
+                     style="float:left;   margin-left: 470px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 500;">
+                    <a class="" th:href="@{/}"
+                       style="margin-right: 50px; color:#4F54B4;">HOME</a>
+                    <a class="" th:href="@{/}"
+                       style="margin-right: 50px; color:#4F54B4;">AIRPORT</a>
+                    <a class="" th:href="@{/}"
+                       style="margin-right: 50px; color:#4F54B4;">START PLAN</a>
+                    <a class="" th:href="@{/}"
+                       style="color:#4F54B4;">RECOMMEND</a>
+                </div>
+                <div class="nav-right"
+                     style="float:right;    margin-right: 35px; margin-top: 27px;  font-size: 12px;  font-family: 'Roboto', sans-serif; font-weight: 600;">
+                    <a class="" th:href="@{/}"
+                       style="margin-right: 20px; color:#4F54B4;">고객센터</a>
+                    <a class="loginBtn" sec:authorize="isAnonymous()" th:href="@{/login}"
+                       style="margin-right: 20px; color:#4F54B4;">로그인</a>
+                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/}"
+                       style="margin-right: 20px; color:#4F54B4;">마이페이지</a>
+                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/}"
+                       style="margin-right: 20px; color:#4F54B4;">로그아웃</a>
+                    <a class="" sec:authorize="hasRole('ADMIN')" th:href="@{/}"
+                       style="color:#4F54B4;">ADMIN</a>
+                </div>
+            </li>
+
+        </ul>
+        <div>
+
+        </div>
+
+<div  class="Formcontainer">
     <h5 class="my-3 border-bottom pb-2">답변수정</h5>
     <!--CSRF자동생성을 하기위해 th:action속성은  제거,
         CSRF값을 설정하기위한 hidden을 추가한다
         폼의 action속성의 값은 question_form의 브라우저의 현재 URL을 기준으로 설정된다.
          즉 수정버튼을 클릭해서 폼이 보여지는 경우는 action="/answer/modify/질문번호" method="post"-->
     <form id="answerForm" th:object="${answerForm}"  method="post">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+<!--        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
         <!-- 유효성검사시 에러메세지 출력영역 -->
-        <div th:replace="~{form_errors::formErrorsFragment}"></div>
+<!--        <div th:replace="~{form_errors::formErrorsFragment}"></div>-->
         <div class="mb-3">
             <label for="content" class="form-label">내용</label>
-            <textarea th:field="*{content}" class="form-control" rows="8"></textarea>
+            <textarea id="content" th:field="*{content}" class="form-control" rows="8"></textarea>
         </div>
-        <input type="submit" value="답변저장(수정)" class="btn btn-primary my-2"/>
+        <input type="submit" value="답변저장" class="btn btn-primary my-2"/>
     </form>
 </div>
+    </div>
+</div>
+</body>
 </html>

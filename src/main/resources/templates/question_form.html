@@ -71,20 +71,26 @@
         <!-- XEIcon 폰트 불러오기 -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 
-
         <div class="bbox">
             <h1 class="box">1:1 문의하기</h1>
+            <span th:text="${id}"></span>
                 <form id="questionForm" th:action="@{/question/add}" th:object="${questionForm}" method="post" data-aos="fade">
+
+                <div th:if="${id}">
+                    <input type="hidden" th:value="${id}" name="questionId"/>
+                </div>
+
                 <div class="label-box">
                     <div class="search-title">
                         <label for="search-type" hidden>검색 유형</label>
                         <select class="form-control" id="search-type" name="category" th:field="*{category}">
-                            <option value="category">종류선택</option>
-                            <option value="항공">항공</option>
-                            <option value="일정">일정</option>
-                            <option value="장소">장소</option>
-                            <option value="기타">기타</option>
+                            <option value="" th:selected="${questionForm.category == null}">종류선택</option>
+                            <option value="항공" th:selected="${questionForm.category == '항공'}">항공</option>
+                            <option value="일정" th:selected="${questionForm.category == '일정'}">일정</option>
+                            <option value="장소" th:selected="${questionForm.category == '장소'}">장소</option>
+                            <option value="기타" th:selected="${questionForm.category == '기타'}">기타</option>
                         </select>
+
                     </div>
                 </div>
 

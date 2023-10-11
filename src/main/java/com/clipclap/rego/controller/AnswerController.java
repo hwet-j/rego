@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.Map;
 
 @RequestMapping("/answer")
 @RequiredArgsConstructor
@@ -51,29 +52,29 @@ public class AnswerController {
 
 
     // 답변 수정 처리
-    @PostMapping("/modify/{id}")
-    public String modify(@Valid AnswerForm answerForm, BindingResult bindingResult, @PathVariable("id") Integer id, Principal principal) {
-        if (bindingResult.hasErrors()) {
-            return "answer_form";
-        }
+    @RequestMapping("/modify/{id}")
+    public String modify(@RequestBody Map<String, String> requestBody, @PathVariable("id") Integer id, Principal principal) {
+
+        String editedContent = requestBody.get("content");
+
+
         Answer answer = answerService.getAnswer(id);
         if (!answer.getWriter().getEmail().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
         }
-        answerService.modify(answer, answerForm.getContent());
+        answerService.modify(answer, editedContent);
         return String.format("redirect:/question/detail/%d", answer.getQuestion().getId());
     }
 
     // 답변 등록 처리
 
-
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/add/{id}")
-    public String addAnswer(@PathVariable("id") Integer id, Model model, @Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal) {
-
+    public String addAnswer(@PathVariable("id") Integer id, Model model, @Valid AnswerForm answerForm,
+                            BindingResult bindingResult, Principal principal, String email) {
 
         // 이메일 보내기
-        String toEmail = "recipient@example.com";
+        String toEmail = email;
         String subject = "새로운 답변이 등록되었습니다.";
         String message = "새로운 답변 내용: " + answerForm.getContent();
 
