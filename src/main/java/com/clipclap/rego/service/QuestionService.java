@@ -5,6 +5,7 @@ import com.clipclap.rego.model.dto.QuestionDTO;
 import com.clipclap.rego.model.entitiy.Question;
 import com.clipclap.rego.model.entitiy.User;
 import com.clipclap.rego.repository.QuestionRepository;
+import com.clipclap.rego.validation.QuestionForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -48,9 +49,9 @@ public class QuestionService {
     }
 
     //질문수정처리
-    public void modify(Question question, String subject, String content) {
-        question.setSubject(subject);
-        question.setContent(content);
+    public void modify(Question question) {
+        question.setSubject(question.getSubject());
+        question.setContent(question.getContent());
         question.setModifyDate(LocalDateTime.now());
         questionReprository.save(question);
     }
@@ -71,11 +72,16 @@ public class QuestionService {
 
     //질문등록처리
     //SiteUser siteUser : 질문작성자의 정보
-    public void add(String category, String subject, String content, User user){
+    public void add(QuestionForm questionForm,  User user){
         Question question = new Question();
-        question.setCategory(category);
-        question.setSubject(subject);
-        question.setContent(content);
+        question.setCategory(questionForm.getCategory());
+
+        if(questionForm.getQuestionId() != null){     // 수정할 질문의 글번호 설정
+            question.setId(questionForm.getQuestionId());
+        }
+
+        question.setSubject(questionForm.getSubject());
+        question.setContent(questionForm.getContent());
         question.setCreateDate(LocalDateTime.now());
         question.setWriter(user);
         questionReprository.save(question);

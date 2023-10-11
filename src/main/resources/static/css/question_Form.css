@@ -136,7 +136,8 @@ h1.box {
 /* 텍스트 영역 스타일 */
 .textarea-content {
     width: 510px;
-    padding: 115px;
+    height:255px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 10px;
     background-color: #ffffff;
