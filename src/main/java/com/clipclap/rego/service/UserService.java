@@ -48,9 +48,9 @@ public class UserService {
 
     // 유저네임 매개변수를 사용하는 메서드는 그대로 둡니다.
     public User getUser(String username) {
-        Optional<User> userOptional = Optional.ofNullable(userRepository.findByUsername(username));
-        if (userOptional.isPresent()) {
-            return userOptional.get();
+        User user = userRepository.findByUsername(username);
+        if (user != null) {
+            return user;
         } else {
             throw new DataNotFoundException("User NOT FOUND");
         }

@@ -9,9 +9,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 @Getter
 @Setter
-
 public class QuestionDTO {
     private  Integer id;//글번호. 1씩증가.pk
+
+    private String category;//카테고리
 
     private String subject;//제목
 

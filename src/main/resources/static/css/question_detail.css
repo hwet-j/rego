@@ -1,81 +1,256 @@
 @charset "UTF-8";
 
-.container {
-    border-collapse: collapse;
-    width:100%;
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin:0;
+    padding:0;
 }
 
-.title {
 
+h1, h2, h3, p {
+    margin: 100;
+    margin-left: 80px;
+    padding: 0;
+    text-align: left;
+}
+
+
+.background {
+    background-color:#1b4995;
+    opacity:0.5;
+    width:100%;
+    height:100%;
+    position:absolute;
+    z-index:-998;
+
+}
+
+.background2 {
+    width:100%;
+    height:100%;
+    position:absolute;
+    z-index:-999;
+    background-image: url('/img/bg.png');
+    background-repeat: no-repeat;
+}
+
+.nav {
+    left: 110px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    padding-bottom: 15px;
+    background-color: white;
+    width: 1700px;
+    height: 80px;
+    position:fixed;
+    top: 0px;
+
+        position: absolute;
+        /* 다른 스타일 속성들 유지 */
+    }
+
+        a {
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
+
+        a:link, a:visited, a:hover, a:active, a:focus {
+        color: inherit; /* 상속받은 색상을 사용합니다. */
+        outline: none; /* 클릭 시에 표시되는 외곽선 제거 */
+}
+
+.container {
+    max-width: 1660px;
+    height:88%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    z-index: 100;
+    border-radius: 0 0 20px 20px ;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Question Styles */
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: left;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+    width: 500px;
+    height: 100px;
+    margin-left: 80px;
 }
 
 .card-text {
+    font-size: 16px;
+    line-height: 1.5;
+}
 
+.card-text p {
+    margin-bottom: 15px;
 }
 
 
-#outer {width: 800px; margin: auto;}
-#wrap {width: 780px; margin: 100px auto;}
 
-h3 { border-bottom-style : solid;
-		border-bottom-width : 2px;
-		border-bottom-color : black;
-		padding: 10px 20px 10px 20px;}
+/* Author Styles */
+.author-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
 
-card {border-collapse: collapse;
-			width:100%;}
+.author-info .badge {
+    font-size: 14px;
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
 
-card, td{border-bottom-style : solid;
-			     border-bottom-width : 1px;
-			     border-bottom-color : #ebebeb;
-			     padding : 10px 20px;}
+.author-info .badge span {
+    font-weight: bold;
+}
 
- .date {width : 30%; text-align:right;}
-
- .content{height : 500px;
- 					background-color : #fafafa;}
-
-
-
-button{background-color: white; color: black;
-			  padding: 5px 30px;
-			  margin: 4px 2px;
-			  cursor: pointer;
-			  text-align: center;
-			  border : 1px solid gray;
-			  border-radius: 12px; }
-
-
-
-
-
-
-
-
-/* 버튼 스타일 */
+/* Button Styles */
 .btn {
-    /* 다른 버튼 스타일 */
-     margin: 5px;
-    border: 2px solid transparent; /* 테두리를 투명으로 설정 */
-    transition: border-color 0.3s; /* 테두리 색상 변경 시 부드러운 전환 효과 추가 */
-    border-radius: 5px; /* 모서리를 둥글게 만들기 */
-    padding: 8px 12px; /* 페이지 아이템 내부 여백 설정 */
+    display: inline-block;
+    width: 45px;
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 15px;
+    cursor: pointer;
+    border: 1px solid transparent; /* 테두리를 투명으로 설정 */
+    transition: border-color 0.3s;
+    padding: 4px 4px; /* 페이지 아이템 내부 여백 설정 */
     font-weight: bold; /* 폰트 굵기 설정 */
+    border-color: #59BAFF;
+    background-color: #FFFFFF;
 }
 
-/* 버튼에 호버 시 테두리 색상 변경 */
+.btn.primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn.primary:hover {
+    background-color: #0056b3;
+}
+
+.btn.danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.btn.danger:hover {
+    background-color: #c82333;
+}
+
 .btn:hover {
-    border-color: #0056b3; /* 호버 시 테두리 색상 설정 */
-     transition: background-color 0.3s; /* 부드러운 전환 효과 추가 */
+       border-color: #59BAFF; /* 호버 시 테두리 색상 설정 */
+       background-color: #59BAFF;
+       transition: background-color 0.3s; /* 부드러운 전환 효과 추가 */
 }
 
 /* 버튼에 포커스 시 테두리 색상 변경 */
 .btn:focus {
-    border-color: #0056b3; /* 포커스 시 테두리 색상 설정 */
-    outline: none; /* 포커스 테두리 제거 */
+      border-color: #59BAFF; /* 호버 시 테두리 색상 설정 */
+       background-color: #59BAFF;
+       transition: background-color 0.3s; /* 부드러운 전환 효과 추가 */
+       color: #FFFFFF;
 }
 
-/* 버튼에 클릭 시 테두리 색상 변경 */
-.btn:active {
-    border-color: #0056b3; /* 클릭 시 테두리 색상 설정 */
+
+
+
+/* Answer Styles */
+.reply-list {
+    margin-top: 20px;
+    margin-left: 80px;
+}
+
+.reply-text {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 20px;
+    width: 500px;
+    height: 10px;
+}
+
+.reply-text p {
+    margin-bottom: 10px;
+}
+
+/* Form Styles */
+#answerForm {
+    margin-top: 20px;
+    margin-left: 80px;
+}
+
+.form-control {
+    width: 380px;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+    resize: vertical;
+
+}
+
+.form-control:disabled {
+    background-color: #f8f9fa;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .title {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .card {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .btn {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+
+.btn[type="submit"][value="답변등록"] {
+    color: #59BAFF;
+        display: block;
+        width: 125px;
+        height:45px;
+        padding: 10px;
+        border: 2px solid color: #59BAFF;
+
+}
+
+.btn[type="submit"][value="작성완료"]:hover {
+    color: #FFFFFF;
 }

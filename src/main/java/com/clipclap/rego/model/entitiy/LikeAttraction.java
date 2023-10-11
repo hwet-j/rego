@@ -2,6 +2,8 @@ package com.clipclap.rego.model.entitiy;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -29,11 +31,13 @@ public class LikeAttraction {
     private Integer likeId;
 
     @ManyToOne
-    @JoinColumn(name = "userEmail", referencedColumnName = "email")
-    private User userEmail;
+    @JoinColumn(name = "user", referencedColumnName = "email")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "attractionId", referencedColumnName = "touristAttractionId")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private TouristAttraction attraction;
 
     @Column(nullable = false)

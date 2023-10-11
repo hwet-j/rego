@@ -30,10 +30,10 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		OAuth2User oAuth2User = super.loadUser(userRequest);
 
-		// code를 통해 구성한 정보
-		// System.out.println("userRequest clientRegistration : " + userRequest.getClientRegistration());
 		// token을 통해 응답받은 회원정보
-		// System.out.println("oAuth2User : " + oAuth2User);
+		log.info("oAuth2User : " + oAuth2User);
+		// code를 통해 구성한 정보
+		log.info("userRequest clientRegistration : " + userRequest.getClientRegistration());
 
 		return processOAuth2User(userRequest, oAuth2User);
 	}

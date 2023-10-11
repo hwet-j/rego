@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 /*
@@ -40,16 +41,20 @@ public class User {
 	private Integer userId;
 
 	private String password;
+
 	private String nickname;
 
 	@Column(unique = true, nullable = false)
 	private String email;
 
 	private String gender;
+
 	private LocalDate birthDate;
+
 	private Boolean withdrawalRequest;
 
 	private String role; 			// ROLE_USER, ROLE_ADMIN 등 역할
+
 	private String username;		// UserDetails 라는 클래스를 상속받고 있어서 사용되어야함 -> API 정보가 들어감
 	// OAuth를 위해 구성한 추가 필드 2개
 	private String provider;
@@ -61,4 +66,23 @@ public class User {
 	public boolean checkPassword(String plainPassword, PasswordEncoder passwordEncoder) {
 		return passwordEncoder.matches(plainPassword, this.password);
 	}
+
+
+	@OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
+	private List<Answer> answers;
+
+	@OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
+	private List<Question> questions;
+
+	@OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
+	private List<Notice> notices;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	private List<LikeAttraction> likeAttractions;
+
+	@OneToMany(mappedBy = "planId", cascade = CascadeType.REMOVE)
+	private List<Planner> planners;
+
+
+
 }
