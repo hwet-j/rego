@@ -18,7 +18,7 @@ a:hover {
 }
 
 .navEmptyBox{
-     margin-top: 110px;
+     margin-top: 83px;
 }
 
 
@@ -49,14 +49,35 @@ a:hover {
 
 }
 
-.resultBoxLeft{
-
+.resultBoxLeft {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width:250px;
+}
+div#airlines-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 250px;
 }
 
+.airlineOption {
+    display: flex; /* 체크박스와 라벨을 가로로 나란히 배치 */
+    align-items: center; /* 체크박스와 라벨을 수직 중앙 정렬 */
+    width: 100%;
+    margin: 5px 0
+}
+
+.resultBoxLeft label {
+    text-align: left;
+    margin-left: 8px; /* 체크박스와 라벨 사이의 간격을 조정 */
+}
 .center-content {
     display: flex;
     align-items: center; /* 수직 중앙 정렬 */
     justify-content: center; /* 수평 중앙 정렬 */
+    text-align:left;
 }
 
 .center-content > span.duration + img {
@@ -81,7 +102,7 @@ td.price{
 
 .price .money {
     text-align: center; /* 내용물을 수평 가운데 정렬 */
-    font-size:25px;
+    font-size:35px;
     font-weight:500;
 }
 
@@ -124,4 +145,13 @@ td.price{
 
 .airlineName{
     font-size:10px;
+}
+
+.book-btn {
+    background-color: #1B253C;
+    color: white;
+    font-size:25px;
+    padding: 10px 25px;
+    border-radius: 15px;
+    font-weight:bold;
 }
