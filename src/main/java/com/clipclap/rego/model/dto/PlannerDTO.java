@@ -13,7 +13,6 @@ public class PlannerDTO {
 
     private Integer planId;
 
-    @NotNull
     private String userEmail;
 
     @NotBlank(message = "주제를 작성해주세요.")

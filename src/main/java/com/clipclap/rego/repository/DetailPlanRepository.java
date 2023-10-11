@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface DetailPlanRepository extends JpaRepository<PlannerDetail, Integer> {
 
-    void deleteByDetailPlanId(Integer detailPlanId);
+    void deleteByPlanPlanIdAndDetailPlanId(Integer planId, Integer detailPlanId);
 
     @Query(value = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'planner' AND TABLE_NAME = 'detailPlan'", nativeQuery = true)
     Integer findNextAutoIncrementValue();
