@@ -46,7 +46,7 @@
                       th:if="${#lists.size(notice.answerList)>0}"
                       th:text="${#lists.size(notice.answerList)}"></span>
             </td>
-            <td  th:if="${notice.writer!=null}" th:text="${notice.writer.username}"></td>
+            <td  th:if="${notice.writer!=null}" th:text="${notice.writer.email}"></td>
             <!-- temporals.format(날짜대상,"date포맷") -->
             <td th:text="${#temporals.format(notice.createDate,'yyyy-MM-dd HH:mm')}"></td>
         </tr><!--1페이지당 출력할 게시물수만큼 반복끝-->

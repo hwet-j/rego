@@ -4,6 +4,8 @@ package com.clipclap.rego.model.entitiy;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,7 +29,11 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Integer id;//글번호. 1씩증가.pk
 
+
     //@Column : 컬럼
+    @Column(length = 50)
+    private String category;//카테고리
+
     @Column(length = 200)
     private String subject;//제목
 
@@ -49,15 +55,24 @@ public class Question {
 
     //한 명의 USER가 여러 개의 질문을 작성할 수 있다
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User writer; //user정보(id,username,email,password)
 
     //1개의 질문은 추천인이 많을 수 있다
     //1명은 추천인은 여러 질문들을 추천할 수 있다
     //추천인이 중복되지않게 하기위해 Set타입으로 지정
     @ManyToMany
+    @OnDelete(action = OnDeleteAction.CASCADE)
     Set<User> voter;
+
+
+
+
+    // 생성자, 게터, 세터, 기타 메서드
 
     //constuctor
 
     //method
 }
+
+

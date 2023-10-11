@@ -8,7 +8,10 @@ public interface DetailPlanService {
 
     void makeDetailPlan(DetailPlanDTO detail);
 
-    List<DetailPlanDTO> findAllByPlan(Long planId);
+    List<DetailPlanDTO> findAllByPlan(Integer planId);
 
     DetailPlanDTO findById(Integer id);
+
+    Integer findMaxDetailPlanIdByPlanId(Integer planId);
+
 }

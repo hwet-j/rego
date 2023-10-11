@@ -1,12 +1,17 @@
 package com.clipclap.rego.service;
 
+import com.clipclap.rego.model.dto.AdminUserDTO;
 import com.clipclap.rego.model.entitiy.User;
 import com.clipclap.rego.repository.UserRepository;
 import com.clipclap.rego.validation.JoinForm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -67,5 +72,54 @@ public class AuthServiceImpl implements AuthService {
             return "No_Duplicate";
         }
     }
+
+    @Override
+    public Page<User> getMemberList(Pageable pageable){
+        Page<User> memberList=userRepository.findAll(pageable);
+        return memberList;
+    }
+
+    @Override
+    public User getUserDetail(Integer userId) {
+        Optional<User> user=userRepository.findById(userId);
+        if(user.isPresent()){
+            return user.get();
+        }
+        return null;
+    }
+
+    @Override
+    public void AdminUserEdit(AdminUserDTO adminUserDTO, Integer userId) {
+        Optional<User> optionalMember = userRepository.findById(userId);
+        if (optionalMember.isPresent()) {
+            User user = optionalMember.get();
+            user.setEmail(adminUserDTO.getEmail());
+            user.setPassword(adminUserDTO.getPassword());
+            user.setNickname(adminUserDTO.getNickname());
+            user.setGender(adminUserDTO.getGender());
+            user.setBirthDate(LocalDate.parse(adminUserDTO.getBirthDate()));
+            user.setCreateDate(adminUserDTO.getCreateDate());
+            user.setRole(adminUserDTO.getRole());
+            user.setWithdrawalRequest(adminUserDTO.getWithdrawalRequest());
+            userRepository.save(user);
+        }
+    }
+
+    @Override
+    public void deleteUser(Integer userId){
+        Optional<User> user=userRepository.findById(userId);
+        System.out.println("id="+userId);
+        Integer deleteId= user.get().getUserId();
+        userRepository.deleteById(deleteId);
+
+    }
+
+    @Override
+    public void deleteUsers(List<Integer> userIds) {
+        for (Integer userId : userIds) {
+            userRepository.deleteById(userId);
+        }
+    }
+
 
 }

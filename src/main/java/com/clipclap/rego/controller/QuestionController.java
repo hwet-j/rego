@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,7 +33,7 @@ public class QuestionController {
     @GetMapping("/delete/{id}")
     public String questionDelete(@PathVariable("id") Integer id, Principal principal) {
         Question question = questionService.getQuestion(id);
-        if (!question.getWriter().getUsername().equals(principal.getName())) {
+        if (!question.getWriter().getEmail().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다.");
         }
         questionService.delete(question);
@@ -45,7 +48,7 @@ public class QuestionController {
         //1.파라미터받기
         //2.비즈니스로직수행
         Question question = questionService.getQuestion(id); //질문상세
-        if ( !question.getWriter().getUsername().equals(principal.getName()) ) {
+        if ( !question.getWriter().getEmail().equals(principal.getName()) ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"수정권한이 없습니다.");
         }
         questionForm.setSubject(question.getSubject());
@@ -61,7 +64,7 @@ public class QuestionController {
             return "question_form";
         }
         Question question = questionService.getQuestion(id);
-        if (!question.getWriter().getUsername().equals(principal.getName())) {
+        if (!question.getWriter().getEmail().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
         }
         questionService.modify(question, questionForm.getSubject(), questionForm.getContent());
@@ -71,7 +74,21 @@ public class QuestionController {
     // 질문 등록 폼을 보여줌
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/add")
-    public String add(QuestionForm questionForm) {
+    public String add(QuestionForm questionForm, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetail = (UserDetails) auth.getPrincipal();
+
+        String username = userDetail.getUsername();
+        User user= userService.getUserByEmail(username);
+        String email = user.getEmail();
+        System.out.println("불러온 이메일"+email);
+
+
+        QuestionForm questionForm1 = new QuestionForm();
+        questionForm1.setEmail(email);
+
+        model.addAttribute("questionForm",questionForm1);
+
         return "question_form";
     }
 
@@ -81,10 +98,14 @@ public class QuestionController {
     public String questionAdd(@Valid QuestionForm questionForm, BindingResult bindingResult,
                               Principal principal) {
         if (bindingResult.hasErrors()) {
+            System.out.println("fail");
             return "question_form";
         }
-        User user = userService.getUser(principal.getName());
-        questionService.add(questionForm.getSubject(), questionForm.getContent(), user);
+
+        User user = userService.getUserByEmail(principal.getName());
+        System.out.println(questionForm.getCategory());
+        questionService.add(questionForm.getCategory(), questionForm.getSubject(), questionForm.getContent(), user);
+
         return "redirect:/question/list";
     }
 
@@ -111,7 +132,7 @@ public class QuestionController {
     @GetMapping("/vote/{id}")
     public String questionVote(@PathVariable("id") Integer id, Principal principal) {
         Question question = questionService.getQuestion(id);
-        User user = userService.getUser(principal.getName());
+        User user = userService.getUserByEmail(principal.getName());
         questionService.vote(question, user);
         return String.format("redirect:/question/detail/%d", id);
     }

@@ -2,8 +2,11 @@ package com.clipclap.rego.model.entitiy;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /*
 
@@ -34,9 +37,11 @@ public class Planner {
     private Integer planId;
 
     @ManyToOne
-    @JoinColumn(name = "userEmail", referencedColumnName = "email")
-    private User userEmail;
+    @JoinColumn(name = "user", referencedColumnName = "email")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User user;
 
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @Column(nullable = false)
@@ -51,4 +56,10 @@ public class Planner {
     @Column(nullable = false)
     private String type;
 
+
+    @OneToMany(mappedBy = "detailPlanId", cascade = CascadeType.REMOVE)
+    private List<PlannerDetail> detailPlans;
+
+    @OneToMany(mappedBy = "plan", cascade = CascadeType.REMOVE)
+    private List<LikePlan> likePlans;
 }
