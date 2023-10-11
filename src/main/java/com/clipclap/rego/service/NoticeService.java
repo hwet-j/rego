@@ -3,8 +3,11 @@ package com.clipclap.rego.service;
 
 import com.clipclap.rego.model.dto.NoticeDTO;
 import com.clipclap.rego.model.entitiy.Notice;
+import com.clipclap.rego.model.entitiy.Question;
 import com.clipclap.rego.model.entitiy.User;
 import com.clipclap.rego.repository.NoticeRepository;
+import com.clipclap.rego.validation.NoticeForm;
+import com.clipclap.rego.validation.QuestionForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -57,23 +60,28 @@ public class NoticeService {
     //공지등록처리
     public void addDTO(NoticeDTO noticeDTO) {
         Notice notice = toEntity(noticeDTO);
+        noticeReprository.save(notice);
 //        Notice notice = new Notice();
 //        notice.setSubject(noticeDTO.getSubject());
 //        notice.setContent(noticeDTO.getContent());
 //        notice.setCreateDate(noticeDTO.getCreateDate());
-        noticeReprository.save(notice);
+
     }
 
 
     //공지등록처리
     //SiteUser siteUser : 공지작성자의 정보
-    public void add(String subject, String content, User user){
+    public void add(NoticeForm noticeForm, User user){
         Notice notice = new Notice();
-        notice.setSubject(subject);
-        notice.setContent(content);
+
+        if(noticeForm.getNoticeId() != null){     // 수정할 공지의 글번호 설정
+            notice.setId(noticeForm.getNoticeId());
+        }
+
+        notice.setSubject(noticeForm.getSubject());
+        notice.setContent(noticeForm.getContent());
         notice.setCreateDate(LocalDateTime.now());
         notice.setWriter(user);
-        System.out.println("공지서비스 notice="+notice);
         noticeReprository.save(notice);
     }
 
@@ -118,6 +126,7 @@ public class NoticeService {
         Pageable pageable = PageRequest.of(page,10,Sort.by(sorts));
         return noticeReprository.findAll(pageable);
     }
+
 
 
 }

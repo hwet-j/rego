@@ -17,7 +17,6 @@ public class NoticeDTO {
 
     private LocalDateTime createDate;//작성일
 
-    private List<Answer> answerList;
 
 
 }

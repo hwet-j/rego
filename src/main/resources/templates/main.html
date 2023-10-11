@@ -68,7 +68,7 @@
                        style="margin-right: 20px; color:#4F54B4;">로그인</a>
                     <a class="" sec:authorize="isAuthenticated()" th:href="@{/}"
                        style="margin-right: 20px; color:#4F54B4;">마이페이지</a>
-                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/}"
+                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/logout}"
                        style="margin-right: 20px; color:#4F54B4;">로그아웃</a>
                     <a class="" sec:authorize="hasRole('ADMIN')" th:href="@{/}"
                        style="color:#4F54B4;">ADMIN</a>
