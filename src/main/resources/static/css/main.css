@@ -30,7 +30,7 @@ button {
 .middle-box {
     text-align: center;
     width: 1700px;
-    height: 2700px;
+    height: 2500px;
     background-color: white;
     padding-top: 100px;
     box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
@@ -148,6 +148,7 @@ box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.3);
    float: right;
    background-color: white;
    width: 245px;
+   padding-bottom: 15px;
    height: 155px;
    margin-right: -250px;
    font-size: 24px;
@@ -170,41 +171,58 @@ box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.3);
 }
 
 
+.arrow {
+    position:absolute;
+    top: 85px;
+    left: 1130px;
+    width: 30px;
+    height: 30px;
+    background-image:url('/img/arrow.png');
+    background-repeat: no-repeat;    /* 이미지 반복 안 함 */
+    z-index: 200;
+    background-position: center;    /* 이미지를 박스의 중앙에 위치시킴 */
+}
+
+
+select {
+    appearance: none;
+    background: url('path/to/your/dropdown-icon.png') no-repeat right center;
+}
 
 #departureAirport {
-
     position: absolute;
     margin-top: 40px;
     text-align:center;
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     color: white;
     font-size: 36px;
     width: 247px;
     height: 100px;
     background-color: #364E9B;
     margin-left: 6px;
-    border:none;               /* 기본 테두리 제거 */
+    border: none;               /* 기본 테두리 제거 */
     -webkit-appearance: none;   /* Chrome, Safari에서 기본 디자인 제거 */
-    -moz-appearance: none;      /* Firefox에서 기본 디자인 제거 */
     appearance: none;           /* 표준화된 브라우저 디자인 제거 */
     padding: 10px;              /* 내부 패딩 추가 */
     line-height: normal;        /* line-height 재설정 */
     cursor: pointer;            /* 마우스 오버시 커서 변경 */
+
 }
 
 #departureAirport::-ms-expand {
     display: none;
+    border: none;
 }
 
 
 #departureAirport option {
     font-size: 18px; /* 원하는 크기로 설정 */
-    border:none;
+    border: none;
 }
 
 #departureAirport:focus {
     outline: none;   /* 기본 테두리 제거 */
-    border: none;    /* 기본 보더 제거 */
+    border:none;
 }
 
 
@@ -222,7 +240,7 @@ box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.3);
     left: 253px;
         margin-top: 40px;
         text-align:center;
-        font-family: 'Nunito', sans-serif;
+        font-family: 'Noto Sans KR', sans-serif;
         color: white;
         font-size: 36px;
         width: 247px;
@@ -252,10 +270,6 @@ box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.3);
     outline: none;   /* 기본 테두리 제거 */
     border: none;    /* 기본 보더 제거 */
 }
-
-
-
-
 
 
 
@@ -343,7 +357,8 @@ position: absolute;
     ffont-family: 'Nunito', sans-serif !important;
     font-size: 15px;
     line-height: 1em;
-     border: none !important;
+    border: none !important;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3) !important;
 }
 
 .daterangepicker .calendar-table {
@@ -434,6 +449,483 @@ position: absolute;
     display: inline-block !important;
     padding: 3px !important;
 }
+
+.daterangepicker select.monthselect {
+
+    color: white;
+    background-color: #364E9B !important;
+    margin-right: 3%;
+    width: 60%;
+    background-color: #f3f4f6;  /* 배경색을 연한 회색으로 변경 */
+    border: #364E9B !important;
+    border-radius: 5px;          /* 모서리를 둥글게 변경 */
+}
+
+.daterangepicker th.month {
+    width: auto;
+    font-size : 20px !important;
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 500 !important;
+}
+
+
+
+
+/*나라 탭메뉴*/
+.middle-content2 {
+    margin-left: 100px;
+    width: 1500px;
+    height: 1300px;
+    margin-top: 250px;
+}
+
+.content2-header {
+    text-align: left;
+    margin-left: 150px;
+    width: 1200px;
+    height: 70px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 48px;
+    color: #364E9B;
+    font-weight: 700;
+}
+
+
+
+
+.tab1-center {
+    float: left;
+    width: 350px;
+    height: 530px;
+    margin-left: 20px;
+}
+
+
+.tab1-img1{
+    float: left;
+    width: 660px;
+    height: 425px;
+    margin-top: 105px;
+    margin-left: 50px;
+     position: relative;
+     overflow: hidden;
+}
+
+.tab1-start{
+
+    width: 350px;
+    height: 280px;
+    background-color: #7BB2F0;
+}
+
+.tab1-start-box {
+    color: white;
+font-family: 'Nunito', sans-serif;
+    border: 1px solid  #7BB2F0;
+    margin-left: 10%;
+    top: 10%;
+    width: 80%;
+    height: 80%;
+}
+
+.tab1-start-box h1 {
+    margin-top: 20%;
+}
+
+.tzb1-start-box a {
+}
+
+.start-btn {
+    padding-top: 10px;
+    width: 200px;
+    height: 30px;
+    border: 5px solid white;
+    border-radius: 30px;
+    margin-left: 35px;
+        margin-top: 10px;
+        font-weight: 600;
+}
+
+.start-btn:hover {
+    padding-top: 10px;
+    width: 200px;
+    height: 30px;
+    color:#7BB2F0;
+    border: 5px solid white;
+    background-color: white;
+    border-radius: 30px;
+    margin-left: 35px;
+    font-weight: 600;
+        margin-top: 10px;
+}
+
+.tab1-img2{
+    width: 350px;
+    height: 230px;
+    margin-top: 20px;
+   position: relative;
+     overflow: hidden;
+}
+
+.tab1-img3{
+    float: left;
+    width: 270px;
+    height: 445px;
+    margin-left: 20px;
+    margin-top: 85px;
+    position: relative;
+    overflow: hidden;
+}
+
+
+
+.tab1-img4{
+    float: left;
+    width: 525px;
+    height: 350px;
+    margin-top: 20px;
+    margin-left: 120px;
+    position: relative;
+    overflow: hidden;
+}
+
+.tab1-img5{
+    float: left;
+    width: 775px;
+    height: 520px;
+    margin-left: 20px;
+    margin-top: 20px;
+    position: relative;
+         overflow: hidden;
+}
+
+.tab1-img1 img {
+    width: 100%;  /* 이미지의 너비를 div에 맞게 조절 */
+    height: 100%;  /* 이미지의 높이를 div에 맞게 조절 */
+    object-fit: cover;  /* 이미지의 비율을 유지하면서 div에 맞게 채움 */
+    transition: transform 0.3s;
+}
+.tab1-img2 img {
+    width: 100%;  /* 이미지의 너비를 div에 맞게 조절 */
+    height: 100%;  /* 이미지의 높이를 div에 맞게 조절 */
+    object-fit: cover;  /* 이미지의 비율을 유지하면서 div에 맞게 채움 */
+    transition: transform 0.3s;
+}
+.tab1-img3 img {
+    width: 100%;  /* 이미지의 너비를 div에 맞게 조절 */
+    height: 100%;  /* 이미지의 높이를 div에 맞게 조절 */
+    object-fit: cover;  /* 이미지의 비율을 유지하면서 div에 맞게 채움 */
+    transition: transform 0.3s;
+}
+.tab1-img4 img {
+    width: 100%;  /* 이미지의 너비를 div에 맞게 조절 */
+    height: 100%;  /* 이미지의 높이를 div에 맞게 조절 */
+    object-fit: cover;  /* 이미지의 비율을 유지하면서 div에 맞게 채움 */
+    transition: transform 0.3s;
+}
+.tab1-img5 img {
+    width: 100%;  /* 이미지의 너비를 div에 맞게 조절 */
+    height: 100%;  /* 이미지의 높이를 div에 맞게 조절 */
+    object-fit: cover;  /* 이미지의 비율을 유지하면서 div에 맞게 채움 */
+    transition: transform 0.3s;
+}
+
+
+.tab1-img1:hover  {
+    transform: scale(1.05);
+    z-index: 990;
+    box-shadow: 5px 7px 10px rgba(0, 0, 0, 0.3);
+}
+.tab1-img1:hover .blueScreen {
+    opacity: 0.7;  /* 호버시 .blueScreen이 보이게 설정 */
+}
+
+.tab1-img2:hover  {
+    transform: scale(1.05);
+    z-index: 990;
+    box-shadow: 5px 7px 10px rgba(0, 0, 0, 0.3);
+}
+.tab1-img2:hover .blueScreen2 {
+    opacity: 0.7;  /* 호버시 .blueScreen이 보이게 설정 */
+}
+
+.tab1-img3:hover  {
+    transform: scale(1.05);
+    z-index: 990;
+    box-shadow: 5px 7px 10px rgba(0, 0, 0, 0.3);
+}
+.tab1-img3:hover .blueScreen2 {
+    opacity: 0.7;  /* 호버시 .blueScreen이 보이게 설정 */
+}
+
+.tab1-img4:hover  {
+    transform: scale(1.05);
+    z-index: 990;
+    box-shadow: 5px 7px 10px rgba(0, 0, 0, 0.3);
+}
+.tab1-img4:hover .blueScreen {
+    opacity: 0.7;  /* 호버시 .blueScreen이 보이게 설정 */
+}
+
+.tab1-img5:hover  {
+    transform: scale(1.05);피사의 사탑
+    z-index: 990;
+    box-shadow: 5px 7px 10px rgba(0, 0, 0, 0.3);
+}
+.tab1-img5:hover .blueScreen {
+    opacity: 0.7;  /* 호버시 .blueScreen이 보이게 설정 */
+}
+
+.tab1-img1:hover p {
+    opacity: 1;
+}
+
+.tab1-img2:hover p {
+    opacity: 1;
+}
+
+.tab1-img3:hover p {
+    opacity: 1;
+}
+
+.tab1-img4:hover p {
+    opacity: 1;
+}
+
+.tab1-img5:hover p {
+    opacity: 1;
+}
+
+.tab1-img1 h2 {
+    position: absolute;
+    top : 85%;
+    left: 3%;
+    color: white;
+    font-size: 24px;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.7);
+    z-index: 991;
+}
+.tab1-img2 h2 {
+    position: absolute;
+    top : 74%;
+    left: 4%;
+    color: white;
+    font-size: 24px;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.7);
+    z-index: 991;
+}
+.tab1-img3 h2 {
+    position: absolute;
+    top : 86%;
+    left: 6%;
+    color: white;
+    font-size: 24px;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.7);
+    z-index: 991;
+}
+.tab1-img4 h2 {
+    position: absolute;
+    top : 82%;
+    left: 3%;
+    color: white;
+    font-size: 24px;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.7);
+    z-index: 991;
+}
+.tab1-img5 h2 {
+    position: absolute;
+    top : 88%;
+    left: 2%;
+    color: white;
+    font-size: 24px;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.7);
+    z-index: 991;
+}
+
+
+.tab1-img1 p {
+    position: absolute;
+    left: 52.5%;
+    width:45%;
+    height: 92%;
+    font-size: 12px;
+    color: white;
+    text-align: left;
+    z-index: 991;
+    font-family: 'Noto Sans KR', sans-serif;
+    opacity: 0;
+    transition: transform 0.3s;
+}
+
+.tab1-img2 p {
+    position: absolute;
+    left: 5%;
+    width:90%;
+    height: 80%;
+    font-size: 12px;
+    color: white;
+    text-align: left;
+    z-index: 991;
+    font-family: 'Noto Sans KR', sans-serif;
+    opacity: 0;
+    transition: transform 0.3s;
+}
+
+
+.tab1-img3 p {
+    position: absolute;
+    left: 5%;
+    width:90%;
+    height: 80%;
+    font-size: 12px;
+    color: white;
+    text-align: left;
+    z-index: 991;
+    font-family: 'Noto Sans KR', sans-serif;
+    opacity: 0;
+    transition: transform 0.3s;
+}
+
+.tab1-img4 p {
+    position: absolute;
+    left: 52.5%;
+    width:45%;
+    height: 92%;
+    font-size: 12px;
+    color: white;
+    text-align: left;
+    z-index: 991;
+    font-family: 'Noto Sans KR', sans-serif;
+    opacity: 0;
+    transition: transform 0.3s;
+}
+
+.tab1-img5 p {
+    position: absolute;
+    left: 52.5%;
+    width:45%;
+    height: 92%;
+    font-size: 12px;
+    color: white;
+    text-align: left;
+    z-index: 991;
+    font-family: 'Noto Sans KR', sans-serif;
+    opacity: 0;
+    transition: transform 0.3s;
+}
+
+
+
+
+
+.blueScreen {
+    position: absolute;  /* 절대 위치를 사용하여 div를 이미지 위에 배치 */
+    top: 0;  /* 상단에서 0px의 위치에 배치 */
+    left: 50%;  /* 좌측에서 0px의 위치에 배치 */
+    width: 50%;  /* 너비를 부모 div에 맞게 조절 */
+    height: 100%;  /* 높이를 부모 div에 맞게 조절 */
+    background-color: #364E9B;;  /* 파란색 배경. 원하는 색상으로 변경 가능 */
+    transition: opacity 0.3s;
+    pointer-events: none;
+    opacity:0;
+}
+
+.blueScreen2 {
+    position: absolute;  /* 절대 위치를 사용하여 div를 이미지 위에 배치 */
+    top: 0;  /* 상단에서 0px의 위치에 배치 */
+    left: 0;  /* 좌측에서 0px의 위치에 배치 */
+    width: 100%;  /* 너비를 부모 div에 맞게 조절 */
+    height: 100%;  /* 높이를 부모 div에 맞게 조절 */
+    background-color: #364E9B;;  /* 파란색 배경. 원하는 색상으로 변경 가능 */
+    transition: opacity 0.3s;
+    pointer-events: none;
+     opacity:0;
+}
+
+
+
+
+
+
+
+
+
+
+.tab-list li {
+    padding: 10px 20px;
+    cursor: pointer;
+    border-bottom: none;
+    margin-right: 5px;
+}
+
+
+
+
+
+
+.tab-menu {
+
+    font-family: 'Nunito', sans-serif;
+    width: 1500px;
+    height: 1200px;
+}
+
+.tab-list {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    margin-left: 150px;
+    font-family: 'Nunito', sans-serif;
+    color: grey;
+}
+
+
+.tab-list li {
+    padding: 1px 20px;
+    cursor: pointer;
+
+    border-bottom: none;
+    margin-right: 5px;
+    border:none;
+}
+
+.tab-list li.active {
+    padding-bottom: 2px;
+    font-weight: 800;
+    color: #364E9B;
+    background: linear-gradient(to right, white, white 25%, #364E9B 25%, #364E9B 75%, white 75%, white);
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: 100% 3px; /* "border"의 두께 결정 */
+}
+
+.tab-tabcontent {
+    padding: 20px;
+}
+
+.tabcontent {
+    display: none;
+}
+
+.tabcontent.active {
+    display: block;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
