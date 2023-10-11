@@ -92,6 +92,7 @@ h1, h2, h3, p {
     margin-bottom: 20px;
     text-align: left;
     width: 500px;
+    max-height: 538px;
     margin-left: 80px;
     margin-top: 10px;
 }
@@ -178,48 +179,6 @@ h1, h2, h3, p {
 }
 
 
-
-
-/* Answer Styles */
-.reply-list {
-    margin-top: 20px;
-    margin-left: 80px;
-}
-
-.reply-text {
-    background-color: #f8f9fa;
-    border-radius: 5px;
-    padding: 15px;
-    margin-top: 20px;
-    width: 500px;
-    height: 10px;
-}
-
-.reply-text p {
-    margin-bottom: 10px;
-}
-
-/* Form Styles */
-#answerForm {
-    margin-top: 20px;
-    margin-left: 80px;
-}
-
-.form-control {
-    width: 380px;
-    padding: 10px;
-    font-size: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-top: 10px;
-    resize: vertical;
-
-}
-
-.form-control:disabled {
-    background-color: #f8f9fa;
-}
-
 /* Responsive Styles */
 @media (max-width: 768px) {
     .container {
@@ -242,7 +201,8 @@ h1, h2, h3, p {
     }
 }
 
-.btn[type="submit"][value="답변등록"] {
+
+.btn[type="submit"][value="공지등록"] {
     color: #59BAFF;
         display: block;
         width: 125px;
@@ -253,6 +213,6 @@ h1, h2, h3, p {
 
 }
 
-.btn[type="submit"][value="답변등록"]:hover {
+.btn[type="submit"][value="공지등록"]:hover {
     color: #FFFFFF;
 }

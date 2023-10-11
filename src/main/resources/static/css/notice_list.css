@@ -1,0 +1,264 @@
+@charset "UTF-8";
+
+body {
+    font-family: Arial, sans-serif;
+    margin:0;
+    padding:0;
+}
+
+.background {
+    background-color:#1b4995;
+    opacity:0.5;
+    width:100%;
+    height:100%;
+    position:absolute;
+    z-index:-998;
+
+}
+
+.background2 {
+    width:100%;
+    height:100%;
+    position:absolute;
+    z-index:-999;
+    background-image: url('/img/bg.png');
+     background-repeat: no-repeat;
+}
+
+
+
+
+.nav {
+    left: 110px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    padding-bottom: 15px;
+    background-color: white;
+    width: 1700px;
+    height: 80px;
+    text-align: center;
+    position:fixed;
+    top: 0px;
+
+    position: absolute;
+    /* 다른 스타일 속성들 유지 */
+    }
+
+    a {
+    text-decoration: none;
+    }
+
+    a:hover {
+    text-decoration: none;
+    }
+
+    a:link, a:visited, a:hover, a:active, a:focus {
+    color: inherit; /* 상속받은 색상을 사용합니다. */
+    outline: none; /* 클릭 시에 표시되는 외곽선 제거 */
+}
+
+.container {
+
+    max-width: 1660px;
+    height:88%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    z-index: 100;
+    border-radius: 0 0 20px 20px ;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* 제목 스타일 */
+h1.box {
+    font-size: 30px;
+        color: #464DB7;
+        margin-bottom: -100px;
+        margin-left: 50px;
+        margin-right: 10px;
+        margin-top: 155px;
+}
+
+.table:  { #d3d3d3;}
+    .grey {
+     color: #727272;}
+     #strong { font-weight: 900;}
+
+       .table {
+               width: 80%;
+               border-collapse: collapse;
+               margin-top: 20px;
+               border-top: 1px solid #d3d3d3;
+               border-collapse: collapse;
+
+           }
+
+            th { background-color: #ffffff ;
+            border-top: 1px solid #727272;
+            }
+
+            th, td {
+            border-bottom: 1px solid #d3d3d3;
+            padding: 15px;
+            align: -internal-center;
+            }
+
+  .greylist {
+  width: 50px;
+  height: 30px;
+  font-weight: 900;
+  color: white;
+  text-align: center;
+  background: #ffffff;
+  border: solid 2px white;
+  border-radius: 5px;
+  }
+  .gradient {
+  width: 80px;
+  height: 30px;
+  font-weight: 900;
+  color: white;
+  text-align: center;
+  background: linear-gradient( to bottom, grey, black );
+  border: solid 2px white;
+  border-radius: 5px;
+  }
+
+  .left {text-align: left;}
+  .right {  float: right;}
+  .center { text-align: center;}
+
+
+
+
+
+
+
+
+/* 제목 스타일 */
+h1.box {
+    font-size: 50px;
+    color: #333;
+    text-align: center;
+    margin-top: 210px;
+}
+
+/* 테이블 스타일 */
+.table {
+    width: 80%;
+    border-collapse: collapse;
+    margin-top: 130px;
+    margin-left: 170px;
+}
+
+
+/* 링크 스타일 */
+a.list {
+    text-decoration-line : none;
+    text-decoration: none;
+    color: #000000;
+    text-color: #000000;
+}
+
+a.list:hover {
+    text-decoration: underline;
+}
+
+/* 페이지네이션 스타일 */
+.pagenation {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination {
+    display: inline-block;
+}
+
+.page-item {
+
+    list-style: none;
+    display: inline;
+    margin-right: 5px;
+}
+
+.page-link {
+    text-decoration: none;
+    color: #007bff;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.page-link:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.page-item.disabled .page-link {
+    pointer-events: none;
+    color: #ccc;
+}
+
+
+.btn{
+    display: inline-block;
+    width: 100px;
+    height:25px;
+    margin: 10px;
+    margin-left: 1250px;
+    margin-top: 25px; /* 버튼을 아래로 내리는 여백 추가 */
+    padding: 10px 15px; /* 버튼 내부 여백 설정 */
+    border: 2px solid transparent; /* 테두리 설정 */
+    border-radius: 15px; /* 모서리를 둥글게 만들기 */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s; /* 버튼 색상 변경 시 부드러운 전환 효과 추가 */
+    font-size: 14px; /* 글자 크기 설정 */
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: #FFFFFF; /* 배경색 설정 */
+    border-color: #59BAFF;
+    color: #000000; /* 글자색 설정 */
+
+}
+
+
+a.btn {
+    color: #59BAFF; /* 원하는 색상으로 변경 */
+}
+
+a.btn:hover {
+    color: #FFFFFF; /* 원하는 색상으로 변경 */
+}
+
+
+/* 버튼에 호버 시 테두리 색상 변경 */
+.btn:hover {
+    border-color: #59BAFF; /* 호버 시 테두리 색상 설정 */
+    background-color: #59BAFF;
+    transition: background-color 0.3s; /* 부드러운 전환 효과 추가 */
+}
+
+
+
+.btn:focus {
+      border-color: #59BAFF; /* 호버 시 테두리 색상 설정 */
+      background-color: #59BAFF;
+      transition: background-color 0.3s; /* 부드러운 전환 효과 추가 */
+
+}
+
+
+.side-img {
+   width:520px;
+   height:655px;
+   position: absolute;
+   top: 130px;
+   left: 1080px;
+   z-index: 101;
+   background-image: url('/img/side.png');
+
+
+}
+
+
