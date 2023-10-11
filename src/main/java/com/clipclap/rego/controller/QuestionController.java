@@ -23,6 +23,7 @@ import java.security.Principal;
 
 @RequestMapping("/question")
 @RequiredArgsConstructor
+@PreAuthorize("isAuthenticated()")
 @Controller
 public class QuestionController {
 
@@ -51,25 +52,34 @@ public class QuestionController {
         if ( !question.getWriter().getEmail().equals(principal.getName()) ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"수정권한이 없습니다.");
         }
+
+        questionForm.setEmail(principal.getName());
         questionForm.setSubject(question.getSubject());
         questionForm.setContent(question.getContent());
+        questionForm.setCategory(question.getCategory());
         //3.Model  //4.View
         return "question_form"; //질문등록폼으로 이동
     }
+
     // 질문 수정 처리
-    @PostMapping("/modify/{id}")
+    /*@PostMapping("/modify/{id}")
     public String modify(@Valid QuestionForm questionForm, BindingResult bindingResult,
                          @PathVariable("id") Integer id, Principal principal) {
         if (bindingResult.hasErrors()) {
             return "question_form";
         }
+
         Question question = questionService.getQuestion(id);
         if (!question.getWriter().getEmail().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
         }
-        questionService.modify(question, questionForm.getSubject(), questionForm.getContent());
+
+        System.out.println(question.toString());
+
+
+         questionService.modify(question);
         return String.format("redirect:/question/detail/%d", id);
-    }
+    }*/
 
     // 질문 등록 폼을 보여줌
     @PreAuthorize("isAuthenticated()")
@@ -93,7 +103,6 @@ public class QuestionController {
     }
 
     // 질문 등록 처리
-    @PreAuthorize("isAuthenticated()")
     @PostMapping("/add")
     public String questionAdd(@Valid QuestionForm questionForm, BindingResult bindingResult,
                               Principal principal) {
@@ -103,8 +112,8 @@ public class QuestionController {
         }
 
         User user = userService.getUserByEmail(principal.getName());
-        System.out.println(questionForm.getCategory());
-        questionService.add(questionForm.getCategory(), questionForm.getSubject(), questionForm.getContent(), user);
+
+        questionService.add(questionForm, user);
 
         return "redirect:/question/list";
     }
@@ -120,6 +129,7 @@ public class QuestionController {
 
     // 페이징 기능이 있는 질문 목록 조회
     @GetMapping("/list")
+    @PreAuthorize("isAuthenticated()")
     public String questionList(Model model,
                                @RequestParam(value = "page", defaultValue = "0") int page) {
         Page<Question> questionPage = questionService.getList(page);

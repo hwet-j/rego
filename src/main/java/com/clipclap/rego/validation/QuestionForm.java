@@ -14,6 +14,8 @@ import lombok.Setter;
 @Getter
 public class QuestionForm {
 
+    private Integer questionId;
+
     @NotEmpty(message = "카테고리는 필수선택해야합니다.")
     @Size(max=50)
     private String category;

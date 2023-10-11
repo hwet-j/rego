@@ -23,19 +23,26 @@ public class SecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 
+
+
+
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 		http
 			.authorizeRequests((authorizeHttpRequests) -> authorizeHttpRequests
 					.requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
-					.requestMatchers(new AntPathRequestMatcher("/admin/**")).access("hasRole('ROLE_ADMIN')"))
+					.requestMatchers(new AntPathRequestMatcher("/question/list")).authenticated()
+					.requestMatchers(new AntPathRequestMatcher("/admin/**")).access("hasRole('ROLE_ADMIN')")
+					.anyRequest().authenticated() )
 			.headers((headers) -> headers.addHeaderWriter(new XFrameOptionsHeaderWriter(
 					XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
 			.formLogin((formLogin)->formLogin
 					.loginPage("/login")
 					.loginProcessingUrl("/loginProc")
-					.defaultSuccessUrl("/"))
+					.defaultSuccessUrl("/")
+					.permitAll())
 			.oauth2Login(oauth2Login -> oauth2Login
 					.loginPage("/login")
 					.userInfoEndpoint(userInfo -> userInfo
