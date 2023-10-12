@@ -86,9 +86,11 @@ public class NoticeController {
 
             User user = userService.getUserByEmail(principal.getName());
 
-           noticeService.add(noticeForm, user);
+            // NoticeService.add 메서드에서 공지 생성 후 ID를 반환하도록 수정해야 합니다.
+            Integer Id = noticeService.add(noticeForm, user);
 
-            return "redirect:/notice/list";
+            // 공지 상세 페이지로 리디렉션합니다.
+            return "redirect:/notice/detail/" + Id;
         }
 
         // 공지 상세 조회

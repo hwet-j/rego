@@ -22,7 +22,7 @@ button {
      flex-direction: column;
      align-items: center;
      justify-content: center;
-    /* Assuming you want it centered in the full viewport height */
+
  }
 
 
@@ -118,11 +118,11 @@ button {
 
 .flight {
     position:absolute;
-    top: 150px;
-    left: 310px;
+
     width: 1270px;
     height: 155px;
-box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.3);
+    transform: translate(17%, -490%);
 }
 
   .flight-content {
@@ -654,6 +654,8 @@ font-family: 'Nunito', sans-serif;
 }
 .tab1-img1:hover .blueScreen {
     opacity: 0.7;  /* 호버시 .blueScreen이 보이게 설정 */
+         width: 50%;
+         right: 0;
 }
 
 .tab1-img2:hover  {
@@ -662,7 +664,7 @@ font-family: 'Nunito', sans-serif;
     box-shadow: 5px 7px 10px rgba(0, 0, 0, 0.3);
 }
 .tab1-img2:hover .blueScreen2 {
-    opacity: 0.7;  /* 호버시 .blueScreen이 보이게 설정 */
+     opacity: 0.7;  /* 호버시 .blueScreen이 보이게 설정 */
 }
 
 .tab1-img3:hover  {
@@ -672,6 +674,7 @@ font-family: 'Nunito', sans-serif;
 }
 .tab1-img3:hover .blueScreen2 {
     opacity: 0.7;  /* 호버시 .blueScreen이 보이게 설정 */
+
 }
 
 .tab1-img4:hover  {
@@ -681,6 +684,8 @@ font-family: 'Nunito', sans-serif;
 }
 .tab1-img4:hover .blueScreen {
     opacity: 0.7;  /* 호버시 .blueScreen이 보이게 설정 */
+         width: 50%;
+         right: 0;
 }
 
 .tab1-img5:hover  {
@@ -690,6 +695,8 @@ font-family: 'Nunito', sans-serif;
 }
 .tab1-img5:hover .blueScreen {
     opacity: 0.7;  /* 호버시 .blueScreen이 보이게 설정 */
+         width: 50%;
+         right: 0;
 }
 
 .tab1-img1:hover p {
@@ -770,7 +777,8 @@ font-family: 'Nunito', sans-serif;
     z-index: 991;
     font-family: 'Noto Sans KR', sans-serif;
     opacity: 0;
-    transition: transform 0.3s;
+     transition: opacity 0.3s;
+
 }
 
 .tab1-img2 p {
@@ -784,7 +792,8 @@ font-family: 'Nunito', sans-serif;
     z-index: 991;
     font-family: 'Noto Sans KR', sans-serif;
     opacity: 0;
-    transition: transform 0.3s;
+     transition: opacity 0.3s;
+
 }
 
 
@@ -799,7 +808,8 @@ font-family: 'Nunito', sans-serif;
     z-index: 991;
     font-family: 'Noto Sans KR', sans-serif;
     opacity: 0;
-    transition: transform 0.3s;
+    transition: opacity 0.3s;
+
 }
 
 .tab1-img4 p {
@@ -813,7 +823,8 @@ font-family: 'Nunito', sans-serif;
     z-index: 991;
     font-family: 'Noto Sans KR', sans-serif;
     opacity: 0;
-    transition: transform 0.3s;
+     transition: opacity 0.3s;
+
 }
 
 .tab1-img5 p {
@@ -829,7 +840,8 @@ font-family: 'Nunito', sans-serif;
     z-index: 991;
     font-family: 'Noto Sans KR', sans-serif;
     opacity: 0;
-    transition: transform 0.3s;
+     transition: opacity 0.3s;
+
 }
 
 
@@ -839,13 +851,13 @@ font-family: 'Nunito', sans-serif;
 .blueScreen {
     position: absolute;  /* 절대 위치를 사용하여 div를 이미지 위에 배치 */
     top: 0;  /* 상단에서 0px의 위치에 배치 */
-    left: 50%;  /* 좌측에서 0px의 위치에 배치 */
-    width: 50%;  /* 너비를 부모 div에 맞게 조절 */
+    right: -100%;  /* 좌측에서 0px의 위치에 배치 */
+    width: 0;  /* 너비를 부모 div에 맞게 조절 */
     height: 100%;  /* 높이를 부모 div에 맞게 조절 */
     background-color: #364E9B;;  /* 파란색 배경. 원하는 색상으로 변경 가능 */
-    transition: opacity 0.3s;
     pointer-events: none;
     opacity:0;
+    transition: opacity 0.3s,  right 0.2s;
 }
 
 .blueScreen2 {
@@ -950,25 +962,18 @@ font-family: 'Nunito', sans-serif;
 
 .blueStick1 {
  position: absolute;
- width: 220px;
+ width: 1700px;
  height: 15px;
  background-color: #364E9B;
  top: 2530px;
  opacity:1;
+ background: linear-gradient(to right, #364E9B, #364E9B 10%, white 10%, white 60%, #364E9B 60%, #364E9B);
 }
 
-.blueStick2 {
- position: absolute;
- width: 700px;
- height: 15px;
- background-color: #364E9B;
- left:57.9%;
- top: 2530px;
- opacity:1;
-}
+
 
 .recommendSection {
-    border: 1px solid white;
+
     width: 1700px;
     height: 770px;
 
@@ -1029,10 +1034,118 @@ font-family: 'Nunito', sans-serif;
 
 
 .bottom-back {
+    display: flex;
+    justify-content: center;
     width: 100%;
-    height: 3000px;
+    height: 1800px;
     background-color: white;
     position: relative; /* 부모 요소를 상대적으로 위치 지정합니다. */
+    z-index: -2;
+    text-align:center;
+}
+
+.bottom-content {
+    width: 1700px;
+    height: 1500px;
+
+}
+
+
+.bottom-title {
+    margin-top: 400px;
+    color: #364E9B;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+
+.card-list {
+    width: 1300px;
+    height: 500px;
+    border: 1px solid red;
+    margin-left: 12%;
+    margin-top: 50px;
+}
+
+.about {
+    position: relative;
+    margin-top: 250px;
+    width: 1700px;
+    height: 450px;
+    background-color: white;
+    z-index: 10;
+    opacity: 1;
+    margin-left: -30px;
+    text-align:left;
+    padding: 30px;
+}
+
+
+.about-title {
+    font-size: 30px;
+    font-family: 'Roboto', sans-serif;
+    margin-left: 30px;
+    float: left;
+    width: 400px;
+}
+.about-rkcl {
+    font-size: 16px;
+    font-family: 'Noto sans KR', sans-serif;
+    margin-left: 30px;
+    float: left;
+    width: 200px;
+    margin-top: 40px;
+    margin-left: 175px;
+
+}
+.about-social {
+     font-size: 16px;
+     font-family: 'Noto sans KR', sans-serif;
+     float: left;
+     width: 150px;
+     margin-top: 40px;
+     margin-left: 335px;
+ }
+ .about-info {
+      font-size: 16px;
+      font-family: 'Noto sans KR', sans-serif;
+      float: left;
+      width: 300px;
+      margin-top: 40px;
+      margin-left: 75px;
+  }
+
+.about-left {
+    font-weight: 500;
+    float: left;
+    margin-left: -400px;
+    font-size: 13px;
+    font-family: 'Noto sans KR', sans-serif;
+}
+
+.about-center {
+    font-weight: 500;
+    float: left;
+    margin-left: 75px;
+    font-size: 13px;
+    font-family: 'Noto sans KR', sans-serif;
+    font-family: 'Roboto', sans-serif;
+}
+
+.about-center2 {
+    font-weight: 500;
+    float: left;
+    margin-left: 55px;
+    font-size: 13px;
+    font-family: 'Noto sans KR', sans-serif;
+}
+
+.about-right {
+    font-weight: 500;
+    float: right;
+    font-family: 'Noto sans KR', sans-serif;
+    font-size: 13px;
+    margin-top: 13px;
+    margin-right: 50px;
 }
 
 
@@ -1040,22 +1153,17 @@ font-family: 'Nunito', sans-serif;
 
 
 
-
-
-
-
-
-
-
 .opacity-back {
-    margin-top: 1000px;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    bottom: 0;
     width: 100%;
     height: 1070px;
     background-image:url('/img/opacityback.png');
     background-repeat: no-repeat;
-
-
-
+    background-position: center center;
+    background-size: cover;
 }
 
 
@@ -1091,8 +1199,8 @@ font-family: 'Nunito', sans-serif;
                 position:fixed;
                 top: 0px;
                 width: 100%;
-                height: 1050px;
-                background-image:url('/img/bg1.png');
+                height: 930px;
+                background-image:url('/img/bg2.png');
                 background-repeat: no-repeat;
                 background-position: center center;
                 background-size: cover;
@@ -1106,10 +1214,10 @@ font-family: 'Nunito', sans-serif;
      .bg2{
             position:absolute;
                 width: 100%;
-                height:1000px;
-                margin-top: 1050px;
+                height:1200px;
+                margin-top: -2000px;
 
-                background-image:url('/img/bg2.png');
+                background-image:url('/img/bg1.png');
                 background-repeat: no-repeat;
                 background-position: bottom center;
                 background-size: cover;
@@ -1120,8 +1228,8 @@ font-family: 'Nunito', sans-serif;
 
    .bg3{
                 width: 100%;
-                height: 1000px;
-                margin-top: 2950px;
+                height: 300px;
+                margin-top: -70px;
                 position:absolute;
                 background-image:url('/img/bg3.png');
                 background-repeat: no-repeat;
@@ -1136,43 +1244,8 @@ font-family: 'Nunito', sans-serif;
 
   .bg4{
                 width: 100%;
-                height: 1100px;
-                margin-top: 3150px;
-                position:absolute;
-                background-image:url('/img/bg1.png');
-                background-repeat: no-repeat;
-                background-position: bottom center;
-                background-size: cover;
-                /*이 속성을 써 줘야지만 위에 결과물을 낼수가 있습니다.*/
-                background-attachment: fixed;
-                z-index:-999;
-             }
-
-
-
-   .bg5{
-                width: 100%;
-                height: 1000px;
-                margin-top: 4250px;
-                position:absolute;
-                background-image:url('/img/bg2.png');
-                background-repeat: no-repeat;
-                background-position: bottom center;
-                background-size: cover;
-
-/*이 속성을 써 줘야지만 위에 결과물을 낼수가 있습니다.*/
-
-                background-attachment: fixed;
-                z-index:-999;
-             }
-
-
-
-
-  .bg6{
-                width: 100%;
-                height: 1000px;
-                margin-top: 5250px;
+                height: 1050px;
+                margin-top: -750px;
                 position:absolute;
                 background-image:url('/img/bg3.png');
                 background-repeat: no-repeat;
@@ -1185,10 +1258,11 @@ font-family: 'Nunito', sans-serif;
 
 
 
+
 .bg-blue {
     top:0px;
     background-color:#1b4995;
-    opacity:0.5;
+    opacity:0.4;
     width:100%;
     height:5000px;
     position:absolute;

@@ -3,11 +3,9 @@ package com.clipclap.rego.service;
 
 import com.clipclap.rego.model.dto.NoticeDTO;
 import com.clipclap.rego.model.entitiy.Notice;
-import com.clipclap.rego.model.entitiy.Question;
 import com.clipclap.rego.model.entitiy.User;
 import com.clipclap.rego.repository.NoticeRepository;
 import com.clipclap.rego.validation.NoticeForm;
-import com.clipclap.rego.validation.QuestionForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -71,7 +69,7 @@ public class NoticeService {
 
     //공지등록처리
     //SiteUser siteUser : 공지작성자의 정보
-    public void add(NoticeForm noticeForm, User user){
+    public Integer add(NoticeForm noticeForm, User user){
         Notice notice = new Notice();
 
         if(noticeForm.getNoticeId() != null){     // 수정할 공지의 글번호 설정
@@ -83,6 +81,8 @@ public class NoticeService {
         notice.setCreateDate(LocalDateTime.now());
         notice.setWriter(user);
         noticeReprository.save(notice);
+        Integer noticeId = notice.getId();
+        return noticeId;
     }
 
 
