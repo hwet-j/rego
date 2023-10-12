@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link href="/css/flightBookCheck.css" rel="stylesheet" type="text/css">
-    <title></title>
+    <title>Airline Booking</title>
 </head>
 <body>
 <div class="content">
@@ -58,10 +58,57 @@
     </div>
     <div class="flightInfoBox">
         <div class="flightInfo">
-            항공권 정보
+            <div class="departInfo">
+                <div class="departTop">
+                    <span class="direction">가는편</span>
+                    <span class="directionAirport" th:text="|${flightInfo.routes[0].departureAirport} &#x2192; ${flightInfo.routes[0].arrivalAirport}|"></span>
+                    <span class="topDate" th:text="${departureDate}"></span>
+                </div>
+                <div class="departMain">
+                    <span class="mainDate" th:text="${departureDate}"></span>
+                    <img class="mainAirlineImage" th:src="${flightInfo.routes[0].airlineImg}">
+                    <table><tr>
+                        <td><div class="depart">
+                            <span th:text="${flightInfo.routes[0].departureTime}"></span>
+                            <span th:text="${flightInfo.routes[0].departureAirport}"></span>
+                        </div></td>
+                        <td><div class="center-content">
+                            <span class="duration" th:text="${flightInfo.routes[0].duration}"></span><img src="/img/flight/plane.png">
+                        </div></td>
+                        <td><div class="arrive">
+                            <span th:text="${flightInfo.routes[0].arrivalTime}"></span>
+                            <span th:text="${flightInfo.routes[0].arrivalAirport}"></span>
+                        </div></td>
+                    </tr></table>
+                </div>
+            </div>
+            <div class="departInfo">
+                <div class="departTop">
+                    <span class="direction">오는편</span>
+                    <span class="directionAirport" th:text="|${flightInfo.routes[1].departureAirport} &#x2192; ${flightInfo.routes[1].arrivalAirport}|"></span>
+                    <span class="topDate" th:text="${arrivalDate}"></span>
+                </div>
+                <div class="departMain">
+                    <span class="mainDate" th:text="${arrivalDate}"></span>
+                    <img class="mainAirlineImage" th:src="${flightInfo.routes[1].airlineImg}">
+                    <table><tr>
+                        <td><div class="depart">
+                            <span th:text="${flightInfo.routes[1].departureTime}"></span>
+                            <span th:text="${flightInfo.routes[1].departureAirport}"></span>
+                        </div></td>
+                        <td><div class="center-content">
+                            <span class="duration" th:text="${flightInfo.routes[1].duration}"></span><img src="/img/flight/plane.png">
+                        </div></td>
+                        <td><div class="arrive">
+                            <span th:text="${flightInfo.routes[1].arrivalTime}"></span>
+                            <span th:text="${flightInfo.routes[1].arrivalAirport}"></span>
+                        </div></td>
+                    </tr></table>
+                </div>
+            </div>
         </div>
         <div class="flightPrice">
-            항공권 티켓
+
         </div>
     </div>
 </div>

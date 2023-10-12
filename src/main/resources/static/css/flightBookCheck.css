@@ -23,14 +23,18 @@ a:hover {
 
 
 .content {
-    text-align: center;  /* 텍스트와 인라인 요소를 가운데 정렬 */
     display: flex;       /* 플렉스박스 사용 */
     flex-direction: column;  /* 위에서 아래로 쌓기 */
     align-items: center; /* 플렉스박스의 자식 요소들을 좌우 중앙에 배치 */
     background-color: #F0F1F2;
     width:1700px;
 }
-
+.center-content {
+    display: flex;
+    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    text-align:left;
+}
 .routeBox {
     width: 1700px;
     height: 200px;
@@ -53,14 +57,104 @@ a:hover {
     width:1700px;
     display:flex;
     flex-direction:row;
-}
-
-.flightInfo{
-    width:1000px;
-    display:flex;
-    flex-direction:column;
+    padding-top:50px;
+    margin-right: 40px;
 }
 
 .flightPrice{
     width:700px;
+}
+
+.direction{
+    color:white;
+    background-color:#759ED9;
+    padding: 5px 15px;
+    border-radius: 10px;
+}
+
+.flightInfo {
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    padding-left: 300px;
+}
+
+.departInfo{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+}
+.departTop{
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+}
+.departMain{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
+    background-color: white;
+    width: 700px;
+    border-radius: 15px;
+    padding: 30px 20px;
+    margin: 30px 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.depart {
+    display: flex;
+    flex-direction: column; /* 수직으로 요소 나열 */
+    align-items: flex-end; /* 요소를 오른쪽 정렬 */
+}
+
+.depart span {
+    margin-left: auto; /* 왼쪽 여백을 자동으로 채워 오른쪽 정렬 */
+}
+
+.depart span:first-child {
+    font-size: 30px; /* depart 클래스 내부의 첫 번째 span에 글꼴 크기를 20px로 설정 */
+}
+
+.arrive {
+    display: flex;
+    flex-direction: column; /* 수직으로 요소 나열 */
+    align-items: flex-start; /* 요소를 왼쪽 정렬 */
+}
+
+.arrive span {
+    margin-right: auto; /* 오른쪽 여백을 자동으로 채워 왼쪽 정렬 */
+}
+
+.arrive span:first-child {
+    font-size:30px;
+}
+
+
+.directionAirport{
+    font-size: 40px;
+    margin: 0 20px;
+    font-weight: 550;
+}
+
+.topDate{
+    font-size: 20px;
+}
+
+.mainDate{
+    font-size: 20px;
+    margin: 0 40px;
+}
+
+.mainAirlineImage{
+    margin: 0 20px;
+}
+
+table td{
+ padding: 0 15px;
+}
+
+.flightPrice{
+    border-left: 3px solid #DFE1E6;
 }
