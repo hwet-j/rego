@@ -56,6 +56,7 @@ public class Planner {
     @Column(nullable = false)
     private String type;
 
+    private String imagePath;
 
     @OneToMany(mappedBy = "detailPlanId", cascade = CascadeType.REMOVE)
     private List<PlannerDetail> detailPlans;
