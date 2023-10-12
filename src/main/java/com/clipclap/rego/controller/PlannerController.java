@@ -25,6 +25,9 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.Base64;
 import java.util.HashMap;
@@ -136,6 +139,12 @@ public class PlannerController {
             int planId = Integer.parseInt(String.valueOf(dataToSend.get("planId")));
             String filename = "preview/" + planId + ".png"; // 저장할 이미지 파일 이름
             File imageFile = new File("src/main/resources/static/" + filename);
+
+            String folderPath = "src/main/resources/static/preview";
+            Path path = Paths.get(folderPath);
+            if (!Files.exists(path)) {
+                Files.createDirectories(path); // 폴더가 없으면 생성
+            }
 
             try (FileOutputStream fos = new FileOutputStream(imageFile)) {
                 fos.write(imageBytes);
