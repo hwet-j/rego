@@ -17,6 +17,7 @@ public class PlannerMapper {
         dto.setEndDate(entity.getEndDate());
         dto.setNumberOfPeople(entity.getNumberOfPeople());
         dto.setType(entity.getType());
+        dto.setImagePath(entity.getImagePath());
         return dto;
     }
 
@@ -32,6 +33,7 @@ public class PlannerMapper {
         entity.setEndDate(dto.getEndDate());
         entity.setNumberOfPeople(dto.getNumberOfPeople());
         entity.setType(dto.getType());
+        entity.setImagePath(dto.getImagePath());
         return entity;
     }
 }

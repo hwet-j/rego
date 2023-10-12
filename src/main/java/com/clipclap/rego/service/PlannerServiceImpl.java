@@ -57,6 +57,19 @@ public class PlannerServiceImpl implements PlannerService {
 
     @Override
     public void save(PlannerDTO dto) {
+        if(dto.getType().equals("힐링")){
+            dto.setImagePath("https://github.com/hwet-j/hwet-j.github.io/assets/81364742/56961613-b6b5-431a-99a8-89210728551e");
+        } else if(dto.getType().equals("문화")) {
+            dto.setImagePath("https://github.com/hwet-j/hwet-j.github.io/assets/81364742/d7cb0a0b-4457-4c5c-990c-842d59d16527");
+        } else if(dto.getType().equals("쇼핑")) {
+            dto.setImagePath("https://github.com/hwet-j/hwet-j.github.io/assets/81364742/73f16ac0-64c0-428e-93ba-60418fb2d65f");
+        } else if(dto.getType().equals("식도락")) {
+            dto.setImagePath("https://github.com/hwet-j/hwet-j.github.io/assets/81364742/8650721a-ab0d-4f71-ad28-e9fb73477a1d");
+        } else if(dto.getType().equals("자유")) {
+            dto.setImagePath("https://github.com/hwet-j/hwet-j.github.io/assets/81364742/7c38de8f-adc9-46a0-8d81-288b610cde87");
+        }
+
+
         Planner planner = plannerMapper.dtoToEntity(dto, userRepository);
         plannerRepository.save(planner);
     }

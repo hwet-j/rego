@@ -567,6 +567,10 @@
             }
 
             // updateMap(detailData);
+            document.getElementById('custom-today-button').addEventListener('click', function() {
+                var customDate = '2023-11-01'; // 원하는 날짜로 설정하세요
+                calendar.gotoDate(customDate); // 사용자 정의 버튼을 클릭했을 때 설정한 날짜로 이동합니다.
+            });
         });
 
         window.initMap = function () {
@@ -691,7 +695,7 @@
 
                     const marker = new google.maps.Marker({
                         position: { lat, lng },
-                        label:'바보바보바봡봡바ㅏㅏ',
+                        // label:'-',
                         map,
                         icon: {
                             url:'https://github.com/hwet-j/hwet-j.github.io/assets/81364742/8e20af8c-7f20-4d3e-a850-7056800236ad',
@@ -1300,6 +1304,7 @@
     </div>
 
     <div id='calendar-wrap'>
+        <button id="custom-today-button">Go to Custom Date</button>
         <div id='calendar'></div>
     </div>
 </div>
