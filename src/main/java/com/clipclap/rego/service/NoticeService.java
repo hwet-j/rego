@@ -3,22 +3,16 @@ package com.clipclap.rego.service;
 
 import com.clipclap.rego.model.dto.NoticeDTO;
 import com.clipclap.rego.model.entitiy.Notice;
-import com.clipclap.rego.model.entitiy.Question;
 import com.clipclap.rego.model.entitiy.User;
 import com.clipclap.rego.repository.NoticeRepository;
 import com.clipclap.rego.validation.NoticeForm;
-import com.clipclap.rego.validation.QuestionForm;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +84,7 @@ public class NoticeService {
         Integer noticeId = notice.getId();
         return noticeId;
     }
+
 
     //공지상세조회
 /*    public NoticeDTO getNotice(Integer id){

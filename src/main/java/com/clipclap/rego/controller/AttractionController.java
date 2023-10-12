@@ -93,9 +93,9 @@ public class AttractionController {
 
 	@Transactional
 	@PostMapping(value ="/deletePlan")
-	public List<TouristAttractionDTO> insertDetail(Integer detailPlanId) {
+	public List<TouristAttractionDTO> insertDetail(Integer detailPlanId, Integer planId) {
 
-		detailPlanRepository.deleteByDetailPlanId(detailPlanId);
+		detailPlanRepository.deleteByPlanPlanIdAndDetailPlanId(planId, detailPlanId);
 		return null;
 	}
 

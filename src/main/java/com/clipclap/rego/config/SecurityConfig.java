@@ -34,6 +34,7 @@ public class SecurityConfig {
 				.authorizeRequests((authorizeHttpRequests) -> authorizeHttpRequests
 						.requestMatchers(new AntPathRequestMatcher("/question/detail/**")).authenticated()
 						.requestMatchers(new AntPathRequestMatcher("/question/add")).authenticated()
+						.requestMatchers(new AntPathRequestMatcher("/question/detail/**")).authenticated()
 						.requestMatchers(new AntPathRequestMatcher("/notice/detail")).authenticated()
 						.requestMatchers(new AntPathRequestMatcher("/admin/**")).access("hasRole('ROLE_ADMIN')")
 						.requestMatchers(new AntPathRequestMatcher("/**")).permitAll()

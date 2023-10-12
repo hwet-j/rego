@@ -49,12 +49,11 @@
             <label for="type">여행 종류:</label>
             <select id="type" th:field="*{type}">
                 <option value="">미선택</option>
-                <option value="배낭">배낭</option>
                 <option value="자유">자유</option>
-                <option value="패키지">패키지</option>
                 <option value="힐링">힐링</option>
-                <option value="쇼핑">쇼핑</option>
                 <option value="문화">문화</option>
+                <option value="쇼핑">쇼핑</option>
+                <option value="식도락">식도락</option>
             </select>
             <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></span>
         </div>
