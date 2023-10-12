@@ -570,17 +570,11 @@
         });
 
         window.initMap = function () {
-            const map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: 37.5639635, lng: 127 },
-                zoom: 12,
-                minZoom: 3,
-                maxZoom: 30,
-                mapTypeControl: false,
-            });
 
             const bounds = new google.maps.LatLngBounds();
             const infoWindow = new google.maps.InfoWindow();
             const markers = [];
+            const attracionMarkers = [];
 
             var detailList = document.getElementById('detailList').getAttribute('data-variable');
 
@@ -656,10 +650,29 @@
                 return new Date(a.start) - new Date(b.start);
             });
 
-            console.log("지도지도지도");
+
+
+            const map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 37.58667, lng: 126.97611 },
+                zoom: 12,
+                minZoom: 3,
+                maxZoom: 30,
+                mapTypeControl: false,
+            });
+
+            // console.log("지도지도지도");
             updateMap(detailData);
 
+            // 관광지 정보 마커 표시
+            attractionMarker(attractionData);
 
+            const attdata = detailData.filter(item => typeof item.lat === 'number' && typeof item.lng === 'number' && !isNaN(item.lat));
+
+            var boundss = new google.maps.LatLngBounds();
+            for(var i=0; i < attdata.length; i++){
+                boundss.extend(new google.maps.LatLng(attdata[i].lat, attdata[i].lng));
+            }
+            map.fitBounds(boundss);
 
             function updateMap(originDetailData) {
                 // 이전 마커 및 선 삭제 로직 (생략)
@@ -669,17 +682,22 @@
                 countMarker = 0;
                 const data = originDetailData.filter(item => typeof item.lat === 'number' && typeof item.lng === 'number' && !isNaN(item.lat));
 
-                console.log(data);
+                // console.log(data);
 
                 /* 빨강색 마커 생성하기 위한 작업 */
-                data.forEach(({ label, name, lat, lng, imageUrl, introduction }) => {
+                data.forEach(({ label, name, lat, lng, imageUrl, introduction , title}) => {
 
-                    console.log(lat);
                     countMarker += 1;
+
                     const marker = new google.maps.Marker({
                         position: { lat, lng },
-                        label,
+                        label:'바보바보바봡봡바ㅏㅏ',
                         map,
+                        icon: {
+                            url:'https://github.com/hwet-j/hwet-j.github.io/assets/81364742/8e20af8c-7f20-4d3e-a850-7056800236ad',
+                            scaledSize: new google.maps.Size(40, 40),
+                        },
+                        zIndex:1000,
                     });
 
                     bounds.extend(marker.position);
@@ -695,12 +713,19 @@
                         image.width = 200;
                         content.appendChild(image);
 
-                        const title = document.createElement('p');
-                        title.textContent = name;
-                        content.appendChild(title);
+                        console.log(title);
+
+                        const subject = document.createElement('p');
+                        subject.textContent = name;
+                        content.appendChild(subject);
+
+                        const title_p = document.createElement('p');
+                        title_p.textContent = title;
+                        content.appendChild(title_p);
+
 
                         const button = document.createElement('button');
-                        button.textContent = '자세히보기';
+                        button.textContent = '관광지정보';
                         button.addEventListener('click', () => {
                             Swal.fire({
                                 title: `${name}`,
@@ -717,6 +742,7 @@
 
                         infoWindow.setContent(content);
                         infoWindow.open(map, marker);
+
                     });
 
                     markers.push({ label, name, marker });
@@ -754,7 +780,7 @@
                         var speed = 30;                 // 마커 이동 속도
 
                         /* 아이콘이 움직이는 동작을 구현 */
-                        function moveMarker() {
+                        /*function moveMarker() {
 
                             if (index < data.length - 1) {
                                 var start = data[index];
@@ -809,7 +835,7 @@
                             }
                         }
 
-                        moveMarker();
+                        moveMarker();*/
 
                         /* 화살표 형식으로 선긋기 */
                         for (var i = 0; i < data.length - 1; i++) {
@@ -842,110 +868,7 @@
 
                         }
 
-                        /* 검색기능 사용시 비슷한 문자를 찾아 검색 */
-                        function calculateSimilarity(query, name) {
-                            const queryLower = query.toLowerCase();
-                            const nameLower = name.toLowerCase();
-                            let similarity = false;
 
-                            // 간단한 유사성 평가 방법으로 문자열에서 공백을 제거하고, 검색어가 이름에 포함되어 있는지 확인합니다.
-                            if (/^[가-힣]+$/.test(query)) {
-                                const normalizedQuery = queryLower.replace(/[^가-힣]/g, "");
-                                const normalizedName = nameLower.replace(/[^가-힣]/g, "");
-                                similarity = normalizedName.includes(normalizedQuery);
-                            } else {
-                                const normalizedQuery = queryLower.replace(/[^a-z]/g, "");
-                                const normalizedName = nameLower.replace(/[^a-z]/g, "");
-                                similarity = normalizedName.includes(normalizedQuery);
-                            }
-                            return similarity;
-                        }
-
-
-                        /* 검색 기능 추가 */
-                        const searchInput = document.getElementById("searchInput");
-                        const searchButton = document.getElementById("searchButton");
-
-                        // Enter 키 누를 때 검색 함수 호출
-                        searchInput.addEventListener("keyup", function(event) {
-                            if (event.key === "Enter") {
-                                const query = searchInput.value.trim();
-                                if (query) {
-                                    searchResultsElement.style.display = "block";
-                                    cancelButton.style.display = "block";
-                                    handleSearch(query);
-                                }
-                            }
-                        });
-
-                        // 검색 버튼 클릭 이벤트 처리
-                        searchButton.addEventListener("click", () => {
-                            const query = searchInput.value.trim();
-                            if (query) {
-                                handleSearch(query);
-                            }
-                        });
-
-                        const cancelButton = document.getElementById("cancelButton");
-                        const searchResultsElement = document.getElementById("searchResults");
-
-                        searchButton.addEventListener("click", function () {
-                            // 검색 버튼 클릭 시 검색 결과를 보이도록 설정
-                            searchResultsElement.style.display = "block";
-                            cancelButton.style.display = "block";
-
-                            // 검색 결과를 처리하고 표시하는 함수 호출
-                            handleSearch(searchInput.value);
-                        });
-
-                        cancelButton.addEventListener("click", function () {
-                            // 검색 취소 버튼 클릭 시 검색 결과를 숨김
-                            searchResultsElement.style.display = "none";
-                            cancelButton.style.display = "none";
-                        });
-
-                        function handleSearch(query) {
-                            const results = [];
-
-                            data.forEach(({ label, name, lat, lng, imageUrl }) => {
-                                // 검색어와 이름 간의 유사성을 계산
-                                if (calculateSimilarity(query, name)) {
-                                    results.push({ label, name, lat, lng, imageUrl });
-                                }
-                            });
-
-                            const searchResultsElement = document.getElementById("searchResults");
-                            searchResultsElement.innerHTML = ""; // 검색 결과 초기화
-
-                            if (results.length > 0) {
-                                results.forEach(({ label, name, lat, lng, imageUrl }) => {
-                                    const listItem = document.createElement("li");
-                                    listItem.innerHTML = `
-                                          <a href="#" data-lat="${lat}" data-lng="${lng}">
-                                            <img src="${imageUrl}" alt="${name}" width="40">
-                                            ${name}
-                                          </a>
-                                        `;
-                                    searchResultsElement.appendChild(listItem);
-
-                                    // 검색 결과 항목을 클릭했을 때 지도 이동 및 정보 표시
-                                    listItem.querySelector("a").addEventListener("click", (e) => {
-                                        e.preventDefault();
-                                        const clickedLat = parseFloat(e.target.getAttribute("data-lat"));
-                                        const clickedLng = parseFloat(e.target.getAttribute("data-lng"));
-                                        const resultMarker = markers.find((marker) => marker.label === label);
-
-                                        if (resultMarker) {
-                                            const { marker } = resultMarker;
-                                            map.panTo({ lat: clickedLat, lng: clickedLng });
-                                            google.maps.event.trigger(marker, "click");
-                                        }
-                                    });
-                                });
-                            } else {
-                                searchResultsElement.innerHTML = "<li>검색된 장소가 없습니다.</li>";
-                            }
-                        }
                     } else if (countMarker > 1){
                         clearPreviousPolylines();
 
@@ -991,9 +914,195 @@
 
 
                 }
+
+                var boundss = new google.maps.LatLngBounds();
+                for(var i=0; i < data.length; i++){
+                    boundss.extend(new google.maps.LatLng(data[i].lat, data[i].lng));
+                }
+                map.fitBounds(boundss);
             }
+
+            function attractionMarker(attractionOriginData) {
+                // 이전 마커 및 선 삭제 로직 (생략)
+                attracionMarkers.forEach(({ atmarker }) => {
+                    atmarker.setMap(null);
+                });
+
+                // console.log(attractionOriginData);
+
+                const atdata = attractionOriginData.filter(item => typeof item.latitude === 'number' && typeof item.longitude === 'number' && !isNaN(item.latitude));
+                //console.log(atdata);
+                /* 빨강색 마커 생성하기 위한 작업 */
+                atdata.forEach(({ touristAttractionId, name, latitude, longitude, imageUrl, introduction }) => {
+
+                    // console.log(touristAttractionId, name, latitude, longitude, imageUrl, introduction)
+
+                    const atmarker = new google.maps.Marker({
+                        position: { lat: parseFloat(latitude), lng: parseFloat(longitude) },
+                        // label:'관',
+                        map:map,
+                        icon: {
+                            url: 'https://github.com/hwet-j/hwet-j.github.io/assets/81364742/5d381fdd-ed36-48ff-9cfa-58b1536d5d49',
+                            scaledSize: new google.maps.Size(22, 22), // 아이콘 크기 설정
+                        },
+                        zIndex:10,
+                    });
+
+                    bounds.extend(atmarker.position);
+
+                    atmarker.addListener('click', () => {
+                        map.panTo(atmarker.position);
+
+                        const content = document.createElement('div');
+
+                        const image = document.createElement('img');
+                        image.src = imageUrl;
+                        image.alt = name;
+                        image.width = 200;
+                        content.appendChild(image);
+
+                        const title = document.createElement('p');
+                        title.textContent = name;
+                        content.appendChild(title);
+
+                        const button = document.createElement('button');
+                        button.textContent = '관광지정보';
+                        button.addEventListener('click', () => {
+                            Swal.fire({
+                                title: `${name}`,
+                                text: `${introduction}`,
+                                imageUrl: `${imageUrl}`,
+                                imageWidth: 1000,
+                                imageHeight: 600,
+                                customClass: {
+                                    popup: 'custom-modal-width',
+                                },
+                            });
+                        });
+                        content.appendChild(button);
+
+                        infoWindow.setContent(content);
+                        infoWindow.open(map, atmarker);
+                    });
+
+                    attracionMarkers.push({ touristAttractionId, name, atmarker });
+                });
+
+
+                map.fitBounds(bounds);
+
+                /* 검색기능 사용시 비슷한 문자를 찾아 검색 */
+                function calculateSimilarity(query, name) {
+                    const queryLower = query.toLowerCase();
+                    const nameLower = name.toLowerCase();
+                    let similarity = false;
+
+                    // 간단한 유사성 평가 방법으로 문자열에서 공백을 제거하고, 검색어가 이름에 포함되어 있는지 확인합니다.
+                    if (/^[가-힣]+$/.test(query)) {
+                        const normalizedQuery = queryLower.replace(/[^가-힣]/g, "");
+                        const normalizedName = nameLower.replace(/[^가-힣]/g, "");
+                        similarity = normalizedName.includes(normalizedQuery);
+                    } else {
+                        const normalizedQuery = queryLower.replace(/[^a-z]/g, "");
+                        const normalizedName = nameLower.replace(/[^a-z]/g, "");
+                        similarity = normalizedName.includes(normalizedQuery);
+                    }
+                    return similarity;
+                }
+
+
+
+                /* 검색 기능 추가 */
+                const searchInput = document.getElementById("searchInput");
+                const searchButton = document.getElementById("searchButton");
+
+                // Enter 키 누를 때 검색 함수 호출
+                searchInput.addEventListener("keyup", function(event) {
+                    if (event.key === "Enter") {
+                        const query = searchInput.value.trim();
+                        if (query) {
+                            searchResultsElement.style.display = "block";
+                            cancelButton.style.display = "block";
+                            handleSearch(query);
+                        }
+                    }
+                });
+
+                // 검색 버튼 클릭 이벤트 처리
+                searchButton.addEventListener("click", () => {
+                    const query = searchInput.value.trim();
+                    if (query) {
+                        handleSearch(query);
+                    }
+                });
+
+                const cancelButton = document.getElementById("cancelButton");
+                const searchResultsElement = document.getElementById("searchResults");
+
+                searchButton.addEventListener("click", function () {
+                    // 검색 버튼 클릭 시 검색 결과를 보이도록 설정
+                    searchResultsElement.style.display = "block";
+                    cancelButton.style.display = "block";
+
+                    // 검색 결과를 처리하고 표시하는 함수 호출
+                    handleSearch(searchInput.value);
+                });
+
+                cancelButton.addEventListener("click", function () {
+                    // 검색 취소 버튼 클릭 시 검색 결과를 숨김
+                    searchResultsElement.style.display = "none";
+                    cancelButton.style.display = "none";
+                });
+
+                function handleSearch(query) {
+                    const results = [];
+
+                    atdata.forEach(({ touristAttractionId, name, latitude, longitude, imageUrl }) => {
+                        // 검색어와 이름 간의 유사성을 계산
+                        if (calculateSimilarity(query, name)) {
+                            results.push({ touristAttractionId, name, latitude, longitude, imageUrl });
+                        }
+                    });
+
+                    const searchResultsElement = document.getElementById("searchResults");
+                    searchResultsElement.innerHTML = ""; // 검색 결과 초기화
+
+                    if (results.length > 0) {
+                        results.forEach(({ touristAttractionId, name, latitude, longitude, imageUrl }) => {
+                            const listItem = document.createElement("li");
+                            listItem.innerHTML = `
+                                          <a href="#" data-lat="${latitude}" data-lng="${longitude}">
+                                            <img src="${imageUrl}" alt="${name}" width="40">
+                                            ${name}
+                                          </a>
+                                        `;
+                            searchResultsElement.appendChild(listItem);
+
+                            // 검색 결과 항목을 클릭했을 때 지도 이동 및 정보 표시
+                            listItem.querySelector("a").addEventListener("click", (e) => {
+                                e.preventDefault();
+                                const clickedLat = parseFloat(e.target.getAttribute("data-lat"));
+                                const clickedLng = parseFloat(e.target.getAttribute("data-lng"));
+                                const resultMarker = attracionMarkers.find((marker) => marker.touristAttractionId === touristAttractionId);
+
+                                if (resultMarker) {
+                                    const { atmarker } = resultMarker;
+                                    map.panTo({ lat: clickedLat, lng: clickedLng });
+                                    google.maps.event.trigger(atmarker, "click");
+                                }
+                            });
+                        });
+                    } else {
+                        searchResultsElement.innerHTML = "<li>검색된 장소가 없습니다.</li>";
+                    }
+                }
+
+            }
+
             /* updateMap를 전역변수로 변경 */
             window.updateMap = updateMap;
+            window.attractionMarker = attractionMarker;
+
         };
 
         var previousPolylines = [];
@@ -1005,8 +1114,6 @@
             });
             previousPolylines = []; // 배열 초기화
         }
-
-
 
     </script>
 
@@ -1134,13 +1241,27 @@
         }
 
         #searchResults {
-            background-color: rgba(255, 255, 255, 0.9); /* 흰 배경색 및 투명도 설정 */
-            border: 1px solid #ccc; /* 테두리 설정 */
-            border-radius: 5px; /* 둥근 테두리 설정 */
+            background-color: rgba(255, 255, 255, 0.25); /* 흰 배경색 및 투명도 설정 */
+            /*border: 1px solid #ccc; !* 테두리 설정 *!*/
+            /*border-radius: 5px; !* 둥근 테두리 설정 *!*/
             padding: 10px; /* 내부 여백 설정 */
             max-height: 300px; /* 최대 높이 설정 (내용이 너무 길 경우 스크롤 표시) */
-            overflow-y: auto; /* 세로 스크롤바 표시 (내용이 길 경우) */
+            overflow-y: scroll; /* 세로 스크롤바 표시 (내용이 길 경우) */
+            scrollbar-width: thin; /* 스크롤바 너비 설정 */
+            scrollbar-color: transparent transparent; /* 스크롤바 색상 투명으로 설정 */
+
+            /* 스크롤바 숨김 */
+            &::-webkit-scrollbar {
+                width: 5px; /* 스크롤바 너비 설정 */
+            }
+            &::-webkit-scrollbar-thumb {
+                background: transparent; /* 스크롤바 썸 색상 투명으로 설정 */
+            }
+            &::-webkit-scrollbar-track {
+                background: transparent; /* 스크롤바 트랙 색상 투명으로 설정 */
+            }
         }
+
 
         /* 알림창 내용 input 태그  */
         #event-title {
