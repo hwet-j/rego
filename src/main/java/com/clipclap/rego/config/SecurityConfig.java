@@ -31,23 +31,28 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 		http
-			.authorizeRequests((authorizeHttpRequests) -> authorizeHttpRequests
-					.requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
-					.requestMatchers(new AntPathRequestMatcher("/question/list")).authenticated()
-					.requestMatchers(new AntPathRequestMatcher("/admin/**")).access("hasRole('ROLE_ADMIN')")
-					.anyRequest().authenticated() )
-			.headers((headers) -> headers.addHeaderWriter(new XFrameOptionsHeaderWriter(
-					XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
-			.formLogin((formLogin)->formLogin
-					.loginPage("/login")
-					.loginProcessingUrl("/loginProc")
-					.defaultSuccessUrl("/")
-					.permitAll())
-			.oauth2Login(oauth2Login -> oauth2Login
-					.loginPage("/login")
-					.userInfoEndpoint(userInfo -> userInfo
-							.userService(principalOauth2UserService))
-			).csrf(csrf -> csrf.disable());
+				.authorizeRequests((authorizeHttpRequests) -> authorizeHttpRequests
+						.requestMatchers(new AntPathRequestMatcher("/question/add")).authenticated()
+						.requestMatchers(new AntPathRequestMatcher("/question/detail/**")).authenticated()
+						.requestMatchers(new AntPathRequestMatcher("/notice/detail")).authenticated()
+						.requestMatchers(new AntPathRequestMatcher("/admin/**")).access("hasRole('ROLE_ADMIN')")
+						.requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
+						.anyRequest().authenticated() )
+				.headers((headers) -> headers.addHeaderWriter(new XFrameOptionsHeaderWriter(
+						XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
+				.formLogin((formLogin)->formLogin
+						.loginPage("/login")
+						.loginProcessingUrl("/loginProc")
+						.defaultSuccessUrl("/")
+						.permitAll())
+				.oauth2Login(oauth2Login -> oauth2Login
+						.loginPage("/login")
+						.userInfoEndpoint(userInfo -> userInfo
+								.userService(principalOauth2UserService))
+				)
+				.logout((logout) -> logout
+						.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+						.logoutSuccessUrl("/").invalidateHttpSession(true)).csrf(csrf -> csrf.disable());
 
 		return http.build();
 	}

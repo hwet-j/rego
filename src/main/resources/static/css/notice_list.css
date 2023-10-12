@@ -202,8 +202,8 @@ a.list:hover {
 
 .btn{
     display: inline-block;
-    width: 90px;
-    height:20px;
+    width: 100px;
+    height:25px;
     margin: 10px;
     margin-left: 1250px;
     margin-top: 25px; /* 버튼을 아래로 내리는 여백 추가 */

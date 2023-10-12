@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Airlines</title>
+    <title>Airlines Search Resulft</title>
     <link href="/css/flightSearchResult.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -53,68 +53,90 @@
 
     </div>
     <div class="searchBox">
-        =
-        =
-        검색이 들어갈 예정이에요
-        =
-        =
+
     </div>
     <div class="resultBox">
-        <div class="resultBoxRight">
-            <div>정보가 들어갈 예정이에요</div>
-        </div>
         <div class="resultBoxLeft">
-            <th:block th:each="flight : ${flights}">
-                <div class="flight-box-wrapper">
-                    <table>
-                        <!-- 첫 번째 루트 (편도) -->
-                        <tr>
-                            <td><div class="Airline">
-                                <span><img th:src="${flight.routes[0].airlineImg}" alt="${flight.routes[0].airlineName}" width="50"></span><br>
-                                <span class="airlineName" th:text="${flight.routes[0].airlineName}"></span>
-                            </div></td>
-                            <td><div class="depart">
-                                <span th:text="${flight.routes[0].departureTime}"></span>
-                                <span th:text="${flight.routes[0].departureAirport}"></span>
-                            </div></td>
-                            <td><div class="center-content">
-                                    <span class="duration" th:text="${flight.routes[0].duration}"></span><img src="/img/flight/plane.png">
-                            </div></td>
-                            <td><div class="arrive">
-                                <span th:text="${flight.routes[0].arrivalTime}"></span>
-                                <span th:text="${flight.routes[0].arrivalAirport}"></span>
-                            </div></td>
-                            <td rowspan="2" class="price"><div class="money">
-                                <span th:text="|₩${flight.price}|"></span>
-                                <br>
-                                <span><button>예매하기</button></span>
-                                </div>
-                            </td>
-                        </tr>
-                        <!-- 두 번째 루트 (복귀) -->
-                        <tr>
-                            <td><div class="Airline">
-                                <span><img th:src="${flight.routes[1].airlineImg}" alt="${flight.routes[1].airlineName}" width="50"></span><br>
-                                <span class="airlineName" th:text="${flight.routes[1].airlineName}"></span>
-                            </div></td>
-                            <td><div class="depart">
-                                <span th:text="${flight.routes[1].departureTime}"></span>
-                                <span th:text="${flight.routes[1].departureAirport}"></span>
-                            </div></td>
-                            <td><div class="center-content">
-                                    <span class="duration" th:text="${flight.routes[1].duration}"></span><img src="/img/flight/plane.png">
-                            </div></td>
-                            <td><div class="arrive">
-                                <span th:text="${flight.routes[1].arrivalTime}"></span>
-                                <span th:text="${flight.routes[1].arrivalAirport}"></span>
-                            </div></td>
-                        </tr>
-                    </table>
-                </div>
+            <label style="font-size: 20px; margin: 10px;">항공사</label>
+            <div class="airlineOption">
+                <input type="checkbox" id="selectAllAirlines" checked>
+                <label for="selectAllAirlines">항공사 전체 선택/해제</label>
+            </div>
+            <div id="airlines-container"></div>
+        </div>
+        <div class="resultBoxRight">
+            <th:block th:each="flight, iterStat : ${flights}">
+                <form action="#" th:action="@{/bookFlight}" method="post" th:id="'flightForm' + ${iterStat.index}">
+                    <input type="hidden" th:name="'routes[0].airlineName'" th:value="${flight.routes[0].airlineName}" />
+                    <input type="hidden" th:name="'routes[0].departureTime'" th:value="${flight.routes[0].departureTime}" />
+                    <input type="hidden" th:name="'routes[0].departureAirport'" th:value="${flight.routes[0].departureAirport}" />
+                    <input type="hidden" th:name="'routes[0].arrivalTime'" th:value="${flight.routes[0].arrivalTime}" />
+                    <input type="hidden" th:name="'routes[0].arrivalAirport'" th:value="${flight.routes[0].arrivalAirport}" />
+                    <input type="hidden" th:name="'routes[0].duration'" th:value="${flight.routes[0].duration}" />
+                    <input type="hidden" th:name="routes[0].airlineImg" th:value="${flight.routes[0].airlineImg}" />
+
+                    <input type="hidden" th:name="'routes[1].airlineName'" th:value="${flight.routes[1].airlineName}" />
+                    <input type="hidden" th:name="'routes[1].departureTime'" th:value="${flight.routes[1].departureTime}" />
+                    <input type="hidden" th:name="'routes[1].departureAirport'" th:value="${flight.routes[1].departureAirport}" />
+                    <input type="hidden" th:name="'routes[1].arrivalTime'" th:value="${flight.routes[1].arrivalTime}" />
+                    <input type="hidden" th:name="'routes[1].arrivalAirport'" th:value="${flight.routes[1].arrivalAirport}" />
+                    <input type="hidden" th:name="'routes[1].duration'" th:value="${flight.routes[1].duration}" />
+                    <input type="hidden" th:name="routes[1].airlineImg" th:value="${flight.routes[1].airlineImg}" />
+
+                    <input type="hidden" th:name="price" th:value="${flight.price}" />
+
+                    <input type="hidden" name="departureDate" th:value="${departureDate}" />
+                    <input type="hidden" name="arrivalDate" th:value="${arrivalDate}" />
+                    <div class="flight-box-wrapper">
+                        <table>
+                            <!-- 첫 번째 루트 (편도) -->
+                            <tr>
+                                <td><div class="Airline">
+                                    <span><img th:src="${flight.routes[0].airlineImg}" alt="${flight.routes[0].airlineName}" width="50"></span><br>
+                                    <span class="airlineName" th:text="${flight.routes[0].airlineName}"></span>
+                                </div></td>
+                                <td><div class="depart">
+                                    <span th:text="${flight.routes[0].departureTime}"></span>
+                                    <span th:text="${flight.routes[0].departureAirport}"></span>
+                                </div></td>
+                                <td><div class="center-content">
+                                        <span class="duration" th:text="${flight.routes[0].duration}"></span><img src="/img/flight/plane.png">
+                                </div></td>
+                                <td><div class="arrive">
+                                    <span th:text="${flight.routes[0].arrivalTime}"></span>
+                                    <span th:text="${flight.routes[0].arrivalAirport}"></span>
+                                </div></td>
+                                <td rowspan="2" class="price"><div class="money">
+                                    <span th:text="|₩${flight.price}|"></span>
+                                    <span><button class="book-btn" onclick="bookFlightInfo(this)">선택하기&#8594;</button></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- 두 번째 루트 (복귀) -->
+                            <tr>
+                                <td><div class="Airline">
+                                    <span><img th:src="${flight.routes[1].airlineImg}" alt="${flight.routes[1].airlineName}" width="50"></span><br>
+                                    <span class="airlineName" th:text="${flight.routes[1].airlineName}"></span>
+                                </div></td>
+                                <td><div class="depart">
+                                    <span th:text="${flight.routes[1].departureTime}"></span>
+                                    <span th:text="${flight.routes[1].departureAirport}"></span>
+                                </div></td>
+                                <td><div class="center-content">
+                                        <span class="duration" th:text="${flight.routes[1].duration}"></span><img src="/img/flight/plane.png">
+                                </div></td>
+                                <td><div class="arrive">
+                                    <span th:text="${flight.routes[1].arrivalTime}"></span>
+                                    <span th:text="${flight.routes[1].arrivalAirport}"></span>
+                                </div></td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
             </th:block>
         </div>
     </div>
 </div>
-
+<script src="/js/flightSearchResult.js"></script>
 </body>
 </html>
