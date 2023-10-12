@@ -22,6 +22,40 @@
 
         document.addEventListener('DOMContentLoaded', function () {
 
+
+            window.captureMap = function () {
+                setTimeout(function () {
+                    const mapContainer = document.getElementById("map-container");
+
+                    html2canvas(mapContainer, { useCORS: true }).then(function (canvas) {
+                        const imageDataURL = canvas.toDataURL("image/png");
+
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const planId = urlParams.get('planId');
+
+                        if (imageDataURL !== null && planId !== null) {
+                            const dataToSend = {
+                                imageDataURL: imageDataURL,
+                                planId: planId
+                            };
+
+                            fetch('/plan/saveImage', {
+                                method: 'POST',
+                                body: JSON.stringify(dataToSend),
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                            }).then(response => response.json())
+                                .then(data => {
+                                    // 서버 응답 처리
+                                });
+                        } else {
+                            console.error("imageDataURL 또는 planId가 null입니다.");
+                        }
+                    });
+                }, 1500);// 밀리초
+            };
+
             var calendarEl = document.getElementById('calendar');
 
             /******************************************************************************************
@@ -161,6 +195,7 @@
                                         });
 
                                         updateMap(detailData);
+                                        captureMap();
                                     },
                                     error: function () {
                                         // 오류 처리
@@ -273,6 +308,7 @@
                             });
 
                             updateMap(detailData);
+                            captureMap();
                         },
                         error: function () {
                             // 오류 처리
@@ -312,6 +348,7 @@
                             });
 
                             updateMap(detailData);
+                            captureMap();
                         },
                         error: function () {
                             // 오류 처리
@@ -350,6 +387,7 @@
                             });
 
                             updateMap(detailData);
+                            captureMap();
                         },
                         error: function () {
                             // 오류 처리
@@ -452,6 +490,7 @@
                                     });
 
                                     updateMap(detailData);
+                                    captureMap();
 
                                 },
                                 error: function () {
@@ -492,6 +531,7 @@
                                 });
 
                                 updateMap(detailData);
+                                captureMap();
                             },
                             error: function () {
                                 // 오류 처리
@@ -545,6 +585,7 @@
             var detailList = document.getElementById('detailList').getAttribute('data-variable');
 
             var jsonDetailList = JSON.parse(detailList);
+
             var attractionList = document.getElementById('attractionList').getAttribute('data-variable');
             // JSON 타입으로 변환한다. (String의 형식이 JSON형식이여야지 가능하다.)
             var jsonAttractionList = JSON.parse(attractionList);
@@ -609,7 +650,6 @@
                         touristAttractionId: detail.touristAttractionId,
                     });
                 }
-
             });
 
             detailData.sort(function(a, b) {
@@ -619,62 +659,69 @@
             console.log("지도지도지도");
             updateMap(detailData);
 
-            function updateMap(data) {
+
+
+            function updateMap(originDetailData) {
                 // 이전 마커 및 선 삭제 로직 (생략)
                 markers.forEach(({ marker }) => {
                     marker.setMap(null);
                 });
                 countMarker = 0;
+                const data = originDetailData.filter(item => typeof item.lat === 'number' && typeof item.lng === 'number' && !isNaN(item.lat));
+
+                console.log(data);
+
                 /* 빨강색 마커 생성하기 위한 작업 */
                 data.forEach(({ label, name, lat, lng, imageUrl, introduction }) => {
-                    if (lat !== undefined && lng !== undefined) {
-                        countMarker += 1;
-                        const marker = new google.maps.Marker({
-                            position: { lat, lng },
-                            label,
-                            map,
-                        });
 
-                        bounds.extend(marker.position);
+                    console.log(lat);
+                    countMarker += 1;
+                    const marker = new google.maps.Marker({
+                        position: { lat, lng },
+                        label,
+                        map,
+                    });
 
-                        marker.addListener('click', () => {
-                            map.panTo(marker.position);
+                    bounds.extend(marker.position);
 
-                            const content = document.createElement('div');
+                    marker.addListener('click', () => {
+                        map.panTo(marker.position);
 
-                            const image = document.createElement('img');
-                            image.src = imageUrl;
-                            image.alt = name;
-                            image.width = 200;
-                            content.appendChild(image);
+                        const content = document.createElement('div');
 
-                            const title = document.createElement('p');
-                            title.textContent = name;
-                            content.appendChild(title);
+                        const image = document.createElement('img');
+                        image.src = imageUrl;
+                        image.alt = name;
+                        image.width = 200;
+                        content.appendChild(image);
 
-                            const button = document.createElement('button');
-                            button.textContent = '자세히보기';
-                            button.addEventListener('click', () => {
-                                Swal.fire({
-                                    title: `${name}`,
-                                    text: `${introduction}`,
-                                    imageUrl: `${imageUrl}`,
-                                    imageWidth: 1000,
-                                    imageHeight: 600,
-                                    customClass: {
-                                        popup: 'custom-modal-width',
-                                    },
-                                });
+                        const title = document.createElement('p');
+                        title.textContent = name;
+                        content.appendChild(title);
+
+                        const button = document.createElement('button');
+                        button.textContent = '자세히보기';
+                        button.addEventListener('click', () => {
+                            Swal.fire({
+                                title: `${name}`,
+                                text: `${introduction}`,
+                                imageUrl: `${imageUrl}`,
+                                imageWidth: 1000,
+                                imageHeight: 600,
+                                customClass: {
+                                    popup: 'custom-modal-width',
+                                },
                             });
-                            content.appendChild(button);
-
-                            infoWindow.setContent(content);
-                            infoWindow.open(map, marker);
                         });
+                        content.appendChild(button);
 
-                        markers.push({ label, name, marker });
-                    }
+                        infoWindow.setContent(content);
+                        infoWindow.open(map, marker);
+                    });
+
+                    markers.push({ label, name, marker });
                 });
+
 
                 map.fitBounds(bounds);
 
@@ -682,7 +729,9 @@
 
                 drawPolyline(map, data);
 
-                function drawPolyline(map, data) {
+                function drawPolyline(map, originDetailData) {
+
+                    const data = originDetailData.filter(item => typeof item.lat === 'number' && typeof item.lng === 'number' && !isNaN(item.lat));
 
                     /* 아이콘은 최초 1회만 생성되어야 하므로 최초생성 시 0에서 1로변환 */
                     if (markerMake == 0 && countMarker > 1) {
@@ -945,7 +994,6 @@
             }
             /* updateMap를 전역변수로 변경 */
             window.updateMap = updateMap;
-
         };
 
         var previousPolylines = [];
@@ -1030,20 +1078,7 @@
         });
 
 
-        window.onbeforeunload = function () {
-            captureMap();
-        };
 
-        function captureMap() {
-            const mapContainer = document.getElementById("map-container");
-
-            html2canvas(mapContainer, { useCORS: true }).then(function (canvas) {
-                // 이미지 데이터를 가져와서 보여주거나 저장하거나 원하는 대로 처리
-                const imageDataURL = canvas.toDataURL("image/png");
-
-                console.log(imageDataURL);
-            });
-        }
     </script>
 
 

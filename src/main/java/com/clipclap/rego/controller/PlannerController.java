@@ -22,8 +22,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.Principal;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
@@ -114,6 +120,32 @@ public class PlannerController {
         model.addAttribute("startDate" , plannerService.findStartTimeByPlanId(planId));
 
         return "plan/planDetail";
+    }
+
+
+    @PostMapping("/saveImage")
+    @ResponseBody
+    public Map<String, Object> saveImage(@RequestBody Map<String, Object> dataToSend) {
+
+        System.out.println("사진 저장 실행...............");
+        Map<String, Object> response = new HashMap<>();
+        try {
+            String base64Data = ((String) dataToSend.get("imageDataURL")).replace("data:image/png;base64,", "");
+            byte[] imageBytes = Base64.getDecoder().decode(base64Data);
+
+            int planId = Integer.parseInt(String.valueOf(dataToSend.get("planId")));
+            String filename = "preview/" + planId + ".png"; // 저장할 이미지 파일 이름
+            File imageFile = new File("src/main/resources/static/" + filename);
+
+            try (FileOutputStream fos = new FileOutputStream(imageFile)) {
+                fos.write(imageBytes);
+            }
+            response.put("success", true);
+        } catch (IOException e) {
+            response.put("success", false);
+        }
+        System.out.println("사진 저장 완료...............");
+        return response;
     }
 
 }
