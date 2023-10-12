@@ -81,7 +81,7 @@ public class IndexController {
 					new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
 				}
 				// 회원가입 창으로 이동
-				return "join";
+				return "login";
 			}
 			// 회원가입 이력이 존재
 			String username = authentication.getName();

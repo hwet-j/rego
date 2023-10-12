@@ -1,34 +1,126 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>로그인 페이지</title>
+    <meta charset="UTF-8">
+    <title>로그인 페이지</title>
+    <link href="/css/login.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<h1>로그인 페이지</h1>
-<hr/>
-<!-- 시큐리티는 x-www-form-url-encoded 타입만 인식 -->
-<form action="/loginProc" method="post">
-	<input type="text" name="username" />
-	<input type="password" name="password" />
-	<button>로그인</button>
-</form>
 
-<br />
 
-	<h1>Social Login</h1>
-	<br />
-	<!-- javascript:; 는 클릭해도 반응을 없게 하는 키워드 -->
-	<a href="/oauth2/authorization/google" >
-		구글로그인
-	</a>
-	<a href="/oauth2/authorization/naver">
-		네이버로그인
-	</a>
+<div class="container right-panel-active">
+    <!-- Sign Up -->
+    <div class="container__form container--signup">
 
-	<a href="/oauth2/authorization/kakao">
-		카카오로그인
-	</a>
-	<br />
+
+
+        <form action="/joinProc" th:object="${joinForm}" method="post" id="form1" class="form">
+            <div th:if="${user == null}">
+                <h2 class="form__title2">Sign Up</h2>
+                <p class="signup-text">소셜 로그인으로 회원가입하세요!</p>
+                <div class="signup-api">
+                    <a href="/oauth2/authorization/kakao" style="float:left;" class="kakao-btn">
+                        KAKAO
+                    </a>
+                    <a href="/oauth2/authorization/google" style="float:left;" class="google-btn">
+                        GOOGLE
+                    </a>
+                    <a href="/oauth2/authorization/naver" style="float:left;" class="naver-btn">
+                        NAVER
+                    </a>
+                </div>
+            </div>
+            <div th:if="${user != null}">
+
+                <h2 class="form__title3">Sign Up</h2>
+                <div>
+                    <input type="email" name="email" class="input" th:value="${user.getEmail()}" readonly/>
+                </div>
+                <div>
+                    <label for="nickname"></label>
+                    <input type="text" th:field="*{nickname}" class="input" placeholder="Nickname" autocomplete="off"/>
+                </div>
+                <div style="color:red;" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"
+                     class="error"></div>
+                <div>
+                    <label for="password"></label>
+                    <input type="password" th:field="*{password}" class="input" placeholder="Password"
+                           autocomplete="off"/>
+                </div>
+                <div style="color:red;" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+                     class="error"></div>
+                <div>
+                    <label for="birthDate"></label>
+                    <input type="date" th:field="*{birthDate}" class="input" autocomplete="off">
+                </div>
+                <div style="color:red;" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></div>
+                <br><br>
+                <div class="gender">
+                    <label for="gender"></label>
+                    <input type="radio" th:field="*{gender}" name="gender" value="남자" id="male"/>
+                    <label for="male">Man &nbsp&nbsp&nbsp</label>
+                    <input type="radio" th:field="*{gender}" name="gender" value="여자" id="female"/>
+                    <label for="female">Woman</label>
+                </div>
+                <div style="color:red;" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
+                <button class="btn" type="submit">Sign Up</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Sign In -->
+    <div class="container__form container--signin">
+        <!-- 시큐리티는 x-www-form-url-encoded 타입만 인식 -->
+        <form action="/loginProc" method="post" id="form2" class="form">
+            <h2 class="form__title">Sign In</h2>
+            <input type="text" name="username" placeholder="Username" class="input" autocomplete="off"/>
+            <input type="password" name="password" placeholder="Password" class="input" autocomplete="off"/>
+            <button class="btn" type="submit">Sign In</button>
+            <a href="/oauth2/authorization/kakao" style="float:left;" class="kakao-btn">
+                KAKAO
+            </a>
+            <a href="/oauth2/authorization/google" style="float:left;" class="google-btn">
+                GOOGLE
+            </a>
+            <a href="/oauth2/authorization/naver" style="float:left;" class="naver-btn">
+                NAVER
+            </a>
+
+
+        </form>
+    </div>
+
+    <!-- Overlay -->
+    <div class="container__overlay">
+        <a class="logo" th:href="@{/}"><img src="/img/logo.png"
+                                            style="position: absolute; top: 10px; left: 10px; width: 63px; height: 58px; background-repeat: no-repeat; z-index:100;"></a>
+        <div class="overlay">
+            <div class="overlay__panel overlay--left">
+                <button class="btn2" id="signIn">Sign In</button>
+            </div>
+            <div class="overlay__panel overlay--right">
+                <button class="btn2" id="signUp">Sign Up</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const signInBtn = document.getElementById("signIn");
+    const signUpBtn = document.getElementById("signUp");
+    const firstForm = document.getElementById("form1");
+    const secondForm = document.getElementById("form2");
+    const container = document.querySelector(".container");
+
+    signInBtn.addEventListener("click", () => {
+        container.classList.remove("right-panel-active");
+    });
+
+    signUpBtn.addEventListener("click", () => {
+        container.classList.add("right-panel-active");
+    });
+
+
+</script>
 </body>
 </html>
