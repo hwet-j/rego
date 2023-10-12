@@ -59,6 +59,7 @@ a:hover {
     flex-direction:row;
     padding-top:50px;
     margin-right: 40px;
+    height:1000px;
 }
 
 .flightPrice{
@@ -83,6 +84,7 @@ a:hover {
     display:flex;
     flex-direction:column;
     align-items:flex-start;
+    margin-right:40px;
 }
 .departTop{
     display: flex;
@@ -149,6 +151,8 @@ a:hover {
 
 .mainAirlineImage{
     margin: 0 20px;
+    width:48px;
+    height:48px;
 }
 
 table td{
@@ -157,4 +161,50 @@ table td{
 
 .flightPrice{
     border-left: 3px solid #DFE1E6;
+    padding-left:40px;
+}
+
+.flightPriceBox{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.flightPriceRoute{
+    background-image: url('/css/mainCountry/Spain/madrid.webp');
+    background-repeat: no-repeat;
+    background-position: center center; /* 이미지 중앙을 요소의 중앙에 배치합니다. */
+    background-size: cover; /* 이미지를 확대/축소하여 요소를 꽉 채웁니다. */
+    display:flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    text-align:center;
+    align-items: center; /* 수직 중앙 정렬 */
+    border-radius: 10px 10px 0 0;
+    width:400px;
+    height:250px;
+    color:white;
+    font-size: 45px;
+    text-shadow: 2px 2px 4px #000;
+}
+
+.flightPriceAmount{
+    border-radius: 0 0 10px 10px ;
+    background-color:white;
+    width:400px;
+    height:330px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flightPriceButton{
+    width:180px;
+    border: 4px solid #62BEFF;
+    background-color:white;
+    color:#62BEFF;
+    border-radius:15px;
+    text-align:center;
+    font-weight: bolder;
+    padding:5px;
+    font-size: 20px;
 }

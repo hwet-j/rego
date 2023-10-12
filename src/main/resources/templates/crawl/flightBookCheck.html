@@ -108,7 +108,17 @@
             </div>
         </div>
         <div class="flightPrice">
-
+            <div class="flightPriceBox" >
+                <div class="flightPriceRoute" th:text="|${flightInfo.routes[0].departureAirport} &#x2192; ${flightInfo.routes[0].arrivalAirport}|"></div>
+                <div class="flightPriceAmount">
+                    <div class="airLineName" style="font-size: 20px; margin-top:15px; font-weight: bolder;" th:text="|${flightInfo.routes[0].airlineName} & ${flightInfo.routes[0].airlineName}|"></div>
+                    <div class="sum" style="font-size: 18px; margin:10px; font-weight: bold;">합계</div>
+                    <div class="amount" style="font-size: 30px; margin:5px; margin-bottom:35px;" th:text="|₩${flightInfo.price}|"></div>
+                    <a><div class="flightPriceButton">결제하기</div></a>
+                    <div style="height: 2px; background-color: #CBCED8; margin: 15px 0; width:160px;"></div>
+                    <a><div class="flightPriceButton">플랜 시작하기</div></a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
