@@ -120,7 +120,8 @@ public class PlannerController {
         // 이후에 정보를 받아오면 필요없을듯
         model.addAttribute("planID" , planId);
         // 플래너의 시작날짜 (이것도 굳이 필요없을 수도)
-        model.addAttribute("startDate" , plannerService.findStartTimeByPlanId(planId));
+        // model.addAttribute("startDate" , plannerService.findStartTimeByPlanId(planId));
+        model.addAttribute("startDate" , plannerDTO.getStartDate());
 
         return "plan/planDetail";
     }

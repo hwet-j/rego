@@ -7,9 +7,17 @@
 <body>
 
 <div th:each="item : ${test}">
-<!--    <span th:text="${item}"></span>-->
-    <a th:href="@{|/plan/detail?planId=${item.planId}|}" th:text="${item}"></a>
-
+    <a th:href="@{|/plan/detail?planId=${item.planId}|}">
+        <div>
+            <div>
+                <img th:src="@{|${item.imagePath}|}" style="width: 180px;height: 180px;"/>
+                <img th:src="@{|/preview/${item.planId}.png|}" onerror="this.src='/preview/map_basic.png'" style="width: 180px;height: 180px;"/>
+            </div>
+            <div>
+                <span th:text="${item.content}"></span>
+            </div>
+        </div>
+    </a>
 </div>
 
 
