@@ -77,9 +77,9 @@ h1.box {
     font-size: 30px;
         color: #464DB7;
         margin-bottom: -100px;
-        margin-left: 150px;
+        margin-left: 5px;
         margin-right: 10px;
-        margin-top: 155px;
+        margin-top: 15px;
 }
 
 
@@ -166,14 +166,114 @@ h1.box {
 }
 
 
+
+
+
+
+/*이미지*/
+
+.tab1-img1{
+    float: left;
+    width: 660px;
+    height: 425px;
+    margin-top: 105px;
+    margin-left: 50px;
+     position: relative;
+     overflow: hidden;
+      z-index: 900;
+}
+
+
+.tab1-img1 img {
+    width: 100%;  /* 이미지의 너비를 div에 맞게 조절 */
+    height: 100%;  /* 이미지의 높이를 div에 맞게 조절 */
+    object-fit: cover;  /* 이미지의 비율을 유지하면서 div에 맞게 채움 */
+    transition: transform 0.3s;
+    z-index: 900;
+}
+
+
+.tab1-img1:hover  {
+    transform: scale(1.05);
+    z-index: 990;
+    box-shadow: 5px 7px 10px rgba(0, 0, 0, 0.3);
+}
+.tab1-img1:hover .blueScreen {
+    opacity: 0.7;  /* 호버시 .blueScreen이 보이게 설정 */
+    width: 50%; /* 나타날 때 너비를 조절하여 옆에서 나오는 느낌을 만듭니다. */
+    right: 0;/* 나타날 때 왼쪽으로 이동합니다. */
+}
+
+
+.tab1-img1 h3 {
+    position: absolute;
+    top : 85%;
+    left: 3%;
+    color: white;
+    font-size: 24px;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.7);
+    z-index: 991;
+}
+
+.tab1-img1:hover p {
+       opacity: 1;
+}
+
+.tab1-img1 p {
+    position: absolute;
+    left: 48%;
+    width:46%;
+    height: 60%;
+    font-size: 11px;
+    color: white;
+    text-align: left;
+    z-index: 991;
+    font-family: 'Noto Sans KR', sans-serif;
+    opacity: 0;
+    transition: transform 0.3s;
+}
+
+p {
+    margin: 70px;
+    margin-left: 30px;
+    padding: 0;
+    text-align: left;
+}
+
+.blueScreen {
+    position: absolute;  /* 절대 위치를 사용하여 div를 이미지 위에 배치 */
+    top: 0;  /* 상단에서 0px의 위치에 배치 */
+    right:-100%;  /* 좌측에서 0px의 위치에 배치 */
+    width: 50;  /* 너비를 부모 div에 맞게 조절 */
+    height: 100%;  /* 높이를 부모 div에 맞게 조절 */
+    background-color: #364E9B;;  /* 파란색 배경. 원하는 색상으로 변경 가능 */
+    transition: opacity 0.3s;
+    pointer-events: none;
+    opacity:0;
+    transition: opacity 0.3s,  right 0.2s;
+}
+
+.vertical-line {
+
+margin-left: 825px;
+position:absolute;
+margin-top: 200px;
+width:1px;
+height:515px;
+background-color:#EEEFF2;
+z-index:999;
+
+}
+
+
 /* 버튼 스타일 */
 .btn {
     display: block;
     width: 125px;
     height:45px;
     padding: 10px;
-    margin: 385px;
-    margin-left: 1360px;
+    margin: 217px;
+    margin-left: 480px;
     border: 2px solid transparent; /* 테두리를 투명으로 설정 */
     transition: border-color 0.3s; /* 테두리 색상 변경 시 부드러운 전환 효과 추가 */
     border-radius: 5px; /* 모서리를 둥글게 만들기 */
@@ -224,14 +324,17 @@ h1.box {
 
 }
 
-.vertical-line {
 
-margin-left: 770px;
-position:absolute;
-margin-top: -900px;
-width:1px;
-height:515px;
-background-color:#EEEFF2;
-z-index:999;
 
+.left-side {
+   float: left;
+    width: 700px;
+    margin-top: 35px;
+}
+
+.right-side {
+    float: left;
+    height: 700px;
+    margin-top: 35px;
+    margin-left: 30px;
 }
