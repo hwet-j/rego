@@ -69,7 +69,8 @@ body {
 
 
 .bbox{
- margin-left: -900px; /* 왼쪽으로 50px 이동 */
+ margin-left: -200px; /* 왼쪽으로 50px 이동 */
+
 }
 
 /* 제목 스타일 */
@@ -77,9 +78,9 @@ h1.box {
     font-size: 30px;
         color: #464DB7;
         margin-bottom: -100px;
-        margin-left: 150px;
+        margin-left: 115px;
         margin-right: 10px;
-        margin-top: 155px;
+        margin-top: 50px;
 }
 
 
@@ -177,6 +178,104 @@ h1.box {
 }
 
 
+
+/*이미지*/
+
+.tab1-img5{
+    float: left;
+    width: 650px;
+    height: 600px;
+    margin-left: 100px;
+    margin-top: 70px;
+    position: relative;
+         overflow: hidden;
+         z-index: 900;
+}
+
+
+.tab1-img5 img {
+    width: 100%;  /* 이미지의 너비를 div에 맞게 조절 */
+    height: 100%;  /* 이미지의 높이를 div에 맞게 조절 */
+    object-fit: cover;  /* 이미지의 비율을 유지하면서 div에 맞게 채움 */
+    transition: transform 0.3s;
+}
+
+.tab1-img5:hover  {
+    transform: scale(1.05);피사의 사탑
+    z-index: 990;
+    box-shadow: 5px 7px 10px rgba(0, 0, 0, 0.3);
+}
+.tab1-img5:hover .blueScreen {
+    opacity: 0.7;  /* 호버시 .blueScreen이 보이게 설정 */
+}
+
+.tab1-img5 h2 {
+    position: absolute;
+    top : 88%;
+    left: 3%;
+    color: white;
+    font-size: 24px;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.7);
+    z-index: 991;
+}
+
+.tab1-img5:hover p {
+    opacity: 1;
+}
+
+.tab1-img5 p {
+
+
+    position: absolute;
+    left: 52.5%;
+    width:40%;
+    height: 92%;
+    font-size: 11px;
+    color: white;
+    text-align: left;
+    z-index: 991;
+    font-family: 'Noto Sans KR', sans-serif;
+    opacity: 0;
+    transition: transform 0.3s;
+}
+
+
+p {
+    margin: 70px;
+    margin-left: 30px;
+    padding: 0;
+    text-align: left;
+}
+
+
+.blueScreen {
+    position: absolute;  /* 절대 위치를 사용하여 div를 이미지 위에 배치 */
+    top: 0;  /* 상단에서 0px의 위치에 배치 */
+    left: 50%;  /* 좌측에서 0px의 위치에 배치 */
+    width: 50%;  /* 너비를 부모 div에 맞게 조절 */
+    height: 100%;  /* 높이를 부모 div에 맞게 조절 */
+    background-color: #364E9B;;  /* 파란색 배경. 원하는 색상으로 변경 가능 */
+    transition: opacity 0.3s;
+    pointer-events: none;
+    opacity:0;
+}
+
+.vertical-line {
+
+margin-left: 825px;
+position:absolute;
+margin-top: 200px;
+width:1px;
+height:515px;
+background-color:#EEEFF2;
+z-index:999;
+
+}
+
+
+
+
+
 /* 버튼 스타일 */
 .btn {
     display: block;
@@ -184,7 +283,7 @@ h1.box {
     height:45px;
     padding: 10px;
     margin: 385px;
-    margin-left: 1360px;
+    margin-left: 520px;
     border: 2px solid transparent; /* 테두리를 투명으로 설정 */
     transition: border-color 0.3s; /* 테두리 색상 변경 시 부드러운 전환 효과 추가 */
     border-radius: 5px; /* 모서리를 둥글게 만들기 */
@@ -221,28 +320,14 @@ h1.box {
     color: #FFFFFF;
 }
 
-
-.side-img {
-
-     width: 670px;
-     height: 610px;
-     position: absolute;
-     top: 150px;
-     left: 835px;
-     z-index: 101;
-     background-image: url(/img/side.png);
-
-
+.left-side {
+   float: left;
+    width: 700px;
+    margin-top: 35px;
 }
 
-.vertical-line {
-
-margin-left: 770px;
-position:absolute;
-margin-top: -900px;
-width:1px;
-height:515px;
-background-color:#EEEFF2;
-z-index:999;
-
+.right-side {
+    float: left;
+    height: 710px;
+    margin-top: 35px;
 }
