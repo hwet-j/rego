@@ -678,6 +678,7 @@
             for(var i=0; i < attdata.length; i++){
                 boundss.extend(new google.maps.LatLng(attdata[i].lat, attdata[i].lng));
             }
+
             map.fitBounds(boundss);
 
             function updateMap(originDetailData) {

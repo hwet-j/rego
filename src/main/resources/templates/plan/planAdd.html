@@ -3,64 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="/css/plan_add.css" rel="stylesheet">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <!-- 제이쿼리 불러오기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- 폰트어썸 불러오기 -->
+    <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+          rel="stylesheet">
+
+    <!-- XEIcon 폰트 불러오기 -->
+    <link href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css" rel="stylesheet">
+
 </head>
 <body>
 
-<h1>여행 계획 만들기</h1>
+    <div class="background"></div>
+    <div class="background2"></div>
 
-<div th:if="${#authorization.expression('isAuthenticated()')}">
-    <form th:action="@{/plan/add}" th:object="${plannerDTO}" method="post">
 
-        <input type="hidden" th:field="*{userEmail}" th:value="${#authentication.name}">
-        <div>
-            <label for="content">여행주제:</label>
-            <input type="text" id="content" th:field="*{content}" placeholder="여행주제"/>
-            <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span>
+    <div class="nav">
+
+        <ul class="" style="list-style-type:none;">
+            <li class="">
+                <a class="logo" th:href="@{/}"><img src="/img/logo.png"
+                                                    style="float: left; width: 63px; height: 58px; margin-left: 10px; background-repeat: no-repeat;"></a>
+
+                <div class="nav-left"
+                     style="float:left;   margin-left: 470px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 500;">
+                    <a class="" style="margin-right: 50px; color:#4F54B4;"
+                       th:href="@{/}">HOME</a>
+                    <a class="" style="margin-right: 50px; color:#4F54B4;"
+                       th:href="@{/}">AIRPORT</a>
+                    <a class="" style="margin-right: 50px; color:#4F54B4;"
+                       th:href="@{/}">START PLAN</a>
+                    <a class="" style="color:#4F54B4;"
+                       th:href="@{/}">RECOMMEND</a>
+                </div>
+
+                <div class="nav-right"
+                     style="float:right;    margin-right: 35px; margin-top: 27px;  font-size: 12px;  font-family: 'Roboto', sans-serif; font-weight: 600;">
+                    <a class="" style="margin-right: 20px; color:#4F54B4;"
+                       th:href="@{/question/list}">고객센터</a>
+                    <a class="loginBtn" sec:authorize="isAnonymous()" style="margin-right: 20px; color:#4F54B4;"
+                       th:href="@{/login}">로그인</a>
+                    <a class="" sec:authorize="isAuthenticated()" style="margin-right: 20px; color:#4F54B4;"
+                       th:href="@{/}">마이페이지</a>
+                    <a class="" sec:authorize="isAuthenticated()" style="margin-right: 20px; color:#4F54B4;"
+                       th:href="@{/logout}">로그아웃</a>
+                    <a class="" sec:authorize="hasRole('ADMIN')" style="color:#4F54B4;"
+                       th:href="@{/}">ADMIN</a>
+                </div>
+            </li>
+        </ul>
+
+    </div>
+
+<div class="container">
+
+
+
+
+    <div class="left-side">
+        <div class="bbox">
+            <h1 class="box">계획 생성하기</h1>
+            <form data-aos="fade" id="planForm" method="post" th:action="@{/plan/add}" th:object="${plannerDTO}">
+                <div class="label-box">
+                    <div class="search-title">
+                        <label for="search-type" hidden>검색 유형</label>
+                        <select class="form-control" id="search-type" name="category" th:field="*{type}">
+                            <option value="">미선택</option>
+                            <option value="자유">자유</option>
+                            <option value="힐링">힐링</option>
+                            <option value="문화">문화</option>
+                            <option value="쇼핑">쇼핑</option>
+                            <option value="식도락">식도락</option>
+                        </select>
+
+                    </div>
+                </div>
+
+                <div class="inquiry-con">
+
+                    <div class="label-box">
+                        <label>
+                            <div class="title" for="userEmail"></div>
+                            <input class="input-content" readonly th:field="*{userEmail}" type="hidden">
+                        </label>
+                    </div>
+
+                    <div class="label-box">
+                        <label>
+                            <div class="title" for="content"></div>
+                            <div class="input-container">
+                                <input class="input-content" data-label="안녕하세요" placeholder="주제를 입력해주세요"
+                                       th:field="*{content}"
+                                       type="text">
+                            </div>
+                            <div style="color:red;" th:errors="*{content}" class="error"
+                                 th:if="${#fields.hasErrors('content')}"></div>
+                        </label>
+                    </div>
+
+
+                    <div class="label-box">
+                        <label>
+                            <div class="title" for="startDate"></div>
+                            <input class="input-content" th:field="*{startDate}" type="date">
+                            <div data-label="넹" style="color:red;" th:errors="*{startDate}" class="error"
+                                 th:if="${#fields.hasErrors('startDate')}"></div>
+                        </label>
+                    </div>
+
+                    <div class="label-box">
+                        <label>
+                            <div class="title" for="endDate"></div>
+                            <input class="input-content" th:field="*{endDate}" type="date">
+                            <div style="color:red;" th:errors="*{endDate}"
+                                 th:if="${#fields.hasErrors('endDate')}" class="error"></div>
+                        </label>
+                    </div>
+
+                    <div class="label-box">
+                        <label>
+                            <div class="title" for="numberOfPeople"></div>
+                            <input class="input-content" th:field="*{numberOfPeople}" type="number">
+                            <div style="color:red;" th:errors="*{numberOfPeople}" class="error"
+                                 th:if="${#fields.hasErrors('numberOfPeople')}"></div>
+                        </label>
+                    </div>
+
+                    <span th:if="${#fields.hasErrors('endDateAfterStartDate')}" th:errors="*{endDateAfterStartDate}"></span>
+
+                    <div class="label-box">
+                        <span class="btn-container">
+                            <input class="btn" name="submit" type="submit" value="작성완료">
+                        </span>
+                    </div>
+                </div>
+            </form>
         </div>
+    </div>
 
-        <div>
-            <label for="startDate">출발일:</label>
-            <input type="date" id="startDate" th:field="*{startDate}" />
-            <span th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></span>
-        </div>
+    <div class="vertical-line"></div>
 
-        <div>
-            <label for="endDate">도착일:</label>
-            <input type="date" id="endDate" th:field="*{endDate}"/>
-            <span th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></span>
-        </div>
-
-        <span th:if="${#fields.hasErrors('endDateAfterStartDate')}" th:errors="*{endDateAfterStartDate}"></span>
-
-        <div>
-            <label for="numberOfPeople">여행자 수:</label>
-            <input type="number" id="numberOfPeople" th:field="*{numberOfPeople}" placeholder="여행자 수"/>
-            <span th:if="${#fields.hasErrors('numberOfPeople')}" th:errors="*{numberOfPeople}"></span>
-        </div>
-
-        <div>
-            <label for="type">여행 종류:</label>
-            <select id="type" th:field="*{type}">
-                <option value="">미선택</option>
-                <option value="자유">자유</option>
-                <option value="힐링">힐링</option>
-                <option value="문화">문화</option>
-                <option value="쇼핑">쇼핑</option>
-                <option value="식도락">식도락</option>
-            </select>
-            <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></span>
-        </div>
-
-        <input type="submit" value="계획 생성">
-    </form>
+    <div class="right-side"></div>
 
 
 </div>
-<div th:unless="${#authorization.expression('isAuthenticated()')}">
-    로그인 하지 않았습니다.
-</div>
-
-
 
 
 

@@ -73,6 +73,20 @@ public class PlannerController {
         return "plan/planList";
     }*/
 
+    @GetMapping("/add")
+    @PreAuthorize("isAuthenticated()")
+    public String planAddForm(Model model, Principal principal,
+                            PlannerDTO plannerDTO,
+                            BindingResult bindingResult) {
+
+        if (principal != null){
+            System.out.println(principal.getName());
+            plannerDTO.setUserEmail(principal.getName());
+        }
+
+        return "/plan/planAdd";
+    }
+
     @PostMapping("/add")
     @PreAuthorize("isAuthenticated()")
     public String myPlanAdd(Model model, Principal principal,
@@ -88,7 +102,7 @@ public class PlannerController {
                 System.out.println(error.toString());
                 System.out.println("검사 오류: " + error.getDefaultMessage());
             }
-            return "plan/planList";
+            return "plan/planAdd";
         }
 
         if (principal != null){
@@ -100,7 +114,7 @@ public class PlannerController {
         plannerService.save(plannerDTO);
 
 
-        return "redirect:/plan/list";
+        return "redirect:/plan/add";
     }
 
     @GetMapping("/detail")
