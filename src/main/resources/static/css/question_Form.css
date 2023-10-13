@@ -201,7 +201,7 @@ h1.box {
 }
 
 .tab1-img5:hover  {
-    transform: scale(1.05);피사의 사탑
+    transform: scale(1.05);
     z-index: 990;
     box-shadow: 5px 7px 10px rgba(0, 0, 0, 0.3);
 }

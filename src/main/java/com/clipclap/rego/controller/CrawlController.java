@@ -48,8 +48,6 @@ public class CrawlController {
     public String flightBook(Model model, @ModelAttribute FlightInfo flightInfo,
                              @RequestParam(required = false) String departureDate,
                              @RequestParam(required = false) String arrivalDate){
-        System.out.println("이미지정보"+flightInfo.getRoutes().get(0).getAirlineImg());
-
         model.addAttribute("flightInfo",flightInfo);
         if(departureDate != null && arrivalDate != null){
             // Add the dates to your model, so you can display or use them in the view

@@ -3,6 +3,22 @@ body {
     padding:0;
 }
 
+/*.loading {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    top: 450px;
+    left: 920px;
+    z-index: 991;
+    background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+    background-image: url('/img/loading.gif');
+}*/
+
+
+
+
 button {
     background: none;       /* 배경색 제거 */
     border: none;           /* 테두리 제거 */
@@ -352,9 +368,10 @@ position: absolute;
     width: 247px !important;
     max-width: none;
     padding: 0;
-    margin-top: 7px;
+    margin-top: 3px !important;
+    margin-left: 0.5px !important;
     top: 285px !important;
-    left: 20px;
+    left: 20px; !important;
     z-index: 100;
     display: none;
     ffont-family: 'Nunito', sans-serif !important;
@@ -1077,6 +1094,7 @@ font-family: 'Nunito', sans-serif;
     margin-left: -30px;
     text-align:left;
     padding: 30px;
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.4);
 }
 
 

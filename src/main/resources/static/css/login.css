@@ -223,6 +223,7 @@ body {
   padding: 0.9rem 7rem;
   text-transform: uppercase;
   transition: transform 80ms ease-in;
+
 }
 
 .btn:hover {
@@ -384,6 +385,44 @@ body {
   text-align: center;
 }
 
+
+.form2 {
+  background-color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 3rem;
+  height: 107%;
+  text-align: center;
+}
+
+
+
+.idpw{
+  float: left;
+  margin-top: 10px;
+  margin-left: 5px;
+  font-size: 12px;
+  font-weight: 400;
+  font-family: 'Montserrat', sans-serif;
+  color: #bbbbbb;
+ text-decoration-line:none;
+  transition: all 0.3s;
+}
+
+.idpw:hover{
+  float: left;
+  margin-top: 10px;
+  margin-left: 5px;
+  font-size: 12px;
+  font-weight: 400;
+  font-family: 'Montserrat', sans-serif;
+  color: black;
+ text-decoration-line:none;
+  transition: all 0.3s;
+}
+
 .input {
   background-color: #fff;
   border: none;
@@ -406,3 +445,20 @@ body {
     z-index: 5;
   }
 }
+
+
+#passwordMatchError {
+        color: red;
+        font-size: 12px;
+        font-family: "Noto sans KR", sans-serif;
+    }
+
+     .error {
+            font-size: 12px; /* 원하는 폰트 크기로 설정하세요 */
+            font-family: "Noto sans KR", sans-serif;
+            color: red; /* 원하는 텍스트 색상으로 설정하세요 */
+        }
+
+
+
+
