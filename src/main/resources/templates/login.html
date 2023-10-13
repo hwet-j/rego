@@ -9,12 +9,15 @@
 
 
 <div class="container right-panel-active">
-    <div class="container__form container--signup">
+    <div class="container__form container--signup" style="display: none;">
         <!-- 시큐리티는 x-www-form-url-encoded 타입만 인식 -->
         <form action="/loginProc" method="post" id="form2" class="form">
             <h2 class="form__title">Sign In</h2>
             <input type="text" name="username" placeholder="Username" class="input" autocomplete="off"/>
             <input type="password" name="password" placeholder="Password" class="input" autocomplete="off"/>
+            <div class="CTA">
+                <a class="idpw" onclick="findPw()" style="cursor:pointer;">Find Password</a>
+            </div>
             <button class="btn" type="submit">Sign In</button>
             <a href="/oauth2/authorization/kakao" style="float:left;" class="kakao-btn">
                 KAKAO
@@ -30,11 +33,10 @@
         </form>
     </div>
     <!-- Sign Up -->
-    <div class="container__form container--signin">
+    <div class="container__form container--signin" style="display: none;">
 
 
-
-        <form action="/joinProc" th:object="${joinForm}" method="post" id="joinForm" class="form2">
+        <form action="/joinProc" th:object="${joinForm}" method="post" id="form1" class="form2">
             <div th:if="${user == null}">
                 <h2 class="form__title2">Sign Up</h2>
                 <p class="signup-text">소셜 로그인으로 회원가입하세요!</p>
@@ -54,7 +56,7 @@
 
                 <h2 class="form__title3">Sign Up</h2>
                 <div>
-                    <input type="email" name="email" class="input" th:value="${user.getEmail()}" readonly/>
+                    <input type="email" name="email" class="input" th:value="${user.email}" readonly/>
                 </div>
                 <div>
                     <label for="nickname"></label>
@@ -74,7 +76,11 @@
                     <div id="passwordMatchError" style="color:red;"></div>
                 </div>
                 <div style="color:red;" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
-                     class="error"></div>
+                     class="error">
+                </div>
+                <div style="color:red;" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"
+                     class="error">
+                </div>
                 <div>
                     <label for="birthDate"></label>
                     <input type="date" th:field="*{birthDate}" class="input" autocomplete="off">
@@ -83,11 +89,12 @@
                 <br><br>
                 <div class="gender">
                     <label for="gender"></label>
-                    <input type="radio" th:field="*{gender}" name="gender" value="남자" id="male" />
+                    <input type="radio" th:field="*{gender}" name="gender" value="남자" id="male"/>
                     <label for="male">Man &nbsp&nbsp&nbsp</label>
-                    <input type="radio" th:field="*{gender}" name="gender" value="여자" id="female" />
+                    <input type="radio" th:field="*{gender}" name="gender" value="여자" id="female"/>
                     <label for="female">Woman</label>
-                    <div style="color:red;" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="error"></div>
+                    <div style="color:red;" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"
+                         class="error"></div>
                 </div>
 
                 <button class="btn" type="submit">Sign Up</button>
@@ -115,57 +122,45 @@
 
 <script>
     // 초기 상태를 확인하기 위한 변수
-let isRightPanelActive = false;
-let isFormVisible = false;
+   let isRightPanelActive = false;
 
-// 시큐리티는 x-www-form-url-encoded 타입만 인식
-const form2 = document.getElementById('form2');
-const form1 = document.getElementById('form1');
-const container = document.querySelector('.container');
+   // 시큐리티는 x-www-form-url-encoded 타입만 인식
+   const form2 = document.getElementById('form2');
+   const form1 = document.getElementById('form1');
+   const container = document.querySelector('.container');
 
-const signInBtn = document.getElementById('signIn');
-const signUpBtn = document.getElementById('signUp');
+   const signInBtn = document.getElementById('signIn');
+   const signUpBtn = document.getElementById('signUp');
 
-// 초기 상태 설정
-signInBtn.addEventListener('click', () => {
-   container.classList.remove('right-panel-active');
-   isRightPanelActive = false;
-   hideForm();
-});
-
-signUpBtn.addEventListener('click', () => {
-   container.classList.add('right-panel-active');
-   isRightPanelActive = true;
-   showFormAfterDelay();
-});
-
-// 페이지 로드 시 초기 상태 확인 후 Overlay 설정
-window.addEventListener('load', () => {
-   if (isRightPanelActive) {
-       container.classList.add('right-panel-active');
-   } else {
+   // 초기 상태 설정
+   signInBtn.addEventListener('click', () => {
        container.classList.remove('right-panel-active');
-   }
-});
+       isRightPanelActive = false;
+   });
 
-// 폼 요소를 나타내는 함수
-function showForm() {
-   form1.style.display = 'block';
-   form2.style.display = 'none';
-   isFormVisible = true;
-}
+   signUpBtn.addEventListener('click', () => {
+       container.classList.add('right-panel-active');
+       isRightPanelActive = true;
+   });
 
-// 폼 요소를 감추는 함수
-function hideForm() {
-   form1.style.display = 'none';
-   form2.style.display = 'block';
-   isFormVisible = false;
-}
+   // 페이지 로드 시 초기 상태 확인 후 Overlay 설정
+   window.addEventListener('load', () => {
+   setTimeout(() => {
+        const loginForm = document.querySelector('.container--signup');
+        const signUpForm = document.querySelector('.container--signin');
 
-// 1초 뒤에 폼 요소를 나타내는 함수 호출
-function showFormAfterDelay() {
-   setTimeout(showForm, 3000);
-}
+        // 폼을 보이도록 변경 (display 속성을 'block'으로 설정)
+        loginForm.style.display = 'block';
+        signUpForm.style.display = 'block';
+    }, 300); // 1초 (1000 밀리초) 후에 폼을 나타나게 함
+
+       if (isRightPanelActive) {
+           container.classList.add('right-panel-active');
+       } else {
+           container.classList.remove('right-panel-active');
+       }
+   });
+
 
 
 
@@ -174,7 +169,7 @@ function showFormAfterDelay() {
 
 
    // 폼 요소 가져오기
-   const form = document.getElementById('form1'); // form1 폼 요소로 수정
+   const form = document.getElementById('form'); // form1 폼 요소로 수정
    const passwordField = document.querySelector('input[name="password"]');
    const passwordConfirmField = document.querySelector('input[name="passwordConfirm"]');
    const errorDiv = document.getElementById('passwordMatchError');
@@ -190,10 +185,10 @@ function showFormAfterDelay() {
        const passwordConfirm = passwordConfirmField.value;
 
        if (password !== passwordConfirm) {
-           errorDiv.textContent = "비밀번호가 일치하지 않습니다.";
+
            form.removeEventListener('submit', handleSubmit); // 일치하지 않을 때 제출 이벤트 제거
        } else {
-           errorDiv.textContent = ""; // 일치할 때 오류 메시지를 지웁니다.
+
            form.addEventListener('submit', handleSubmit); // 일치할 때 제출 이벤트 추가
        }
    }
@@ -203,6 +198,19 @@ function showFormAfterDelay() {
    passwordConfirmField.addEventListener('input', checkPasswordMatch);
 
 
+
+
+
+
+
+     function findPw() {
+
+          var newWindow = window.open('/findPw', '_blank', 'width=300, height=400,top=100,left=100');
+
+          if (newWindow === null || typeof newWindow === 'undefined') {
+            alert('팝업 차단이 활성화되어 있을 수 있습니다. 팝업 차단을 해제하고 다시 시도하세요.');
+          }
+        }
 
 </script>
 </body>

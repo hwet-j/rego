@@ -63,28 +63,30 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 		// 이메일 정보로 회원 수
 		long countUser = userRepository.countByEmail(oAuth2UserInfo.getEmail());
 
-		User user;
+		Optional<User> user;
+		User userInfo;
 		if (countUser == 1) {	// API가 달라도 동일한 email값이 들어오면 회원 가입 진행 X
 			user = userRepository.findByEmail(oAuth2UserInfo.getEmail());
+			userInfo = user.get();
 			log.info("회원가입 정보 존재");
 		} else if (userOptional.isPresent()) {	// API로 부터 받아온 정보로 검색은 되었지만, email값이 없다면
-			user = userOptional.get();
+			userInfo = userOptional.get();
 			// API값으로 검색된 정보에서 email 업데이트
-			user.setEmail(oAuth2UserInfo.getEmail());
-			userRepository.save(user);
+			userInfo.setEmail(oAuth2UserInfo.getEmail());
+			userRepository.save(userInfo);
 			log.info("API 이메일 정보 변경");
 		} else {  // 최초 정보 입력 (API정보도 이메일도 없을 경우) / 비밀번호 제외 설정
-			user = User.builder()
+			userInfo = User.builder()
 					.username(oAuth2UserInfo.getProvider() + "_" + oAuth2UserInfo.getProviderId())
 					.email(oAuth2UserInfo.getEmail())
 					.role("ROLE_USER")
 					.provider(oAuth2UserInfo.getProvider())
 					.providerId(oAuth2UserInfo.getProviderId())
 					.build();
-			userRepository.save(user);
+			userRepository.save(userInfo);
 			log.info("회원가입 정보 없음");
 		}
 
-		return new PrincipalDetails(user, oAuth2User.getAttributes());
+		return new PrincipalDetails(userInfo, oAuth2User.getAttributes());
 	}
 }
