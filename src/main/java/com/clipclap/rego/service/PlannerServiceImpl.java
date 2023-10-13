@@ -56,6 +56,18 @@ public class PlannerServiceImpl implements PlannerService {
     }
 
     @Override
+    public List<PlannerDTO> findByAllId() {
+
+        List<Planner> planners = plannerRepository.findAll();
+
+        List<PlannerDTO> plannerDTOs = planners.stream()
+                .map(PlannerMapper::entityToDto)
+                .collect(Collectors.toList());
+
+        return plannerDTOs;
+    }
+
+    @Override
     public void save(PlannerDTO dto) {
         if(dto.getType().equals("힐링")){
             dto.setImagePath("https://github.com/hwet-j/hwet-j.github.io/assets/81364742/56961613-b6b5-431a-99a8-89210728551e");

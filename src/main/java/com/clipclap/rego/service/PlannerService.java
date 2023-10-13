@@ -13,6 +13,8 @@ public interface PlannerService {
 
     PlannerDTO findById(Integer planId);
 
+    List<PlannerDTO> findByAllId();
+
     void save(PlannerDTO dto);
 
 
