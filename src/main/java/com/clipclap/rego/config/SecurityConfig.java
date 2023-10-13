@@ -32,6 +32,7 @@ public class SecurityConfig {
 
 		http
 				.authorizeRequests((authorizeHttpRequests) -> authorizeHttpRequests
+						.requestMatchers(new AntPathRequestMatcher("/question/detail/**")).authenticated()
 						.requestMatchers(new AntPathRequestMatcher("/question/add")).authenticated()
 						.requestMatchers(new AntPathRequestMatcher("/question/detail/**")).authenticated()
 						.requestMatchers(new AntPathRequestMatcher("/notice/detail")).authenticated()

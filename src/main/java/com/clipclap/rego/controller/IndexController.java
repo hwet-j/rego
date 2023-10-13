@@ -170,7 +170,7 @@ public class IndexController {
 		planId = 100;
 
 		City city = new City();
-		city.setCityName("삿포로");
+		city.setCityName("파리");
 
 		List<TouristAttractionFullDTO> test = touristAttractionService.getTouristAttractionsWithCityAndCountry();
 

@@ -55,6 +55,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- 공지 -->
+        <div class="left-side">
         <h2 class="title" th:text="${notice.subject}"></h2>
         <div class="card">
             <div class="card-body"> <!-- white-space:pre-line; 줄바꿈 인식하고, 공백은 앞쪽만 인식 -->
@@ -62,7 +63,7 @@
                 <div class="d-flex justify-content-end">  <!--d-flex:한개의 row를 block레벨로 처리-->
                     <div class="badge bg-light text-dark p-2 text-start">
                     </div>
-                    <div th:text="${#temporals.format(notice.createDate,'yyyy-MM-dd HH:mm')}"/>
+                    <div class="text-below" th:text="${#temporals.format(notice.createDate,'yyyy-MM-dd HH:mm')}"/>
                 </div>
 
 
@@ -86,7 +87,27 @@
             </div>
         </div>
 
+    <div class="vertical-line"></div>
+    <div class="right-side">
+        <div class="tab1-img1"><h3>보르도</h3>
+            <p>보르도(Bordeaux)는 프랑스의 남서 지역에 위치한 도시로, 와인으로 유명한 지역으로 알려져 있습니다. 이 지역은 브루고드(Bordeaux) 지방 와인을
+                생산하는 중심지로, 세계적으로 고품질의 와인을 생산하는 지역 중 하나로 인정받고 있습니다.<br/><br/>
 
+                보르도는 아름다운 강 '가론느 강(Garonne River)'의 남안에 자리하고 있으며, 그 주변에는 포도밭과 와인 양조장이 넓게 펼쳐져 있습니다. 이곳은
+                와인 애호가들과 소비자들을 위한 와인 투어와 시음 행사가 열리는 곳으로, 다양한 와이너리에서는 다양한 종류의 와인을 생산하고 있습니다.<br/><br/>
+
+                또한 보르도는 그림과 조각 작품 등 예술적인 유산으로도 유명합니다. 보르도 시내에는 아름다운 건축물과 역사적인 건물이 많이 있으며, 가로수가 있는 광장과
+                아름다운 도보 구역으로 특히 유명합니다. '피터 슈웨틔 플레이스(Place Pey Berland)'와 '보르도 대성당(Bordeaux Cathedral)'은
+                그 중에서도 눈에 띄는 관광 명소 중 하나입니다.<br/><br/>
+                마지막으로, 보르도 주변에는 아키타니아(Aquitaine) 지역의 해변과 해안도 있어 휴양지로도 인기가 있습니다. 보르도는 와인과 예술, 아름다운 풍경을
+                즐기며 프랑스 남서부를 탐험하고자 하는 여행객에게 매력적인 목적지 중 하나입니다.
+            </p>
+            <div class="blueScreen"></div>
+            <img src="/css/mainCountry/France/bordeaux.webp">
+        </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
+
