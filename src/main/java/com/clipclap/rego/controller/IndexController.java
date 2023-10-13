@@ -134,19 +134,24 @@ public class IndexController {
 	@PostMapping("/joinProc")
 	public String joinProc(@Valid JoinForm form,
 						   BindingResult bindingResult, Model model) {
-
+		// 비밀번호와 비밀번호 확인이 일치하지 않으면 에러 처리
+		if (!form.getPassword().equals(form.getPasswordConfirm())) {
+			bindingResult.rejectValue("passwordConfirm", "passwordConfirm", "비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+		}
 
 		if (bindingResult.hasErrors()){
 			model.addAttribute("user", userRepository.findByEmail(form.getEmail()));
-			return "join";
+			return "login";
 		}
 	
 		/* 닉네임 중복 체크 */
 		if (authService.nicknameDuplicateCheck(form.getNickname()).equals("Duplicate")){
 			model.addAttribute("user", userRepository.findByEmail(form.getEmail()));
 			bindingResult.addError(new FieldError("duplicate","nickname", "닉네임은 이미 사용중입니다."));
-			return "join";
+			return "login";
 		}
+
+
 
 		String result = authService.join(form);
 
@@ -156,7 +161,7 @@ public class IndexController {
 			System.out.println();
 		}
 
-		return "redirect:/";
+		return "redirect:/login";
 	}
 
 
@@ -165,7 +170,7 @@ public class IndexController {
 		planId = 100;
 
 		City city = new City();
-		city.setCityName("삿포로");
+		city.setCityName("파리");
 
 		List<TouristAttractionFullDTO> test = touristAttractionService.getTouristAttractionsWithCityAndCountry();
 
