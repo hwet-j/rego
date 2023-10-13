@@ -25,7 +25,16 @@ body {
      background-repeat: no-repeat;
 }
 
+.attraction-image{
+    width:180px;
+    height:150px;
 
+}
+
+.image-container{
+    margin-right:5px;
+    margin-left:5px;
+}
 
 
 .nav {
@@ -73,7 +82,10 @@ body {
     width: 1000px;
 }
 
-
+#external-events{
+    margin:10px;
+    overflow-x: auto;
+}
 /* 외부객체 (드래그 드랍) */
 #external-events h4 {
     font-size: 16px;
@@ -81,53 +93,90 @@ body {
     padding-top: 1em;
 }
 
-#external-events .fc-event {
+#external-events .fc-event-container {
     margin: 3px 0;
     cursor: move;
+}
+
+.fc-event-container{
+    background-color: cornflowerblue;
 }
 
 /* 지도,캘린더를 묶는 cotainer */
 .contain {
     display: flex;
-    margin-top: 100px;
+    margin-top: 70px;
+    padding-left:40px;
+    padding-right:40px;
+    padding-top:30px;
+    padding-bottom: 20px;
 }
 
 /* 캘린더 전체 */
 #calendar {
-    width: 800px;
-    height: 800px;
-    margin: auto;
+    width: 780px;
+    height: 520px;
+    margin-left: 10px;
 }
 
 /* 지도 */
 #map {
     flex: 1;
-    width: 800px;
-    height: 800px;
+    width: 780px;
+    height: 520px;
+    margin-right:10px;
 }
 
+.content-button-container{
+    padding-bottom: 32px;
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* 요소 사이의 공간을 균일하게 분배 */
+    align-items: center;
+}
 
-/*#wrap,#searchSelect {
-    margin:0px 0px 0px 0px;
-}*/
+#searchSelect{
+    width:60px;
+    height:30px;
+}
+
+.content-type-button{
+    width:60px;
+    height:30px;
+}
+
+#wrap{
+    display: flex;
+}
 
 #calendar-wrap {
     flex: 1;
 }
+
+
 
 #searchResults {
     background-color: rgba(255, 255, 255, 0.25); /* 흰 배경색 및 투명도 설정 */
     /*border: 1px solid #ccc; !* 테두리 설정 *!*/
     /*border-radius: 5px; !* 둥근 테두리 설정 *!*/
     padding: 10px; /* 내부 여백 설정 */
-    max-height: 300px; /* 최대 높이 설정 (내용이 너무 길 경우 스크롤 표시) */
+    height: 250px; /* 최대 높이 설정 (내용이 너무 길 경우 스크롤 표시) */
     overflow-y: scroll; /* 세로 스크롤바 표시 (내용이 길 경우) */
     scrollbar-width: thin; /* 스크롤바 너비 설정 */
     scrollbar-color: transparent transparent; /* 스크롤바 색상 투명으로 설정 */
 
+}
+
+#external-events-list{
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow: hidden;
+
     /* 스크롤바 숨김 */
     &::-webkit-scrollbar {
-        width: 5px; /* 스크롤바 너비 설정 */
+        width: 0px; /* 스크롤바 너비 설정 */
     }
     &::-webkit-scrollbar-thumb {
         background: transparent; /* 스크롤바 썸 색상 투명으로 설정 */
@@ -136,6 +185,7 @@ body {
         background: transparent; /* 스크롤바 트랙 색상 투명으로 설정 */
     }
 }
+
 
 
 /* 알림창 내용 input 태그  */
@@ -151,7 +201,7 @@ body {
 #custom-startDate-button {
     position: absolute;
     top: 0px;
-    left: 180px;
+    left: 190px;
     background-color: #2B3D4F;
     color: white;
     border: none;
