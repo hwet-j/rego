@@ -9,12 +9,32 @@
 
 
 <div class="container right-panel-active">
-    <!-- Sign Up -->
     <div class="container__form container--signup">
+        <!-- 시큐리티는 x-www-form-url-encoded 타입만 인식 -->
+        <form action="/loginProc" method="post" id="form2" class="form">
+            <h2 class="form__title">Sign In</h2>
+            <input type="text" name="username" placeholder="Username" class="input" autocomplete="off"/>
+            <input type="password" name="password" placeholder="Password" class="input" autocomplete="off"/>
+            <button class="btn" type="submit">Sign In</button>
+            <a href="/oauth2/authorization/kakao" style="float:left;" class="kakao-btn">
+                KAKAO
+            </a>
+            <a href="/oauth2/authorization/google" style="float:left;" class="google-btn">
+                GOOGLE
+            </a>
+            <!--<a href="/oauth2/authorization/naver" style="float:left;" class="naver-btn">
+                NAVER
+            </a>-->
+
+
+        </form>
+    </div>
+    <!-- Sign Up -->
+    <div class="container__form container--signin">
 
 
 
-        <form action="/joinProc" th:object="${joinForm}" method="post" id="form1" class="form">
+        <form action="/joinProc" th:object="${joinForm}" method="post" id="joinForm" class="form2">
             <div th:if="${user == null}">
                 <h2 class="form__title2">Sign Up</h2>
                 <p class="signup-text">소셜 로그인으로 회원가입하세요!</p>
@@ -25,9 +45,9 @@
                     <a href="/oauth2/authorization/google" style="float:left;" class="google-btn">
                         GOOGLE
                     </a>
-                    <a href="/oauth2/authorization/naver" style="float:left;" class="naver-btn">
+                    <!--<a href="/oauth2/authorization/naver" style="float:left;" class="naver-btn">
                         NAVER
-                    </a>
+                    </a>-->
                 </div>
             </div>
             <div th:if="${user != null}">
@@ -47,6 +67,12 @@
                     <input type="password" th:field="*{password}" class="input" placeholder="Password"
                            autocomplete="off"/>
                 </div>
+                <div>
+                    <label for="passwordConfirm"></label>
+                    <input type="password" th:field="*{passwordConfirm}" class="input" placeholder="PasswordConfirm"
+                           autocomplete="off"/>
+                    <div id="passwordMatchError" style="color:red;"></div>
+                </div>
                 <div style="color:red;" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
                      class="error"></div>
                 <div>
@@ -57,38 +83,20 @@
                 <br><br>
                 <div class="gender">
                     <label for="gender"></label>
-                    <input type="radio" th:field="*{gender}" name="gender" value="남자" id="male"/>
+                    <input type="radio" th:field="*{gender}" name="gender" value="남자" id="male" />
                     <label for="male">Man &nbsp&nbsp&nbsp</label>
-                    <input type="radio" th:field="*{gender}" name="gender" value="여자" id="female"/>
+                    <input type="radio" th:field="*{gender}" name="gender" value="여자" id="female" />
                     <label for="female">Woman</label>
+                    <div style="color:red;" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="error"></div>
                 </div>
-                <div style="color:red;" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
+
                 <button class="btn" type="submit">Sign Up</button>
             </div>
         </form>
     </div>
 
     <!-- Sign In -->
-    <div class="container__form container--signin">
-        <!-- 시큐리티는 x-www-form-url-encoded 타입만 인식 -->
-        <form action="/loginProc" method="post" id="form2" class="form">
-            <h2 class="form__title">Sign In</h2>
-            <input type="text" name="username" placeholder="Username" class="input" autocomplete="off"/>
-            <input type="password" name="password" placeholder="Password" class="input" autocomplete="off"/>
-            <button class="btn" type="submit">Sign In</button>
-            <a href="/oauth2/authorization/kakao" style="float:left;" class="kakao-btn">
-                KAKAO
-            </a>
-            <a href="/oauth2/authorization/google" style="float:left;" class="google-btn">
-                GOOGLE
-            </a>
-            <a href="/oauth2/authorization/naver" style="float:left;" class="naver-btn">
-                NAVER
-            </a>
 
-
-        </form>
-    </div>
 
     <!-- Overlay -->
     <div class="container__overlay">
@@ -96,29 +104,104 @@
                                             style="position: absolute; top: 10px; left: 10px; width: 63px; height: 58px; background-repeat: no-repeat; z-index:100;"></a>
         <div class="overlay">
             <div class="overlay__panel overlay--left">
-                <button class="btn2" id="signIn">Sign In</button>
+                <button class="btn2" id="signIn">Sign Up</button>
             </div>
             <div class="overlay__panel overlay--right">
-                <button class="btn2" id="signUp">Sign Up</button>
+                <button class="btn2" id="signUp">Sign In</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    const signInBtn = document.getElementById("signIn");
-    const signUpBtn = document.getElementById("signUp");
-    const firstForm = document.getElementById("form1");
-    const secondForm = document.getElementById("form2");
-    const container = document.querySelector(".container");
+    // 초기 상태를 확인하기 위한 변수
+let isRightPanelActive = false;
+let isFormVisible = false;
 
-    signInBtn.addEventListener("click", () => {
-        container.classList.remove("right-panel-active");
-    });
+// 시큐리티는 x-www-form-url-encoded 타입만 인식
+const form2 = document.getElementById('form2');
+const form1 = document.getElementById('form1');
+const container = document.querySelector('.container');
 
-    signUpBtn.addEventListener("click", () => {
-        container.classList.add("right-panel-active");
-    });
+const signInBtn = document.getElementById('signIn');
+const signUpBtn = document.getElementById('signUp');
+
+// 초기 상태 설정
+signInBtn.addEventListener('click', () => {
+   container.classList.remove('right-panel-active');
+   isRightPanelActive = false;
+   hideForm();
+});
+
+signUpBtn.addEventListener('click', () => {
+   container.classList.add('right-panel-active');
+   isRightPanelActive = true;
+   showFormAfterDelay();
+});
+
+// 페이지 로드 시 초기 상태 확인 후 Overlay 설정
+window.addEventListener('load', () => {
+   if (isRightPanelActive) {
+       container.classList.add('right-panel-active');
+   } else {
+       container.classList.remove('right-panel-active');
+   }
+});
+
+// 폼 요소를 나타내는 함수
+function showForm() {
+   form1.style.display = 'block';
+   form2.style.display = 'none';
+   isFormVisible = true;
+}
+
+// 폼 요소를 감추는 함수
+function hideForm() {
+   form1.style.display = 'none';
+   form2.style.display = 'block';
+   isFormVisible = false;
+}
+
+// 1초 뒤에 폼 요소를 나타내는 함수 호출
+function showFormAfterDelay() {
+   setTimeout(showForm, 3000);
+}
+
+
+
+
+
+
+
+   // 폼 요소 가져오기
+   const form = document.getElementById('form1'); // form1 폼 요소로 수정
+   const passwordField = document.querySelector('input[name="password"]');
+   const passwordConfirmField = document.querySelector('input[name="passwordConfirm"]');
+   const errorDiv = document.getElementById('passwordMatchError');
+
+   // 폼 제출을 막는 함수
+   function handleSubmit(event) {
+       event.preventDefault(); // 폼 제출을 막습니다.
+   }
+
+   // 입력 필드가 변경될 때마다 호출되는 함수
+   function checkPasswordMatch() {
+       const password = passwordField.value;
+       const passwordConfirm = passwordConfirmField.value;
+
+       if (password !== passwordConfirm) {
+           errorDiv.textContent = "비밀번호가 일치하지 않습니다.";
+           form.removeEventListener('submit', handleSubmit); // 일치하지 않을 때 제출 이벤트 제거
+       } else {
+           errorDiv.textContent = ""; // 일치할 때 오류 메시지를 지웁니다.
+           form.addEventListener('submit', handleSubmit); // 일치할 때 제출 이벤트 추가
+       }
+   }
+
+   // 입력 필드가 변경될 때마다 checkPasswordMatch 함수 호출
+   passwordField.addEventListener('input', checkPasswordMatch);
+   passwordConfirmField.addEventListener('input', checkPasswordMatch);
+
 
 
 </script>
