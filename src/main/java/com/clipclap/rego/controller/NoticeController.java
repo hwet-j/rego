@@ -76,22 +76,22 @@ public class NoticeController {
             return "notice_form";
         }
 
-        // 공지 등록 처리
-        @PostMapping("/add")
-        public String noticeAdd(@Valid NoticeForm noticeForm, BindingResult bindingResult, Principal principal) {
-            if (bindingResult.hasErrors()) {
-                System.out.println("fail");
-                return "notice_form";
-            }
-
-            User user = userService.getUserByEmail(principal.getName());
-
-            // NoticeService.add 메서드에서 공지 생성 후 ID를 반환하도록 수정해야 합니다.
-            Integer Id = noticeService.add(noticeForm, user);
-
-            // 공지 상세 페이지로 리디렉션합니다.
-            return "redirect:/notice/detail/" + Id;
+    // 공지 등록 처리
+    @PostMapping("/add")
+    public String noticeAdd(@Valid NoticeForm noticeForm, BindingResult bindingResult, Principal principal) {
+        if (bindingResult.hasErrors()) {
+            System.out.println("fail");
+            return "notice_form";
         }
+
+        User user = userService.getUserByEmail(principal.getName());
+
+        // NoticeService.add 메서드에서 공지 생성 후 ID를 반환하도록 수정해야 합니다.
+        Integer Id = noticeService.add(noticeForm, user);
+
+        // 공지 상세 페이지로 리디렉션합니다.
+        return "redirect:/notice/detail/" + Id;
+    }
 
         // 공지 상세 조회
         @GetMapping("/detail/{id}")
