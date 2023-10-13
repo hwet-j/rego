@@ -9,17 +9,23 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class JoinForm {
+public class JoinForm2 {
 
     private String email;
 
-//    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$",
+    //    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$",
 //            message = "비밀번호는 대문자, 소문자, 숫자를 모두 포함해야 합니다.")
     @NotEmpty(message = "비밀번호를 입력해주세요.")
     private String password;
 
     @NotEmpty(message = "")
     private String passwordConfirm;
+
+    @NotEmpty(message = "비밀번호는 필수입력입니다.")
+    private String newPassword1;   //비밀번호
+
+    @NotEmpty(message = "비밀번호 확인은 필수입력입니다.")
+    private String newPassword2;
 
     @NotEmpty(message = "성별을 선택해주세요.")
     private String gender;
