@@ -785,7 +785,7 @@
                         var distanceToTravel = 0.001;    // 고정된 이동 거리
                         var speed = 30;                 // 마커 이동 속도
 
-                        /* 아이콘이 움직이는 동작을 구현*/
+                        /* 아이콘이 움직이는 동작을 구현 */
                         /*function moveMarker() {
 
                             if (index < data.length - 1) {
@@ -1163,11 +1163,11 @@
                         for (var i = 0; i < data.length; i++) {
                             var attraction = data[i];
                             // external-events를 업데이트하는 로직을 작성
-                            var eventHtml = '<div class="fc-event" data-image="' + attraction.image + '" ' +
+                            var eventHtml = '<div class="fc-event-container" data-image="' + attraction.image + '" ' +
                                 'data-title="' + attraction.name + '">' +
-                                '<img style="width:200px; height:200px;" src="' + attraction.image + '">' +
+                                '<div class="image-container"><img class="attraction-image" src="' + attraction.image + '">' +
                                 '<div style="text-align: center;">' + attraction.name + '</div>' +
-                                '</div>';
+                                '</div></div>';
 
                             var draggableEl = document.createElement('div');
                             draggableEl.innerHTML = eventHtml;
@@ -1278,30 +1278,40 @@
         </div>
     </div>
 
-    <select id="searchSelect">
-        <option th:text="'전체'" value="">전체</option>
-        <option th:each="city : ${cityList}"
-                th:text="${city}"
-                th:value="${city}"></option>
-    </select>
 
 
-    <div id="searchResult"></div>
 
-<div id='wrap' style=" width:1500px; display: flex; ">
-    <div style="margin-top:10px;">
-        <button class="content-type-button" data-content-type="관광지" id="tourAttraction" style="width:100px; height:70px;">관광지</button><br>
-        <button class="content-type-button" data-content-type="식당" id="restaurant" style="width:100px; height:70px;">식당</button><br>
-        <button class="content-type-button" data-content-type="호텔" id="hotel" style="width:100px; height:70px;">호텔</button>
+    <!--<div id="searchResult"></div>-->
+
+<div id='wrap'>
+
+    <div class="content-button-container">
+        <select id="searchSelect">
+            <option th:text="'전체'" value="">전체</option>
+            <option th:each="city : ${cityList}"
+                    th:text="${city}"
+                    th:value="${city}">
+            </option>
+        </select>
+        <button class="content-type-button" data-content-type="관광지" id="tourAttraction">관광지</button>
+        <button class="content-type-button" data-content-type="식당" id="restaurant">식당</button>
+        <button class="content-type-button" data-content-type="호텔" id="hotel">호텔</button>
     </div>
-    <div id='external-events' style="margin:10px;  overflow-x: auto;">
-        <div id='external-events-list' style="display: flex; flex-direction: row; overflow-x: auto;">
 
+    <div id='external-events'>
+        <div id='external-events-list'>
         </div>
     </div>
 
 </div>
+<script>
+    const wrap = document.getElementById('external-events-list');
 
+    wrap.addEventListener('wheel', (e) => {
+        wrap.scrollLeft += e.deltaY; // 좌우 스크롤
+        e.preventDefault(); // 스크롤 이벤트의 기본 동작을 중지
+    });
+</script>
 
 </body>
 </html>

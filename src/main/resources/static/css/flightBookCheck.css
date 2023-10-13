@@ -59,6 +59,7 @@ a:hover {
     flex-direction:row;
     padding-top:50px;
     margin-right: 40px;
+    height:1200px;
 }
 
 .flightPrice{
@@ -83,6 +84,7 @@ a:hover {
     display:flex;
     flex-direction:column;
     align-items:flex-start;
+    margin-right:40px;
 }
 .departTop{
     display: flex;
@@ -98,7 +100,7 @@ a:hover {
     background-color: white;
     width: 700px;
     border-radius: 15px;
-    padding: 30px 20px;
+    padding: 50px 20px;
     margin: 30px 10px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -149,6 +151,8 @@ a:hover {
 
 .mainAirlineImage{
     margin: 0 20px;
+    width:48px;
+    height:48px;
 }
 
 table td{
@@ -157,4 +161,118 @@ table td{
 
 .flightPrice{
     border-left: 3px solid #DFE1E6;
+    padding-left:40px;
+}
+
+.flightPriceBox{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.flightPriceRoute{
+    background-image: url('/css/mainCountry/Spain/madrid.webp');
+    background-repeat: no-repeat;
+    background-position: center center; /* 이미지 중앙을 요소의 중앙에 배치합니다. */
+    background-size: cover; /* 이미지를 확대/축소하여 요소를 꽉 채웁니다. */
+    display:flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    text-align:center;
+    align-items: center; /* 수직 중앙 정렬 */
+    border-radius: 10px 10px 0 0;
+    width:400px;
+    height:250px;
+    color:white;
+    font-size: 45px;
+    text-shadow: 2px 2px 4px #000;
+}
+
+.flightPriceAmount{
+    border-radius: 0 0 10px 10px ;
+    background-color:white;
+    width:400px;
+    height:330px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flightPriceButton{
+    width:162px;
+    border: 4px solid #62BEFF;
+    background-color:white;
+    color:#62BEFF;
+    border-radius:15px;
+    text-align:center;
+    font-weight: bolder;
+    padding:5px;
+    font-size: 20px;
+}
+
+input[type=submit].flightPriceButton {
+    width: 180px;
+    border: 4px solid #62BEFF;
+    background-color: white;
+    color: #62BEFF;
+    border-radius: 15px;
+    text-align: center;
+    font-weight: bolder;
+    padding: 5px;
+    font-size: 20px;
+    cursor: pointer; /* 마우스를 올렸을 때 커서를 손가락 모양으로 변경 */
+    outline: none; /* 클릭 시 생기는 외곽선 제거 */
+    -webkit-appearance: none; /* iOS와 같은 플랫폼에서 기본 스타일 제거 */
+    -moz-appearance: none; /* Firefox에서의 기본 스타일 제거 */
+    appearance: none; /* 표준 방식으로 기본 스타일 제거 */
+}
+
+input[type=submit].flightPriceButton:hover {
+    opacity: 0.8; /* 마우스를 올렸을 때 약간 투명해지도록 */
+}
+
+input[type=submit].flightPriceButton:active {
+    opacity: 1; /* 클릭할 때 다시 불투명하게 */
+}
+
+.dropBtn-content h4 {
+        color: #333;
+        padding-top: 10px; /* 필요에 따라 조정 */
+    }
+
+.dropBtn-content p {
+    text-align: left;
+    color: #666;
+    padding: 0 15px 10px 15px; /* 상, 우, 하, 좌 패딩 값 */
+}
+
+  .dropBtn {
+  cursor: pointer;
+  width:700px;
+padding: 15px 20px;
+margin: 30px 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: white;
+  text-align: left;
+  transition: background-color 0.3s;
+  font-size:20px;
+  margin-bottom:0px;
+
+      /* 추가 스타일을 적용하려면 아래에 추가하세요. */
+  }
+
+.dropdown-content {
+  display: none;
+  width:700px;
+  max-height:300px;
+  overflow-y: auto;
+  padding: 30px 20px;
+  margin: 30px 10px;
+  border-radius:10px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;
+  background-color:white;
+  z-index: 1;
+  margin-top:0px;
+  /* transition 추가 */
+  transition: max-height 0.5s ease-out; /* 부드러운 효과를 위해 max-height 조정 */
 }
