@@ -57,12 +57,17 @@
     </div>
     <div class="resultBox">
         <div class="resultBoxLeft">
-            <label style="font-size: 20px; margin: 10px;">항공사</label>
-            <div class="airlineOption">
-                <input type="checkbox" id="selectAllAirlines" checked>
-                <label for="selectAllAirlines">항공사 전체 선택/해제</label>
+            <div class="timeFilter">
+
             </div>
-            <div id="airlines-container"></div>
+            <div class="airplainFilter">
+                <label style="font-size: 20px; margin: 10px;">항공사</label>
+                <div class="airlineOption">
+                    <input type="checkbox" id="selectAllAirlines" checked>
+                    <label for="selectAllAirlines">항공사 전체 선택/해제</label>
+                </div>
+                <div id="airlines-container"></div>
+            </div>
         </div>
         <div class="resultBoxRight">
             <th:block th:each="flight, iterStat : ${flights}">

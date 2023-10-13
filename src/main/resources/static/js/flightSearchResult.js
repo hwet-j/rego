@@ -109,3 +109,4 @@ function bookFlightInfo(button) {
     // 서버로 데이터를 전송하는 함수를 호출합니다.
     sendFlightDataToServer(flightData);
 }
+
