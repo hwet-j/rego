@@ -200,6 +200,7 @@ deleteForm.submit(); // form 제출
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <div>
         <div style="margin-top:100px" >
+            <h1 style="text-align:center;">회원수정</h1>
             <form method="post" th:object="${user}"  th:action="@{/user/edit/__${user.userId}__}">
                 <table border="1"  class="table table-light table-striped" style="text-align: center;">
                         <input type="hidden" th:value="${user.email}" th:field="*{email}">
