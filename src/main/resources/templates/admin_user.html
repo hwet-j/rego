@@ -71,7 +71,7 @@
     border-radius: 0 0 20px 20px ;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-    .table:  { #d3d3d3;}
+
     .grey {
      color: #727272;}
      #strong { font-weight: 900;}
@@ -80,17 +80,21 @@
 }
        .table {
                width: 80%;
-               border-collapse: collapse;
                margin: 0 auto;
                border-top: 1px solid #d3d3d3;
                border-collapse: collapse;
+               border-left:none;
+               border-right:none;
            }
 
             th { background-color: #ffffff ;
             border-top: 1px solid #727272;
+            border-bottom: 1px solid #727272;
             }
 
-            th, td {
+            th,td {
+            border-left:none;
+            border-right:none;
             border-bottom: 1px solid #d3d3d3;
             padding: 15px;
             align: -internal-center;
@@ -199,7 +203,7 @@ deleteForm.submit(); // form 제출
             <meta content="width=device-width, initial-scale=1" name="viewport">
 
     <div style="margin-top:100px;" >
-
+            <h1 style="text-align:center">회원목록</h1>
             <form action="/user/delete" method="post" th:object="${user}">
                 <table border="1" class="table" style="text-align: center;">
                     <thead>
@@ -234,10 +238,10 @@ deleteForm.submit(); // form 제출
                     </tr>
                     </tbody>
                 </table>
-                <div style="text-align: left; margin:20px 0px 0px 170px ;">
-                <button class="btn btn-light delete-button" type="submit" >삭제</button>
-            </div>
                 <div style="text-align: center;">
+                <div  style="text-align: left; margin:10px 0px 0px 150px ;">
+                <button class="btn btn-light delete-button" type="submit" >삭제</button>
+                </div>
                     <a class="btn btn-light" id="btn1" th:href="@{/user/list(page=${firstPage})}"  th:if="${page!=firstPage}" th:text="'처음'" ></a>
                     <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
                         <a id="btn2" class="btn btn-light" th:href="@{/user/list(page=${page-1})}"  th:if="${page != nowPage}" th:text="${page}" ></a>
