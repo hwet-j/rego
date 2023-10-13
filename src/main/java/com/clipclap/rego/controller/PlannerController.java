@@ -6,8 +6,6 @@ import com.clipclap.rego.model.dto.PlannerDTO;
 import com.clipclap.rego.model.dto.TouristAttractionDTO;
 import com.clipclap.rego.repository.DetailPlanRepository;
 import com.clipclap.rego.repository.TouristAttractionRepository;
-import com.clipclap.rego.repository.UserRepository;
-import com.clipclap.rego.service.AuthService;
 import com.clipclap.rego.service.DetailPlanService;
 import com.clipclap.rego.service.PlannerService;
 import com.clipclap.rego.service.TouristAttractionService;
@@ -39,8 +37,6 @@ import java.util.Map;
 @RequestMapping("/plan")
 public class PlannerController {
 
-    private final UserRepository userRepository;
-    private final AuthService authService;
     private final TouristAttractionService touristAttractionService;
     private final TouristAttractionRepository touristAttractionRepository;
     private final ObjectMapper objectMapper;
@@ -48,6 +44,19 @@ public class PlannerController {
     private final DetailPlanService detailPlanService;
     private final PlannerService plannerService;
 
+    @GetMapping("/list")
+    @PreAuthorize("isAuthenticated()")
+    public String myPlanList(Model model , PlannerDTO plannerDTO ) {
+
+        List<PlannerDTO> planList = plannerService.findByAllId();
+
+        System.out.println(planList);
+        model.addAttribute("planList", planList);
+
+        return "plan/planList";
+    }
+
+    /* 특정회원의 계획 리스트 --> 마이페이지에서 활용하면 될거같음
     @GetMapping("/list")
     @PreAuthorize("isAuthenticated()")
     public String myPlanList(Model model, Principal principal , PlannerDTO plannerDTO ) {
@@ -62,7 +71,7 @@ public class PlannerController {
         }
 
         return "plan/planList";
-    }
+    }*/
 
     @PostMapping("/add")
     @PreAuthorize("isAuthenticated()")
