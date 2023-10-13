@@ -106,12 +106,77 @@
                     </tr></table>
                 </div>
             </div>
-        </div>
-        <div class="flightPrice">
+            <div class="caution">
+                <div class="cautionHead" style="font-size:24px; font-weight:bold; margin-bottom:10px;">
+                    주의사항!
+                </div>
+                <div class="cautionDetailBox">
+                    <div class="dropdown">
+                        <div class="dropBtn">&#x25BC; 예약 전 읽어보기</div>
+                        <div class="dropdown-content">
+                            <h4>예약 변경 및 취소 정책:</h4>
+                            <p>여행 예약을 변경하거나 취소하려는 경우, 우리는 고객이 예약을 완료한 시점에서 72시간 이내에 요청을 받아야 합니다. 변경 또는 취소 요청은 추가 수수료가 부과될 수 있으며, 환불은 적용된 취소 정책에 따라 처리됩니다.</p>
+
+                            <h4>여행 문서 및 요건:</h4>
+                            <p>모든 여행자는 유효한 여권 및 필요한 비자를 소지해야 합니다. 여행자 본인의 책임하에 필요한 모든 여행 문서를 준비해야 하며, 여행 문서의 누락이나 오류로 인해 발생하는 어떠한 비용이나 손해에 대해서도 우리는 책임지지 않습니다.</p>
+
+                            <h4>보험:</h4>
+                            <p>여행자들에게는 여행 보험 가입을 적극 권장합니다. 여행 보험은 의료 비용, 여행 취소, 분실된 짐, 비상 시 상황 등을 보장할 수 있습니다. 여행자는 자신의 보험 보장 범위를 이해하고 여행 전에 적절한 보험을 선택할 책임이 있습니다.</p>
+
+                            <h4>건강 및 안전:</h4>
+                            <p>여행 전에 건강 상태를 확인하고 필요한 경우 의료진의 조언을 받아야 합니다. 목적지의 현재 상황, 여행 경고, 안전 조언 등을 확인하여 개인의 건강과 안전을 보호하십시오. 여행 중 발생하는 건강 문제나 사고에 대해 우리는 책임을 지지 않습니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
+        <form action="/flightPlanTest" method="post" th:object="${flightInfo}">
+            <input type="hidden" th:field="*{price}" />
+            <div th:each="route, iterStat : *{routes}">
+                <input type="hidden" th:field="*{routes[__${iterStat.index}__].departureAirport}" />
+                <input type="hidden" th:field="*{routes[__${iterStat.index}__].arrivalAirport}" />
+                <input type="hidden" th:field="*{routes[__${iterStat.index}__].airlineName}" />
+                <input type="hidden" th:field="*{routes[__${iterStat.index}__].airlineImg}" />
+                <input type="hidden" th:field="*{routes[__${iterStat.index}__].departureTime}" />
+                <input type="hidden" th:field="*{routes[__${iterStat.index}__].arrivalTime}" />
+                <input type="hidden" th:field="*{routes[__${iterStat.index}__].duration}" />
+            </div>
+            <div class="flightPrice">
+                <div class="flightPriceBox" >
+                    <div class="flightPriceRoute" th:text="|${flightInfo.routes[0].departureAirport} &#x2192; ${flightInfo.routes[0].arrivalAirport}|"></div>
+                    <div class="flightPriceAmount">
+                        <div class="airLineName" style="font-size: 20px; margin-top:15px; font-weight: bolder;" th:text="|${flightInfo.routes[0].airlineName} & ${flightInfo.routes[0].airlineName}|"></div>
+                        <div class="sum" style="font-size: 18px; margin:10px; font-weight: bold;">합계</div>
+                        <div class="amount" style="font-size: 30px; margin:5px; margin-bottom:35px;" th:text="|₩${flightInfo.price}|"></div>
+                        <a><div class="flightPriceButton">결제하기</div></a>
+                        <div style="height: 2px; background-color: #CBCED8; margin: 15px 0; width:160px;"></div>
+                        <input type="submit" value="플랜 시작하기" class="flightPriceButton"/>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
+<script>
+    window.onload = function() {
+        document.querySelector('.dropBtn').addEventListener('click', function() {
+            var content = document.querySelector('.dropdown-content');
+            if (content.style.display === 'none' || content.style.display === '') {
+                content.style.display = 'block'; /* 보이게 하기 */
+                setTimeout(function() {
+                    content.style.maxHeight = '300px'; /* 설정한 max-height로 변경 */
+                }, 0);
+            } else {
+                content.style.maxHeight = '0'; /* 애니메이션을 위해 maxHeight 변경 */
+                /* 애니메이션이 끝나면 display를 none으로 설정 */
+                setTimeout(function() {
+                    content.style.display = 'none';
+                }, 500); /* 500ms = 0.5s 애니메이션 시간과 일치 */
+            }
+        });
+    };
+</script>
 </body>
 </html>
