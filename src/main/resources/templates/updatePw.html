@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/updatePw.css" rel="stylesheet" type="text/css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>비밀번호 업데이트</title>
+
+</head>
+<body>
+<div class="box">
+    <h2>NEW PASSWORD</h2>
+
+
+
+    <!--<p>이메일: <span th:text="${email}"></span></p>-->
+
+    <form id="updateForm" th:action="@{/updatePw}" th:object="${joinForm2}" method="post">
+        <input type="hidden" name="email" th:value="${email}">
+
+        <div class="form-group">
+            <label style="font-size:12px;" for="newPassword1">TYPE YOUR PASSWORD</label>
+            <input type="password" th:field="*{newPassword1}" id="newPassword1" name="newPassword1" class="pass" required>
+            <span class="error" style="display:none;"></span>
+            <!-- <div style="color:red;" th:if="${#fields.hasErrors('ndwPassword1')}" th:errors="*{newPassword1}" class="error"></div>-->
+        </div>
+        <div class="blank"></div>
+        <div class="form-group">
+            <label style="font-size:12px;" for="newPassword2">CONFIRM NEW PASSWORD</label>
+            <input type="password" th:field="*{newPassword2}" id="newPassword2" name="newPassword2" class="passConfirm" required>
+            <span class="error" style="display:none;"></span>
+            <!--  <div style="color:red;" th:if="${#fields.hasErrors('newPassword2')}" th:errors="*{newPassword2}" class="error"></div>-->
+        </div>
+
+        <div>
+            <button class="findBtn" type="submit">UPDATE NOW</button>
+        </div>
+
+
+        <div class="result" id="updateResult" th:text="${updateResult}">
+            <!-- 업데이트 결과는 여기에 표시 -->>
+
+        </div>
+    </form>
+
+
+</div>
+</body>
+</html>
