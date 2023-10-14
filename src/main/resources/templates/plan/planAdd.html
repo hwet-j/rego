@@ -93,43 +93,42 @@
                         </label>
                     </div>
 
-                    <div class="label-box">
+                    <div class="label-box" style="position: relative;">
                         <label>
                             <div class="title" for="content"></div>
                             <div class="input-container">
-                                <input class="input-content" data-label="안녕하세요" placeholder="주제를 입력해주세요"
+                                <input class="input-content"
                                        th:field="*{content}"
                                        type="text">
                             </div>
-                            <div style="color:red;" th:errors="*{content}" class="error"
-                                 th:if="${#fields.hasErrors('content')}"></div>
+                            <div th:errors="*{content}" class="error" th:if="${#fields.hasErrors('content')}"></div>
                         </label>
                     </div>
 
 
-                    <div class="label-box">
+                    <div class="label-box" style="position: relative;">
                         <label>
-                            <div class="title" for="startDate"></div>
+                            <span class="title" for="startDate"></span>
                             <input class="input-content" th:field="*{startDate}" type="date">
-                            <div data-label="넹" style="color:red;" th:errors="*{startDate}" class="error"
+                            <div th:errors="*{startDate}" class="error"
                                  th:if="${#fields.hasErrors('startDate')}"></div>
                         </label>
                     </div>
 
-                    <div class="label-box">
+                    <div class="label-box" style="position: relative;">
                         <label>
                             <div class="title" for="endDate"></div>
                             <input class="input-content" th:field="*{endDate}" type="date">
-                            <div style="color:red;" th:errors="*{endDate}"
+                            <div th:errors="*{endDate}"
                                  th:if="${#fields.hasErrors('endDate')}" class="error"></div>
                         </label>
                     </div>
 
-                    <div class="label-box">
+                    <div class="label-box" style="position: relative;">
                         <label>
                             <div class="title" for="numberOfPeople"></div>
                             <input class="input-content" th:field="*{numberOfPeople}" type="number">
-                            <div style="color:red;" th:errors="*{numberOfPeople}" class="error"
+                            <div  th:errors="*{numberOfPeople}" class="error"
                                  th:if="${#fields.hasErrors('numberOfPeople')}"></div>
                         </label>
                     </div>

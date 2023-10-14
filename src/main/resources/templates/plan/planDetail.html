@@ -99,7 +99,7 @@
                 select: function (arg) {
                     Swal.fire({
                         title: '일정 관리',
-                        html: '<div id="image-preview"><img src="/pictures/base.jpg" style="width: 800px; height:800px;" onerror="this.src=\'/pictures/base.jpg\';"></div>' + getSelectOptions(attractionData) + '<input id="event-title" placeholder="계획을 입력하세요.">',
+                        html: '<div id="image-preview"><img src="/pictures/base.jpg" class="modal-image" onerror="this.src=\'/pictures/base.jpg\';"></div>' + getSelectOptions(attractionData) + '<input id="event-title" placeholder="계획을 입력하세요.">',
                         showCancelButton: true,
                         showCloseButton: true,
                         confirmButtonText: '추가',
@@ -187,10 +187,7 @@
                                                 allDay: arg.allDay,
                                                 touristAttractionId: eventType
                                             });
-                                        }detailData.sort(function(a, b) {
-                                            return new Date(a.start) - new Date(b.start);
-                                        });
-
+                                        }
 
                                         detailData.sort(function(a, b) {
                                             return new Date(a.start) - new Date(b.start);
@@ -218,9 +215,9 @@
                         const selectedAttraction = attractionData.find((attraction) => attraction.touristAttractionId === selectedValue);
 
                         if (selectedAttraction) {
-                            imagePreview.innerHTML = `<img src="${selectedAttraction.imageUrl}" alt="${selectedAttraction.name}"  style="width: 800px; height:800px;" onerror="this.src=\'/pictures/base.jpg\';"/>`;
+                            imagePreview.innerHTML = `<img src="${selectedAttraction.imageUrl}" alt="${selectedAttraction.name}"  class="modal-image" onerror="this.src=\'/pictures/base.jpg\';"/>`;
                         } else {
-                            imagePreview.innerHTML = `<img src="/pictures/base.jpg" style="width: 800px; height:800px;" onerror="this.src=\'/pictures/base.jpg\';"/>`;
+                            imagePreview.innerHTML = `<img src="/pictures/base.jpg" class="modal-image" onerror="this.src=\'/pictures/base.jpg\';"/>`;
                         }
                     });
 
@@ -342,6 +339,7 @@
                             if (itemToUpdate) {
                                 itemToUpdate.start = event.event.start;
                                 itemToUpdate.end = event.event.end;
+
                             } else {
                                 console.error("ID가 " + itemToUpdate + "인 항목을 찾을 수 없음.");
                             }
@@ -416,7 +414,7 @@
                     title: '일정 관리',
                     html: `
                             <div id="image-preview">
-                                <img src="${selectedAttraction.imageUrl}" alt="Selected Image" style="width: 800px; height: 800px;" onerror="this.src='/pictures/base.jpg';">
+                                <img src="${selectedAttraction.imageUrl}" alt="Selected Image" class="modal-image" onerror="this.src='/pictures/base.jpg';">
                             </div>
                             ${getSelectOptions(attractionData, selectedAttraction.touristAttractionId)}
                             <input id="event-title" class="swal2-input" value="${selectedPlan.title}" placeholder="계획을 입력하세요."/>
@@ -476,17 +474,22 @@
                                 success: function (response) {
 
                                     /* 수정작업이 완료되면 JS의 List정보 수정 */
-                                    var itemToUpdate = detailData.find(function (item) {
-                                        return item.id == eventId;
-                                    });
+                                    var itemToUpdate = detailData.find(item => item.id == eventId);
+
+                                    // console.log(itemToUpdate);
 
                                     if (itemToUpdate) {
                                         itemToUpdate.title = newEventTitle;
                                         itemToUpdate.touristAttractionId = selectedAttractionId;
-
+                                        itemToUpdate.lat = selectedAttraction.latitude;
+                                        itemToUpdate.lng = selectedAttraction.longitude;
                                     } else {
                                         console.error("ID가 " + itemToUpdate + "인 항목을 찾을 수 없음.");
                                     }
+
+                                    // console.log(itemToUpdate);
+
+
                                     detailData.sort(function(a, b) {
                                         return new Date(a.start) - new Date(b.start);
                                     });
@@ -552,9 +555,9 @@
                     const selectedAttraction = attractionData.find((attraction) => attraction.touristAttractionId === selectedValue);
 
                     if (selectedAttraction) {
-                        imagePreview.innerHTML = `<img src="${selectedAttraction.imageUrl}" alt="${selectedAttraction.name}"  style="width: 800px; height:800px;" onerror="this.src='/pictures/base.jpg';"/>`;
+                        imagePreview.innerHTML = `<img src="${selectedAttraction.imageUrl}" alt="${selectedAttraction.name}" class="modal-image" onerror="this.src='/pictures/base.jpg';"/>`;
                     } else {
-                        imagePreview.innerHTML = `<img src="/pictures/base.jpg" style="width: 800px; height:800px;" onerror="this.src='/pictures/base.jpg';"/>`;
+                        imagePreview.innerHTML = `<img src="/pictures/base.jpg" class="modal-image" onerror="this.src='/pictures/base.jpg';"/>`;
                     }
                 });
 
@@ -686,7 +689,9 @@
                 markers.forEach(({ marker }) => {
                     marker.setMap(null);
                 });
+
                 countMarker = 0;
+
                 const data = originDetailData.filter(item => typeof item.lat === 'number' && typeof item.lng === 'number' && !isNaN(item.lat));
 
                 // console.log(data);
@@ -738,10 +743,10 @@
                                 title: `${name}`,
                                 text: `${introduction}`,
                                 imageUrl: `${imageUrl}`,
-                                imageWidth: 1000,
-                                imageHeight: 600,
+                                imageWidth: 200,
+                                imageHeight: 380,
                                 customClass: {
-                                    popup: 'custom-modal-width',
+                                    popup: 'custom-modal-width2',
                                 },
                             });
                         });
@@ -979,10 +984,11 @@
                                 title: `${name}`,
                                 text: `${introduction}`,
                                 imageUrl: `${imageUrl}`,
-                                imageWidth: 1000,
-                                imageHeight: 600,
+                                imageWidth: 600,
+                                imageHeight: 450,
+
                                 customClass: {
-                                    popup: 'custom-modal-width',
+                                    popup: 'custom-modal-width2',
                                 },
                             });
                         });

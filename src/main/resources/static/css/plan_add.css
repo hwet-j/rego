@@ -190,6 +190,10 @@ p {
 .error {
     font-family: "Noto Sans KR", sans-serif;
     font-size: 12px;
+    position: absolute;
+    top: 35px;
+    right: 85px;
+    color:red;
  /*   margin-left: 378px;
     margin-top: -32px;*/
 

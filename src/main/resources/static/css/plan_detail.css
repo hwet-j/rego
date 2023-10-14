@@ -79,7 +79,15 @@ body {
 
 /* SweetAlert창 크기 */
 .custom-modal-width {
-    width: 1000px;
+    width: 720px;
+}
+.custom-modal-width2{
+    width: 720px;
+}
+
+.modal-image{
+    width:580px;
+    height:450px;
 }
 
 #external-events{
