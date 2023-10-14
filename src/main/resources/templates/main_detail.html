@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/main_dtail.css" rel="stylesheet" type="text/css">
+    <title>Welcome to Planner!</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Roboto&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="background"></div>
+<div class="background2"></div>
+
+<div class="container">
+
+    <div class="nav">
+
+        <ul class="" style="list-style-type:none;">
+            <li class="">
+                <!-- 타임리프의 security이용
+                sec:authorize="isAnonymous()은 로그인하지않는 경우->로그인 출력
+                sec:authorize="isAuthenticated()은 로그인한 경유->로그아웃 출력
+                -->
+                <a class="logo" th:href="@{/}"><img src="/img/logo.png"
+                                                    style="float: left; width: 63px; height: 58px; margin-left: 10px; background-repeat: no-repeat;"></a>
+
+
+                <div class="nav-left"
+                     style="float:left;   margin-left: 470px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 500;">
+                    <a class="" th:href="@{/}"
+                       style="margin-right: 50px; color:#4F54B4;">HOME</a>
+                    <a class="" th:href="@{/}"
+                       style="margin-right: 50px; color:#4F54B4;">AIRPORT</a>
+                    <a class="" th:href="@{/}"
+                       style="margin-right: 50px; color:#4F54B4;">START PLAN</a>
+                    <a class="" th:href="@{/}"
+                       style="color:#4F54B4;">RECOMMEND</a>
+                </div>
+
+                <div class="nav-right"
+                     style="float:right;    margin-right: 35px; margin-top: 27px;  font-size: 12px;  font-family: 'Roboto', sans-serif; font-weight: 600;">
+                    <a class="" th:href="@{/question/list}"
+                       style="margin-right: 20px; color:#4F54B4;">고객센터</a>
+                    <a class="loginBtn" sec:authorize="isAnonymous()" th:href="@{/login}"
+                       style="margin-right: 20px; color:#4F54B4;">로그인</a>
+                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/}"
+                       style="margin-right: 20px; color:#4F54B4;">마이페이지</a>
+                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/logout}"
+                       style="margin-right: 20px; color:#4F54B4;">로그아웃</a>
+                    <a class="" sec:authorize="hasRole('ADMIN')" th:href="@{/}"
+                       style="color:#4F54B4;">ADMIN</a>
+                </div>
+            </li>
+
+        </ul>
+        <div>
+
+        </div>
+
+
+
+
+<!-- 나라 목록 버튼 (Controller에서 전달받음) -->
+<span th:each="countryName : ${countryNames}">
+    <button class="fetch-data-button country-button" th:data-keyword="${countryName}" th:text="${countryName}"></button>
+</span>
+
+<br>
+
+<!-- 도시 목록 버튼 (AJAX를 통해서 전달받음) -->
+<span id="city-list">
+    <!-- 도시 목록 -->
+</span>
+
+<br>
+
+<!-- 관광지, 식당, 호텔 버튼 (type별로 분류) -->
+<span id="type-list">
+    <button class="classify-button" th:data-keyword="관광지" th:text="관광지"></button>
+    <button class="classify-button" th:data-keyword="식당" th:text="식당"></button>
+    <button class="classify-button" th:data-keyword="호텔" th:text="호텔"></button>
+</span>
+
+<!-- 관광명소 리스트 -->
+<ul id="attraction-list">
+    <!-- 관광 명소가 여기에 나열될 것입니다 -->
+</ul>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // 나라 정보에서 가장 처름 버튼을 로딩과 동시에 클릭 되어있도록 설정한다.
+        var buttons = document.querySelectorAll(".country-button");
+
+        if (buttons.length > 0) {
+            buttons[0].click();
+        }
+
+    });
+
+
+    // 나라 버튼을 눌렀을 때 나라별 도시 목록을 출력해주는 함수
+    function countryListFuncion(coutryName) {
+        var xhr = new XMLHttpRequest();
+
+        // AJAX 요청주소에 나라 이름을 전달
+        xhr.open("GET", "/touristAttraction/cityList?keyword=" + coutryName, true);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+
+                // 서버로부터 받은 JSON 데이터를 JavaScript 객체로 파싱 (@Responsebody는 JSON형식으로 전달하기 때문에 JSON 파싱이 바로 가능)
+                var cityList = JSON.parse(xhr.responseText);
+
+                // 목록을 초기화 (이전 정보와 충돌이 일어나면 안되기 때문에 이전 정보 제거)
+                var cityListContainer = document.getElementById("city-list");
+                cityListContainer.innerHTML = '';
+
+                // 새로운 목록을 추가
+                cityList.forEach(function(city, index) {        // 가장 첫번째 버튼을 클릭 상태로 설정하기 위해 index 변수 추가
+                    var button = document.createElement("button");
+                    button.className = "fetch-data-button";
+                    button.setAttribute("data-keyword", city);
+                    button.textContent = city;
+                    cityListContainer.appendChild(button);
+
+                    // 생성되는 버튼에 클릭 이벤트 추가
+                    button.addEventListener("click", function() {
+                        fetchData(city);
+                    });
+
+                     // 클릭 이벤트가 추가된 후에 가장 첫번째 버튼을 클릭
+                     if (index === 0) {
+                        button.click();
+                    }
+                });
+            }
+        };
+
+        xhr.send();
+    }
+
+    // 버튼 클릭 이벤트 핸들러 등록
+    var buttons = document.querySelectorAll(".country-button");
+    buttons.forEach(function(button) {
+        button.addEventListener("click", function() {
+            var keyword = button.getAttribute("data-keyword");  // data-keyword에 설정되어있는 값을 가져와 keyword에 저장
+            countryListFuncion(keyword);        // 버튼 클릭시 실행될 함수
+        });
+    });
+
+    // 관광지 정보 리스트를 전역 변수로 설정하여 AJAX 요청하여 전달 받을 경우 이 변수에 저장 (관광지, 식당, 호텔 등 특정 상황에 맞게 값을 수정하여 전달하기 위함)
+    var attractionList = [];
+
+    // 도시별로 검색하여 관광지 정보를 객체에 저장 및 브라우저에 출력 하기 위한 함수
+    function fetchData(keyword) {
+        var xhr = new XMLHttpRequest();
+
+        // 요청 주소에 keyword 라는 변수에 도시 이름을 담아서 전달한다.
+        xhr.open("GET", "/touristAttraction/search?keyword=" + keyword, true);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+
+                attractionList = JSON.parse(xhr.responseText);
+
+                // 목록을 초기화
+                var attractionListContainer = document.getElementById("attraction-list");
+                attractionListContainer.innerHTML = '';
+
+                // 새로운 목록을 추가 (알맞게 정보를 수정)
+                attractionList.forEach(function(attraction) {
+                    var li = document.createElement("li");
+                    li.textContent = "이름: " + attraction.name + ", 주소: " + attraction.address;
+                    attractionListContainer.appendChild(li);
+                });
+            }
+        };
+
+        xhr.send();
+    }
+
+    // 버튼 클릭 이벤트 핸들러 등록
+    var buttons = document.querySelectorAll(".fetch-data-button");
+    buttons.forEach(function(button) {
+        button.addEventListener("click", function() {
+            var keyword = button.getAttribute("data-keyword");
+            fetchData(keyword);
+        });
+    });
+
+    // 관광지, 식당, 호텔 등 타입별로 값을 분류하여 관광지 목록에 출력 하기 위한 함수
+    function classifyAttractions(type) {
+
+        // 전역변수로 설정하여 저장되어있는 attractionList 객체에서 특정 type으로 분류하여 객체를 저장
+        var touristAttractions = attractionList.filter(function (attraction) {
+            return attraction.contentType == type;
+        });
+
+        var attractionListContainer = document.getElementById("attraction-list");
+        attractionListContainer.innerHTML = '';
+
+        // 분류된 객체로 관광지 목록을 재출력
+        touristAttractions.forEach(function(attraction) {
+            var li = document.createElement("li");
+            li.textContent = "이름: " + attraction.name + ", 주소: " + attraction.address;
+            attractionListContainer.appendChild(li);
+        });
+
+    }
+
+    // 분류와 관련된 버튼 클릭 이벤트를 추가
+   var classifyButtons = document.querySelectorAll(".classify-button");
+    classifyButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            var type = button.getAttribute("data-keyword");
+            classifyAttractions(type);
+        });
+    });
+
+</script>
+</body>
+</html>
