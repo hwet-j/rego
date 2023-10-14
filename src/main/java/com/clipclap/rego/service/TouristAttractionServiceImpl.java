@@ -43,6 +43,10 @@ public class TouristAttractionServiceImpl implements TouristAttractionService {
 
         List<TouristAttraction>  touristAttractions = touristAttractionRepository.findByCityName(cityName);
 
+        for(TouristAttraction item: touristAttractions){
+            System.out.println(item.getTouristAttractionId());
+        }
+
         List<TouristAttractionDTO> touristAttractionDTOs = touristAttractions.stream()
                 .map(entity -> {
                     TouristAttractionDTO dto = TouristAttractionMapper.entityToDto(entity);
