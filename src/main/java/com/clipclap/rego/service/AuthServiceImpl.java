@@ -24,7 +24,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String join(JoinForm joinForm) {
-        User apiInfo = userRepository.findByEmail(joinForm.getEmail());
+        Optional<User> optionalUser = userRepository.findByEmail(joinForm.getEmail());
+
+        User apiInfo =optionalUser.get();
         String rawPassword = joinForm.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
         apiInfo.setPassword(encPassword);
@@ -42,9 +44,9 @@ public class AuthServiceImpl implements AuthService {
     // 이메일 매개변수를 사용하는 메서드의 이름을 변경합니다.
     @Override
     public User getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email);
-        if (user != null) {
-            return user;
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            return user.get();
         } else {
             throw new DataNotFoundException("User NOT FOUND");
         }

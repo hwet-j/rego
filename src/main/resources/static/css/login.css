@@ -223,6 +223,7 @@ body {
   padding: 0.9rem 7rem;
   text-transform: uppercase;
   transition: transform 80ms ease-in;
+
 }
 
 .btn:hover {
@@ -396,6 +397,32 @@ body {
   text-align: center;
 }
 
+
+
+.idpw{
+  float: left;
+  margin-top: 10px;
+  margin-left: 5px;
+  font-size: 12px;
+  font-weight: 400;
+  font-family: 'Montserrat', sans-serif;
+  color: #bbbbbb;
+ text-decoration-line:none;
+  transition: all 0.3s;
+}
+
+.idpw:hover{
+  float: left;
+  margin-top: 10px;
+  margin-left: 5px;
+  font-size: 12px;
+  font-weight: 400;
+  font-family: 'Montserrat', sans-serif;
+  color: black;
+ text-decoration-line:none;
+  transition: all 0.3s;
+}
+
 .input {
   background-color: #fff;
   border: none;
@@ -431,3 +458,7 @@ body {
             font-family: "Noto sans KR", sans-serif;
             color: red; /* 원하는 텍스트 색상으로 설정하세요 */
         }
+
+
+
+

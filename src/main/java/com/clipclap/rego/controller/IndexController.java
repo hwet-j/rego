@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -69,7 +70,9 @@ public class IndexController {
 
 		if (authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
 
-			User user = userRepository.findByEmail(authentication.getName());
+			Optional<User> optionalUser = userRepository.findByEmail(authentication.getName());
+
+			User user = optionalUser.get();
 			// 비밀번호가 설정되어있지 않으면 로그인 불가
 			if (user.getPassword() == null){
 
@@ -136,17 +139,17 @@ public class IndexController {
 						   BindingResult bindingResult, Model model) {
 		// 비밀번호와 비밀번호 확인이 일치하지 않으면 에러 처리
 		if (!form.getPassword().equals(form.getPasswordConfirm())) {
-			bindingResult.rejectValue("passwordConfirm", "passwordConfirm", "비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+			bindingResult.rejectValue("passwordConfirm", "passwordConfirm", "비밀번호가 일치하지 않습니다.");
 		}
 
 		if (bindingResult.hasErrors()){
-			model.addAttribute("user", userRepository.findByEmail(form.getEmail()));
+			model.addAttribute("user", userRepository.findByEmail(form.getEmail()).get());
 			return "login";
 		}
 	
 		/* 닉네임 중복 체크 */
 		if (authService.nicknameDuplicateCheck(form.getNickname()).equals("Duplicate")){
-			model.addAttribute("user", userRepository.findByEmail(form.getEmail()));
+			model.addAttribute("user", userRepository.findByEmail(form.getEmail()).get());
 			bindingResult.addError(new FieldError("duplicate","nickname", "닉네임은 이미 사용중입니다."));
 			return "login";
 		}
@@ -213,4 +216,14 @@ public class IndexController {
 		return "atDetail";
 	}
 
+
+
+
+
+
+
+	@GetMapping("/findPw")
+	public String findPw(){
+		return "/findPw";
+	}
 }

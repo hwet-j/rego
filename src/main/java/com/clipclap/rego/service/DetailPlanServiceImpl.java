@@ -22,7 +22,7 @@ public class DetailPlanServiceImpl implements DetailPlanService {
 
     @Override
     public void makeDetailPlan(DetailPlanDTO detail) {
-        PlannerDetail planDetail = detailPlanMapper.dtoToEntity(detail);
+        PlannerDetail planDetail = DetailPlanMapper.dtoToEntity(detail);
 
         detailPlanRepository.save(planDetail);
     }
@@ -37,12 +37,22 @@ public class DetailPlanServiceImpl implements DetailPlanService {
 
         return dtoList;
     }
+    @Override
+    public List<DetailPlanDTO> findByPlanPlanIdOrderByStartTime(Integer planId) {
+        List<PlannerDetail> entityList = detailPlanRepository.findByPlanPlanIdOrderByStartTime(planId);
+
+        List<DetailPlanDTO> dtoList = entityList.stream()
+                .map(DetailPlanMapper::entityToDto)
+                .collect(Collectors.toList());
+
+        return dtoList;
+    }
 
     @Override
     public DetailPlanDTO findById(Integer id) {
         Optional<PlannerDetail> optionalPlannerDetail =  detailPlanRepository.findById(id);
         if(optionalPlannerDetail.isPresent()){
-            DetailPlanDTO detail = detailPlanMapper.entityToDto(optionalPlannerDetail.get());
+            DetailPlanDTO detail = DetailPlanMapper.entityToDto(optionalPlannerDetail.get());
             return detail;
         } else {
             return null;
