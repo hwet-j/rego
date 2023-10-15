@@ -38,12 +38,16 @@ public class UserService {
 
     // 이메일 매개변수를 사용하는 메서드의 이름을 변경합니다.
     public User getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email);
-        if (user != null) {
-            return user;
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser != null) {
+            return optionalUser.get();
         } else {
             throw new DataNotFoundException("User NOT FOUND");
         }
+    }
+
+    public void saveOrUpdate(User user) {
+        userRepository.save(user);
     }
 
     // 유저네임 매개변수를 사용하는 메서드는 그대로 둡니다.
@@ -55,6 +59,9 @@ public class UserService {
             throw new DataNotFoundException("User NOT FOUND");
         }
     }
+
+
+
 }
 
 

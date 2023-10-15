@@ -135,6 +135,37 @@ public class PlannerController {
         return "plan/planDetail";
     }
 
+    @GetMapping("/Preview")
+    public String planPreview(@RequestParam(required = false) Integer planId, Model model) throws JsonProcessingException {
+        PlannerDTO plannerDTO = plannerService.findById(planId);
+        if (plannerDTO == null){
+            return "redirect:/";
+        }
+
+        List<TouristAttractionDTO> touristAttractionListAll = touristAttractionService.touristListAll();
+
+        String listAll = objectMapper.writeValueAsString(touristAttractionListAll);
+
+        List<DetailPlanDTO> detailList = detailPlanService.findByPlanPlanIdOrderByStartTime(planId);
+
+        String detailPlan = objectMapper.writeValueAsString(detailList);
+
+        // 상세플랜 목록
+        model.addAttribute("detailPlan" , detailPlan);
+        // 전체 관광지 리스트
+        model.addAttribute("attractionList" , listAll);
+        // 도시 리스트 (검색)
+        model.addAttribute("cityList" , touristAttractionRepository.findDistinctCityNames());
+        // 현재 사용중인 PK 번호 최대
+        model.addAttribute("detailIdMax" , detailPlanService.findMaxDetailPlanIdByPlanId(planId));
+        // 이후에 정보를 받아오면 필요없을듯
+        model.addAttribute("planID" , planId);
+        // 플래너의 시작날짜 (이것도 굳이 필요없을 수도)
+        // model.addAttribute("startDate" , plannerService.findStartTimeByPlanId(planId));
+        model.addAttribute("startDate" , plannerDTO.getStartDate());
+
+        return "plan/planPreview";
+    }
 
     @PostMapping("/saveImage")
     @ResponseBody
