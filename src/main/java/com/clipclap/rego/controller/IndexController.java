@@ -158,7 +158,6 @@ public class IndexController {
 		}
 
 
-
 		String result = authService.join(form);
 
 		if (result.equals("password")){
@@ -184,7 +183,6 @@ public class IndexController {
 			accessToken = auth2AuthorizedClient.getAccessToken().getTokenValue();
 			authService.kakaoUnlink(accessToken);
 		}
-
 
 		return "redirect:/";
 	}
