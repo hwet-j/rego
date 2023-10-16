@@ -26,20 +26,22 @@ public class CrawlController {
 
     @GetMapping("/flightResult")
     public String ArgRoundCrawl(Model model
-                                , @RequestParam String departureAirport
-                                , @RequestParam String arrivalAirport
-                                , @RequestParam String departureDate
-                                , @RequestParam String arrivalDate){
+                                , @RequestParam(required = false) String departureAirport
+                                , @RequestParam(required = false) String arrivalAirport
+                                , @RequestParam(required = false) String departureDate
+                                , @RequestParam(required = false) String arrivalDate){
+        if(departureDate != null && arrivalDate != null){
         DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
-
         String formattedDepartureDate = LocalDate.parse(departureDate, inputFormat).format(outputFormat);
         String formattedArrivalDate = LocalDate.parse(arrivalDate, inputFormat).format(outputFormat);
 
-        List<FlightInfo> flights = crawlService.getFlightInfo(departureAirport, arrivalAirport, formattedDepartureDate, formattedArrivalDate);
-        model.addAttribute("flights", flights);
         model.addAttribute("departureDate", departureDate);
         model.addAttribute("arrivalDate", arrivalDate);
+        List<FlightInfo> flights = crawlService.getFlightInfo(departureAirport, arrivalAirport, formattedDepartureDate, formattedArrivalDate);
+        model.addAttribute("flights", flights);
+        }
+
 
         return "crawl/roundCrawl";
     }

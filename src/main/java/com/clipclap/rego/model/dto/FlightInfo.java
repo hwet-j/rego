@@ -1,9 +1,6 @@
 package com.clipclap.rego.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -14,4 +11,11 @@ import java.util.List;
 public class FlightInfo {
     private List<RouteInfo> routes;
     private String price;
+    private String departureDate;
+    private String arrivalDate;
+
+    public FlightInfo(List<RouteInfo> routes, String price) {
+        this.routes = routes;
+        this.price = price;
+    }
 }
