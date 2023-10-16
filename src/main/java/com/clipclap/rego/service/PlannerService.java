@@ -15,7 +15,8 @@ public interface PlannerService {
 
     List<PlannerDTO> findByAllId();
 
-    void save(PlannerDTO dto);
+    List<PlannerDTO> findTop4RecentPlanners();
 
+    void save(PlannerDTO dto);
 
 }

@@ -131,8 +131,10 @@
             </div>
 
         </div>
-        <form action="/flightPlanTest" method="post" th:object="${flightInfo}">
+        <form action="/plan/add" method="post" th:object="${flightInfo}">
             <input type="hidden" th:field="*{price}" />
+            <input type="hidden" th:field="*{departureDate}" />
+            <input type="hidden" th:field="*{arrivalDate}" />
             <div th:each="route, iterStat : *{routes}">
                 <input type="hidden" th:field="*{routes[__${iterStat.index}__].departureAirport}" />
                 <input type="hidden" th:field="*{routes[__${iterStat.index}__].arrivalAirport}" />

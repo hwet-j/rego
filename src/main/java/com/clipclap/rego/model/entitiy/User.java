@@ -62,6 +62,7 @@ public class User {
 	@CreationTimestamp				// 최초 생성시 현재시간을 기준으로 자동입력
 	private LocalDateTime createDate;
 
+	private String userprofile;
 
 	public boolean checkPassword(String plainPassword, PasswordEncoder passwordEncoder) {
 		return passwordEncoder.matches(plainPassword, this.password);
