@@ -5,11 +5,20 @@ import com.clipclap.rego.model.entitiy.User;
 import com.clipclap.rego.repository.UserRepository;
 import com.clipclap.rego.validation.JoinForm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +30,9 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final Environment env;
+    private final RestTemplate restTemplate;
+
 
     @Override
     public String join(JoinForm joinForm) {
@@ -121,6 +133,41 @@ public class AuthServiceImpl implements AuthService {
         for (Integer userId : userIds) {
             userRepository.deleteById(userId);
         }
+    }
+
+    @Override
+    public void kakaoUnlink(String accessToken) {
+        String reqURL = "https://kapi.kakao.com/v1/user/unlink";
+        try {
+            URL url = new URL(reqURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", "Bearer " + accessToken);
+
+            int responseCode = conn.getResponseCode();
+            System.out.println("responseCode : " + responseCode);
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+            String result = "";
+            String line = "";
+
+            while ((line = br.readLine()) != null) {
+                result += line;
+            }
+            System.out.println(result);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void googleUnlink(String accessToken) {
+        String URL = "https://oauth2.googleapis.com/revoke";
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("token", accessToken);
+        restTemplate.postForObject(URL, params, String.class);
     }
 
 

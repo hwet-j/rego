@@ -29,5 +29,7 @@ public interface AuthService {
 
     void deleteUsers(List<Integer> userIds);
 
+    void kakaoUnlink(String accessToken);
 
+    void googleUnlink(String accessToken);
 }

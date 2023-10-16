@@ -1,11 +1,7 @@
 package com.clipclap.rego.controller;
 
 import com.clipclap.rego.config.auth.PrincipalDetails;
-import com.clipclap.rego.model.dto.DetailPlanDTO;
 import com.clipclap.rego.model.dto.PlannerDTO;
-import com.clipclap.rego.model.dto.TouristAttractionDTO;
-import com.clipclap.rego.model.dto.TouristAttractionFullDTO;
-import com.clipclap.rego.model.entitiy.City;
 import com.clipclap.rego.model.entitiy.User;
 import com.clipclap.rego.repository.DetailPlanRepository;
 import com.clipclap.rego.repository.TouristAttractionRepository;
@@ -15,7 +11,6 @@ import com.clipclap.rego.service.DetailPlanService;
 import com.clipclap.rego.service.PlannerService;
 import com.clipclap.rego.service.TouristAttractionService;
 import com.clipclap.rego.validation.JoinForm;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,6 +21,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +30,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Iterator;
@@ -79,6 +75,7 @@ public class IndexController {
 			User user = optionalUser.get();
 			// 비밀번호가 설정되어있지 않으면 로그인 불가
 			if (user.getPassword() == null){
+				String accessToken = null;
 
 				model.addAttribute("user", user);
 				model.addAttribute("joinForm", new JoinForm());	// 유효성 검사를 위한 Form 전달
@@ -174,52 +171,22 @@ public class IndexController {
 	}
 
 
-	@GetMapping("/map")
-	public String map(@RequestParam(required = false) Integer planId, Model model) throws JsonProcessingException {
-		planId = 100;
+	/* 탈퇴 */
+	@GetMapping("/apiUnlink")
+	public String apiUnlink(@RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient auth2AuthorizedClient) {
 
-		City city = new City();
-		city.setCityName("파리");
+		String accessToken = null;
 
-		List<TouristAttractionFullDTO> test = touristAttractionService.getTouristAttractionsWithCityAndCountry();
-
-
-		List<TouristAttractionDTO> touristAttractionList = touristAttractionService.countryAttractionList(city);
-		List<TouristAttractionDTO> touristAttractionListAll = touristAttractionService.touristListAll();
-
-		String json = objectMapper.writeValueAsString(touristAttractionList);
-		String listAll = objectMapper.writeValueAsString(touristAttractionListAll);
-
-		List<DetailPlanDTO> detailList = detailPlanService.findAllByPlan(planId);
-
-		String detailPlan = objectMapper.writeValueAsString(detailList);
-		System.out.println(detailPlan);
-
-		model.addAttribute("touristAttractionListJson" , json);
-		// 상세플랜 목록
-		model.addAttribute("detailPlan" , detailPlan);
-		// 전체 관광지 리스트
-		model.addAttribute("attractionList" , listAll);
-		// 도시 리스트 (검색)
-		model.addAttribute("cityList" , touristAttractionRepository.findDistinctCityNames());
-		// 현재 사용중인 PK 번호 최대
-		model.addAttribute("detailIdMax" , detailPlanRepository.findMaxDetailPlanIdByPlanId(planId));
-		// 이후에 정보를 받아오면 필요없을듯 
-		model.addAttribute("planID" , planId);
-		// 플래너의 시작날짜 (이것도 굳이 필요없을 수도)
-		model.addAttribute("startDate" , plannerService.findStartTimeByPlanId(planId));
-
-		return "googleMap";
-	}
+		if (auth2AuthorizedClient.getClientRegistration().getRegistrationId().equals("google")){
+			accessToken = auth2AuthorizedClient.getAccessToken().getTokenValue();
+			authService.googleUnlink(accessToken);
+		} else if (auth2AuthorizedClient.getClientRegistration().getRegistrationId().equals("kakao")){
+			accessToken = auth2AuthorizedClient.getAccessToken().getTokenValue();
+			authService.kakaoUnlink(accessToken);
+		}
 
 
-	@GetMapping("/atDetail")
-	public String testAttractionDetail(Model model) {
-		List<TouristAttractionFullDTO> test = touristAttractionService.getTouristAttractionsWithCityAndCountry();
-
-		model.addAttribute("test" , test.get(1));
-
-		return "atDetail";
+		return "redirect:/";
 	}
 
 

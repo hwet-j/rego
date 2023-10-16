@@ -59,10 +59,15 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 		if (countUser == 1) {
 			user = userRepository.findByEmail(oAuth2UserInfo.getEmail());
 			userInfo = user.get();
+			if(userInfo.getUserprofile() == null){
+				userInfo.setUserprofile(oAuth2UserInfo.getUserProfile());
+				userRepository.save(userInfo);
+			}
 			log.info("회원가입 정보 존재");
 		} else if (userOptional.isPresent()) {
 			userInfo = userOptional.get();
 			userInfo.setEmail(oAuth2UserInfo.getEmail());
+			userInfo.setUserprofile(oAuth2UserInfo.getUserProfile());
 			userRepository.save(userInfo);
 			log.info("API 이메일 정보 변경");
 		} else {
