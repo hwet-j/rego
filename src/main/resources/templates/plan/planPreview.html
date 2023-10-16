@@ -64,6 +64,7 @@
             var detailIdMax = document.getElementById('detailIdMax').getAttribute('data-variable');
             var planID = document.getElementById('planID').getAttribute('data-variable');
             var startDate = document.getElementById('startDate').getAttribute('data-variable');
+            var endDate = document.getElementById('endDate').getAttribute('data-variable');
 
             /* 계획 생성 시 사용할 ID값 (다음으로 사용될 DetailPlan PK 값을 가져온다) */
             let currentEventId = parseInt(detailIdMax) + 1;
@@ -82,6 +83,10 @@
             const infoWindow = new google.maps.InfoWindow();
             const markers = [];
             const attracionMarkers = [];
+
+
+
+
 
             var detailList = document.getElementById('detailList').getAttribute('data-variable');
 
@@ -551,6 +556,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
     </style>
 </head>
 <body>
@@ -560,20 +566,210 @@
 <div id="detailIdMax" th:data-variable="${detailIdMax}"></div>
 <div id="planID" th:data-variable="${planID}"></div>
 <div id="startDate" th:data-variable="${startDate}"></div>
+<div id="endDate" th:data-variable="${endDate}"></div>
+<div id="preview" th:data-variable="${previewPlan}"></div>
 
 
 <div id="map"></div>
+
 <div id="other-content">
-<div>
-    루트수정
-</div>
     <div>
-            <div th:each="detail : ${detailPlan}"
-                    th:text="${detail}"
-                    th:value="${detail}">
-            </div>
+        루트수정
+    </div>
+    <div style="overflow: auto; max-height: 900px;">
+<div id="container" ></div>
     </div>
 </div>
+<script>
+    var detailList = document.getElementById('detailList').getAttribute('data-variable');
+
+           var jsonDetailList = JSON.parse(detailList);
+
+           var attractionList = document.getElementById('attractionList').getAttribute('data-variable');
+           // JSON 타입으로 변환한다. (String의 형식이 JSON형식이여야지 가능하다.)
+           var jsonAttractionList = JSON.parse(attractionList);
+
+
+           /* 관광지를 선택하지 않았을 경우를 대비하기 위해서 임의로 작성 */
+           attractionData.push({
+               touristAttractionId : 0,
+               address : '',
+               name : '선택하지 않음',
+               imageUrl : 'https://github.com/hwet-j/rego/assets/125880480/20c539ee-6568-468e-919d-3ed42cb6c56a',
+               introduction : '',
+               latitude : '',
+               longitude : '',
+               contentType : '',
+               cityName : ''
+           });
+
+
+           /* 관광지 정보를 관광지ID 값으로 검색하기 위해 객체 생성 - 관광지 목록 변수에 저장 */
+           jsonAttractionList.forEach(function (attraction) {
+               attractionData.push({
+                   touristAttractionId : attraction.touristAttractionId.toString(),
+                   address : attraction.address.toString(),
+                   name : attraction.name.toString(),
+                   imageUrl : attraction.image.toString(),
+                   introduction : attraction.introduction.toString(),
+                   latitude : parseFloat(attraction.latitude),
+                   longitude : parseFloat(attraction.longitude),
+                   contentType : attraction.contentType.toString(),
+                   cityName : attraction.cityName.toString()
+               });
+           });
+           /* DB에 있는 정보를 캘린더에 출력하기 위한 객체 - 상세 일정 변수에 저장 */
+           jsonDetailList.forEach(function (detail) {
+               const attraction = attractionData.find(attraction => attraction.touristAttractionId == detail.touristAttractionId);
+
+               if (attraction){
+                   detailData.push({
+                       id:detail.detailPlanId,
+                       title: detail.content.toString(),
+                       start: detail.startTime,
+                       end: detail.endTime,
+                       allDay: detail.allDay,
+                       touristAttractionId:detail.touristAttractionId,
+
+                       label: detail.touristAttractionId.toString(),
+                       name: attraction.name,
+                       lat: parseFloat(attraction.latitude),                 // 위도 (실수 형태로 변환필요)
+                       lng: parseFloat(attraction.longitude),                // 경도 (실수 형태로 변환필요)
+                       imageUrl: attraction.imageUrl.toString(),             // 이미지 경로
+                       address: attraction.address.toString(),               // 주소
+                       introduction: attraction.introduction.toString()      // 소개글
+                   });
+               } else {
+                   detailData.push({
+                       id: detail.detailPlanId,
+                       title: detail.content.toString(),
+                       start: detail.startTime,
+                       end: detail.endTime,
+                       allDay: detail.allDay,
+                       touristAttractionId: detail.touristAttractionId,
+                   });
+               }
+           });
+    //여기부터 작성
+   const previewData = [];
+   var previewPlan = document.getElementById('preview').getAttribute('data-variable');
+   const previewList = JSON.parse(previewPlan);
+
+   // 시작 시간과 종료 시간을 기준으로 데이터 그룹화하기
+   const groupedData = {};
+
+   // startDate와 endDate 설정
+   const startDate = new Date(document.getElementById('startDate').getAttribute('data-variable')); // 시작 날짜 설정
+   const endDate = new Date(document.getElementById('endDate').getAttribute('data-variable')); // 종료 날짜 설정
+
+   previewList.forEach(function (preview) {
+       const cityName = preview.cityName;
+       const startTime = new Date(preview.startTime);
+       const endTime = new Date(preview.endTime);
+       startTime.setHours(startTime.getHours() + 9); // 9시간 추가
+       endTime.setMinutes(endTime.getMinutes() + 539);
+       const previewDetailId = preview.detailPlanId;
+
+       // 시작 시간과 종료 시간이 범위 내에 있는 경우에만 처리
+       if ((startTime <= endDate && endTime >= startDate) || (endTime >= startDate && endTime <= endDate) || (startTime >= startDate && startTime <= endDate)) {
+           // 시작 시간부터 종료 시간까지 모든 날짜에 데이터 추가
+           let currentDate = new Date(Math.max(startDate, startTime)); // startDate와 startTime 중 더 나중인 날짜부터 시작
+           while (currentDate <= endDate && currentDate <= endTime) {
+               const dateKey = currentDate.toLocaleDateString();
+
+               if (!groupedData[dateKey]) {
+                   groupedData[dateKey] = { data: [], label: null };
+               }
+
+               // 레이블 설정 (1일차, 2일차, ...)
+               if (groupedData[dateKey].label === null) {
+                   const labels = Object.keys(groupedData).filter((date) => groupedData[date].label !== null).map((date) => groupedData[date].label);
+                   const maxLabel = labels.length > 0 ? Math.max(...labels) : 0;
+                   groupedData[dateKey].label = maxLabel + 1;
+               }
+
+               // endDate 이후의 일정은 endDate까지로 자르기
+               if (currentDate > endDate) {
+                   currentDate = new Date(endDate);
+               }
+
+               groupedData[dateKey].data.push({
+                   cityName: cityName,
+                   image: preview.image,
+                   startTime: new Date(startTime),
+                   endTime: new Date(endTime),
+                   previewDetailId: previewDetailId,
+
+               });
+
+               // 다음 날로 이동
+               currentDate.setDate(currentDate.getDate() + 1);
+           }
+       }
+   });
+
+   const container = document.getElementById('container');
+
+   for (const date in groupedData) {
+       if (groupedData.hasOwnProperty(date)) {
+        let previousCityName = ''; // 이전 도시 이름 저장
+           const dateContainer = document.createElement('div');
+           dateContainer.className = 'date-container';
+
+           const dateElement = document.createElement('div');
+           dateElement.className = 'date-text';
+           dateContainer.appendChild(dateElement);
+
+
+
+           groupedData[date].data.forEach(function (data) {
+               if (data.cityName !== previousCityName) {
+                   const cityNameElement = document.createElement('div');
+                   dateContainer.appendChild(cityNameElement);
+
+                   previousCityName = data.cityName; // 이전 도시 이름 업데이트
+                   dateElement.textContent = `${groupedData[date].label}일차 - ${previousCityName} - ${date} `;
+               }
+
+               const imageElement = document.createElement('img');
+               imageElement.src = data.image;
+               imageElement.className = 'rounded-image';
+               imageElement.width = 55;
+               imageElement.height = 55;
+               imageElement.style.borderRadius = '50%';
+               imageElement.style.cursor = 'pointer';
+               dateContainer.appendChild(imageElement);
+
+                var previewAlert= detailData.find(function(preAlert){
+                return preAlert.id==data.previewDetailId;
+                });
+                console.log(data.previewAlert);
+
+                // 이 부분에 imageElement 클릭 이벤트를 추가합니다
+               imageElement.addEventListener('click', () => {
+                  Swal.fire({
+                title: `${previewAlert.name}`,
+               imageUrl: `${previewAlert.imageUrl}`,
+               text:`${previewAlert.title}`,
+               imageWidth: 1000,
+               imageHeight: 600,
+               customClass: {
+               popup: 'custom-modal-width',
+               },
+             });
+           });
+
+                //startTime 및 endTime 표시
+              /*const timeElement = document.createElement('p');
+               timeElement.textContent = `Start Time: ${data.startTime.toLocaleString()} - End Time: ${data.endTime.toLocaleString()}`;
+               dateContainer.appendChild(timeElement);*/
+           });
+
+           container.appendChild(dateContainer);
+       }
+   }
+</script>
+
 
 
 </body>

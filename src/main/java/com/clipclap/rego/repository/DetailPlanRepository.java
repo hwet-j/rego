@@ -21,4 +21,10 @@ public interface DetailPlanRepository extends JpaRepository<PlannerDetail, Integ
 
     List<PlannerDetail> findByPlanPlanIdOrderByStartTime(Integer planId);
 
+    @Query("SELECT ta.cityName, ta.name, ta.image, dp.startTime, dp.endTime, dp.detailPlanId " +
+            "FROM PlannerDetail dp " +
+            "JOIN dp.touristAttraction ta WHERE dp.plan.planId = :planId" +
+            " ORDER BY dp.startTime")
+    List<Object[]> findCityNameAndImageByPlanId(@Param("planId") Integer planId);
+
 }
