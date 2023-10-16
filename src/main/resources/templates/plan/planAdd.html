@@ -63,15 +63,13 @@
 <div class="container">
 
 
-
-
     <div class="left-side">
         <div class="bbox">
             <h1 class="box">계획 생성하기</h1>
             <form data-aos="fade" id="planForm" method="post" th:action="@{/plan/add}" th:object="${plannerDTO}">
                 <div class="label-box">
+                    <label class="input-label" for="search-type">검색 유형</label>
                     <div class="search-title">
-                        <label for="search-type" hidden>검색 유형</label>
                         <select class="form-control" id="search-type" name="category" th:field="*{type}">
                             <option value="">미선택</option>
                             <option value="자유">자유</option>
@@ -87,14 +85,13 @@
                 <div class="inquiry-con">
 
                     <div class="label-box">
-                        <label>
+                        <label></label>
                             <div class="title" for="userEmail"></div>
                             <input class="input-content" readonly th:field="*{userEmail}" type="hidden">
-                        </label>
                     </div>
 
                     <div class="label-box" style="position: relative;">
-                        <label>
+                        <label class="input-label">여행제목</label>
                             <div class="title" for="content"></div>
                             <div class="input-container">
                                 <input class="input-content"
@@ -102,35 +99,29 @@
                                        type="text">
                             </div>
                             <div th:errors="*{content}" class="error" th:if="${#fields.hasErrors('content')}"></div>
-                        </label>
                     </div>
 
 
                     <div class="label-box" style="position: relative;">
-                        <label>
-                            <span class="title" for="startDate"></span>
+                        <label class="input-label">여행 시작일</label>
                             <input class="input-content" th:field="*{startDate}" type="date">
                             <div th:errors="*{startDate}" class="error"
                                  th:if="${#fields.hasErrors('startDate')}"></div>
-                        </label>
                     </div>
 
                     <div class="label-box" style="position: relative;">
-                        <label>
-                            <div class="title" for="endDate"></div>
+                        <label class="input-label">여행 종료일</label>
                             <input class="input-content" th:field="*{endDate}" type="date">
                             <div th:errors="*{endDate}"
                                  th:if="${#fields.hasErrors('endDate')}" class="error"></div>
-                        </label>
                     </div>
 
                     <div class="label-box" style="position: relative;">
-                        <label>
+                        <label class="input-label">여행 인원</label>
                             <div class="title" for="numberOfPeople"></div>
                             <input class="input-content" th:field="*{numberOfPeople}" type="number">
                             <div  th:errors="*{numberOfPeople}" class="error"
                                  th:if="${#fields.hasErrors('numberOfPeople')}"></div>
-                        </label>
                     </div>
 
                     <span th:if="${#fields.hasErrors('endDateAfterStartDate')}" th:errors="*{endDateAfterStartDate}"></span>
@@ -145,9 +136,22 @@
         </div>
     </div>
 
+
     <div class="vertical-line"></div>
 
-    <div class="right-side"></div>
+
+
+    <div class="right-side">
+        <!-- 크기 조절을 위해 테스트 -->
+        <div th:if="${1 == 0}">
+            <img class="right-side-image" src="/img/side.png">
+        </div>
+
+        <div th:if="${1 == 1}">
+            <img class="right-side-image" src="/img/side.png">
+        </div>
+
+    </div>
 
 
 </div>
