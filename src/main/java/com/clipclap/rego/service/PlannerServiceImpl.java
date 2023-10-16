@@ -84,7 +84,7 @@ public class PlannerServiceImpl implements PlannerService {
 
 
     @Override
-    public void save(PlannerDTO dto) {
+    public Integer save(PlannerDTO dto) {
         if(dto.getType().equals("힐링")){
             dto.setImagePath("https://github.com/hwet-j/hwet-j.github.io/assets/81364742/56961613-b6b5-431a-99a8-89210728551e");
         } else if(dto.getType().equals("문화")) {
@@ -99,7 +99,8 @@ public class PlannerServiceImpl implements PlannerService {
 
 
         Planner planner = plannerMapper.dtoToEntity(dto, userRepository);
-        plannerRepository.save(planner);
+        Planner savedPlanner = plannerRepository.save(planner);
+        return savedPlanner.getPlanId();
     }
 
 
