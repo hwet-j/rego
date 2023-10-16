@@ -13,3 +13,4 @@ public interface PlannerRepository extends JpaRepository<Planner, Integer> {
 
     List<Planner> findTop4ByOrderByPlanIdDesc();
 }
+

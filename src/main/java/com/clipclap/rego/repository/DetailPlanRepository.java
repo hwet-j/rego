@@ -19,6 +19,6 @@ public interface DetailPlanRepository extends JpaRepository<PlannerDetail, Integ
 
     List<PlannerDetail> findByPlan_PlanId(Integer planId);
 
-
+    List<PlannerDetail> findByPlanPlanIdOrderByStartTime(Integer planId);
 
 }

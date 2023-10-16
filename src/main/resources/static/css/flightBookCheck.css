@@ -276,3 +276,7 @@ margin: 30px 10px;
   /* transition 추가 */
   transition: max-height 0.5s ease-out; /* 부드러운 효과를 위해 max-height 조정 */
 }
+
+.dropdown-content::-webkit-scrollbar {
+    display: none;  /* 스크롤 바 제거 */
+}

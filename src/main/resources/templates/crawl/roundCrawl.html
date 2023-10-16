@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Airlines Search Resulft</title>
+    <title>Airlines Search Result</title>
     <link href="/css/flightSearchResult.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </head>
 <body>
 <div class="content">
@@ -53,19 +57,73 @@
 
     </div>
     <div class="searchBox">
+        <form action="/flightResult" method="get" class="flight">
+            <div class="flight-content">
+                <div class="flight-box">Departures</div>
+                <div class="flight-box">Arrivals</div>
+                <div class="flight-box">Outbound Flight</div>
+                <div class="flight-box">Return Flight</div>
+                <!-- 출발 공항 선택 -->
+                <label for="departureAirport"></label>
+                <select name="departureAirport" id="departureAirport">
+                    <option value="ICN">인천</option>
+                </select>
 
+
+                <!-- 도착 공항 선택 -->
+                <label for="arrivalAirport"></label>
+                <select name="arrivalAirport" id="arrivalAirport">
+                    <option value="PAR">파리</option>
+                    <option value="LYS">리용</option>
+                    <option value="MRS">마르세이유</option>
+                    <option value="ROM">로마</option>
+                    <option value="NAP">나폴리</option>
+                    <option value="TYO">도쿄</option>
+                    <option value="OSA">오사카</option>
+                    <option value="SPK">삿포로</option>
+                    <option value="FUK">후쿠오카</option>
+                    <option value="BCN">바르셀로나</option>
+                    <option value="MAD">마드리드</option>
+                    <option value="VLC">발렌시아</option>
+                    <option value="NYC">뉴욕</option>
+                    <option value="SFO">샌프란시스코</option>
+                    <option value="CHI">시카고</option>
+
+                </select>
+
+                <!-- 출발 날짜 선택 -->
+                <label for="departureDate"></label>
+                <input type="text" class="departureDate" id="departureDate" name="departureDate"
+                       onchange="formatDate(this)" required autocomplete="off">
+
+                <!-- 도착 날짜 선택 -->
+                <label for="arrivalDate"></label>
+                <input type="text" class="arrivalDate" id="arrivalDate" name="arrivalDate" onchange="formatDate(this)"
+                       required autocomplete="off">
+                <!-- 제출 버튼 -->
+                <input type="submit" value="FIND NOW" class="submit-btn">
+                <div class="arrow"></div>
+
+            </div>
+
+        </form>
     </div>
     <div class="resultBox">
         <div class="resultBoxLeft">
-            <label style="font-size: 20px; margin: 10px;">항공사</label>
-            <div class="airlineOption">
-                <input type="checkbox" id="selectAllAirlines" checked>
-                <label for="selectAllAirlines">항공사 전체 선택/해제</label>
+            <div class="timeFilter">
+
             </div>
-            <div id="airlines-container"></div>
+            <div class="airplainFilter">
+                <label style="font-size: 20px; margin: 10px;">항공사</label>
+                <div class="airlineOption">
+                    <input type="checkbox" id="selectAllAirlines" checked>
+                    <label for="selectAllAirlines">항공사 전체 선택/해제</label>
+                </div>
+                <div id="airlines-container"></div>
+            </div>
         </div>
         <div class="resultBoxRight">
-            <th:block th:each="flight, iterStat : ${flights}">
+            <th:block th:if="${flights != null and !#lists.isEmpty(flights)}" th:each="flight, iterStat : ${flights}">
                 <form action="#" th:action="@{/bookFlight}" method="post" th:id="'flightForm' + ${iterStat.index}">
                     <input type="hidden" th:name="'routes[0].airlineName'" th:value="${flight.routes[0].airlineName}" />
                     <input type="hidden" th:name="'routes[0].departureTime'" th:value="${flight.routes[0].departureTime}" />
@@ -84,9 +142,9 @@
                     <input type="hidden" th:name="routes[1].airlineImg" th:value="${flight.routes[1].airlineImg}" />
 
                     <input type="hidden" th:name="price" th:value="${flight.price}" />
-
                     <input type="hidden" name="departureDate" th:value="${departureDate}" />
                     <input type="hidden" name="arrivalDate" th:value="${arrivalDate}" />
+
                     <div class="flight-box-wrapper">
                         <table>
                             <!-- 첫 번째 루트 (편도) -->
@@ -134,9 +192,15 @@
                     </div>
                 </form>
             </th:block>
+            <div th:if="${#lists.isEmpty(flights)}" class="empty-box-wrapper">
+                <img class="noFlightImg" src="/img/flight/noFlight.png">
+                <span class="emptySubject">검색된 항공편이 없습니다</span>
+                <span class="emptyContent">선택하신 조건으로 검색된 항공편이 없습니다<br>다른 조건으로 다시 검색해주세요</span>
+            </div>
         </div>
     </div>
 </div>
 <script src="/js/flightSearchResult.js"></script>
+<script src="/js/datePicker.js"></script>
 </body>
 </html>
