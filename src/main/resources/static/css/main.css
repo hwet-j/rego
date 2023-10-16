@@ -3,18 +3,18 @@ body {
     padding:0;
 }
 
-/*.loading {
-    position: absolute;
-    width: 70px;
-    height: 70px;
-    top: 450px;
-    left: 920px;
-    z-index: 991;
-    background-repeat: no-repeat;
-        background-position: center center;
-        background-size: cover;
-    background-image: url('/img/loading.gif');
-}*/
+.loading {
+                           position: absolute;
+                           width: 90px;
+                           height: 90px;
+                           top: 450px;
+                           left: 915px;
+                           z-index: 991;
+                           background-repeat: no-repeat;
+                               background-position: center center;
+                               background-size: cover;
+    background-image: url('/img/loading5.gif');
+}
 
 
 
@@ -1047,8 +1047,18 @@ font-family: 'Nunito', sans-serif;
     margin-top: -20%;
     border-radius: 40px;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+
+
 }
 
+ .swiper-back p {
+    position: absolute;
+    bottom: 5px;
+    left: 41%;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    opacity: 0.7;
+  }
 
 .bottom-back {
     display: flex;
@@ -1074,14 +1084,39 @@ font-family: 'Nunito', sans-serif;
     font-family: 'Noto Sans KR', sans-serif;
 }
 
+.card-box {
+
+    width: 1300px;
+    height: 540px;
+    margin-left: 11.5%;
+
+}
 
 .card-list {
-    width: 1300px;
+    /*border: 1px solid black;*/
+    float: left;
+    width: 300px;
     height: 500px;
-    border: 1px solid red;
-    margin-left: 12%;
-    margin-top: 50px;
+
+    margin-left: 1.5%;
+    margin-top: 20px;
+
+
 }
+.card {
+border-radius: 20px;
+    box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+
+.card-list img{
+    width: 300px;
+    height: 275px;
+    border-radius: 20px 20px 0 0;
+}
+
+
 
 .about {
     position: relative;
@@ -1232,7 +1267,7 @@ font-family: 'Nunito', sans-serif;
      .bg2{
             position:absolute;
                 width: 100%;
-                height:1200px;
+                height:1400px;
                 margin-top: -2000px;
 
                 background-image:url('/img/bg1.png');

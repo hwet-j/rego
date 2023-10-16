@@ -11,5 +11,6 @@ public interface PlannerRepository extends JpaRepository<Planner, Integer> {
 
     List<Planner> findByUserEmail_Email(String email);
 
-
+    List<Planner> findTop4ByOrderByPlanIdDesc();
 }
+

@@ -2,6 +2,7 @@ package com.clipclap.rego.controller;
 
 import com.clipclap.rego.config.auth.PrincipalDetails;
 import com.clipclap.rego.model.dto.DetailPlanDTO;
+import com.clipclap.rego.model.dto.PlannerDTO;
 import com.clipclap.rego.model.dto.TouristAttractionDTO;
 import com.clipclap.rego.model.dto.TouristAttractionFullDTO;
 import com.clipclap.rego.model.entitiy.City;
@@ -68,6 +69,9 @@ public class IndexController {
 	public String index(Model model, HttpServletRequest request, HttpServletResponse response) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+		List<PlannerDTO> recentPlanners = plannerService.findTop4RecentPlanners();
+		model.addAttribute("findTop4RecentPlanners", recentPlanners);
+
 		if (authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
 
 			Optional<User> optionalUser = userRepository.findByEmail(authentication.getName());
@@ -88,12 +92,14 @@ public class IndexController {
 			}
 			// 회원가입 이력이 존재
 			String username = authentication.getName();
-			model.addAttribute("data", "로그인 ID : " + username);
+
+
+			
 			return "main";
 		} else {
-			// 사용자가 인증되지 않음
-			model.addAttribute("data", "로그아웃 상태입니다.");
+
 			return "main";
+
 		}
 	}
 

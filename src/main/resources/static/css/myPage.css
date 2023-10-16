@@ -1,0 +1,197 @@
+body {
+    margin:0;
+    padding:0;
+     display: flex;
+        flex-direction: column;  /* 자식 요소들을 세로 방향으로 배열합니다. */
+        align-items: center;     /* 자식 요소들을 가로 방향으로 중앙에 배치합니다. */
+        justify-content: center;
+}
+
+.background {
+    background-color:#1b4995;
+    opacity:0.5;
+    width:100%;
+    height:100%;
+    position:absolute;
+    z-index:-998;
+
+}
+
+.background2 {
+    width:100%;
+    height:100%;
+    position:absolute;
+    z-index:-999;
+    background-image: url('/img/bg1.png');
+     background-repeat: no-repeat;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    width: 1660px;
+    height:720px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    z-index: 100;
+    border-radius: 0 0 20px 20px ;
+
+
+}
+
+    a {
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
+
+        a:link, a:visited, a:hover, a:active, a:focus {
+        color: inherit; /* 상속받은 색상을 사용합니다. */
+        outline: none; /* 클릭 시에 표시되는 외곽선 제거 */
+    }
+
+.nav {
+
+    padding-bottom: 15px;
+    background-color: white;
+    width: 1700px;
+    height: 80px;
+    text-align: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    position:relative;
+    z-index: 999;
+}
+
+.content {
+/*    border: 1px solid blue;*/
+    width: 1200px;
+    height: 700px;
+    display: flex;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.top-box {
+
+    width: 1155px;
+    height: 375px;
+}
+
+/*내정보칸*/
+.info {
+    float: left;
+    width: 250px;
+    height: 350px;
+/*    border: 1px solid red;*/
+}
+
+.myInfo {
+    display: flex;
+    flex-direction: column;  /* 자식 요소들을 세로 방향으로 배열합니다. */
+    align-items: center;     /* 자식 요소들을 가로 방향으로 중앙에 배치합니다. */
+    justify-content: center; /* 자식 요소들을 세로 방향으로 중앙에 배치합니다. */
+    border: 1px solid lightgrey;
+    border-radius : 15px;
+    text-align: center;
+    width: 250px;
+    height: 300px;
+}
+
+.profileImage {
+
+    width: 170px;
+    height: 170px;
+}
+.profileImage img {
+    border-radius: 100px;
+    margin: 0 auto;
+    width: 170px;
+    height: 170px;
+}
+
+.nickname {
+    font-family: 'Noto sans KR', sans-serif;
+    margin-top: 10px;
+}
+
+
+
+.modify-btn {
+    background-color: white; /* 배경색 */
+    color: lightgrey; /* 글자색 */
+    border: 1px solid lightgrey; /* 테두리 제거 */
+    padding: 7px 15px; /* 패딩 (버튼 내부의 여백) */
+    font-size: 12px; /* 글자 크기 */
+    border-radius: 10px; /* 모서리 둥글게 */
+    cursor: pointer; /* 마우스 오버 시에 손가락 모양으로 변경 */
+    transition: background-color 0.3s; /* 배경색 변경 효과 시간 */
+    margin-top: 10px;
+}
+
+.modify-btn:hover {
+    background-color: lightgrey; /* 마우스 오버 시에 배경색 */
+    color: white;
+}
+
+
+
+.reservation-box {
+    float: left;
+/*    border: 1px solid red;*/
+    width: 850px;
+    height: 250px;
+    margin-left: 50px;
+}
+
+.reservation {
+    width: 850px;
+    height: 200px;
+    border: 1px solid lightgrey;
+    border-radius: 15px;
+}
+
+
+.bottom-box {
+    border: 1px solid green;
+    width: 1155px;
+    height: 375px;
+}
+
+.myPlan-box {
+    clear: both; /* 둘 다 (왼쪽과 오른쪽) 떠있는 요소 아래에 배치 */
+    float: left;
+    height: 345px;
+    width: 250px;
+/*    border: 1px solid red;*/
+}
+
+.myPlan {
+    height: 290px;
+    width: 250px;
+    border: 1px solid lightgrey;
+    border-radius: 15px;
+}
+
+.like-box {
+    margin-top: -100px;
+    float: left;
+   /* border: 1px solid red;*/
+    width: 850px;
+    height: 445px;
+    margin-left: 50px;
+}
+
+.likeList {
+    width: 850px;
+    height: 390px;
+    border: 1px solid lightgrey;
+    border-radius: 15px;
+}
+
+
