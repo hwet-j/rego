@@ -61,16 +61,18 @@ a:link, a:visited, a:hover, a:active, a:focus {
     left: 110px;
     top: 90px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 20px 20px 50px 20px;
     background-color: white;
     z-index: -1;
     border-radius: 0 0 20px 20px ;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
 }
 
 
 .bbox{
-    margin-left: 0px;
+    margin-left: -150px;
 }
 
 
@@ -252,15 +254,20 @@ p {
 
 .left-side {
     float: left;
-    width: 700px;
-    margin-top: 35px;
-    margin-left:100px;
+    width: 550px;
+    margin-top:0px;
+    margin-left:50px;
+    margin-right: 50px;
+    border-right: 1px solid #EEEFF2;
 }
 
 .right-side {
     float: left;
     height: 700px;
     margin-top: 35px;
+    width: 560px;
+    display:flex;
+    justify-content: center;
 }
 
 
@@ -271,10 +278,14 @@ p {
 
 .label-box{
     margin-top:15px;
+    display: flex;
+    flex-direction: column;
 }
 
 .input-container::before {
     content: attr(data-label); /* input 요소의 data-label 값을 content로 설정 */
+    display: flex;
+    justify-content: center;
     position: absolute;
     top: 50%;
     right: 5px;
@@ -300,3 +311,104 @@ p {
     overflow: hidden;
     z-index: 900;
 }
+
+.departMain{
+     display: flex;
+     flex-wrap: nowrap;
+     justify-content: flex-start;
+     flex-direction: row;
+     align-items: center;
+     background-color: white;
+     width: 500px;
+     border-radius: 15px;
+     padding: 30px 20px;
+     margin: 30px 10px;
+     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+ }
+.mainDate{
+    margin-left:25px;
+    margin-right:10px;
+}
+ .depart {
+     display: flex;
+     flex-direction: column; /* 수직으로 요소 나열 */
+     align-items: flex-end; /* 요소를 오른쪽 정렬 */
+ }
+
+ .depart span {
+     margin-left: auto; /* 왼쪽 여백을 자동으로 채워 오른쪽 정렬 */
+ }
+
+ .depart span:first-child {
+     font-size: 30px; /* depart 클래스 내부의 첫 번째 span에 글꼴 크기를 20px로 설정 */
+ }
+
+ .arrive {
+     display: flex;
+     flex-direction: column; /* 수직으로 요소 나열 */
+     align-items: flex-start; /* 요소를 왼쪽 정렬 */
+ }
+
+ .arrive span {
+     margin-right: auto; /* 오른쪽 여백을 자동으로 채워 왼쪽 정렬 */
+ }
+
+ .arrive span:first-child {
+     font-size:30px;
+ }
+
+.flightPriceRoute {
+    background-image: url(/css/mainCountry/Spain/madrid.webp);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    border-radius: 10px 10px 0 0;
+    width: 600px;
+    height: 250px;
+    color: white;
+    font-size: 45px;
+    text-shadow: 2px 2px 4px #000;
+}
+.flightPriceBox{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left:15px;
+    border: solid 1px #EEEFF2;
+    border-radius: 25px;
+}
+
+.mainAirlineImage{
+width:48px;
+height:48px;
+}
+
+.center-content {
+     display: flex;
+     align-items: center; /* 수직 중앙 정렬 */
+     justify-content: center; /* 수평 중앙 정렬 */
+     text-align:left;
+ }
+
+.amountBox{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+ .amount{
+    font-size: 30px;
+    font-weight: bold;
+    margin-left:10px
+ }
+
+ label{
+    margin-bottom:10px;
+ }

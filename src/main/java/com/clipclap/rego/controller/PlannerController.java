@@ -2,6 +2,7 @@ package com.clipclap.rego.controller;
 
 
 import com.clipclap.rego.model.dto.DetailPlanDTO;
+import com.clipclap.rego.model.dto.FlightInfo;
 import com.clipclap.rego.model.dto.PlannerDTO;
 import com.clipclap.rego.model.dto.TouristAttractionDTO;
 import com.clipclap.rego.repository.DetailPlanRepository;
@@ -27,6 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -76,8 +78,8 @@ public class PlannerController {
     @GetMapping("/add")
     @PreAuthorize("isAuthenticated()")
     public String planAddForm(Model model, Principal principal,
-                            PlannerDTO plannerDTO,
-                            BindingResult bindingResult) {
+                              PlannerDTO plannerDTO,
+                              BindingResult bindingResult) {
 
         if (principal != null){
             System.out.println(principal.getName());
@@ -90,10 +92,22 @@ public class PlannerController {
     @PostMapping("/add")
     @PreAuthorize("isAuthenticated()")
     public String myPlanAdd(Model model, Principal principal,
+                            PlannerDTO plannerDTO,
+                            @ModelAttribute FlightInfo flightInfo) {
+
+        model.addAttribute("FlightInfo", flightInfo);
+        plannerDTO.setStartDate(LocalDate.parse(flightInfo.getDepartureDate()));
+        plannerDTO.setEndDate(LocalDate.parse(flightInfo.getArrivalDate()));
+        model.addAttribute("plannerDTO", plannerDTO);
+        return "plan/planAdd";
+    }
+
+    @PostMapping("/addValid")
+    @PreAuthorize("isAuthenticated()")
+    public String myPlanAddValid(Model model, Principal principal,
                             @ModelAttribute @Valid PlannerDTO plannerDTO,
-                            BindingResult bindingResult) {
-
-
+                            BindingResult bindingResult,
+                            @ModelAttribute FlightInfo flightInfo) {
 
         if (bindingResult.hasErrors()) {
             System.out.println("문제 발생");
