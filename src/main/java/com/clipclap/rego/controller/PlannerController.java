@@ -169,11 +169,11 @@ public class PlannerController {
         String listAll = objectMapper.writeValueAsString(touristAttractionListAll);
 
         List<DetailPlanDTO> detailList = detailPlanService.findByPlanPlanIdOrderByStartTime(planId);
-
+        List<Object[]> test=detailPlanRepository.findCityNameAndImageByPlanId(planId);
         String detailPlan = objectMapper.writeValueAsString(detailList);
-
         // 상세플랜 목록
         model.addAttribute("detailPlan" , detailPlan);
+        model.addAttribute("previewPlan" , objectMapper.writeValueAsString(detailPlanService.findPreview(planId)));
         // 전체 관광지 리스트
         model.addAttribute("attractionList" , listAll);
         // 도시 리스트 (검색)
@@ -185,6 +185,8 @@ public class PlannerController {
         // 플래너의 시작날짜 (이것도 굳이 필요없을 수도)
         // model.addAttribute("startDate" , plannerService.findStartTimeByPlanId(planId));
         model.addAttribute("startDate" , plannerDTO.getStartDate());
+
+        model.addAttribute("endDate" , plannerDTO.getEndDate());
 
         return "plan/planPreview";
     }

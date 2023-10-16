@@ -29,4 +29,5 @@ public interface TouristAttractionRepository extends JpaRepository<TouristAttrac
     List<TouristAttraction> findByLatitudeIsNotNullAndLongitudeIsNotNull();
 
 
+
 }
