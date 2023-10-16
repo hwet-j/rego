@@ -2,11 +2,15 @@ package com.clipclap.rego.service;
 
 import com.clipclap.rego.mapper.DetailPlanMapper;
 import com.clipclap.rego.model.dto.DetailPlanDTO;
+import com.clipclap.rego.model.dto.PreviewDTO;
+import com.clipclap.rego.model.entitiy.City;
 import com.clipclap.rego.model.entitiy.PlannerDetail;
 import com.clipclap.rego.repository.DetailPlanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -49,6 +53,24 @@ public class DetailPlanServiceImpl implements DetailPlanService {
     }
 
     @Override
+    public List<PreviewDTO> findPreview(Integer planId) {
+        List<Object[]> results=detailPlanRepository.findCityNameAndImageByPlanId(planId);
+        List<PreviewDTO> dtoList= new ArrayList<>();
+        for (Object[] result : results) {
+            PreviewDTO previewDTO = new PreviewDTO();
+            previewDTO.setCityName(((City)result[0]).getCityName());
+            previewDTO.setTourAttractionName(result[1].toString());
+            previewDTO.setImage(result[2].toString());
+            previewDTO.setStartTime((LocalDateTime)result[3]);
+            previewDTO.setEndTime((LocalDateTime)result[4]);
+            previewDTO.setDetailPlanId(result[5].toString());
+
+            dtoList.add(previewDTO);
+        }
+            return dtoList;
+            }
+
+    @Override
     public DetailPlanDTO findById(Integer id) {
         Optional<PlannerDetail> optionalPlannerDetail =  detailPlanRepository.findById(id);
         if(optionalPlannerDetail.isPresent()){
@@ -68,4 +90,11 @@ public class DetailPlanServiceImpl implements DetailPlanService {
             return id;
         }
     }
+
+
+
+
+
+
+
 }
