@@ -35,7 +35,7 @@
 </head>
 <body>
 <!--<h1 th:text="${data}"></h1>-->
-<!--<div class="loading"></div>-->
+<div class="loading" style="display: none;"></div>
 <div class="content">
     <div class="nav"
          style="z-index:999; box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); padding-bottom: 15px; background-color: white; width: 1700px; height: 73px;  text-align: center; position:fixed; top: 0px;">
@@ -51,7 +51,7 @@
 
 
                 <div class="nav-left"
-                     style="float:left;   margin-left: 450px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 500;">
+                     style="float:left;   margin-left: 460px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 500;">
                     <a href="#airportSection"
                        style="margin-right: 50px; color:#4F54B4;">AIRPORT</a>
                     <a href="#startPlanSection"
@@ -63,11 +63,13 @@
                 </div>
                 <div class="nav-right"
                      style="float:right;    margin-right: 35px; margin-top: 27px;  font-size: 12px;  font-family: 'Roboto', sans-serif; font-weight: 600;">
+                    <a class="" th:href="@{/notice/list}"
+                       style="margin-right: 20px; color:#4F54B4;">공지사항</a>
                     <a class="" th:href="@{/question/list}"
                        style="margin-right: 20px; color:#4F54B4;">고객센터</a>
                     <a class="loginBtn" sec:authorize="isAnonymous()" th:href="@{/login}"
                        style="margin-right: 20px; color:#4F54B4;">로그인</a>
-                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/}"
+                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/myPage}"
                        style="margin-right: 20px; color:#4F54B4;">마이페이지</a>
                     <a class="" sec:authorize="isAuthenticated()" th:href="@{/logout}"
                        style="margin-right: 20px; color:#4F54B4;">로그아웃</a>
@@ -89,11 +91,11 @@
             <button id="prevSlide"></button>
 
             <div class="slider">
-                <img class="slide" src="img/bg1.png" alt="Image 1">
-                <img class="slide" src="img/bg2.png" alt="Image 2">
-                <img class="slide" src="img/bg3.png" alt="Image 3">
-                <img class="slide" src="img/bg1.png" alt="Image 4">
-                <img class="slide" src="img/bg2.png" alt="Image 5">
+                <img class="slide" src="img/slide1.png" alt="Image 1">
+                <img class="slide" src="img/slide2.png" alt="Image 2">
+                <img class="slide" src="img/slide3.png" alt="Image 3">
+                <img class="slide" src="img/slide4.png" alt="Image 4">
+                <img class="slide" src="img/slide5.png" alt="Image 5">
             </div>
 
             <button id="nextSlide"></button>
@@ -653,9 +655,10 @@
                     <div class="img"></div>
                 </div>
             </div>
+
         </div>
 
-        <div class="swiper-back"></div>
+        <div class="swiper-back">  <p>Add expert travel plans to your plans</p></div>
     </div>
 
     <div class="bottom-back">
@@ -663,9 +666,20 @@
             <div class="bottom-title">
                 <h2>준비중인 여행자들의 플래너</h2>
             </div>
-            <div class="card-list"></div>
+            <div class="card-box">
+                <div class="card-list" th:each="item : ${findTop4RecentPlanners}">
+                    <div class="card">
+                        <img th:src="@{|/preview/${item.planId}.png|}" onerror="this.src='/preview/map_basic.png'"/>
+                        <div style="width: 300px; height: 33px;">
+                            <div th:text="|${item.startDate} 출발|"
+                                 style="float:left; margin-left:50px; margin-top:5px; font-size:12px; font-family:'Noto sans KR', sans-serif;" ></div>
+                            <div th:text="|${item.endDate} 도착|"
+                                 style="float:left; margin-left:15px; margin-top:5px; font-size:12px; font-family:'Noto sans KR', sans-serif;"></div>
+                        </div>
+                    </div>
 
-
+                </div>
+            </div>
 
             <div id="aboutSection"></div>
             <div class="about">
@@ -674,22 +688,26 @@
                 <h2 class="about-social">소셜 미디어</h2>
                 <h2 class="about-info">Info</h2>
                 <p class="about-left">
-                   Planit은 고객들에게 탁월한 여행 경험을 제공하기 위해 끊임없이 노력하고 있습니다.<br/><br/> 우리는 다양한 여행계획을 짜는데 있어 귀찮음이라는 요소를 최대한 줄이는 것을 추구하고 있으며,<br/><br/> 고객들의 요구와 기대를 항상 초과하는 것을 목표로 삼고 있습니다. Planit은 여행을 좋아하는<br/><br/> 모든 분들을 위해 여행을 더욱 편리하고 흥미로운 경험으로 바꾸기 위해 노력하고 있습니다.
+                    Planit은 고객들에게 탁월한 여행 경험을 제공하기 위해 끊임없이 노력하고 있습니다.<br/><br/> 우리는 다양한 여행계획을 짜는데 있어 귀찮음이라는 요소를 최대한 줄이는
+                    것을 추구하고 있으며,<br/><br/> 고객들의 요구와 기대를 항상 초과하는 것을 목표로 삼고 있습니다. Planit은 여행을 좋아하는<br/><br/> 모든 분들을 위해 여행을
+                    더욱 편리하고 흥미로운 경험으로 바꾸기 위해 노력하고 있습니다.
                     <br/><br/>
-                    Planit은 여행 예약, 호텔 및 숙박시설 검색, 관광 명소 및 활동 추천, <br/><br/> 여행 팁 및 정보 등 다양한 서비스를 제공합니다. <br/><br/>우리는 여행객들이 자신만의 특별한 여행을 만들 수 있도록 돕고, 그들의 여행을 <br/><br/>더욱 풍부하고 기억에 남는 경험으로 바꿀 수 있도록 노력하고 있습니다.
+                    Planit은 여행 예약, 호텔 및 숙박시설 검색, 관광 명소 및 활동 추천, <br/><br/> 여행 팁 및 정보 등 다양한 서비스를 제공합니다.
                     <br/><br/>
                     Planit과 함께 여행을 새롭게 경험하고, 세상을 더 많이 탐험하세요!
                 </p>
 
                 <p class="about-center2">
                     편리성
-                    <br/><br/>Planit은 여행객들을 위한 쉽고 편리한 여행 계획 도구를 제공합니다.  <br/><br/>우리의 웹사이트는 간단하게 여행을 계획하고 예약할 수 있도록 설계되었습니다.
+                    <br/><br/>Planit은 여행객들을 위한 쉽고 편리한 여행 계획 도구를 제공합니다. <br/><br/>우리의 웹사이트는 간단하게 여행을 계획하고 예약할 수 있도록
+                    설계되었습니다.
                     <br/><br/><br/>
                     신뢰성
                     <br/><br/>우리는 고품질의 여행 정보와 추천을 제공하며, 고객의 신뢰를 최우선으로 생각합니다.
                     <br/><br/><br/>
                     다양성
-                    <br/><br/>여행은 모두를 위한 것이며, Planit은 모든 여행객들을 위한 다양한 <br/><br/> 여행 옵션을 제공합니다. 어떤 스타일의 여행이든 우리와 함께할 수 있습니다.
+                    <br/><br/>여행은 모두를 위한 것이며, Planit은 모든 여행객들을 위한 다양한 <br/><br/> 여행 옵션을 제공합니다. 어떤 스타일의 여행이든 우리와 함께할 수
+                    있습니다.
                     <br/><br/><br/>
 
                 </p>
@@ -718,9 +736,8 @@
             </div>
 
         </div>
-    <div class="opacity-back"></div>
+        <div class="opacity-back"></div>
     </div>
-
 
 
     <div class="bg-blue"></div>
@@ -831,6 +848,25 @@ tabs.forEach(tab => {
         console.log('start autoplay');
         swiper.startAutoplay();
     });
+
+
+// 제출 버튼을 눌렀을 때의 동작을 정의합니다.
+document.querySelector('.submit-btn').addEventListener('click', function() {
+    // 로딩 div를 활성화합니다.
+    document.querySelector('.loading').style.display = 'block';
+  // 여기에 실제로 서버로 요청을 보내고 응답을 처리하는 코드를 작성하세요.
+    // 페이지가 전환됩니다.
+});
+
+// 페이지 로드가 완료되었을 때 로딩 div를 숨깁니다.
+window.addEventListener('load', function() {
+    // 로딩 div를 숨깁니다.
+    document.querySelector('.loading').style.display = 'none';
+});
+
+
+
+
 </script>
 </body>
 

@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function() {
     setInterval(function() {
         let nextSlide = (currentSlide + 1) % totalSlides;
         updateSlide(nextSlide);
-    }, 3000);
+    }, 5000);
 });
 
 

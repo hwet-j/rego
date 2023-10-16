@@ -24,6 +24,8 @@ public class PlannerServiceImpl implements PlannerService {
     private final PlannerMapper plannerMapper;
     private final UserRepository userRepository;
 
+
+
     @Override
     public LocalDate findStartTimeByPlanId(Integer planId) {
 
@@ -67,6 +69,20 @@ public class PlannerServiceImpl implements PlannerService {
         return plannerDTOs;
     }
 
+
+
+    @Override
+    public List<PlannerDTO> findTop4RecentPlanners() {
+        List<Planner> planners = plannerRepository.findTop4ByOrderByPlanIdDesc(); // 가장 최근에 만들어진 4개의 플래너를 조회합니다.
+
+        List<PlannerDTO> plannerDTOs = planners.stream()
+                .map(PlannerMapper::entityToDto)
+                .collect(Collectors.toList());
+
+        return plannerDTOs;
+    }
+
+
     @Override
     public void save(PlannerDTO dto) {
         if(dto.getType().equals("힐링")){
@@ -86,4 +102,11 @@ public class PlannerServiceImpl implements PlannerService {
         plannerRepository.save(planner);
     }
 
+
 }
+
+
+
+
+
+
