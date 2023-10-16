@@ -111,7 +111,7 @@ public class PlannerController {
 
         if (bindingResult.hasErrors()) {
             List<ObjectError> errors = bindingResult.getAllErrors();
-            for (ObjectError error : errors) {
+                for (ObjectError error : errors) {
             }
             return "plan/planAdd";
         }
