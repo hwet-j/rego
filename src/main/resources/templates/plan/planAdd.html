@@ -16,9 +16,33 @@
     <!-- XEIcon 폰트 불러오기 -->
     <link href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css" rel="stylesheet">
 
-</head>
-<body>
 
+
+
+</head>
+
+<body>
+<script>
+    $("#planForm").submit(function(event) {
+        event.preventDefault();  // 기본 제출 동작 방지
+
+        var formData = {
+            name: $("#name").val(),
+            email: $("#email").val()
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/validate",  // 백엔드 엔드포인트 URL
+            data: JSON.stringify(formData),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(response) {
+                // 유효성 검사에 대한 응답 처리
+            }
+        });
+    });
+</script>
     <div class="background"></div>
     <div class="background2"></div>
 
@@ -141,6 +165,7 @@
         <!-- 크기 조절을 위해 테스트 -->
         <div th:if="${flightInfo == null}">
             <img class="right-side-image" src="/img/side.png">
+            <div class="start-btn"><a class="start-plan-btn" th:href="@{/}">항공 예약하고 오기</a></div>
         </div>
         <div th:if="${flightInfo != null}" class="">
             <div class="flightPriceBox" >
