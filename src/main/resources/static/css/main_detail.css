@@ -132,7 +132,7 @@ justify-content: center;
 }
 
 .main-container {
-border: 1px solid blue;
+    border: 1px solid blue;
     float: left;
     width: 1000px;
     height: 200px;
@@ -166,7 +166,7 @@ display: flex;
 
 }
 
-.left {
+.container2-left {
 line-height: 55px;
   width: 220px;
   text-align: left;
@@ -175,16 +175,15 @@ line-height: 55px;
   letter-spacing:2px;
 }
 
-.right {
-  width: 770px;
-  height: 100%;
+.container2-right {
+    border: 1px solid red;
+    float: left;
+  width: 700px;
+  height: 200px;
   text-align: left;
   padding:10px;
   margin-left: 40px;
 }
-
-
-
 
 
 .right-sidebar {
@@ -209,28 +208,50 @@ line-height: 55px;
 }
 
 
-
-.tab1-.container{
+.tad0-center {
     position:relative;
-    width: 350px;
+    width: 332px;
     height: 280px;
     background-color: #7BB2F0;
      z-index: 990;
+     left: 41px;
+      float: left;
+      margin-left: -15px;
 
 }
+
+.image-container {
+    width: 100%;  /* 각 이미지 가로 크기 100%로 설정 */
+    height: 280px; /* 이미지 비율에 맞게 세로 크기 조절 */
+}
+.image-container img {
+    width: 100%; /* 각 이미지 가로 크기 100%로 설정 */
+    height: 280px; /* 이미지 비율에 맞게 세로 크기 조절 */
+}
+
+
+tab1-center {
+    float: left;
+    width: 330px;
+    height: 530px;
+    margin-left: 20px;
+    z-index: 900;
+}
+
 
 .tab1-start-box {
     color: white;
     background-color:#7BB2F0;
     font-family: 'Nunito', sans-serif;
+    order-radius: 0px 0px 20px 20px;
     border: 1px solid  #7BB2F0;
     margin-left: 10%;
     top: 10%;
     width: 330px;
     height: 280px;
-     z-index: 900;
+    z-index: 900;
     text-align:center;
-    border-radius: 20px;
+
 }
 
 .tab1-start-box h1 {
@@ -312,10 +333,7 @@ color:#9F71FF;
 
 
 .button-box {
- margin-top: 320px;
- border: 1px solid red;
  width: 1000px;
-
 }
 
 
@@ -335,10 +353,29 @@ color:#9F71FF;
 }
 
 .button:hover {
-    background-color: #344090; /* 마우스 호버 시 배경색 변경 */
+    background-color: #FFFFFF; /* 마우스 호버 시 배경색 변경 */
 }
 
+.country-button{
+    margin-top: 110px;
+    background-color:transparent;
+    display: inline-block;
+    padding: 10px 15px;
+    color: #000000;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
 
+/* 버튼 스타일 마우스 오버 효과 */
+.country-button:hover {
+    background-color: #6268D2;
+}
 
 .fetch-data-button {
    background-color:transparent;
@@ -411,3 +448,11 @@ li {
 
 
 }
+
+
+.swiper-slide {
+    background-color: yellow;
+    width: 700px;
+    max-height: 190px;
+}
+
