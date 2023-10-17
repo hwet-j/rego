@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <link href="/css/main_detail.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <title>Welcome to Planner!</title>
 </head>
 
@@ -63,12 +65,26 @@
 
             <div class="list-container">
                 <div class="container2">
-                    <div class="left">
+                    <div class="container2-left">
                         Today's<br>
                         Popular<br>
                         Place<br>
                         ♡
                     </div>
+                    <div class="container2-right">
+                        <div class="swiper-container">
+
+                            <div class="swiper-wrapper">
+
+                                <div class="swiper-slide">내용 1</div>
+                                <div class="swiper-slide">내용 2</div>
+                                <div class="swiper-slide">내용 3</div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
 
                 </div>
             </div>
@@ -92,7 +108,7 @@
 
             <!-- 나라 목록 버튼 (Controller에서 전달받음) -->
             <span th:each="countryName : ${countryNames}">
-                <button class="fetch-data-button country-button" th:data-keyword="${countryName}"
+                <button class="country-button" th:data-keyword="${countryName}"
                         th:text="${countryName}"></button>
             </span>
         </div>
@@ -103,14 +119,19 @@
             <span id="city-list">
                 <!-- 도시 목록 -->
             </span>
+        </div>
 
+        <div class="button-box" id="sights-type-buttons">
             <!-- 관광지, 식당, 호텔 버튼 (type별로 분류) -->
-            <span id="type-list">
-                <button class="classify-button" th:data-keyword="관광지" th:text="관광지"></button>
-                <button class="classify-button" th:data-keyword="식당" th:text="식당"></button>
-                <button class="classify-button" th:data-keyword="호텔" th:text="호텔"></button>
+            <span id="sights-list">
+                <!-- 도시 목록 -->
             </span>
-
+            <!--
+            <span id="type-list">
+                <button class="classify-button" th:data-keyword="관광지" th:text="attraction"></button>
+                <button class="classify-button" th:data-keyword="식당" th:text="restaurant"></button>
+            </span>
+            -->
         </div>
 
 
@@ -129,6 +150,13 @@
         <div class="right-sidebar">
             <!-- 사이드바 부분을 나타내는 컨테이너입니다. -->
             <div class="fixed-content">
+                <div class="tad0-center">
+                    <div class="image-container">
+                        <img src="/img/slide1.png" alt="Image 1">
+                    </div>
+                </div>
+
+
                 <div class="tab1-center">
                     <div class="tab1-start">
                         <div class="tab1-start-box">
@@ -143,156 +171,89 @@
         </div>
     </div>
 </div>
+
+
 <div class="bg-blue"></div>
 <div class="bg1"></div>
 
 
-<script>
-
-    document.addEventListener("DOMContentLoaded", function () {
-    // 초기에 도시 및 타입 버튼 숨기기
-    document.getElementById("city-type-buttons").style.display = "none";
-});
-
-// "fetch-data-button country-button" 버튼 클릭 이벤트 핸들러 등록
-var countryButtons = document.querySelectorAll(".fetch-data-button.country-button");
-countryButtons.forEach(function (button) {
-    button.addEventListener("click", function () {
-        // 나라 버튼 클릭시 도시 및 타입 버튼 표시
-        document.getElementById("city-type-buttons").style.display = "block";
-        document.getElementById("country-buttons").style.display = "none";
-    });
-});
+<script th:inline="javascript">
+    /* Thymeleaf에서 모델 변수를 JavaScript 변수로 가져오기 */
+    var touristAttractionList = [[${touristAttractionList}]];
 
     document.addEventListener("DOMContentLoaded", function() {
-        // 나라 정보에서 가장 처음 버튼을 로딩과 동시에 클릭 되어있도록 설정한다.
-        var buttons = document.querySelectorAll(".country-button");
+        var attractionListContainer = document.getElementById("attraction-list");
+        attractionListContainer.innerHTML = '';
 
-        if (buttons.length > 0) {
-            buttons[0].click();
-        }
+        // 새로운 목록을 추가 (알맞게 정보를 수정)
+        touristAttractionList.forEach(function(attraction) {
+            var li = document.createElement("li");
+            li.classList.add("card-box");
 
+            // 이미지 요소 생성
+            var img = document.createElement("img");
+            img.src = attraction.image;     // 이미지 URL은 attraction 객체에서 실제 이미지 URL 필드로 수정해야 합니다
+            img.width = 200;                // 이미지의 가로 크기 설정
+            img.height = 150;               // 이미지의 세로 크기 설정
+
+            // 텍스트 생성
+            var text = document.createTextNode("이름: " + attraction.name + ", 주소: " + attraction.address);
+
+            // 이미지와 텍스트를 <li> 요소에 추가
+            li.appendChild(img);
+            li.appendChild(text);
+            attractionListContainer.appendChild(li);
+        });
     });
-
 
     // 나라 버튼을 눌렀을 때 나라별 도시 목록을 출력해주는 함수
-    function countryListFuncion(coutryName) {
-        var xhr = new XMLHttpRequest();
-
-        // AJAX 요청주소에 나라 이름을 전달
-        xhr.open("GET", "/touristAttraction/cityList?keyword=" + coutryName, true);
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-
-                // 서버로부터 받은 JSON 데이터를 JavaScript 객체로 파싱 (@Responsebody는 JSON형식으로 전달하기 때문에 JSON 파싱이 바로 가능)
-                var cityList = JSON.parse(xhr.responseText);
-
-                // 목록을 초기화 (이전 정보와 충돌이 일어나면 안되기 때문에 이전 정보 제거)
-                var cityListContainer = document.getElementById("city-list");
-                cityListContainer.innerHTML = '';
-
-                // 새로운 목록을 추가
-                cityList.forEach(function(city, index) {        // 가장 첫번째 버튼을 클릭 상태로 설정하기 위해 index 변수 추가
-                    var button = document.createElement("button");
-                    button.className = "fetch-data-button";
-                    button.setAttribute("data-keyword", city);
-                    button.textContent = city;
-                    cityListContainer.appendChild(button);
-
-                    // 생성되는 버튼에 클릭 이벤트 추가
-                    button.addEventListener("click", function() {
-                        fetchData(city);
-                    });
-
-                     // 클릭 이벤트가 추가된 후에 가장 첫번째 버튼을 클릭
-                     if (index === 0) {
-                        button.click();
-                    }
-                });
-            }
-        };
-
-        xhr.send();
-    }
-
-    // 버튼 클릭 이벤트 핸들러 등록
-    var buttons = document.querySelectorAll(".country-button");
-    buttons.forEach(function(button) {
-        button.addEventListener("click", function() {
-            var keyword = button.getAttribute("data-keyword");  // data-keyword에 설정되어있는 값을 가져와 keyword에 저장
-            countryListFuncion(keyword);        // 버튼 클릭시 실행될 함수
+    function countryListFuncion(countryName) {  // 변수 이름을 countryName으로 수정
+        var filteredData = touristAttractionList.filter(function(attraction) {
+            return attraction.countryName == countryName;
         });
-    });
 
-    // 관광지 정보 리스트를 전역 변수로 설정하여 AJAX 요청하여 전달 받을 경우 이 변수에 저장 (관광지, 식당, 호텔 등 특정 상황에 맞게 값을 수정하여 전달하기 위함)
-    var attractionList = [];
+        var uniqueCities = {};
 
-    // 도시별로 검색하여 관광지 정보를 객체에 저장 및 브라우저에 출력 하기 위한 함수
-    function fetchData(keyword) {
-        var xhr = new XMLHttpRequest();
-
-        // 요청 주소에 keyword 라는 변수에 도시 이름을 담아서 전달한다.
-        xhr.open("GET", "/touristAttraction/search?keyword=" + keyword, true);
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-
-                attractionList = JSON.parse(xhr.responseText);
-
-                // 목록을 초기화
-                var attractionListContainer = document.getElementById("attraction-list");
-                attractionListContainer.innerHTML = '';
-
-                // 새로운 목록을 추가 (알맞게 정보를 수정)
-                attractionList.forEach(function(attraction) {
-                    var li = document.createElement("li");
-                    li.classList.add("card-box");
-
-                    // 이미지 요소 생성
-                    var img = document.createElement("img");
-                    img.src = attraction.image;  // 이미지 URL은 attraction 객체에서 실제 이미지 URL 필드로 수정해야 합니다
-                    img.width = 200;  // 이미지의 가로 크기 설정
-                    img.height = 150; // 이미지의 세로 크기 설정
-
-                    // 텍스트 생성
-                    var text = document.createTextNode("이름: " + attraction.name + ", 주소: " + attraction.address);
-
-                    // 이미지와 텍스트를 <li> 요소에 추가
-                    li.appendChild(img);
-                    li.appendChild(text);
-                    attractionListContainer.appendChild(li);
-                });
-            }
-        };
-
-        xhr.send();
-    }
-
-    // 버튼 클릭 이벤트 핸들러 등록
-    var buttons = document.querySelectorAll(".fetch-data-button");
-    buttons.forEach(function(button) {
-        button.addEventListener("click", function() {
-            var keyword = button.getAttribute("data-keyword");
-            fetchData(keyword);
+        // 중복된 도시를 필터링
+        filteredData.forEach(function(attraction) {
+            uniqueCities[attraction.cityName] = true;
         });
-    });
 
-    // 관광지, 식당, 호텔 등 타입별로 값을 분류하여 관광지 목록에 출력 하기 위한 함수
-    function classifyAttractions(type) {
+        // 중복을 제외한 도시 목록을 얻기 위한 배열로 변환
+        var uniqueCityList = Object.keys(uniqueCities);
 
-        // 전역변수로 설정하여 저장되어있는 attractionList 객체에서 특정 type으로 분류하여 객체를 저장
-        var touristAttractions = attractionList.filter(function (attraction) {
-            return attraction.contentType == type;
+        // 도시 리스트 초기화
+        var cityListContainer = document.getElementById("city-list");
+        cityListContainer.innerHTML = '';
+        // 관광지, 식당 초기화 (나라버튼을 누르면 관광지,식당은 필요없음)
+        var sightListContainer = document.getElementById("sights-list");
+        sightListContainer.innerHTML = '';
+
+        // 검색된 도시목록 버튼 생성
+        uniqueCityList.forEach(function(city, index) {
+            var button = document.createElement("button");
+            button.className = "fetch-data-button";
+            button.setAttribute("data-keyword", city);
+            button.textContent = city;
+            cityListContainer.appendChild(button);
         });
+
+        // 도시 버튼 클릭시 실행될 이벤트 등록
+        var buttons = document.querySelectorAll(".fetch-data-button");
+        buttons.forEach(function(button) {
+            button.addEventListener("click", function() {
+                var keyword = button.getAttribute("data-keyword");  // data-keyword에 설정되어있는 값을 가져와 keyword에 저장
+                cityListFuncion(keyword);        // 버튼 클릭시 실행될 함수
+            });
+        });
+
 
         var attractionListContainer = document.getElementById("attraction-list");
         attractionListContainer.innerHTML = '';
 
-        // 분류된 객체로 관광지 목록을 재출력
-        touristAttractions.forEach(function(attraction) {
+        filteredData.forEach(function(attraction) {
             var li = document.createElement("li");
-            li.classList.add("card-box2");
+            li.classList.add("card-box");
 
             // 이미지 요소 생성
             var img = document.createElement("img");
@@ -306,23 +267,119 @@ countryButtons.forEach(function (button) {
             // 이미지와 텍스트를 <li> 요소에 추가
             li.appendChild(img);
             li.appendChild(text);
-
             attractionListContainer.appendChild(li);
         });
-
     }
 
-    // 분류와 관련된 버튼 클릭 이벤트를 추가
-   var classifyButtons = document.querySelectorAll(".classify-button");
-    classifyButtons.forEach(function (button) {
-        button.addEventListener("click", function () {
-            var type = button.getAttribute("data-keyword");
-            classifyAttractions(type);
+
+    // 버튼 클릭 이벤트 핸들러 등록
+    var buttons = document.querySelectorAll(".country-button");
+    buttons.forEach(function(button) {
+        button.addEventListener("click", function() {
+            var keyword = button.getAttribute("data-keyword");  // data-keyword에 설정되어있는 값을 가져와 keyword에 저장
+            countryListFuncion(keyword);        // 버튼 클릭시 실행될 함수
         });
     });
 
+    // 도시 버튼을 눌렀을 때 나라별 도시 목록을 출력해주는 함수
+    function cityListFuncion(cityName) {
+        var filteredData = touristAttractionList.filter(function(attraction) {
+            return attraction.cityName == cityName;
+        });
+
+        sightList = ['관광지', '식당'];
+
+        var sightListContainer = document.getElementById("sights-list");
+        sightListContainer.innerHTML = '';
+
+        // 검색된 도시목록 버튼 생성
+        sightList.forEach(function(sight, index) {
+            var button = document.createElement("button");
+            button.className = "classify-button";
+            button.setAttribute("data-keyword", sight);
+            button.textContent = sight;
+            sightListContainer.appendChild(button);
+        });
+
+        var buttons = document.querySelectorAll(".classify-button");
+        buttons.forEach(function(button) {
+            button.addEventListener("click", function() {
+                var keyword = button.getAttribute("data-keyword");  // data-keyword에 설정되어있는 값을 가져와 keyword에 저장
+                sightFuncion(filteredData, keyword);                // 버튼 클릭시 실행될 함수
+            });
+        });
+
+
+        var attractionListContainer = document.getElementById("attraction-list");
+        attractionListContainer.innerHTML = '';
+
+        filteredData.forEach(function(attraction) {
+            var li = document.createElement("li");
+            li.classList.add("card-box");
+
+            // 이미지 요소 생성
+            var img = document.createElement("img");
+            img.src = attraction.image;
+            img.width = 200;                // 이미지의 가로 크기 설정
+            img.height = 150;               // 이미지의 세로 크기 설정
+
+            // 텍스트 생성
+            var text = document.createTextNode("이름: " + attraction.name + ", 주소: " + attraction.address);
+
+            // 이미지와 텍스트를 <li> 요소에 추가
+            li.appendChild(img);
+            li.appendChild(text);
+            attractionListContainer.appendChild(li);
+        });
+    }
+
+    function sightFuncion(data, sight) {
+        var filteredData = data.filter(function(attraction) {
+            return attraction.contentType == sight;
+        });
+
+        var attractionListContainer = document.getElementById("attraction-list");
+        attractionListContainer.innerHTML = '';
+
+        filteredData.forEach(function(attraction) {
+            var li = document.createElement("li");
+            li.classList.add("card-box");
+
+            // 이미지 요소 생성
+            var img = document.createElement("img");
+            img.src = attraction.image;
+            img.width = 200;                // 이미지의 가로 크기 설정
+            img.height = 150;               // 이미지의 세로 크기 설정
+
+            // 텍스트 생성
+            var text = document.createTextNode("이름: " + attraction.name + ", 주소: " + attraction.address);
+
+            // 이미지와 텍스트를 <li> 요소에 추가
+            li.appendChild(img);
+            li.appendChild(text);
+            attractionListContainer.appendChild(li);
+        });
+    }
+
+
 </script>
-</div>
+<script>
+
+
+            new Swiper('.swiper-container', {
+     direction: 'vertical',
+
+  autoplay: {
+    // 자동재생 여부
+    delay: 2000, // 시작시간 설정
+  },
+  loop: true, // 반복재생 여부
+  slidesPerView: 1, // 한번에 보여줄 슬라이드 개수
+  spaceBetween: 10, // 슬라이드 사이 여백
+  centeredSlides: true // 1번 슬라이드가 가운데 보이기
+});
+</script>
+
 
 </body>
 </html>
