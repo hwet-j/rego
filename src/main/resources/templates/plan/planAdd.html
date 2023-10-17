@@ -22,12 +22,13 @@
 </head>
 
 <body>
-<script>
+<script th:inline="javascript">
     $(document).ready(function () {
         $("#planForm").submit(function (event) {
             event.preventDefault(); // 기본 제출 동작 방지
 
             var formData = new FormData(this); // 현재 폼 데이터 가져오기
+            var flightInfo = /*[[${flightInfo}]]*/;
 
             $.ajax({
                 type: "POST",
@@ -36,12 +37,62 @@
                 processData: false, // 중요: 데이터를 처리하지 않도록 설정
                 contentType: false, // 중요: 컨텐츠 유형을 false로 설정
                 success: function (data) {
-                    console.log(data); // 응답 데이터 확인
                     if (data.isValid) {
-                        // 유효성 검사 통과 시 페이지 이동 또는 다른 동작 수행
-                        window.location.href = "/plan/detail?planId=" + data.planId;
+                        alert("유효성 통과");
+                        if(flightInfo == null){
+                            alert("비행정보 없음");
+                            $.ajax({
+                                type: "POST",
+                                url: "/plan/addPlan",
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                success: function (data) {
+
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error(error); // 오류 메시지 확인
+                                }
+                            });
+                        } else {
+                            alert("비행정보 있음");
+
+                            var formInfo = {
+                                type: $("#search-type").val(),
+                                userEmail: $("#userEmail").val(),
+                                content: $("#content").val(),
+                                startDate: $("#startDate").val(),
+                                endDate: $("#endDate").val(),
+                                numberOfPeople: $("#numberOfPeople").val()
+                            };
+
+                            // JavaScript 객체를 JSON 문자열로 변환
+                            // var formDataJSON = JSON.stringify(formInfo);
+                            // var flightInfoJSON = JSON.stringify(flightInfo);
+                            var formDataArray = [formInfo];
+                            var flightInfoArray = [flightInfo];
+                            // console.log(formDataJSON);
+                            // console.log(flightInfoJSON);
+                            console.log(formInfo);
+                            console.log(flightInfo);
+                            $.ajax({
+                                type: "POST",
+                                url: "/plan/addPlanwithfly",
+                                data: JSON.stringify({
+                                    formData: formInfo,
+                                    flightInfo: flightInfo
+                                }),
+                                processData: false,
+                                contentType: "application/json",
+                                success: function (data) {
+                                    alert('썽공');
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error(error); // 오류 메시지 확인
+                                }
+                            });
+                        }
                     } else {
-                        // 유효성 검사 오류 메시지 표시
                         displayErrorMessages(data.fieldErrors);
                         console.log(data.fieldErrors);
                     }
@@ -60,8 +111,6 @@
         for (var fieldName in fieldErrors) {
             var errorMessage = fieldErrors[fieldName];
             var errorContainer = $("#" + fieldName + "Error");
-            console.log(errorMessage);
-            console.log(fieldName);
             errorContainer.text(errorMessage);
         }
     }

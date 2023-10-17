@@ -11,6 +11,7 @@ import com.clipclap.rego.service.DetailPlanService;
 import com.clipclap.rego.service.PlannerService;
 import com.clipclap.rego.service.TouristAttractionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -101,6 +102,7 @@ public class PlannerController {
     @PostMapping("/ajaxValid")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> planAddValid(@ModelAttribute @Valid PlannerDTO plannerDTO, BindingResult bindingResult) {
+
         Map<String, Object> response = new HashMap<>();
 
         if (bindingResult.hasErrors()) {
@@ -111,9 +113,7 @@ public class PlannerController {
             }
             response.put("fieldErrors", errorMap); // Key를 "fieldErrors"로 바꿈
         } else {
-            Integer id = plannerService.save(plannerDTO);
             response.put("isValid", true);
-            response.put("planId", id);
         }
 
         return ResponseEntity.ok(response);
@@ -122,13 +122,16 @@ public class PlannerController {
 
 
     /* 계획 생성 기능 (비행정보가 있을수도 없을수도 있기 때문에 그에따른 정보 작성 필요) */
-    @PostMapping("/addValid")
+    @PostMapping("/addPlan")
     @PreAuthorize("isAuthenticated()")
     public String myPlanAddValid(Model model, Principal principal,
                             @ModelAttribute PlannerDTO plannerDTO,
-                            @ModelAttribute FlightInfo flightInfo) {
+                            FlightInfo flightInfo) {
 
-
+        System.out.println("이거실행되었어");
+        System.out.println(plannerDTO.getType());
+        System.out.println(plannerDTO.getContent());
+        System.out.println(plannerDTO.getStartDate());
         System.out.println(flightInfo);
         System.out.println(flightInfo.getArrivalDate());
         System.out.println(flightInfo.getPrice());
@@ -136,10 +139,29 @@ public class PlannerController {
         System.out.println(flightInfo.getRoutes());
 
         // 생성된 계획 번호를 리턴받아 생성된 계획 페이지로 이동
-        Integer id = plannerService.save(plannerDTO);
-
+        // Integer id = plannerService.save(plannerDTO);
+        Integer id = 2;
         return "redirect:/plan/detail?planId=" + id;
     }
+
+    @PostMapping("/addPlanwithfly")
+    @ResponseBody
+    public String myPlanAddwithFly(@RequestBody JsonNode requestData) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        JsonNode formDataNode = requestData.get("formData");
+        JsonNode flightInfoNode = requestData.get("flightInfo");
+
+        System.out.println(flightInfoNode);
+        System.out.println(formDataNode);
+
+
+
+        return null;
+//        Integer id = 2;
+//        return "redirect:/plan/detail?planId=" + id;
+    }
+
 
 
 
