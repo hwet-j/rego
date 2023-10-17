@@ -14,11 +14,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -97,28 +98,43 @@ public class PlannerController {
         return "plan/planAdd";
     }
 
+    @PostMapping("/ajaxValid")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> planAddValid(@ModelAttribute @Valid PlannerDTO plannerDTO, BindingResult bindingResult) {
+        Map<String, Object> response = new HashMap<>();
+
+        if (bindingResult.hasErrors()) {
+            response.put("isValid", false);
+            Map<String, Object> errorMap = new HashMap<>();
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+            response.put("fieldErrors", errorMap); // Key를 "fieldErrors"로 바꿈
+        } else {
+            Integer id = plannerService.save(plannerDTO);
+            response.put("isValid", true);
+            response.put("planId", id);
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
+
+
     /* 계획 생성 기능 (비행정보가 있을수도 없을수도 있기 때문에 그에따른 정보 작성 필요) */
     @PostMapping("/addValid")
     @PreAuthorize("isAuthenticated()")
     public String myPlanAddValid(Model model, Principal principal,
-                            @ModelAttribute @Valid PlannerDTO plannerDTO,
-                            BindingResult bindingResult,
+                            @ModelAttribute PlannerDTO plannerDTO,
                             @ModelAttribute FlightInfo flightInfo) {
 
 
         System.out.println(flightInfo);
+        System.out.println(flightInfo.getArrivalDate());
+        System.out.println(flightInfo.getPrice());
+        System.out.println(flightInfo.getDepartureDate());
+        System.out.println(flightInfo.getRoutes());
 
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> errors = bindingResult.getAllErrors();
-            /* 비행 정보가 있으면 해당 정보는 유지한 상태로 넘어가야함 */
-            if(flightInfo != null){
-                model.addAttribute("FlightInfo", flightInfo);
-            }
-            return "plan/planAdd";
-        }
-
-        
-        
         // 생성된 계획 번호를 리턴받아 생성된 계획 페이지로 이동
         Integer id = plannerService.save(plannerDTO);
 
