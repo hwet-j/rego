@@ -669,6 +669,7 @@
                 minZoom: 3,
                 maxZoom: 30,
                 mapTypeControl: false,
+                fullscreenControl: false,
             });
 
             // console.log("지도지도지도");
@@ -1278,6 +1279,10 @@
             <!-- 지도 -->
             <div id="map"></div>
 
+            <a th:href="@{/plan/Preview(planId=${planID})}">
+                <div class="preview-button">
+                </div>
+            </a>
             <div class="start-end-date">
                 <div>
                     <span>시작일 : </span>
