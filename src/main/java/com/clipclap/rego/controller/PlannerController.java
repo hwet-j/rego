@@ -110,25 +110,19 @@ public class PlannerController {
                             @ModelAttribute FlightInfo flightInfo) {
 
         if (bindingResult.hasErrors()) {
-            System.out.println("문제 발생");
             List<ObjectError> errors = bindingResult.getAllErrors();
             for (ObjectError error : errors) {
-                System.out.println(error.toString());
-                System.out.println("검사 오류: " + error.getDefaultMessage());
             }
             return "plan/planAdd";
         }
 
         if (principal != null){
-            System.out.println(principal.getName());
             plannerDTO.setUserEmail(principal.getName());
         }
 
-        System.out.println("결과");
-        plannerService.save(plannerDTO);
+        Integer id = plannerService.save(plannerDTO);
 
-
-        return "redirect:/plan/add";
+        return "redirect:/plan/detail?planId=" + id;
     }
 
     @GetMapping("/detail")
