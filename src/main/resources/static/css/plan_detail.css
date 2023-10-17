@@ -233,6 +233,20 @@ body {
     padding-right:60px;
 }
 
+.preview-button{
+    position: absolute;
+    top: 15px;
+    right: 26px;
+    background-color: #ba4bce;
+    font-size:13px;
+    color: white;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    height: 30px;
+    width: 30px;
+}
+
 #modifyButton{
     position: absolute;
     bottom: 15px;
