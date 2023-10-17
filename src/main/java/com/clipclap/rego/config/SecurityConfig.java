@@ -4,6 +4,7 @@ import com.clipclap.rego.config.oauth.PrincipalOauth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,6 +15,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration // IoC 빈(bean)을 등록
 @RequiredArgsConstructor
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
 	private final PrincipalOauth2UserService principalOauth2UserService;
@@ -32,10 +34,6 @@ public class SecurityConfig {
 
 		http
 				.authorizeRequests((authorizeHttpRequests) -> authorizeHttpRequests
-						.requestMatchers(new AntPathRequestMatcher("/question/detail/**")).authenticated()
-						.requestMatchers(new AntPathRequestMatcher("/question/add")).authenticated()
-						.requestMatchers(new AntPathRequestMatcher("/question/detail/**")).authenticated()
-						.requestMatchers(new AntPathRequestMatcher("/notice/detail")).authenticated()
 						.requestMatchers(new AntPathRequestMatcher("/admin/**")).access("hasRole('ROLE_ADMIN')")
 						.requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
 						.anyRequest().authenticated() )

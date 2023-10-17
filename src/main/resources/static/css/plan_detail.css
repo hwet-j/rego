@@ -219,3 +219,26 @@ body {
     height: 39px;
 }
 
+.start-end-date{
+    position: absolute;
+    bottom: 23px;
+    right: 75px;
+    background-color: #ba4bce;
+    font-size:13px;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    height: 38px;
+    padding-right:60px;
+}
+
+#modifyButton{
+    position: absolute;
+    bottom: 15px;
+    right: 8px;
+    font-size:13px;
+    color: white;
+    height: 28px;
+    background-color: transparent;
+}
