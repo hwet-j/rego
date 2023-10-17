@@ -193,6 +193,7 @@ public class PlannerController {
         model.addAttribute("startDate" , plannerDTO.getStartDate());
 
         model.addAttribute("endDate" , plannerDTO.getEndDate());
+        model.addAttribute("userEmail" , plannerDTO.getUserEmail());
 
         return "plan/planPreview";
     }
