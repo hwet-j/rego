@@ -371,7 +371,7 @@
                                         offset: "100%" // 화살표 위치 (끝)
                                     }
                                 ],
-                                strokeColor: "#002aff", // 선의 색상
+                                strokeColor: "#673AB7", // 선의 색상
                                 strokeOpacity: 1.0,     // 선의 불투명도 (0.0 - 1.0)
                                 strokeWeight: 2,        // 선의 두께
                                 map: map
@@ -392,7 +392,7 @@
                             var lineSymbol = {
                                 path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW, // 화살표 모양
                                 scale: 3, // 화살표 크기
-                                strokeColor: "#9900ff" // 화살표의 색상
+                                strokeColor: "#673AB7" // 화살표의 색상
                             };
 
 
@@ -405,7 +405,7 @@
                                         offset: "100%" // 화살표 위치 (끝)
                                     }
                                 ],
-                                strokeColor: "#002aff", // 선의 색상
+                                strokeColor: "#673AB7", // 선의 색상
                                 strokeOpacity: 1.0,     // 선의 불투명도 (0.0 - 1.0)
                                 strokeWeight: 2,        // 선의 두께
                                 map: map
@@ -584,8 +584,11 @@ padding:15px
         </div>
         <div  class="button-edit" onclick="location.href='/login'"style="text-align:center; cursor:pointer;" th:unless="${#authorization.expression('isAuthenticated()')}"><br>로그인 하러가기<br></div>
     </div>
-    <div class="hidden" style="overflow: auto; max-height: 900px;">
-<div id="container" ></div>
+    <div class="hidden" style="overflow: auto; max-height: 880px;">
+        <div id="container-before"></div>
+        <div id="container" ></div>
+        <div id="container-after"></div>
+
     </div>
 </div>
 <script>
@@ -797,6 +800,96 @@ function createDayContainer(dayText, dayData) {
            container.appendChild(dateContainer);
 
    }
+</script>
+<script>
+    // 여행 전 계획과 여행 후 계획을 저장할 배열
+    const beforePlan = [];
+    const afterPlan = [];
+
+    // 여행 전 계획과 여행 후 계획을 분리
+    previewList.forEach(function (preview) {
+        const startTime = new Date(preview.startTime);
+        const endTime = new Date(preview.endTime);
+        startTime.setHours(startTime.getHours() + 9); // 9시간 추가
+        endTime.setMinutes(endTime.getMinutes() + 539);
+        const previewDetailId = preview.detailPlanId;
+
+        // 시작 시간을 기준으로 여행 전 계획과 여행 후 계획을 구분
+        if (startTime < startDate) {
+            beforePlan.push({
+                image: preview.image,
+                startTime: new Date(startTime),
+                endTime: new Date(endTime),
+                previewDetailId: previewDetailId,
+            });
+        } else if (startTime > endDate) {
+            afterPlan.push({
+                image: preview.image,
+                startTime: new Date(startTime),
+                endTime: new Date(endTime),
+                previewDetailId: previewDetailId,
+            });
+        }
+    });
+
+    // 여행 전 계획 표시
+    const containerBefore = document.getElementById('container-before');
+    displayPlan(containerBefore, beforePlan, '여행 전 계획');
+
+    // 여행 후 계획 표시
+    const containerAfter = document.getElementById('container-after');
+    displayPlan(containerAfter, afterPlan, '여행 후 계획');
+
+    function displayPlan(container, plan, title) {
+        if (plan.length > 0) {
+            const dayText = title;
+            createDayContainer(dayText, plan, container);
+        }
+    }
+
+    function createDayContainer(dayText, dayData, container) {
+        const dateContainer = document.createElement('div');
+        dateContainer.className = 'date-container';
+
+        const dateElement = document.createElement('div');
+        dateElement.className = 'date-text';
+        dateElement.textContent = dayText;
+        dateContainer.appendChild(dateElement);
+
+        dayData.forEach(function (data) {
+            const imageElement = document.createElement('img');
+            imageElement.src = data.image;
+            imageElement.className = 'rounded-image';
+            imageElement.width = 55;
+            imageElement.height = 55;
+            imageElement.style.borderRadius = '50%';
+            imageElement.style.cursor = 'pointer';
+            imageElement.style.display = 'inline-block'; // 이미지를 가로로 나열
+            imageElement.style.marginRight = '10px'; // 이미지 간 간격을 조절
+
+            dateContainer.appendChild(imageElement);
+
+            var previewAlert = detailData.find(function (preAlert) {
+                return preAlert.id == data.previewDetailId;
+            });
+
+            // 이 부분에 imageElement 클릭 이벤트를 추가합니다
+            imageElement.addEventListener('click', () => {
+                Swal.fire({
+                    title: `${previewAlert.name}`,
+                    imageUrl: `${previewAlert.imageUrl}`,
+                    text: `${previewAlert.title}`,
+                    imageWidth: 1000,
+                    imageHeight: 600,
+                    customClass: {
+                        popup: 'custom-modal-width',
+                    },
+                });
+            });
+        });
+
+        container.appendChild(dateContainer);
+    }
 </script>
 
 
