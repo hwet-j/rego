@@ -204,11 +204,11 @@
 
                     const marker = new google.maps.Marker({
                         position: { lat, lng },
-                        label:'-',
+                        label:'',
                         map,
                         icon: {
-                            url:'https://github.com/hwet-j/hwet-j.github.io/assets/81364742/8e20af8c-7f20-4d3e-a850-7056800236ad',
-                            scaledSize: new google.maps.Size(40, 40),
+                            url:'https://github.com/hwet-j/rego/assets/125880480/e33d6030-659a-4a3e-8731-ac0fa691761e',
+                            scaledSize: new google.maps.Size(25, 40),
                         },
                         zIndex:1000,
                     });
@@ -358,7 +358,7 @@
                             var lineSymbol = {
                                 path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW, // 화살표 모양
                                 scale: 3,               // 화살표 크기
-                                strokeColor: "#9900ff" // 화살표의 색상
+                                strokeColor: "#673AB7" // 화살표의 색상
                             };
 
 
@@ -556,7 +556,12 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-
+a,a:link{
+text-decoration:none;
+color:black;}
+.button-edit{
+padding:15px
+}
     </style>
 </head>
 <body>
@@ -571,12 +576,15 @@
 
 
 <div id="map"></div>
-
 <div id="other-content">
-    <div>
-        루트수정
+    <div style="height:50px; background-color:green;" >
+        <div style="text-align:center;" th:if="${#authorization.expression('isAuthenticated()')}">
+        <a th:href="@{/plan/detail(planId=${planID})}"><div class="button-edit" style="padding:15px" th:if="${#strings.toLowerCase(#authentication.principal.username) eq #strings.toLowerCase(userEmail)}">루트수정</div></a>
+            <a th:href="@{/plan/Preview(planId=${planID})}"><div class="button-edit"  th:unless="${#strings.toLowerCase(#authentication.principal.username) eq #strings.toLowerCase(userEmail)}">이 플랜으로 시작하기</div></a>
+        </div>
+        <div  class="button-edit" onclick="location.href='/login'"style="text-align:center; cursor:pointer;" th:unless="${#authorization.expression('isAuthenticated()')}"><br>로그인 하러가기<br></div>
     </div>
-    <div style="overflow: auto; max-height: 900px;">
+    <div class="hidden" style="overflow: auto; max-height: 900px;">
 <div id="container" ></div>
     </div>
 </div>
@@ -710,26 +718,44 @@
 
    const container = document.getElementById('container');
 
-   for (const date in groupedData) {
-       if (groupedData.hasOwnProperty(date)) {
-        let previousCityName = ''; // 이전 도시 이름 저장
-           const dateContainer = document.createElement('div');
-           dateContainer.className = 'date-container';
+for (const date in groupedData) {
+    if (groupedData.hasOwnProperty(date)) {
+        const uniqueCities = [...new Set(groupedData[date].data.map(data => data.cityName))]; // 중복된 도시를 제거
 
-           const dateElement = document.createElement('div');
-           dateElement.className = 'date-text';
-           dateContainer.appendChild(dateElement);
+        if (uniqueCities.length > 1) {
+            // 같은 날에 2개 이상의 도시를 방문한 경우
+            const cityText = uniqueCities.join(','); // 도시 이름들을 쉼표로 연결
+            const dayText = `${groupedData[date].label}일차 - ${cityText} - ${date}`;
+            createDayContainer(dayText, groupedData[date].data);
+        } else {
+            // 같은 날에 1개의 도시만 방문한 경우
+            const cityText = uniqueCities[0];
+            const dayText = `${groupedData[date].label}일차 - ${cityText} - ${date}`;
+            createDayContainer(dayText, groupedData[date].data);
+        }
+    }
+}
+
+function createDayContainer(dayText, dayData) {
+    let previousCityName = ''; // 이전 도시 이름 저장
+    const dateContainer = document.createElement('div');
+    dateContainer.className = 'date-container';
+
+    const dateElement = document.createElement('div');
+    dateElement.className = 'date-text';
+    dateElement.textContent = dayText;
+    dateContainer.appendChild(dateElement);
 
 
 
-           groupedData[date].data.forEach(function (data) {
-               if (data.cityName !== previousCityName) {
-                   const cityNameElement = document.createElement('div');
-                   dateContainer.appendChild(cityNameElement);
 
-                   previousCityName = data.cityName; // 이전 도시 이름 업데이트
-                   dateElement.textContent = `${groupedData[date].label}일차 - ${previousCityName} - ${date} `;
-               }
+    dayData.forEach(function (data) {
+        if (data.cityName !== previousCityName) {
+            const cityNameElement = document.createElement('div');
+            dateContainer.appendChild(cityNameElement);
+
+            previousCityName = data.cityName; // 이전 도시 이름 업데이트
+        }
 
                const imageElement = document.createElement('img');
                imageElement.src = data.image;
@@ -738,6 +764,9 @@
                imageElement.height = 55;
                imageElement.style.borderRadius = '50%';
                imageElement.style.cursor = 'pointer';
+               imageElement.style.display = 'inline-block'; // 이미지를 가로로 나열
+               imageElement.style.marginRight = '10px'; // 이미지 간 간격을 조절
+
                dateContainer.appendChild(imageElement);
 
                 var previewAlert= detailData.find(function(preAlert){
@@ -766,7 +795,7 @@
            });
 
            container.appendChild(dateContainer);
-       }
+
    }
 </script>
 
