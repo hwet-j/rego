@@ -58,9 +58,14 @@ public class Planner {
 
     private String imagePath;
 
+    @Column( nullable = false, columnDefinition = "TINYINT(1) DEFAULT 0")
+    private int isWritten;
+
     @OneToMany(mappedBy = "detailPlanId", cascade = CascadeType.REMOVE)
     private List<PlannerDetail> detailPlans;
 
     @OneToMany(mappedBy = "plan", cascade = CascadeType.REMOVE)
     private List<LikePlan> likePlans;
+
+
 }
