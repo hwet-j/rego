@@ -99,7 +99,9 @@ public class PlannerServiceImpl implements PlannerService {
 
 
         Planner planner = plannerMapper.dtoToEntity(dto, userRepository);
+
         Planner savedPlanner = plannerRepository.save(planner);
+
         return savedPlanner.getPlanId();
     }
 

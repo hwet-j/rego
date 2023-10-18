@@ -111,6 +111,9 @@ h1.box {
 
 }
 
+.search-title{
+    position:relative;
+}
 
 /* 검색 유형 스타일 */
 .search-title select {
@@ -194,12 +197,21 @@ p {
     font-family: "Noto Sans KR", sans-serif;
     font-size: 12px;
     position: absolute;
-    top: 35px;
-    right: 85px;
+    top: 50px;
+    right: 80px;
     color:red;
  /*   margin-left: 378px;
     margin-top: -32px;*/
 
+}
+
+.select-error{
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 12px;
+    position: absolute;
+    top: 15px;
+    right: 90px;
+    color:red;
 }
 
 .btn-container{
