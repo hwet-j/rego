@@ -30,7 +30,6 @@ import java.time.LocalDateTime;
 public class PlannerDetail {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer detailPlanId;
 
     @ManyToOne
@@ -49,15 +48,6 @@ public class PlannerDetail {
 
     @Column(nullable = false)
     private LocalDateTime endTime;
-
-    private Integer price;
-
-    private String airlineImg;
-    private String airlineName;
-    private String departureTime;
-    private String departureAirport;
-    private String arrivalTime;
-    private String arrivalAirport;
 
     @ManyToOne
     @JoinColumn(name = "touristAttraction", referencedColumnName = "touristAttractionId")

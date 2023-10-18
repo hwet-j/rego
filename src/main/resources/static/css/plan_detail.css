@@ -79,7 +79,15 @@ body {
 
 /* SweetAlert창 크기 */
 .custom-modal-width {
-    width: 1000px;
+    width: 720px;
+}
+.custom-modal-width2{
+    width: 720px;
+}
+
+.modal-image{
+    width:580px;
+    height:450px;
 }
 
 #external-events{
@@ -205,9 +213,46 @@ body {
     background-color: #2B3D4F;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 10px;
     cursor: pointer;
     border-radius: 5px;
     height: 39px;
 }
 
+.start-end-date{
+    position: absolute;
+    bottom: 23px;
+    right: 75px;
+    background-color: #ba4bce;
+    font-size:13px;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    height: 38px;
+    padding-right:60px;
+}
+
+.preview-button{
+    position: absolute;
+    top: 15px;
+    right: 26px;
+    background-color: #ba4bce;
+    font-size:13px;
+    color: white;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    height: 30px;
+    width: 30px;
+}
+
+#modifyButton{
+    position: absolute;
+    bottom: 15px;
+    right: 8px;
+    font-size:13px;
+    color: white;
+    height: 28px;
+    background-color: transparent;
+}

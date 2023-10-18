@@ -25,7 +25,4 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	long countByEmail(String email);
 	// SELECT * FROM user WHERE provider = ?1 and providerId = ?2
 	Optional<User> findByProviderAndProviderId(String provider, String providerId);
-
-
-
 }

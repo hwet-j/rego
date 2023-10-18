@@ -18,16 +18,16 @@ public class PlannerDTO {
     @NotBlank(message = "주제를 작성해주세요.")
     private String content;
 
-    @NotNull
+    @NotNull(message = "시작일을 선택해주세요.")
     private LocalDate startDate;
 
-    @NotNull
+    @NotNull(message = "종료일을 선택해주세요.")
     private LocalDate endDate;
 
     @Min(1)
     private int numberOfPeople;
 
-    @NotBlank
+    @NotBlank(message = "유형이 선택되지않았습니다.")
     private String type;
 
     private String imagePath;

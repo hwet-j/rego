@@ -60,24 +60,6 @@ public class UserService {
         }
     }
 
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new DataNotFoundException("사용자 정보를 찾을 수 없습니다."));
-    }
-
-
-
-    public User updateUser(User user) {
-        if (user.getUserId() == null) {
-            throw new IllegalArgumentException("User ID must be provided to update a user.");
-        }
-
-        if (!userRepository.existsById(user.getUserId())) {
-            throw new DataNotFoundException("User with ID " + user.getUserId() + " not found.");
-        }
-
-        return userRepository.save(user);
-    }
-
 
 
 }

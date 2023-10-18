@@ -3,12 +3,9 @@ package com.clipclap.rego.service;
 import com.clipclap.rego.mapper.PlannerMapper;
 import com.clipclap.rego.model.dto.PlannerDTO;
 import com.clipclap.rego.model.entitiy.Planner;
-import com.clipclap.rego.model.entitiy.PlannerDetail;
-import com.clipclap.rego.model.entitiy.User;
 import com.clipclap.rego.repository.DetailPlanRepository;
 import com.clipclap.rego.repository.PlannerRepository;
 import com.clipclap.rego.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +49,7 @@ public class PlannerServiceImpl implements PlannerService {
         Optional<Planner> plannerOptional = plannerRepository.findById(planId);
 
         if (plannerOptional.isPresent()){
-            PlannerDTO dto = PlannerMapper.entityToDto(plannerOptional.get());
+            PlannerDTO dto = plannerMapper.entityToDto(plannerOptional.get());
 
             return dto;
         }
@@ -100,52 +97,17 @@ public class PlannerServiceImpl implements PlannerService {
             dto.setImagePath("https://github.com/hwet-j/hwet-j.github.io/assets/81364742/7c38de8f-adc9-46a0-8d81-288b610cde87");
         }
 
-        Planner planner = PlannerMapper.dtoToEntity(dto, userRepository);
 
+        Planner planner = plannerMapper.dtoToEntity(dto, userRepository);
         Planner savedPlanner = plannerRepository.save(planner);
-
         return savedPlanner.getPlanId();
     }
 
-    @Override
-    public Planner copyPlanner(Integer sourcePlanId, String userEmail) {
-        Planner sourcePlanner = plannerRepository.findById(sourcePlanId).orElse(null);
-        if (sourcePlanner == null) {
-            throw new EntityNotFoundException("Planner not found");
-        }
 
-        Optional<User> optionalUser = userRepository.findByEmail(userEmail);
-        if (!optionalUser.isPresent()) {
-            throw new EntityNotFoundException("User not found");
-        }
-        User user=optionalUser.get();
+}
 
-        Planner newPlanner = new Planner();
-        newPlanner.setUser(user);
-        newPlanner.setContent(sourcePlanner.getContent());
-        newPlanner.setStartDate(sourcePlanner.getStartDate());
-        newPlanner.setEndDate(sourcePlanner.getEndDate());
-        newPlanner.setNumberOfPeople(sourcePlanner.getNumberOfPeople());
-        newPlanner.setType(sourcePlanner.getType());
-        newPlanner.setImagePath(sourcePlanner.getImagePath());
 
-        plannerRepository.save(newPlanner);
 
-        List<PlannerDetail> sourceDetailPlans = detailPlanRepository.findByPlan(sourcePlanner);
 
-        for (PlannerDetail sourceDetailPlan : sourceDetailPlans) {
-            PlannerDetail newDetailPlan = new PlannerDetail();
-            newDetailPlan.setPlan(newPlanner);
-            newDetailPlan.setContent(sourceDetailPlan.getContent());
-            newDetailPlan.setStartTime(sourceDetailPlan.getStartTime());
-            newDetailPlan.setAllday(sourceDetailPlan.isAllday());
-            newDetailPlan.setEndTime(sourceDetailPlan.getEndTime());
-            newDetailPlan.setTouristAttraction(sourceDetailPlan.getTouristAttraction());
 
-            detailPlanRepository.save(newDetailPlan);
-        }
 
-        return newPlanner;
-    }
-
-    }

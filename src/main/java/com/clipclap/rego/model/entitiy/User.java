@@ -1,6 +1,5 @@
 package com.clipclap.rego.model.entitiy;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -65,11 +64,14 @@ public class User {
 
 	private String userprofile;
 
-	@JsonBackReference
+	public boolean checkPassword(String plainPassword, PasswordEncoder passwordEncoder) {
+		return passwordEncoder.matches(plainPassword, this.password);
+	}
+
+
 	@OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
 	private List<Answer> answers;
 
-	@JsonBackReference
 	@OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
 	private List<Question> questions;
 
@@ -81,10 +83,6 @@ public class User {
 
 	@OneToMany(mappedBy = "planId", cascade = CascadeType.REMOVE)
 	private List<Planner> planners;
-
-	public boolean checkPassword(String plainPassword, PasswordEncoder passwordEncoder) {
-		return passwordEncoder.matches(plainPassword, this.password);
-	}
 
 
 

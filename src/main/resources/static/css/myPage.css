@@ -79,7 +79,7 @@ body {
 
 .top-box {
 
-    width: 1250px;
+    width: 1155px;
     height: 375px;
 }
 
@@ -96,7 +96,7 @@ body {
     flex-direction: column;  /* 자식 요소들을 세로 방향으로 배열합니다. */
     align-items: center;     /* 자식 요소들을 가로 방향으로 중앙에 배치합니다. */
     justify-content: center; /* 자식 요소들을 세로 방향으로 중앙에 배치합니다. */
-    border: 1px solid #E0E0E0;
+    border: 1px solid lightgrey;
     border-radius : 15px;
     text-align: center;
     width: 250px;
@@ -124,61 +124,35 @@ body {
 
 .modify-btn {
     background-color: white; /* 배경색 */
+    color: lightgrey; /* 글자색 */
     border: 1px solid lightgrey; /* 테두리 제거 */
-    padding: 0px 12px; /* 패딩 (버튼 내부의 여백) */
+    padding: 7px 15px; /* 패딩 (버튼 내부의 여백) */
     font-size: 12px; /* 글자 크기 */
     border-radius: 10px; /* 모서리 둥글게 */
     cursor: pointer; /* 마우스 오버 시에 손가락 모양으로 변경 */
     transition: background-color 0.3s; /* 배경색 변경 효과 시간 */
     margin-top: 10px;
-    height: 30px;
 }
-
-.modify-btn p {
-    margin-top: 7px;
-    color: lightgrey;
-}
-
 
 .modify-btn:hover {
     background-color: lightgrey; /* 마우스 오버 시에 배경색 */
-}
-
-.modify-btn:hover p{
     color: white;
 }
 
-
-.vertical-line {
-    background-color: #E0E0E0;
-    width:1px;
-    height: 600px;
-    opacity: 0.7;
-    margin-left: 275px;
-    margin-top: 65px;
-}
-.vertical-line2 {
-    background-color: #E0E0E0;
-    width:1px;
-    height: 600px;
-    opacity: 0.7;
-    margin-left: 975px;
-    margin-top: -600px;
-}
 
 
 .reservation-box {
     float: left;
 /*    border: 1px solid red;*/
-    width: 650px;
+    width: 850px;
     height: 250px;
     margin-left: 50px;
 }
 
 .reservation {
-    width: 650px;
+    width: 850px;
     height: 200px;
-    border: 1px solid #E0E0E0;
+    border: 1px solid lightgrey;
     border-radius: 15px;
 }
 
@@ -189,49 +163,35 @@ body {
     height: 375px;
 }
 
-.myQuestion-box {
+.myPlan-box {
     clear: both; /* 둘 다 (왼쪽과 오른쪽) 떠있는 요소 아래에 배치 */
     float: left;
     height: 345px;
     width: 250px;
-    margin-top: -330px;
 /*    border: 1px solid red;*/
 }
 
-.myQuestion {
+.myPlan {
     height: 290px;
     width: 250px;
-    border: 1px solid #E0E0E0;
+    border: 1px solid lightgrey;
     border-radius: 15px;
 }
 
 .like-box {
-    margin-top: -430px;
+    margin-top: -100px;
     float: left;
    /* border: 1px solid red;*/
-    width: 650px;
+    width: 850px;
     height: 445px;
     margin-left: 50px;
 }
 
 .likeList {
-    width: 650px;
+    width: 850px;
     height: 390px;
-    border: 1px solid #E0E0E0;
+    border: 1px solid lightgrey;
     border-radius: 15px;
 }
 
-.myPlan-box {
-    position: relative;
-    float: left;
-     width: 250px;
-     height: 680px;
-     margin-left: 50px;
-}
 
-.myPlan {
-    border: 1px solid #E0E0E0;
-    border-radius: 15px;
-    width: 250px;
-        height: 640px;
-}

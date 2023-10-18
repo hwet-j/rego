@@ -70,8 +70,6 @@ public class DetailPlanServiceImpl implements DetailPlanService {
             return dtoList;
             }
 
-
-
     @Override
     public DetailPlanDTO findById(Integer id) {
         Optional<PlannerDetail> optionalPlannerDetail =  detailPlanRepository.findById(id);
@@ -92,6 +90,9 @@ public class DetailPlanServiceImpl implements DetailPlanService {
             return id;
         }
     }
+
+
+
 
 
 
