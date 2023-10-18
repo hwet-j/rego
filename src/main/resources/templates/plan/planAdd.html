@@ -16,58 +16,8 @@
     <!-- XEIcon 폰트 불러오기 -->
     <link href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css" rel="stylesheet">
 
-
-
-
 </head>
-
 <body>
-<script>
-    $(document).ready(function () {
-        $("#planForm").submit(function (event) {
-            event.preventDefault(); // 기본 제출 동작 방지
-
-            var formData = new FormData(this); // 현재 폼 데이터 가져오기
-
-            $.ajax({
-                type: "POST",
-                url: "/plan/ajaxValid",
-                data: formData,
-                processData: false, // 중요: 데이터를 처리하지 않도록 설정
-                contentType: false, // 중요: 컨텐츠 유형을 false로 설정
-                success: function (data) {
-                    console.log(data); // 응답 데이터 확인
-                    if (data.isValid) {
-                        // 유효성 검사 통과 시 페이지 이동 또는 다른 동작 수행
-                        window.location.href = "/plan/detail?planId=" + data.planId;
-                    } else {
-                        // 유효성 검사 오류 메시지 표시
-                        displayErrorMessages(data.fieldErrors);
-                        console.log(data.fieldErrors);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error(error); // 오류 메시지 확인
-                }
-            });
-        });
-    });
-
-
-    function displayErrorMessages(fieldErrors) {
-        $(".error").text("");
-
-        for (var fieldName in fieldErrors) {
-            var errorMessage = fieldErrors[fieldName];
-            var errorContainer = $("#" + fieldName + "Error");
-            console.log(errorMessage);
-            console.log(fieldName);
-            errorContainer.text(errorMessage);
-        }
-    }
-
-</script>
-
 
     <div class="background"></div>
     <div class="background2"></div>
@@ -116,11 +66,11 @@
     <div class="left-side">
         <div class="bbox">
             <h1 class="box">계획 생성하기</h1>
-            <form data-aos="fade" id="planForm" method="post" action="/plan/ajaxValid">
+            <form data-aos="fade" id="planForm" method="post" th:action="@{/plan/addValid}" th:object="${plannerDTO}">
                 <div class="label-box">
                     <label class="input-label" for="search-type">검색 유형</label>
                     <div class="search-title">
-                        <select class="form-control" id="search-type" name="type">
+                        <select class="form-control" id="search-type" name="category" th:field="*{type}">
                             <option value="">미선택</option>
                             <option value="자유">자유</option>
                             <option value="힐링">힐링</option>
@@ -128,52 +78,57 @@
                             <option value="쇼핑">쇼핑</option>
                             <option value="식도락">식도락</option>
                         </select>
-                        <div class="error select-error" id="typeError"></div>
+
                     </div>
                 </div>
 
                 <div class="inquiry-con">
-                    <input class="input-content" readonly id="userEmail" name="userEmail" type="hidden" th:value="${#strings.toLowerCase(#authentication.principal.username)}" th:readonly="readonly">
+
+                    <input class="input-content" readonly th:field="*{userEmail}" type="hidden">
 
                     <div class="label-box" style="position: relative;">
                         <label class="input-label">여행제목</label>
-                        <div class="title" for="content"></div>
-                        <div class="input-container">
-                            <input class="input-content" id="content" name="content" type="text">
-                        </div>
-                        <div class="error" id="contentError"></div>
+                            <div class="title" for="content"></div>
+                            <div class="input-container">
+                                <input class="input-content"
+                                       th:field="*{content}"
+                                       type="text">
+                            </div>
+                            <div th:errors="*{content}" class="error" th:if="${#fields.hasErrors('content')}"></div>
                     </div>
+
 
                     <div class="label-box" style="position: relative;">
                         <label class="input-label">여행 시작일</label>
-                        <input class="input-content" id="startDate" name="startDate" type="date">
-                        <div class="error" id="startDateError"></div>
+                            <input class="input-content" th:field="*{startDate}" type="date">
+                            <div th:errors="*{startDate}" class="error"
+                                 th:if="${#fields.hasErrors('startDate')}"></div>
                     </div>
 
                     <div class="label-box" style="position: relative;">
                         <label class="input-label">여행 종료일</label>
-                        <input class="input-content" id="endDate" name="endDate" type="date">
-                        <div class="error" id="endDateError"></div>
-                        <div class="error" id="endDateAfterStartDateError"></div>
+                            <input class="input-content" th:field="*{endDate}" type="date">
+                            <div th:errors="*{endDate}"
+                                 th:if="${#fields.hasErrors('endDate')}" class="error"></div>
                     </div>
 
                     <div class="label-box" style="position: relative;">
                         <label class="input-label">여행 인원</label>
-                        <div class="title" for="numberOfPeople"></div>
-                        <input class="input-content" id="numberOfPeople"  value="1" name="numberOfPeople" type="number">
-                        <div class="error" id="numberOfPeopleError"></div>
+                            <div class="title" for="numberOfPeople"></div>
+                            <input class="input-content" th:field="*{numberOfPeople}" type="number">
+                            <div  th:errors="*{numberOfPeople}" class="error"
+                                 th:if="${#fields.hasErrors('numberOfPeople')}"></div>
                     </div>
 
-<!--                    <span th:if="${#fields.hasErrors('endDateAfterStartDate')}" th:errors="*{endDateAfterStartDate}"></span>-->
+                    <span th:if="${#fields.hasErrors('endDateAfterStartDate')}" th:errors="*{endDateAfterStartDate}"></span>
 
                     <div class="label-box">
                         <span class="btn-container">
-                            <button class="btn" type="submit" id="submitBtn">작성완료</button>
+                            <input class="btn" name="submit" type="submit" value="작성완료">
                         </span>
                     </div>
                 </div>
             </form>
-
         </div>
     </div>
 
@@ -186,9 +141,8 @@
         <!-- 크기 조절을 위해 테스트 -->
         <div th:if="${flightInfo == null}">
             <img class="right-side-image" src="/img/side.png">
-            <div class="start-btn"><a class="start-plan-btn" th:href="@{/}">항공 예약하고 오기</a></div>
         </div>
-        <div th:unless="${flightInfo == null}" class="">
+        <div th:if="${flightInfo != null}" class="">
             <div class="flightPriceBox" >
                 <div class="flightPriceRoute" th:text="|${flightInfo.routes[0].departureAirport} &#x2192; ${flightInfo.routes[0].arrivalAirport}|"></div>
                     <div class="flight-box-wrapper">

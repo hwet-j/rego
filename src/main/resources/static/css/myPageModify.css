@@ -1,0 +1,287 @@
+body {
+    margin:0;
+    padding:0;
+     display: flex;
+        flex-direction: column;  /* 자식 요소들을 세로 방향으로 배열합니다. */
+        align-items: center;     /* 자식 요소들을 가로 방향으로 중앙에 배치합니다. */
+        justify-content: center;
+}
+
+.background {
+    background-color:#1b4995;
+    opacity:0.5;
+    width:100%;
+    height:100%;
+    position:absolute;
+    z-index:-998;
+
+}
+
+.background2 {
+    width:100%;
+    height:100%;
+    position:absolute;
+    z-index:-999;
+    background-image: url('/img/bg1.png');
+     background-repeat: no-repeat;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    width: 1660px;
+    height:720px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    z-index: 100;
+    border-radius: 0 0 20px 20px ;
+
+
+}
+
+
+.content {
+margin-top: 30px;
+}
+
+
+
+
+
+    a {
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
+
+        a:link, a:visited, a:hover, a:active, a:focus {
+        color: inherit; /* 상속받은 색상을 사용합니다. */
+        outline: none; /* 클릭 시에 표시되는 외곽선 제거 */
+    }
+
+.nav {
+
+    padding-bottom: 15px;
+    background-color: white;
+    width: 1700px;
+    height: 80px;
+    text-align: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    position:relative;
+    z-index: 999;
+}
+
+
+/*내정보칸*/
+.info {
+    float: left;
+    width: 250px;
+    height: 350px;
+/*    border: 1px solid red;*/
+}
+.info-box {
+    margin-top: 50px;
+
+}
+
+.myInfo {
+    display: flex;
+    flex-direction: column;  /* 자식 요소들을 세로 방향으로 배열합니다. */
+    align-items: center;     /* 자식 요소들을 가로 방향으로 중앙에 배치합니다. */
+    justify-content: center; /* 자식 요소들을 세로 방향으로 중앙에 배치합니다. */
+    border: 1px solid #E0E0E0;
+    border-radius : 15px;
+    text-align: center;
+    width: 310px;
+    height: 320px;
+    margin-top: 5px;
+}
+
+.profileImage {
+    margin-top: 20px;
+    width: 220px;
+    height: 220px;
+}
+.profileImage img {
+    border-radius: 120px;
+    margin: 0 auto;
+    width: 220px;
+    height: 220px;
+    margin-top: -20px;
+}
+
+
+
+.modify-btn {
+     background-color: white;
+     border: 1px solid lightgrey;
+     padding: 1px 12px;
+     font-size: 12px;
+     border-radius: 10px;
+     cursor: pointer;
+     transition: background-color 0.3s;
+     margin-top: -32px;
+     margin-left: 90px;
+     height: 32px;
+}
+
+.modify-btn p {
+    margin-top: 5px;
+    color: lightgrey;
+}
+
+
+.modify-btn:hover {
+    background-color: lightgrey; /* 마우스 오버 시에 배경색 */
+}
+
+.modify-btn:hover p{
+    color: white;
+}
+
+
+.left-side {
+    float: left;
+
+    width: 310px;
+    height: 650px;
+}
+
+.center {
+    float: left;
+    background-color: #E0E0E0;
+    width: 1px;
+    height: 490px;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top : 85px;
+    opacity: 0.7;
+}
+
+.right-side {
+    float: left;
+    width: 350px;
+    height: 650px;
+    margin-top: 30px;
+    flex-direction: column;  /* 자식 요소들을 세로 방향으로 배열합니다. */
+    align-items: center;     /* 자식 요소들을 가로 방향으로 중앙에 배치합니다. */
+    justify-content: center; /* 자식 요소들을 세로 방향으로 중앙에 배치합니다. */
+}
+
+input {
+    width: 350px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid #E0E0E0;
+    font-family: 'Roboto', sans-serif;
+     text-indent: 10px;
+}
+
+
+input:focus {
+    outline: none;  // 기본 outline 스타일 제거
+}
+
+h5 {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    margin-left: 3px;
+    color: #333333;
+}
+
+.email {
+    background-color: #E0E0E0;
+}
+
+.birth {
+    background-color: #E0E0E0;
+}
+
+
+
+
+
+.modify-btn2 {
+    background-color: white;
+    border: 2px solid #a8d1ff;
+    font-size: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 109px;
+    height: 40px;
+    width: 90px;
+    color: #a8d1ff;
+    padding-right: 15px;
+    font-weight: bolder;
+    float:right;
+}
+
+.modify-btn2:hover {
+    background-color: #a8d1ff; /* 마우스 오버 시에 배경색 */
+    color: white;
+}
+
+.confirm {
+    float: left;
+    color:grey;
+    font-size: 10px;
+    font-family: 'Noto sans KR', sans-serif;
+}
+
+
+.file-upload-wrapper {
+    position: relative;
+}
+
+.file-upload-wrapper input[type="file"] {
+    display: none;  /* 기존 파일 선택 버튼 숨기기 */
+}
+
+.file-upload-wrapper label {
+    background-color: white;
+        color: lightgrey;
+        border: 1px solid lightgrey;
+        padding: 0px 12px;
+        float: left;
+        font-size: 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 0px;
+        margin-left: -80px;
+        height: 30px;
+        line-height: 2.4;
+}
+
+.file-upload-wrapper label:hover {
+    background-color: lightgrey;  /* 마우스 오버시 배경색 */
+    color: white;
+}
+.pp {
+    margin-top: 10px;
+}
+
+.previewImageWrapper {
+       border: 1px solid #E0E0E0;
+       width: 310px;
+       height: 180px;
+       border-radius: 15px;
+       margin-top: 10px;
+       text-align: center;
+       line-height: 9;
+       font-family: 'Noto sans KR', sans-serif;
+       color: lightgrey;
+}
+
+
+.previewImageWrapper img {
+    width: 150px;
+    height: 150px;
+    margin-left: 80px;
+    margin-top: 15px;
+
+}

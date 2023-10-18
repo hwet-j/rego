@@ -67,7 +67,7 @@
                         </div>
 
                         <div class="nickname" th:text="${userInfo.nickname}"></div>
-                        <input type="submit" value="회원정보 수정" class="modify-btn">
+                        <a type="submit" class="modify-btn" th:href="@{/myPageModify}"><p>회원정보 수정</p></a>
                     </div>
 
                     <!--<div class="email" th:text="${userInfo.email}"></div>-->
@@ -84,11 +84,20 @@
                 </div>
             </div>
 
-
             <div class="myPlan-box">
                 <h4 style="font-family: 'Noto sans KR', sans-serif; font-weight:400; margin-bottom:10px; margin-top: 10px; margin-left: 5px;">
-                    내 플랜</h4>
+                    내 여행계획</h4>
                 <div class="myPlan">
+
+
+                </div>
+            </div>
+
+
+            <div class="myQuestion-box">
+                <h4 style="font-family: 'Noto sans KR', sans-serif; font-weight:400; margin-bottom:10px; margin-top: 10px; margin-left: 5px;">
+                    내 문의 내역</h4>
+                <div class="myQuestion">
 
 
                 </div>
@@ -103,6 +112,10 @@
 
                 </div>
             </div>
+
+
+            <div class="vertical-line"></div>
+            <div class="vertical-line2"></div>
         </div>
 
     </div>

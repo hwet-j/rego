@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>로그인 페이지</title>
     <link href="/css/login.css" rel="stylesheet" type="text/css"/>
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
 
@@ -231,6 +231,18 @@
             }
         });
 
+
+
+
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('passwordChanged') === 'true') {
+          swal("비밀번호 변경", "비밀번호가 성공적으로 수정되었습니다.\n다시 로그인해주세요.", "success");
+      }
+  });
 </script>
 </body>
 </html>

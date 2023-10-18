@@ -5,7 +5,7 @@ import com.clipclap.rego.model.dto.DetailPlanDTO;
 import com.clipclap.rego.model.dto.FlightInfo;
 import com.clipclap.rego.model.dto.PlannerDTO;
 import com.clipclap.rego.model.dto.TouristAttractionDTO;
-import com.clipclap.rego.repository.PlannerRepository;
+import com.clipclap.rego.repository.DetailPlanRepository;
 import com.clipclap.rego.repository.TouristAttractionRepository;
 import com.clipclap.rego.service.DetailPlanService;
 import com.clipclap.rego.service.PlannerService;
@@ -14,12 +14,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -43,15 +42,17 @@ public class PlannerController {
     private final TouristAttractionService touristAttractionService;
     private final TouristAttractionRepository touristAttractionRepository;
     private final ObjectMapper objectMapper;
-    private final PlannerRepository plannerRepository;
+    private final DetailPlanRepository detailPlanRepository;
     private final DetailPlanService detailPlanService;
     private final PlannerService plannerService;
 
     @GetMapping("/list")
+    @PreAuthorize("isAuthenticated()")
     public String myPlanList(Model model , PlannerDTO plannerDTO ) {
 
         List<PlannerDTO> planList = plannerService.findByAllId();
 
+        System.out.println(planList);
         model.addAttribute("planList", planList);
 
         return "plan/planList";
@@ -74,17 +75,20 @@ public class PlannerController {
         return "plan/planList";
     }*/
 
-    /* 항공권을 통하지 않고 일반 계획 생성폼 요청 */
     @GetMapping("/add")
     @PreAuthorize("isAuthenticated()")
     public String planAddForm(Model model, Principal principal,
                               PlannerDTO plannerDTO,
                               BindingResult bindingResult) {
 
+        if (principal != null){
+            System.out.println(principal.getName());
+            plannerDTO.setUserEmail(principal.getName());
+        }
+
         return "/plan/planAdd";
     }
 
-    /* 항공권 정보를 가지고 계획 생성폼 요청 */
     @PostMapping("/add")
     @PreAuthorize("isAuthenticated()")
     public String myPlanAdd(Model model, Principal principal,
@@ -98,50 +102,28 @@ public class PlannerController {
         return "plan/planAdd";
     }
 
-    @PostMapping("/ajaxValid")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> planAddValid(@ModelAttribute @Valid PlannerDTO plannerDTO, BindingResult bindingResult) {
-        Map<String, Object> response = new HashMap<>();
-
-        if (bindingResult.hasErrors()) {
-            response.put("isValid", false);
-            Map<String, Object> errorMap = new HashMap<>();
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                errorMap.put(error.getField(), error.getDefaultMessage());
-            }
-            response.put("fieldErrors", errorMap); // Key를 "fieldErrors"로 바꿈
-        } else {
-            Integer id = plannerService.save(plannerDTO);
-            response.put("isValid", true);
-            response.put("planId", id);
-        }
-
-        return ResponseEntity.ok(response);
-    }
-
-
-
-    /* 계획 생성 기능 (비행정보가 있을수도 없을수도 있기 때문에 그에따른 정보 작성 필요) */
     @PostMapping("/addValid")
     @PreAuthorize("isAuthenticated()")
     public String myPlanAddValid(Model model, Principal principal,
-                            @ModelAttribute PlannerDTO plannerDTO,
+                            @ModelAttribute @Valid PlannerDTO plannerDTO,
+                            BindingResult bindingResult,
                             @ModelAttribute FlightInfo flightInfo) {
 
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errors = bindingResult.getAllErrors();
+            for (ObjectError error : errors) {
+            }
+            return "plan/planAdd";
+        }
 
-        System.out.println(flightInfo);
-        System.out.println(flightInfo.getArrivalDate());
-        System.out.println(flightInfo.getPrice());
-        System.out.println(flightInfo.getDepartureDate());
-        System.out.println(flightInfo.getRoutes());
+        if (principal != null){
+            plannerDTO.setUserEmail(principal.getName());
+        }
 
-        // 생성된 계획 번호를 리턴받아 생성된 계획 페이지로 이동
         Integer id = plannerService.save(plannerDTO);
 
         return "redirect:/plan/detail?planId=" + id;
     }
-
-
 
     @GetMapping("/detail")
     public String map(@RequestParam(required = false) Integer planId, Model model) throws JsonProcessingException {
@@ -172,8 +154,6 @@ public class PlannerController {
         // model.addAttribute("startDate" , plannerService.findStartTimeByPlanId(planId));
         model.addAttribute("startDate" , plannerDTO.getStartDate());
 
-        model.addAttribute("endDate" , plannerDTO.getEndDate());
-
         return "plan/planDetail";
     }
 
@@ -189,7 +169,7 @@ public class PlannerController {
         String listAll = objectMapper.writeValueAsString(touristAttractionListAll);
 
         List<DetailPlanDTO> detailList = detailPlanService.findByPlanPlanIdOrderByStartTime(planId);
-
+        List<Object[]> test=detailPlanRepository.findCityNameAndImageByPlanId(planId);
         String detailPlan = objectMapper.writeValueAsString(detailList);
         // 상세플랜 목록
         model.addAttribute("detailPlan" , detailPlan);
@@ -207,7 +187,6 @@ public class PlannerController {
         model.addAttribute("startDate" , plannerDTO.getStartDate());
 
         model.addAttribute("endDate" , plannerDTO.getEndDate());
-        model.addAttribute("userEmail" , plannerDTO.getUserEmail());
 
         return "plan/planPreview";
     }
@@ -242,19 +221,5 @@ public class PlannerController {
         System.out.println("사진 저장 완료...............");
         return response;
     }
-
-    @PostMapping("/dateEdit")
-    @ResponseBody
-    public String editDate(@RequestParam("start") LocalDate startDate,
-                           @RequestParam("end") LocalDate endDate,
-                           @RequestParam("planId") Integer planId) {
-
-
-        plannerRepository.updateStartDateAndEndDate(planId, startDate, endDate);
-
-
-        return "success";
-    }
-
 
 }
