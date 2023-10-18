@@ -88,7 +88,7 @@
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek'
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
                 initialDate: startDate,                 // 초기 날짜 지정
                 eventColor : '#b263ff',             // 이벤트 색상
@@ -573,8 +573,10 @@
 
             // updateMap(detailData);
             document.getElementById('custom-startDate-button').addEventListener('click', function() {
-                var customDate = startDate;         // 원하는 날짜로 설정하세요
-                calendar.gotoDate(customDate);      // 사용자 정의 버튼을 클릭했을 때 설정한 날짜로 이동합니다.
+                var startDateElement = document.getElementById('startDate');
+
+                var customDate = startDateElement.getAttribute("data-variable");
+                calendar.gotoDate(customDate);
             });
         });
 
@@ -667,6 +669,7 @@
                 minZoom: 3,
                 maxZoom: 30,
                 mapTypeControl: false,
+                fullscreenControl: false,
             });
 
             // console.log("지도지도지도");
@@ -706,8 +709,8 @@
                         // label:'-',
                         map,
                         icon: {
-                            url:'https://github.com/hwet-j/rego/assets/125880480/e33d6030-659a-4a3e-8731-ac0fa691761e',
-                                 scaledSize: new google.maps.Size(25, 40),
+                            url:'https://github.com/hwet-j/hwet-j.github.io/assets/81364742/8e20af8c-7f20-4d3e-a850-7056800236ad',
+                            scaledSize: new google.maps.Size(40, 40),
                         },
                         zIndex:1000,
                     });
@@ -724,8 +727,6 @@
                         image.alt = name;
                         image.width = 200;
                         content.appendChild(image);
-
-                        console.log(title);
 
                         const subject = document.createElement('p');
                         subject.textContent = name;
@@ -791,64 +792,6 @@
                         var distanceToTravel = 0.001;    // 고정된 이동 거리
                         var speed = 30;                 // 마커 이동 속도
 
-                        /* 아이콘이 움직이는 동작을 구현 */
-                        /*function moveMarker() {
-
-                            if (index < data.length - 1) {
-                                var start = data[index];
-                                var end = data[index + 1];
-
-                                var latDiff = end.lat - start.lat;
-                                var lngDiff = end.lng - start.lng;
-                                var totalDistance = Math.sqrt(latDiff * latDiff + lngDiff * lngDiff);
-
-                                var fraction = 0;
-                                var numSteps = totalDistance / distanceToTravel;
-
-                                var latStep = latDiff / numSteps;
-                                var lngStep = lngDiff / numSteps;
-
-                                if (fraction === 0) {
-                                    // 방향전환
-                                    if (start.lng < end.lng) {
-                                        // 좌측에서 우측으로
-                                        initialIconUrl = "https://github-production-user-asset-6210df.s3.amazonaws.com/81364742/269530380-4c8c756c-bb05-447a-83dc-bf6464a2fc92.gif";
-                                    } else {
-                                        // 우측에서 좌측으로
-                                        initialIconUrl = "https://github.com/hwet-j/hwet-j.github.io/assets/81364742/ef2f4530-9c23-4b1c-aae7-8054e46bd2a7";
-                                    }
-
-                                    var initialIcon = {
-                                        url: initialIconUrl,
-                                        scaledSize: new google.maps.Size(40, 40),
-                                        origin: new google.maps.Point(0, 0),
-                                        anchor: new google.maps.Point(15, 15)
-                                    };
-                                    iconMarker.setIcon(initialIcon);
-                                }
-
-                                var move = function () {
-                                    fraction += 1;
-                                    if (fraction <= numSteps) {
-                                        var lat = start.lat + latStep * fraction;
-                                        var lng = start.lng + lngStep * fraction;
-                                        iconMarker.setPosition({ lat: lat, lng: lng });
-                                        setTimeout(move, speed);
-                                    } else {
-                                        index++;
-                                        if (index >= data.length - 1) {
-                                            index = 0;  // 1부터 다시 시작
-                                        }
-                                        moveMarker(index);
-                                    }
-                                };
-
-                                move();
-                            }
-                        }
-
-                        moveMarker();*/
-
                         /* 화살표 형식으로 선긋기 */
                         for (var i = 0; i < data.length - 1; i++) {
                             var start = data[i];
@@ -894,7 +837,6 @@
                                 strokeColor: "#9900ff" // 화살표의 색상
                             };
 
-
                             /* 이 기능을 활용하면 이동방식에 따른 항공,기차 등을 구현 가능할듯함 */
                             var line = new google.maps.Polyline({
                                 path: [start, end],
@@ -912,7 +854,6 @@
 
                             previousPolylines.push(line);
                         }
-
                     } else {
                         clearPreviousPolylines();
                         if (iconMarker){
@@ -1202,6 +1143,81 @@
     </script>
 
 
+    <script>
+        //ajax를 통한 날짜수정 시작
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // JavaScript code for handling the button click
+            var modifyButton = document.getElementById('modifyButton');
+            if (modifyButton) {
+                modifyButton.addEventListener('click', function() {
+                    var defaultStartDate = document.getElementById('startDateElement').textContent;
+                    var defaultEndDate = document.getElementById('endDateElement').textContent;
+
+                    var datePlanId = document.getElementById('planID').getAttribute('data-variable');
+
+                    var content = document.getElementById('content').getAttribute('data-variable');
+                    var type = document.getElementById('type').getAttribute('data-variable');
+                    var numberOfPeople = document.getElementById('numberOfPeople').getAttribute('data-variable');
+
+                    Swal.fire({
+                        title: '날짜 선택',
+                        html: `
+                            <div>검색 유형 <select class="form-control" id="editSearchType" name="type">
+                            <option value="">미선택</option>
+                            <option value="자유" ${type === "자유" ? "selected" : ""}>자유</option>
+                            <option value="힐링" ${type === "힐링" ? "selected" : ""}>힐링</option>
+                            <option value="문화" ${type === "문화" ? "selected" : ""}>문화</option>
+                            <option value="쇼핑" ${type === "쇼핑" ? "selected" : ""}>쇼핑</option>
+                            <option value="식도락" ${type === "식도락" ? "selected" : ""}>식도락</option>
+                            </select></div>
+                            <div>여행 제목 <input class="input-content" id="editContent" name="content" type="text" value="${content}"></div>
+                            <div>시작일 <input type="date" id="editStartDate" value="${defaultStartDate}" ></div>
+                            <div>종료일 <input type="date" id="editEndDate" value="${defaultEndDate}"></div>
+                            <div>여행 인원 <input class="input-content" id="editNumberOfPeople" value="${numberOfPeople}" name="numberOfPeople" type="number"></div>
+                        `,
+                        showCancelButton: true,
+                        confirmButtonText: '확인',
+                        cancelButtonText: '취소',
+                        preConfirm: () => {
+                            var editSearchType = document.getElementById('editSearchType').value;
+                            var editContent = document.getElementById('editContent').value;
+                            var editStartDate = document.getElementById('editStartDate').value;
+                            var editEndDate = document.getElementById('editEndDate').value;
+                            var editNumberOfPeople = document.getElementById('editNumberOfPeople').value;
+                            if (editEndDate < editStartDate) {
+                                Swal.showValidationMessage('종료일은 시작일보다 늦을 수 없습니다.');
+                            } else {
+                                var editUrl = '/plan/dateEdit';
+
+                                $.ajax({
+                                    url: editUrl,
+                                    type: 'POST', // 요청 방식을 POST로 변경
+                                    data: {
+                                        type: editSearchType,
+                                        content: editContent,
+                                        start: editStartDate,
+                                        end: editEndDate,
+                                        numberOfPeople: editNumberOfPeople,
+                                        planId:datePlanId
+                                    },
+                                    success: function (data) {
+                                            location.reload();
+                                    },
+                                    error: function () {
+                                        console.error('데이터를 가져오는 중에 오류가 발생했습니다.');
+                                    }
+                                });
+
+                            }
+                        }
+                    });
+                });
+            }
+        });
+        //ajax를 통한 날짜수정 끝
+    </script>
+
 
 
     <style>
@@ -1220,6 +1236,10 @@
 <span id="detailIdMax" th:data-variable="${detailIdMax}"></span>
 <span id="planID" th:data-variable="${planID}"></span>
 <span id="startDate" th:data-variable="${startDate}"></span>
+
+<span id="content" th:data-variable="${content}"></span>
+<span id="type" th:data-variable="${type}"></span>
+<span id="numberOfPeople" th:data-variable="${numberOfPeople}"></span>
 
 <div class="container">
 
@@ -1273,6 +1293,29 @@
             <ul id="searchResults" style="position: absolute; top: 50px; left: 10px; z-index: 1; display: none;"></ul>
             <!-- 지도 -->
             <div id="map"></div>
+
+            <a th:href="@{/plan/Preview(planId=${planID})}">
+                <div class="preview-button">
+                </div>
+            </a>
+            <div class="start-end-date">
+                <div>
+                    <span>시작일 : </span>
+                    <span id="startDateElement" th:text="${startDate}"></span>
+
+                    <button id="modifyButton">수정</button>
+                </div>
+                <div>
+                    <span>종료일 : </span>
+                    <span id="endDateElement" th:text="${endDate}"></span>
+                </div>
+                <div id="planner-data"
+                     data-planner-dto-type="${plannerDTO.type}"
+                     data-planner-dto-content="${plannerDTO.content}"
+                     data-planner-dto-numberOfPeople="${plannerDTO.numberOfPeople}"
+                     style="display: none;"> <!-- 이 요소는 사용자에게 보이지 않도록 합니다. -->
+                </div>
+            </div>
 
         </div>
 

@@ -37,7 +37,6 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
 
 

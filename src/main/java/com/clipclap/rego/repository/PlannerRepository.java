@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface PlannerRepository extends JpaRepository<Planner, Integer> {
@@ -29,7 +30,5 @@ public interface PlannerRepository extends JpaRepository<Planner, Integer> {
     @Transactional
     @Query("UPDATE Planner p SET p.startDate = :startDate, p.endDate = :endDate WHERE p.planId = :planId")
     void updateStartDateAndEndDate(@Param("planId") Integer planId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
-
-
 }
 

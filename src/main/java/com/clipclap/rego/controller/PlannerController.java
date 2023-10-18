@@ -1,27 +1,22 @@
 package com.clipclap.rego.controller;
 
 
-
 import com.clipclap.rego.model.dto.DetailPlanDTO;
 import com.clipclap.rego.model.dto.FlightInfo;
 import com.clipclap.rego.model.dto.PlannerDTO;
 import com.clipclap.rego.model.dto.TouristAttractionDTO;
-import com.clipclap.rego.model.entitiy.Planner;
-
 import com.clipclap.rego.repository.PlannerRepository;
 import com.clipclap.rego.repository.TouristAttractionRepository;
 import com.clipclap.rego.service.DetailPlanService;
 import com.clipclap.rego.service.PlannerService;
 import com.clipclap.rego.service.TouristAttractionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -35,8 +30,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -50,20 +44,17 @@ public class PlannerController {
     private final TouristAttractionService touristAttractionService;
     private final TouristAttractionRepository touristAttractionRepository;
     private final ObjectMapper objectMapper;
-    private final DetailPlanRepository detailPlanRepository;
+    private final PlannerRepository plannerRepository;
     private final DetailPlanService detailPlanService;
     private final PlannerService plannerService;
-    private final PlannerRepository plannerRepository;
 
     @GetMapping("/list")
-    @PreAuthorize("isAuthenticated()")
     public String myPlanList(Model model , PlannerDTO plannerDTO ) {
 
         List<PlannerDTO> planList = plannerService.findByAllId();
 
-        System.out.println(planList);
         model.addAttribute("planList", planList);
-
+        
         return "plan/planList";
     }
 
@@ -84,20 +75,17 @@ public class PlannerController {
         return "plan/planList";
     }*/
 
+    /* 항공권을 통하지 않고 일반 계획 생성폼 요청 */
     @GetMapping("/add")
     @PreAuthorize("isAuthenticated()")
     public String planAddForm(Model model, Principal principal,
                               PlannerDTO plannerDTO,
                               BindingResult bindingResult) {
 
-        if (principal != null){
-            System.out.println(principal.getName());
-            plannerDTO.setUserEmail(principal.getName());
-        }
-
         return "/plan/planAdd";
     }
 
+    /* 항공권 정보를 가지고 계획 생성폼 요청 */
     @PostMapping("/add")
     @PreAuthorize("isAuthenticated()")
     public String myPlanAdd(Model model, Principal principal,
@@ -111,11 +99,9 @@ public class PlannerController {
         return "plan/planAdd";
     }
 
-
     @PostMapping("/ajaxValid")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> planAddValid(@ModelAttribute @Valid PlannerDTO plannerDTO, BindingResult bindingResult) {
-
         Map<String, Object> response = new HashMap<>();
 
         if (bindingResult.hasErrors()) {
@@ -126,7 +112,9 @@ public class PlannerController {
             }
             response.put("fieldErrors", errorMap); // Key를 "fieldErrors"로 바꿈
         } else {
+            Integer id = plannerService.save(plannerDTO);
             response.put("isValid", true);
+            response.put("planId", id);
         }
 
         return ResponseEntity.ok(response);
@@ -135,101 +123,25 @@ public class PlannerController {
 
 
     /* 계획 생성 기능 (비행정보가 있을수도 없을수도 있기 때문에 그에따른 정보 작성 필요) */
-    @PostMapping("/addPlan")
+    @PostMapping("/addValid")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Integer> myPlanAddValid(Model model, Principal principal,
+    public String myPlanAddValid(Model model, Principal principal,
                             @ModelAttribute PlannerDTO plannerDTO,
-                            FlightInfo flightInfo) {
+                            @ModelAttribute FlightInfo flightInfo) {
+
+
+        System.out.println(flightInfo);
+        System.out.println(flightInfo.getArrivalDate());
+        System.out.println(flightInfo.getPrice());
+        System.out.println(flightInfo.getDepartureDate());
+        System.out.println(flightInfo.getRoutes());
 
         // 생성된 계획 번호를 리턴받아 생성된 계획 페이지로 이동
         Integer id = plannerService.save(plannerDTO);
 
-        return ResponseEntity.ok(id);
+        return "redirect:/plan/detail?planId=" + id;
     }
 
-    @PostMapping("/addPlanwithfly")
-    @ResponseBody
-    @Transactional
-    public Integer myPlanAddwithFly(@RequestBody JsonNode requestData) {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        JsonNode formDataNode = requestData.get("formData");
-        JsonNode flightInfoNode = requestData.get("flightInfo");
-
-        try {
-            FlightInfo flightInfoDTO = objectMapper.treeToValue(flightInfoNode, FlightInfo.class);
-            TravelInfoDTO travelInfoDTO = objectMapper.treeToValue(formDataNode, TravelInfoDTO.class);
-
-            // System.out.println(flightInfoDTO.getRoutes().size());
-            // 왕복 정보만 존재하기 때문에 이렇게 가능하지만 편도를 구현한다면 조건을 만들어서 구현
-            RouteInfo fromHome = flightInfoDTO.getRoutes().get(0);
-            RouteInfo toHome = flightInfoDTO.getRoutes().get(1);
-
-            // Plan 생성
-            PlannerDTO plannerDTO = new PlannerDTO();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-            plannerDTO.setNumberOfPeople(Integer.parseInt(travelInfoDTO.getNumberOfPeople()));
-            plannerDTO.setUserEmail(travelInfoDTO.getUserEmail());
-            plannerDTO.setContent(travelInfoDTO.getContent());
-            plannerDTO.setType(travelInfoDTO.getType());
-            plannerDTO.setStartDate(LocalDate.parse(travelInfoDTO.getStartDate(), formatter));
-            plannerDTO.setEndDate(LocalDate.parse(travelInfoDTO.getEndDate(), formatter));
-
-            System.out.println(LocalDateTime.parse(flightInfoDTO.getArrivalDate() + "T" + fromHome.getDepartureTime()));
-            System.out.println(LocalDateTime.parse(flightInfoDTO.getArrivalDate() + "T" + fromHome.getDepartureTime()));
-
-            Integer id = plannerService.save(plannerDTO);
-
-            String priceString = flightInfoDTO.getPrice().replace(",", "").trim();
-
-
-            // DetailPlan에 저장하기 위해 객체 입력 (가는편)
-            PlannerDetail fromHomePlan = new PlannerDetail();
-
-            fromHomePlan.setDetailPlanId(1);
-            fromHomePlan.setPlan(plannerRepository.findById(id).get());
-            fromHomePlan.setContent("Go");
-            fromHomePlan.setStartTime(LocalDateTime.parse(flightInfoDTO.getDepartureDate() + "T" + fromHome.getDepartureTime()));
-            fromHomePlan.setEndTime(LocalDateTime.parse(flightInfoDTO.getDepartureDate() + "T" + fromHome.getArrivalTime()));
-            fromHomePlan.setAllday(true);
-            fromHomePlan.setTouristAttraction(touristAttractionRepository.findById(1000).get());
-            fromHomePlan.setPrice(Integer.parseInt(priceString));
-            fromHomePlan.setAirlineImg(fromHome.getAirlineImg());
-            fromHomePlan.setAirlineName(fromHome.getAirlineName());
-            fromHomePlan.setDepartureTime(fromHome.getDepartureTime());
-            fromHomePlan.setDepartureAirport(fromHome.getDepartureAirport());
-            fromHomePlan.setArrivalTime(fromHome.getArrivalTime());
-            fromHomePlan.setArrivalAirport(fromHome.getArrivalAirport());
-
-            detailPlanRepository.save(fromHomePlan);
-            // 오는편
-            PlannerDetail toHomePlan = new PlannerDetail();
-
-            toHomePlan.setDetailPlanId(2);
-            toHomePlan.setPlan(plannerRepository.findById(id).get());
-            toHomePlan.setContent("Re");
-            toHomePlan.setStartTime(LocalDateTime.parse(flightInfoDTO.getArrivalDate() + "T" + toHome.getDepartureTime()));
-            toHomePlan.setEndTime(LocalDateTime.parse(flightInfoDTO.getArrivalDate() + "T" + toHome.getArrivalTime()));
-            toHomePlan.setAllday(true);
-            toHomePlan.setTouristAttraction(touristAttractionRepository.findById(1001).get());
-            toHomePlan.setPrice(Integer.parseInt(priceString));
-            toHomePlan.setAirlineImg(toHome.getAirlineImg());
-            toHomePlan.setAirlineName(toHome.getAirlineName());
-            toHomePlan.setDepartureTime(toHome.getDepartureTime());
-            toHomePlan.setDepartureAirport(toHome.getDepartureAirport());
-            toHomePlan.setArrivalTime(toHome.getArrivalTime());
-            toHomePlan.setArrivalAirport(toHome.getArrivalAirport());
-
-            detailPlanRepository.save(toHomePlan);
-
-            return id;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
 
 
     @GetMapping("/detail")
@@ -247,6 +159,14 @@ public class PlannerController {
 
         String detailPlan = objectMapper.writeValueAsString(detailList);
 
+        //planner 정보(수정전 value 출력용)
+        String content = plannerDTO.getContent();
+        String type = plannerDTO.getType();
+        int numberOfPeople = plannerDTO.getNumberOfPeople();
+
+        model.addAttribute("content",content);
+        model.addAttribute("type",type);
+        model.addAttribute("numberOfPeople",numberOfPeople);
         // 상세플랜 목록
         model.addAttribute("detailPlan" , detailPlan);
         // 전체 관광지 리스트
@@ -260,6 +180,8 @@ public class PlannerController {
         // 플래너의 시작날짜 (이것도 굳이 필요없을 수도)
         // model.addAttribute("startDate" , plannerService.findStartTimeByPlanId(planId));
         model.addAttribute("startDate" , plannerDTO.getStartDate());
+
+        model.addAttribute("endDate" , plannerDTO.getEndDate());
 
         return "plan/planDetail";
     }
@@ -276,7 +198,7 @@ public class PlannerController {
         String listAll = objectMapper.writeValueAsString(touristAttractionListAll);
 
         List<DetailPlanDTO> detailList = detailPlanService.findByPlanPlanIdOrderByStartTime(planId);
-        List<Object[]> test=detailPlanRepository.findCityNameAndImageByPlanId(planId);
+
         String detailPlan = objectMapper.writeValueAsString(detailList);
         // 상세플랜 목록
         model.addAttribute("detailPlan" , detailPlan);
@@ -294,6 +216,7 @@ public class PlannerController {
         model.addAttribute("startDate" , plannerDTO.getStartDate());
 
         model.addAttribute("endDate" , plannerDTO.getEndDate());
+        model.addAttribute("userEmail" , plannerDTO.getUserEmail());
 
         return "plan/planPreview";
     }
@@ -329,24 +252,30 @@ public class PlannerController {
         return response;
     }
 
-
     @PostMapping("/dateEdit")
     @ResponseBody
     public String editDate(@RequestParam("start") LocalDate startDate,
                            @RequestParam("end") LocalDate endDate,
-                           @RequestParam("planId") Integer planId) {
-
+                           @RequestParam("planId") Integer planId,
+                           @RequestParam("type") String type,
+                           @RequestParam("content") String content,
+                           @RequestParam("numberOfPeople") int numberOfPeople
+                           ) {
+        LocalDate defaultStart = plannerRepository.findByPlanId(planId).getStartDate();
 
         plannerRepository.updateStartDateAndEndDate(planId, startDate, endDate);
 
+        // 두 날짜 사이의 차이를 일 단위로 계산합니다.
+        long daysBetween = ChronoUnit.DAYS.between(defaultStart, startDate);
+
+        System.out.println("날짜의 차 : " + daysBetween);
+        // detailPlan에서 planId가 일치하는 것을 찾아 날짜 변화만큼 startTime과 endTime을 모두 더하거나 빼줌.
+        int updateDetailPlanCnt = detailPlanService.updateStartTimeAndEndTime(planId, daysBetween);
+        System.out.println("업데이트된 detailPlan의 개수 : " + updateDetailPlanCnt);
+        int updatePlanCnt = plannerService.updateContentAndTypeAndNumberOfPeople(planId, content, type, numberOfPeople);
+        System.out.println("업데이트된 Planner의 개수 : " + updatePlanCnt);
 
         return "success";
-    }
-    @GetMapping("/copy/{planId}")
-    public String copyPlanner(@PathVariable Integer planId, Principal principal) {
-        String loggedInUserEmail = principal.getName();
-        Planner newPlanner = plannerService.copyPlanner(planId, loggedInUserEmail);
-        return "redirect:/plan/detail?planId=" + newPlanner.getPlanId();
     }
 
 

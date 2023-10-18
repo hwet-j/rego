@@ -16,15 +16,18 @@
     <!-- XEIcon 폰트 불러오기 -->
     <link href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css" rel="stylesheet">
 
+
+
+
 </head>
+
 <body>
-<script th:inline="javascript">
+<script>
     $(document).ready(function () {
         $("#planForm").submit(function (event) {
             event.preventDefault(); // 기본 제출 동작 방지
 
             var formData = new FormData(this); // 현재 폼 데이터 가져오기
-            var flightInfo = /*[[${flightInfo}]]*/;
 
             $.ajax({
                 type: "POST",
@@ -33,49 +36,12 @@
                 processData: false, // 중요: 데이터를 처리하지 않도록 설정
                 contentType: false, // 중요: 컨텐츠 유형을 false로 설정
                 success: function (data) {
+                    console.log(data); // 응답 데이터 확인
                     if (data.isValid) {
-                        if(flightInfo == null){
-                            $.ajax({
-                                type: "POST",
-                                url: "/plan/addPlan",
-                                data: formData,
-                                processData: false,
-                                contentType: false,
-                                success: function (response) {
-                                    window.location.href = "/plan/detail?planId=" + response;
-                                },
-                                error: function (xhr, status, error) {
-                                    console.error(error); // 오류 메시지 확인
-                                }
-                            });
-                        } else {
-                            var formInfo = {
-                                type: $("#search-type").val(),
-                                userEmail: $("#userEmail").val(),
-                                content: $("#content").val(),
-                                startDate: $("#startDate").val(),
-                                endDate: $("#endDate").val(),
-                                numberOfPeople: $("#numberOfPeople").val()
-                            };
-
-                            $.ajax({
-                                type: "POST",
-                                url: "/plan/addPlanwithfly",
-                                data: JSON.stringify({
-                                    formData: formInfo,
-                                    flightInfo: flightInfo
-                                }),
-                                processData: false,
-                                contentType: "application/json",
-                                success: function (data) {
-                                    window.location.href = "/plan/detail?planId="+data;
-                                },
-                                error: function (xhr, status, error) {
-                                    console.error(error); // 오류 메시지 확인
-                                }
-                            });
-                        }
+                        // 유효성 검사 통과 시 페이지 이동 또는 다른 동작 수행
+                        window.location.href = "/plan/detail?planId=" + data.planId;
                     } else {
+                        // 유효성 검사 오류 메시지 표시
                         displayErrorMessages(data.fieldErrors);
                         console.log(data.fieldErrors);
                     }
@@ -94,6 +60,8 @@
         for (var fieldName in fieldErrors) {
             var errorMessage = fieldErrors[fieldName];
             var errorContainer = $("#" + fieldName + "Error");
+            console.log(errorMessage);
+            console.log(fieldName);
             errorContainer.text(errorMessage);
         }
     }
@@ -178,13 +146,13 @@
 
                     <div class="label-box" style="position: relative;">
                         <label class="input-label">여행 시작일</label>
-                        <input class="input-content" id="startDate" name="startDate" th:value="${flightInfo != null ? flightInfo.departureDate : ''}" type="date">
+                        <input class="input-content" id="startDate" name="startDate" type="date">
                         <div class="error" id="startDateError"></div>
                     </div>
 
                     <div class="label-box" style="position: relative;">
                         <label class="input-label">여행 종료일</label>
-                        <input class="input-content" id="endDate" th:value="${flightInfo != null ? flightInfo.arrivalDate : ''}" name="endDate" type="date">
+                        <input class="input-content" id="endDate" name="endDate" type="date">
                         <div class="error" id="endDateError"></div>
                         <div class="error" id="endDateAfterStartDateError"></div>
                     </div>
@@ -205,12 +173,9 @@
                     </div>
                 </div>
             </form>
+
         </div>
     </div>
-
-
-
-
 
 
     <div class="right-side">
