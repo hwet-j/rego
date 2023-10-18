@@ -24,40 +24,6 @@
 
         document.addEventListener('DOMContentLoaded', function () {
 
-
-            window.captureMap = function () {
-                setTimeout(function () {
-                    const mapContainer = document.getElementById("map-container");
-
-                    html2canvas(mapContainer, { useCORS: true }).then(function (canvas) {
-                        const imageDataURL = canvas.toDataURL("image/png");
-
-                        const urlParams = new URLSearchParams(window.location.search);
-                        const planId = urlParams.get('planId');
-
-                        if (imageDataURL !== null && planId !== null) {
-                            const dataToSend = {
-                                imageDataURL: imageDataURL,
-                                planId: planId
-                            };
-
-                            fetch('/plan/saveImage', {
-                                method: 'POST',
-                                body: JSON.stringify(dataToSend),
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                            }).then(response => response.json())
-                                .then(data => {
-                                    // 서버 응답 처리
-                                });
-                        } else {
-                            console.error("imageDataURL 또는 planId가 null입니다.");
-                        }
-                    });
-                }, 1500);// 밀리초
-            };
-
             var calendarEl = document.getElementById('calendar');
 
             /******************************************************************************************
@@ -88,7 +54,7 @@
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    right: 'dayGridMonth,timeGridWeek'
                 },
                 initialDate: startDate,                 // 초기 날짜 지정
                 eventColor : '#b263ff',             // 이벤트 색상
@@ -194,7 +160,6 @@
                                         });
 
                                         updateMap(detailData);
-                                        captureMap();
                                     },
                                     error: function () {
                                         // 오류 처리
@@ -307,7 +272,6 @@
                             });
 
                             updateMap(detailData);
-                            captureMap();
                         },
                         error: function () {
                             // 오류 처리
@@ -348,7 +312,6 @@
                             });
 
                             updateMap(detailData);
-                            captureMap();
                         },
                         error: function () {
                             // 오류 처리
@@ -387,7 +350,6 @@
                             });
 
                             updateMap(detailData);
-                            captureMap();
                         },
                         error: function () {
                             // 오류 처리
@@ -495,8 +457,6 @@
                                     });
 
                                     updateMap(detailData);
-                                    captureMap();
-
                                 },
                                 error: function () {
                                     // 오류 처리
@@ -536,7 +496,6 @@
                                 });
 
                                 updateMap(detailData);
-                                captureMap();
                             },
                             error: function () {
                                 // 오류 처리
@@ -662,12 +621,11 @@
             });
 
 
-
             const map = new google.maps.Map(document.getElementById('map'), {
                 center: { lat: 37.58667, lng: 126.97611 },
                 zoom: 12,
                 minZoom: 3,
-                maxZoom: 30,
+                maxZoom: 27,
                 mapTypeControl: false,
                 fullscreenControl: false,
             });
