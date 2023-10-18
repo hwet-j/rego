@@ -71,19 +71,19 @@
                         Place<br>
                         ♡
                     </div>
-                    <div class="container2-right">
-                        <div class="swiper-container">
+                    <!--   <div class="container2-right">
+                           <div class="swiper-container">
 
-                            <div class="swiper-wrapper">
+                               <div class="swiper-wrapper">
 
-                                <div class="swiper-slide">내용 1</div>
-                                <div class="swiper-slide">내용 2</div>
-                                <div class="swiper-slide">내용 3</div>
+                                   <div class="swiper-slide">내용 1</div>
+                                   <div class="swiper-slide">내용 2</div>
+                                   <div class="swiper-slide">내용 3</div>
 
-                            </div>
-                        </div>
+                               </div>
+                           </div>
 
-                    </div>
+                       </div>-->
 
 
                 </div>
@@ -126,12 +126,6 @@
             <span id="sights-list">
                 <!-- 도시 목록 -->
             </span>
-            <!--
-            <span id="type-list">
-                <button class="classify-button" th:data-keyword="관광지" th:text="attraction"></button>
-                <button class="classify-button" th:data-keyword="식당" th:text="restaurant"></button>
-            </span>
-            -->
         </div>
 
 
@@ -185,6 +179,8 @@
         var attractionListContainer = document.getElementById("attraction-list");
         attractionListContainer.innerHTML = '';
 
+         console.log(touristAttractionList);
+
         // 새로운 목록을 추가 (알맞게 정보를 수정)
         touristAttractionList.forEach(function(attraction) {
             var li = document.createElement("li");
@@ -196,15 +192,25 @@
             img.width = 200;                // 이미지의 가로 크기 설정
             img.height = 150;               // 이미지의 세로 크기 설정
 
-            // 텍스트 생성
-            var text = document.createTextNode("이름: " + attraction.name + ", 주소: " + attraction.address);
 
-            // 이미지와 텍스트를 <li> 요소에 추가
-            li.appendChild(img);
-            li.appendChild(text);
-            attractionListContainer.appendChild(li);
+    // 이름 텍스트 생성
+    var nameText = document.createElement("p");
+    nameText.textContent = " " + attraction.touristAttractionName;
+    nameText.classList.add("attraction-name");
+
+    // 도시 텍스트 생성
+    var addressText = document.createElement("p");
+    addressText.textContent = " " + attraction.cityName;
+    addressText.classList.add("attraction-cityName");
+
+    // 이미지와 텍스트를 <li> 요소에 추가
+    li.appendChild(img);
+    li.appendChild(nameText);
+    li.appendChild(addressText);
+    attractionListContainer.appendChild(li);
         });
     });
+
 
     // 나라 버튼을 눌렀을 때 나라별 도시 목록을 출력해주는 함수
     function countryListFuncion(countryName) {  // 변수 이름을 countryName으로 수정
@@ -261,13 +267,22 @@
             img.width = 200;  // 이미지의 가로 크기 설정
             img.height = 150; // 이미지의 세로 크기 설정
 
-            // 텍스트 생성
-            var text = document.createTextNode("이름: " + attraction.name + ", 주소: " + attraction.address);
+    // 이름 텍스트 생성
+    var nameText = document.createElement("p");
+    nameText.textContent = " " + attraction.touristAttractionName;
+    nameText.classList.add("attraction-name");
 
-            // 이미지와 텍스트를 <li> 요소에 추가
-            li.appendChild(img);
-            li.appendChild(text);
-            attractionListContainer.appendChild(li);
+    // 주소 텍스트 생성
+    var addressText = document.createElement("p");
+    addressText.textContent = " " + attraction.address;
+    addressText.classList.add("attraction-address");
+
+    // 이미지와 텍스트를 <li> 요소에 추가
+    li.appendChild(img);
+    li.appendChild(nameText);
+    li.appendChild(addressText);
+    attractionListContainer.appendChild(li);
+
         });
     }
 
@@ -323,13 +338,22 @@
             img.width = 200;                // 이미지의 가로 크기 설정
             img.height = 150;               // 이미지의 세로 크기 설정
 
-            // 텍스트 생성
-            var text = document.createTextNode("이름: " + attraction.name + ", 주소: " + attraction.address);
+    // 이름 텍스트 생성
+    var nameText = document.createElement("p");
+    nameText.textContent = " " + attraction.touristAttractionName;
+    nameText.classList.add("attraction-name");
 
-            // 이미지와 텍스트를 <li> 요소에 추가
-            li.appendChild(img);
-            li.appendChild(text);
-            attractionListContainer.appendChild(li);
+    // 주소 텍스트 생성
+    var addressText = document.createElement("p");
+    addressText.textContent = " " + attraction.address;
+    addressText.classList.add("attraction-address");
+
+    // 이미지와 텍스트를 <li> 요소에 추가
+    li.appendChild(img);
+    li.appendChild(nameText);
+    li.appendChild(addressText);
+    attractionListContainer.appendChild(li);
+
         });
     }
 
@@ -351,21 +375,29 @@
             img.width = 200;                // 이미지의 가로 크기 설정
             img.height = 150;               // 이미지의 세로 크기 설정
 
-            // 텍스트 생성
-            var text = document.createTextNode("이름: " + attraction.name + ", 주소: " + attraction.address);
+    // 이름 텍스트 생성
+    var nameText = document.createElement("p");
+    nameText.textContent = " " + attraction.touristAttractionName;
+    nameText.classList.add("attraction-name");
 
-            // 이미지와 텍스트를 <li> 요소에 추가
-            li.appendChild(img);
-            li.appendChild(text);
-            attractionListContainer.appendChild(li);
+    // 주소 텍스트 생성
+    var addressText = document.createElement("p");
+    addressText.textContent = "주소: " + attraction.address;
+    addressText.classList.add("attraction-address");
+
+    // 이미지와 텍스트를 <li> 요소에 추가
+    li.appendChild(img);
+    li.appendChild(nameText);
+    li.appendChild(addressText);
+    attractionListContainer.appendChild(li);
         });
     }
 
 
 </script>
-<script>
+<!--<script>
 
-
+&lt;!&ndash;
             new Swiper('.swiper-container', {
      direction: 'vertical',
 
@@ -377,8 +409,8 @@
   slidesPerView: 1, // 한번에 보여줄 슬라이드 개수
   spaceBetween: 10, // 슬라이드 사이 여백
   centeredSlides: true // 1번 슬라이드가 가운데 보이기
-});
-</script>
+});&ndash;&gt;
+</script>-->
 
 
 </body>
