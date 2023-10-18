@@ -14,13 +14,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -46,16 +45,18 @@ public class PlannerController {
     private final TouristAttractionService touristAttractionService;
     private final TouristAttractionRepository touristAttractionRepository;
     private final ObjectMapper objectMapper;
-    private final PlannerRepository plannerRepository;
+    private final DetailPlanRepository detailPlanRepository;
     private final DetailPlanService detailPlanService;
     private final PlannerService plannerService;
     private final DetailPlanRepository detailPlanRepository;
 
     @GetMapping("/list")
+    @PreAuthorize("isAuthenticated()")
     public String myPlanList(Model model , PlannerDTO plannerDTO ) {
 
         List<PlannerDTO> planList = plannerService.findByAllId();
 
+        System.out.println(planList);
         model.addAttribute("planList", planList);
 
         return "plan/planList";
@@ -78,17 +79,20 @@ public class PlannerController {
         return "plan/planList";
     }*/
 
-    /* 항공권을 통하지 않고 일반 계획 생성폼 요청 */
     @GetMapping("/add")
     @PreAuthorize("isAuthenticated()")
     public String planAddForm(Model model, Principal principal,
                               PlannerDTO plannerDTO,
                               BindingResult bindingResult) {
 
+        if (principal != null){
+            System.out.println(principal.getName());
+            plannerDTO.setUserEmail(principal.getName());
+        }
+
         return "/plan/planAdd";
     }
 
-    /* 항공권 정보를 가지고 계획 생성폼 요청 */
     @PostMapping("/add")
     @PreAuthorize("isAuthenticated()")
     public String myPlanAdd(Model model, Principal principal,
@@ -101,6 +105,7 @@ public class PlannerController {
         model.addAttribute("plannerDTO", plannerDTO);
         return "plan/planAdd";
     }
+
 
     @PostMapping("/ajaxValid")
     @ResponseBody
@@ -232,8 +237,6 @@ public class PlannerController {
     }
 
 
-
-
     @GetMapping("/detail")
     public String map(@RequestParam(required = false) Integer planId, Model model) throws JsonProcessingException {
         PlannerDTO plannerDTO = plannerService.findById(planId);
@@ -263,8 +266,6 @@ public class PlannerController {
         // model.addAttribute("startDate" , plannerService.findStartTimeByPlanId(planId));
         model.addAttribute("startDate" , plannerDTO.getStartDate());
 
-        model.addAttribute("endDate" , plannerDTO.getEndDate());
-
         return "plan/planDetail";
     }
 
@@ -280,7 +281,7 @@ public class PlannerController {
         String listAll = objectMapper.writeValueAsString(touristAttractionListAll);
 
         List<DetailPlanDTO> detailList = detailPlanService.findByPlanPlanIdOrderByStartTime(planId);
-
+        List<Object[]> test=detailPlanRepository.findCityNameAndImageByPlanId(planId);
         String detailPlan = objectMapper.writeValueAsString(detailList);
         // 상세플랜 목록
         model.addAttribute("detailPlan" , detailPlan);
@@ -298,7 +299,6 @@ public class PlannerController {
         model.addAttribute("startDate" , plannerDTO.getStartDate());
 
         model.addAttribute("endDate" , plannerDTO.getEndDate());
-        model.addAttribute("userEmail" , plannerDTO.getUserEmail());
 
         return "plan/planPreview";
     }
@@ -333,19 +333,5 @@ public class PlannerController {
         System.out.println("사진 저장 완료...............");
         return response;
     }
-
-    @PostMapping("/dateEdit")
-    @ResponseBody
-    public String editDate(@RequestParam("start") LocalDate startDate,
-                           @RequestParam("end") LocalDate endDate,
-                           @RequestParam("planId") Integer planId) {
-
-
-        plannerRepository.updateStartDateAndEndDate(planId, startDate, endDate);
-
-
-        return "success";
-    }
-
 
 }
