@@ -100,9 +100,10 @@ public class PlannerServiceImpl implements PlannerService {
             dto.setImagePath("https://github.com/hwet-j/hwet-j.github.io/assets/81364742/7c38de8f-adc9-46a0-8d81-288b610cde87");
         }
 
-
         Planner planner = PlannerMapper.dtoToEntity(dto, userRepository);
+
         Planner savedPlanner = plannerRepository.save(planner);
+
         return savedPlanner.getPlanId();
     }
 

@@ -453,6 +453,6 @@ li {
 .swiper-slide {
     background-color: yellow;
     width: 700px;
-    max-height: 190px;
+    height: 190px;
 }
 
