@@ -1,5 +1,6 @@
 package com.clipclap.rego.model.entitiy;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -63,26 +64,22 @@ public class User {
 	private LocalDateTime createDate;
 
 	private String userprofile;
+	@JsonBackReference
+	@OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
+	private List<Answer> answers;
+	@JsonBackReference
+	@OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
+	private List<Question> questions;
+	@OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
+	private List<Notice> notices;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	private List<LikeAttraction> likeAttractions;
+	@OneToMany(mappedBy = "planId", cascade = CascadeType.REMOVE)
+	private List<Planner> planners;
 
 	public boolean checkPassword(String plainPassword, PasswordEncoder passwordEncoder) {
 		return passwordEncoder.matches(plainPassword, this.password);
 	}
-
-
-	@OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
-	private List<Answer> answers;
-
-	@OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
-	private List<Question> questions;
-
-	@OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
-	private List<Notice> notices;
-
-	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-	private List<LikeAttraction> likeAttractions;
-
-	@OneToMany(mappedBy = "planId", cascade = CascadeType.REMOVE)
-	private List<Planner> planners;
 
 
 
