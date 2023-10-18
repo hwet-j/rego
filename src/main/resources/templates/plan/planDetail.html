@@ -379,7 +379,18 @@
                                 <img src="${selectedAttraction.imageUrl}" alt="Selected Image" class="modal-image" onerror="this.src='/pictures/base.jpg';">
                             </div>
                             ${getSelectOptions(attractionData, selectedAttraction.touristAttractionId)}
-                            <input id="event-title" class="swal2-input" value="${selectedPlan.title}" placeholder="계획을 입력하세요."/>
+                            <div>
+                                <span class="swal2-text-area">메모</span>
+                                <span>
+                                    <input id="event-title" class="swal2-input" value="${selectedPlan.title}" placeholder="예상 금액을 입력해주세요"/>
+                                </span>
+                            </div>
+                            <div>
+                                 <span class="swal2-text-area">예상경비</span>
+                                 <span>
+                                    <input id="event-title" class="swal2-input" type="number" value="${selectedPlan.title}" placeholder="계획을 입력하세요."/>
+                                 </span>
+                            </div>
                         `,
                     showCancelButton: true,
                     showDenyButton: true,

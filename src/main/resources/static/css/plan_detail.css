@@ -198,8 +198,13 @@ body {
 
 
 /* 알림창 내용 input 태그  */
-#event-title {
-    width: 80%;
+.swal2-text-area {
+    width: 20%;
+    font-size: 16px;
+}
+
+.swal2-input {
+    width: 75%;
     padding: 5px;
     font-size: 16px;
     border: 1px solid #ccc;
