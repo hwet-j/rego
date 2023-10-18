@@ -145,6 +145,34 @@ public class PlannerServiceImpl implements PlannerService {
     }
 
         return newPlanner;
-}
-
     }
+
+    @Override
+    public int updateContentAndTypeAndNumberOfPeople(Integer planId, String content, String type, int numberOfPeople) {
+        Planner planner = plannerRepository.findByPlanId(planId);
+        int updatePlannerCnt =0;
+        if (planner != null) {
+            planner.setContent(content);
+            planner.setType(type);
+            planner.setNumberOfPeople(numberOfPeople);
+            if(planner.getType().equals("힐링")){
+                planner.setImagePath("https://github.com/hwet-j/hwet-j.github.io/assets/81364742/56961613-b6b5-431a-99a8-89210728551e");
+            } else if(planner.getType().equals("문화")) {
+                planner.setImagePath("https://github.com/hwet-j/hwet-j.github.io/assets/81364742/d7cb0a0b-4457-4c5c-990c-842d59d16527");
+            } else if(planner.getType().equals("쇼핑")) {
+                planner.setImagePath("https://github.com/hwet-j/hwet-j.github.io/assets/81364742/73f16ac0-64c0-428e-93ba-60418fb2d65f");
+            } else if(planner.getType().equals("식도락")) {
+                planner.setImagePath("https://github.com/hwet-j/hwet-j.github.io/assets/81364742/8650721a-ab0d-4f71-ad28-e9fb73477a1d");
+            } else if(planner.getType().equals("자유")) {
+                planner.setImagePath("https://github.com/hwet-j/hwet-j.github.io/assets/81364742/7c38de8f-adc9-46a0-8d81-288b610cde87");
+            }
+            updatePlannerCnt++;
+            // save 메서드를 호출하여 변경 사항을 데이터베이스에 바로 반영합니다.
+            plannerRepository.save(planner);
+        } else {
+            throw new EntityNotFoundException("Planner with ID " + planId + " not found");
+        }
+        return updatePlannerCnt;
+    }
+
+}

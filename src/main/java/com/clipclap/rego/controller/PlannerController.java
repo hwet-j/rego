@@ -31,6 +31,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -159,6 +160,15 @@ public class PlannerController {
 
         String detailPlan = objectMapper.writeValueAsString(detailList);
 
+        //planner 정보(수정전 value 출력용)
+        String content = plannerDTO.getContent();
+        String type = plannerDTO.getType();
+        int numberOfPeople = plannerDTO.getNumberOfPeople();
+
+        model.addAttribute("content",content);
+        model.addAttribute("type",type);
+        model.addAttribute("numberOfPeople",numberOfPeople);
+
         // 상세플랜 목록
         model.addAttribute("detailPlan" , detailPlan);
         // 전체 관광지 리스트
@@ -244,18 +254,33 @@ public class PlannerController {
         return response;
     }
 
+
     @PostMapping("/dateEdit")
     @ResponseBody
     public String editDate(@RequestParam("start") LocalDate startDate,
                            @RequestParam("end") LocalDate endDate,
-                           @RequestParam("planId") Integer planId) {
-
+                           @RequestParam("planId") Integer planId,
+                           @RequestParam("type") String type,
+                           @RequestParam("content") String content,
+                           @RequestParam("numberOfPeople") int numberOfPeople
+    ) {
+        LocalDate defaultStart = plannerRepository.findByPlanId(planId).getStartDate();
 
         plannerRepository.updateStartDateAndEndDate(planId, startDate, endDate);
 
+        // 두 날짜 사이의 차이를 일 단위로 계산합니다.
+        long daysBetween = ChronoUnit.DAYS.between(defaultStart, startDate);
+
+        System.out.println("날짜의 차 : " + daysBetween);
+        // detailPlan에서 planId가 일치하는 것을 찾아 날짜 변화만큼 startTime과 endTime을 모두 더하거나 빼줌.
+        int updateDetailPlanCnt = detailPlanService.updateStartTimeAndEndTime(planId, daysBetween);
+        System.out.println("업데이트된 detailPlan의 개수 : " + updateDetailPlanCnt);
+        int updatePlanCnt = plannerService.updateContentAndTypeAndNumberOfPeople(planId, content, type, numberOfPeople);
+        System.out.println("업데이트된 Planner의 개수 : " + updatePlanCnt);
 
         return "success";
     }
+
     @GetMapping("/copy/{planId}")
     public String copyPlanner(@PathVariable Integer planId, Principal principal) {
         String loggedInUserEmail = principal.getName();

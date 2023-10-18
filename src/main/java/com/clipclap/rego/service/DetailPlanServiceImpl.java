@@ -91,7 +91,18 @@ public class DetailPlanServiceImpl implements DetailPlanService {
         }
     }
 
-
+    @Override
+    public int updateStartTimeAndEndTime(Integer planId, long daysBetween) {
+        int updateCnt =0;
+        List<PlannerDetail> plannerDetailList= detailPlanRepository.findByPlan_PlanId(planId);
+        for(PlannerDetail plannerDetail : plannerDetailList){
+            plannerDetail.setStartTime(plannerDetail.getStartTime().plusDays(daysBetween));
+            plannerDetail.setEndTime((plannerDetail.getEndTime().plusDays(daysBetween)));
+            detailPlanRepository.save(plannerDetail);
+            updateCnt++;
+        }
+        return updateCnt;
+    }
 
 
 
