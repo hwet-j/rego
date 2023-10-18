@@ -515,14 +515,11 @@ position: absolute;
 
 
 .tab1-center {
-    align-text:left;
-    background-color:#672DE8;
-    border-radius:15px;
-    width:380px;
-    height:205px;
-    margin-top:20px;
-    margin-bottom:0px;
-    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.7);
+    float: left;
+    width: 350px;
+    height: 530px;
+    margin-left: 20px;
+    z-index: 900;
 }
 
 
