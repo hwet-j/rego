@@ -24,40 +24,6 @@
 
         document.addEventListener('DOMContentLoaded', function () {
 
-
-            window.captureMap = function () {
-                setTimeout(function () {
-                    const mapContainer = document.getElementById("map-container");
-
-                    html2canvas(mapContainer, { useCORS: true }).then(function (canvas) {
-                        const imageDataURL = canvas.toDataURL("image/png");
-
-                        const urlParams = new URLSearchParams(window.location.search);
-                        const planId = urlParams.get('planId');
-
-                        if (imageDataURL !== null && planId !== null) {
-                            const dataToSend = {
-                                imageDataURL: imageDataURL,
-                                planId: planId
-                            };
-
-                            fetch('/plan/saveImage', {
-                                method: 'POST',
-                                body: JSON.stringify(dataToSend),
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                            }).then(response => response.json())
-                                .then(data => {
-                                    // 서버 응답 처리
-                                });
-                        } else {
-                            console.error("imageDataURL 또는 planId가 null입니다.");
-                        }
-                    });
-                }, 1500);// 밀리초
-            };
-
             var calendarEl = document.getElementById('calendar');
 
             /******************************************************************************************
@@ -88,7 +54,7 @@
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    right: 'dayGridMonth,timeGridWeek'
                 },
                 initialDate: startDate,                 // 초기 날짜 지정
                 eventColor : '#b263ff',             // 이벤트 색상
@@ -194,7 +160,6 @@
                                         });
 
                                         updateMap(detailData);
-                                        captureMap();
                                     },
                                     error: function () {
                                         // 오류 처리
@@ -307,7 +272,6 @@
                             });
 
                             updateMap(detailData);
-                            captureMap();
                         },
                         error: function () {
                             // 오류 처리
@@ -348,7 +312,6 @@
                             });
 
                             updateMap(detailData);
-                            captureMap();
                         },
                         error: function () {
                             // 오류 처리
@@ -387,7 +350,6 @@
                             });
 
                             updateMap(detailData);
-                            captureMap();
                         },
                         error: function () {
                             // 오류 처리
@@ -495,8 +457,6 @@
                                     });
 
                                     updateMap(detailData);
-                                    captureMap();
-
                                 },
                                 error: function () {
                                     // 오류 처리
@@ -536,7 +496,6 @@
                                 });
 
                                 updateMap(detailData);
-                                captureMap();
                             },
                             error: function () {
                                 // 오류 처리
@@ -662,12 +621,11 @@
             });
 
 
-
             const map = new google.maps.Map(document.getElementById('map'), {
                 center: { lat: 37.58667, lng: 126.97611 },
                 zoom: 12,
                 minZoom: 3,
-                maxZoom: 30,
+                maxZoom: 27,
                 mapTypeControl: false,
                 fullscreenControl: false,
             });
@@ -1144,7 +1102,9 @@
 
 
     <script>
+        //ajax를 통한 날짜수정 시작
         document.addEventListener('DOMContentLoaded', function() {
+
             // JavaScript code for handling the button click
             var modifyButton = document.getElementById('modifyButton');
             if (modifyButton) {
@@ -1154,19 +1114,35 @@
 
                     var datePlanId = document.getElementById('planID').getAttribute('data-variable');
 
+                    var content = document.getElementById('content').getAttribute('data-variable');
+                    var type = document.getElementById('type').getAttribute('data-variable');
+                    var numberOfPeople = document.getElementById('numberOfPeople').getAttribute('data-variable');
+
                     Swal.fire({
                         title: '날짜 선택',
                         html: `
+                            <div>검색 유형 <select class="form-control" id="editSearchType" name="type">
+                            <option value="">미선택</option>
+                            <option value="자유" ${type === "자유" ? "selected" : ""}>자유</option>
+                            <option value="힐링" ${type === "힐링" ? "selected" : ""}>힐링</option>
+                            <option value="문화" ${type === "문화" ? "selected" : ""}>문화</option>
+                            <option value="쇼핑" ${type === "쇼핑" ? "selected" : ""}>쇼핑</option>
+                            <option value="식도락" ${type === "식도락" ? "selected" : ""}>식도락</option>
+                            </select></div>
+                            <div>여행 제목 <input class="input-content" id="editContent" name="content" type="text" value="${content}"></div>
                             <div>시작일 <input type="date" id="editStartDate" value="${defaultStartDate}" ></div>
                             <div>종료일 <input type="date" id="editEndDate" value="${defaultEndDate}"></div>
+                            <div>여행 인원 <input class="input-content" id="editNumberOfPeople" value="${numberOfPeople}" name="numberOfPeople" type="number"></div>
                         `,
                         showCancelButton: true,
                         confirmButtonText: '확인',
                         cancelButtonText: '취소',
                         preConfirm: () => {
+                            var editSearchType = document.getElementById('editSearchType').value;
+                            var editContent = document.getElementById('editContent').value;
                             var editStartDate = document.getElementById('editStartDate').value;
                             var editEndDate = document.getElementById('editEndDate').value;
-
+                            var editNumberOfPeople = document.getElementById('editNumberOfPeople').value;
                             if (editEndDate < editStartDate) {
                                 Swal.showValidationMessage('종료일은 시작일보다 늦을 수 없습니다.');
                             } else {
@@ -1176,23 +1152,15 @@
                                     url: editUrl,
                                     type: 'POST', // 요청 방식을 POST로 변경
                                     data: {
+                                        type: editSearchType,
+                                        content: editContent,
                                         start: editStartDate,
                                         end: editEndDate,
+                                        numberOfPeople: editNumberOfPeople,
                                         planId:datePlanId
                                     },
                                     success: function (data) {
-                                        var startDateElement = document.getElementById('startDateElement');
-                                        var endDateElement = document.getElementById('endDateElement');
-
-                                        startDateElement.textContent = editStartDate;
-                                        endDateElement.textContent = editEndDate;
-
-                                        // HTML 요소에서 데이터 값을 가져옵니다.
-                                        var startDateElement = document.getElementById('startDate');
-
-                                        startDateElement.setAttribute('th:data-variable', editStartDate);
-                                        startDateElement.setAttribute('data-variable', editStartDate);
-
+                                            location.reload();
                                     },
                                     error: function () {
                                         console.error('데이터를 가져오는 중에 오류가 발생했습니다.');
@@ -1205,6 +1173,7 @@
                 });
             }
         });
+        //ajax를 통한 날짜수정 끝
     </script>
 
 
@@ -1225,6 +1194,10 @@
 <span id="detailIdMax" th:data-variable="${detailIdMax}"></span>
 <span id="planID" th:data-variable="${planID}"></span>
 <span id="startDate" th:data-variable="${startDate}"></span>
+
+<span id="content" th:data-variable="${content}"></span>
+<span id="type" th:data-variable="${type}"></span>
+<span id="numberOfPeople" th:data-variable="${numberOfPeople}"></span>
 
 <div class="container">
 

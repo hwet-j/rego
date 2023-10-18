@@ -4,6 +4,7 @@ package com.clipclap.rego.service;
 import com.clipclap.rego.model.entitiy.User;
 import com.clipclap.rego.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    public final PasswordEncoder passwordEncoder;
     /*우리는  SecurityConfig.java에서 PasswordEncoder을 Bean등록해두었다
 참고 BCryptPasswordEncoder클래스는 스프링 시큐리티에서 제공되는 클래스이다.
     이 클래스이용해서  패스워드를 암호화해서 처리하도록 한다.
@@ -60,8 +61,30 @@ public class UserService {
         }
     }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new DataNotFoundException("사용자 정보를 찾을 수 없습니다."));
+    }
 
 
+
+    public User updateUser(User user) {
+        if (user.getUserId() == null) {
+            throw new IllegalArgumentException("User ID must be provided to update a user.");
+        }
+
+        if (!userRepository.existsById(user.getUserId())) {
+            throw new DataNotFoundException("User with ID " + user.getUserId() + " not found.");
+        }
+
+        return userRepository.save(user);
+    }
+
+
+    public boolean isPasswordCorrect(User user, String rawPassword) {
+        // Assuming you're using BCrypt for password encoding
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.matches(rawPassword, user.getPassword());
+    }
 }
 
 

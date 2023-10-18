@@ -4,7 +4,10 @@ package com.clipclap.rego.controller;
 import com.clipclap.rego.model.entitiy.Answer;
 import com.clipclap.rego.model.entitiy.Question;
 import com.clipclap.rego.model.entitiy.User;
-import com.clipclap.rego.service.*;
+import com.clipclap.rego.service.AnswerService;
+import com.clipclap.rego.service.EmailService;
+import com.clipclap.rego.service.QuestionService;
+import com.clipclap.rego.service.UserService;
 import com.clipclap.rego.validation.AnswerForm;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,15 +32,6 @@ public class AnswerController {
     private final UserService userService; // UserService 주입
     private final EmailService emailService;
 
-    // 답변 추천
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/vote/{id}")
-    public String answerVote(@PathVariable("id") Integer id, Principal principal, Model model) {
-        Answer answer = answerService.getAnswer(id);
-        User user = userService.getUserByEmail(principal.getName()); // userService를 사용하여 User 객체 가져옴
-        answerService.vote(answer, user);
-        return String.format("redirect:/question/detail/%d", answer.getQuestion().getId());
-    }
 
     // 답변 삭제
     @GetMapping("/delete/{id}")

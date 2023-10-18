@@ -191,8 +191,6 @@
                         image.width = 200;
                         content.appendChild(image);
 
-                        console.log(title);
-
                         const subject = document.createElement('p');
                         subject.textContent = name;
                         content.appendChild(subject);
@@ -228,8 +226,6 @@
 
 
                 map.fitBounds(bounds);
-                console.log('dd');
-                console.log(data);
 
                 // 선 그리기 함수 호출
                 drawPolyline(map, data);
@@ -289,9 +285,16 @@
                                 };
                                 iconMarker.setIcon(initialIcon);
                             }
-
+                            console.log(numSteps);
                             var move = function () {
-                                fraction += 1;
+                                if (numSteps <= 500){
+                                    fraction += numSteps / 80;
+                                    console.log("ㅎㅎ");
+                                }else {
+                                    fraction += numSteps / 300;
+                                    console.log("ㅋㅋ");
+                                }
+
                                 if (fraction <= numSteps) {
                                     var lat = start.lat + latStep * fraction;
                                     var lng = start.lng + lngStep * fraction;
@@ -312,7 +315,6 @@
 
                     moveMarker();
 
-                    console.log(data);
                     /* 화살표 형식으로 선긋기 */
                     for (var i = 0; i < data.length - 1; i++) {
                         var start = data[i];
@@ -720,7 +722,6 @@
             var previewAlert = detailData.find(function (preAlert) {
                 return preAlert.id == data.previewDetailId;
             });
-            console.log(data.previewAlert);
 
             // 이 부분에 imageElement 클릭 이벤트를 추가합니다
             imageElement.addEventListener('click', () => {

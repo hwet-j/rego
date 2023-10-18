@@ -49,9 +49,4 @@ public class AnswerService {
         answerRepository.save(answer);
     }
 
-    // 답변 추천
-    public void vote(Answer answer, User User) {
-        answer.getVoter().add(User); // 기존 추천 목록에 새로운 추천인 추가
-        answerRepository.save(answer);
-    }
 }

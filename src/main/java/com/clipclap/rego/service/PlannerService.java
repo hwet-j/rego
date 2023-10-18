@@ -22,4 +22,6 @@ public interface PlannerService {
 
     Planner copyPlanner(Integer sourcePlanId, String userEmail);
 
+    int updateContentAndTypeAndNumberOfPeople(Integer planId, String content, String type, int numberOfPeople);
+
 }
