@@ -133,14 +133,14 @@ public class PlannerController {
     /* 계획 생성 기능 (비행정보가 있을수도 없을수도 있기 때문에 그에따른 정보 작성 필요) */
     @PostMapping("/addPlan")
     @PreAuthorize("isAuthenticated()")
-    public String myPlanAddValid(Model model, Principal principal,
+    public ResponseEntity<Integer> myPlanAddValid(Model model, Principal principal,
                             @ModelAttribute PlannerDTO plannerDTO,
                             FlightInfo flightInfo) {
 
         // 생성된 계획 번호를 리턴받아 생성된 계획 페이지로 이동
         Integer id = plannerService.save(plannerDTO);
 
-        return "redirect:/plan/detail?planId=" + id;
+        return ResponseEntity.ok(id);
     }
 
     @PostMapping("/addPlanwithfly")
