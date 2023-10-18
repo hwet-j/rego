@@ -14,12 +14,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -48,7 +49,7 @@ public class PlannerController {
     private final DetailPlanRepository detailPlanRepository;
     private final DetailPlanService detailPlanService;
     private final PlannerService plannerService;
-    private final DetailPlanRepository detailPlanRepository;
+    private final PlannerRepository plannerRepository;
 
     @GetMapping("/list")
     @PreAuthorize("isAuthenticated()")
@@ -136,19 +137,9 @@ public class PlannerController {
                             @ModelAttribute PlannerDTO plannerDTO,
                             FlightInfo flightInfo) {
 
-        System.out.println("이거실행되었어");
-        System.out.println(plannerDTO.getType());
-        System.out.println(plannerDTO.getContent());
-        System.out.println(plannerDTO.getStartDate());
-        System.out.println(flightInfo);
-        System.out.println(flightInfo.getArrivalDate());
-        System.out.println(flightInfo.getPrice());
-        System.out.println(flightInfo.getDepartureDate());
-        System.out.println(flightInfo.getRoutes());
-
         // 생성된 계획 번호를 리턴받아 생성된 계획 페이지로 이동
-        // Integer id = plannerService.save(plannerDTO);
-        Integer id = 2;
+        Integer id = plannerService.save(plannerDTO);
+
         return "redirect:/plan/detail?planId=" + id;
     }
 
