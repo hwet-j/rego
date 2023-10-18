@@ -557,6 +557,16 @@
             border-radius: 5px;
         }
 
+
+        a, a:link {
+            text-decoration: none;
+            color: black;
+        }
+
+        .button-edit,.startPlanButton {
+            padding: 15px
+        }
+
     </style>
 </head>
 <body>
@@ -573,8 +583,24 @@
 <div id="map"></div>
 
 <div id="other-content">
-    <div>
-        루트수정
+    <div style="height:50px; background-color:green;">
+        <div style="text-align:center;" th:if="${#authorization.expression('isAuthenticated()')}">
+            <a th:href="@{/plan/detail(planId=${planID})}">
+                <div class="button-edit" style="padding:15px"
+                     th:if="${#strings.toLowerCase(#authentication.principal.username) eq #strings.toLowerCase(userEmail)}">
+                    루트수정
+                </div>
+            </a>
+            <a th:href="@{|/plan/copy/${planID}|}">
+                <div class="startPlanButton"
+                     th:unless="${#strings.toLowerCase(#authentication.principal.username) eq #strings.toLowerCase(userEmail)}">
+                    이 플랜으로 시작하기
+                </div>
+            </a>
+        </div>
+        <div class="button-edit" onclick="location.href='/login'" style="text-align:center; cursor:pointer;"
+             th:unless="${#authorization.expression('isAuthenticated()')}">로그인 하러가기</div>
+
     </div>
     <div style="overflow: auto; max-height: 900px;">
 <div id="container" ></div>

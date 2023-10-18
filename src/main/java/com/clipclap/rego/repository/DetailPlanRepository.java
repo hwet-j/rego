@@ -1,5 +1,6 @@
 package com.clipclap.rego.repository;
 
+import com.clipclap.rego.model.entitiy.Planner;
 import com.clipclap.rego.model.entitiy.PlannerDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,4 +28,6 @@ public interface DetailPlanRepository extends JpaRepository<PlannerDetail, Integ
             " ORDER BY dp.startTime")
     List<Object[]> findCityNameAndImageByPlanId(@Param("planId") Integer planId);
 
+
+    List<PlannerDetail> findByPlan(Planner sourcePlanner);
 }

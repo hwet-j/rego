@@ -24,5 +24,12 @@ public interface PlannerRepository extends JpaRepository<Planner, Integer> {
     @Query("INSERT INTO Planner (user, content, startDate, endDate, numberOfPeople, type, imagePath) VALUES (:#{#planner.user}, :#{#planner.content}, :#{#planner.startDate}, :#{#planner.endDate}, :#{#planner.numberOfPeople}, :#{#planner.type}, :#{#planner.imagePath})")
     @Transactional
     void savePlannerAndFlush(@Param("planner") Planner planner);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Planner p SET p.startDate = :startDate, p.endDate = :endDate WHERE p.planId = :planId")
+    void updateStartDateAndEndDate(@Param("planId") Integer planId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+
 }
 
