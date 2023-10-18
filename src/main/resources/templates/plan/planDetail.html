@@ -1235,12 +1235,9 @@
                 </div>
             </li>
         </ul>
-
     </div>
 
-
     <div class="contain" style="display: flex;">
-
         <div id="map-container" style="position: relative;">
             <!-- 검색창 -->
             <input id="searchInput" placeholder="장소 검색" style="position: absolute; top: 10px; left: 10px; z-index: 1;"
@@ -1268,7 +1265,6 @@
                     <span id="endDateElement" th:text="${endDate}"></span>
                 </div>
             </div>
-
         </div>
 
         <div id='acalendar-wrp' style="position: relative;">
@@ -1283,28 +1279,33 @@
 
 
 
+
     <!--<div id="searchResult"></div>-->
 
-<div id='wrap'>
+    <div id='wrap'>
 
-    <div class="content-button-container">
-        <select id="searchSelect">
-            <option th:text="'전체'" value="">전체</option>
-            <option th:each="city : ${cityList}"
-                    th:text="${city}"
-                    th:value="${city}">
-            </option>
-        </select>
-        <button class="content-type-button" data-content-type="관광지" id="tourAttraction">관광지</button>
-        <button class="content-type-button" data-content-type="식당" id="restaurant">식당</button>
-        <button class="content-type-button" data-content-type="호텔" id="hotel">호텔</button>
-    </div>
+        <div class="content-button-container">
+            <select id="searchSelect">
+                <option th:text="'전체'" value="">전체</option>
+                <option th:each="city : ${cityList}"
+                        th:text="${city}"
+                        th:value="${city}">
+                </option>
+            </select>
+            <button class="content-type-button" data-content-type="관광지" id="tourAttraction">관광지</button>
+            <button class="content-type-button" data-content-type="식당" id="restaurant">식당</button>
+            <button class="content-type-button" data-content-type="호텔" id="hotel">호텔</button>
+        </div>
 
-    <div id='external-events'>
-        <div id='external-events-list'>
+        <div id='external-events'>
+            <div id='external-events-list'>
+            </div>
         </div>
     </div>
-
+        <div class="buttonBox">
+            <a class="savebtn" href="/" th:text="임시저장"></a>
+            <a class="savebtn" th:href="@{/plan/Preview(planId=${planID})}" th:text="저장"></a>
+        </div>
 </div>
 <script>
     const wrap = document.getElementById('external-events-list');
@@ -1314,6 +1315,5 @@
         e.preventDefault(); // 스크롤 이벤트의 기본 동작을 중지
     });
 </script>
-
 </body>
 </html>
