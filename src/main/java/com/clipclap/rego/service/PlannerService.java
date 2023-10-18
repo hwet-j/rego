@@ -1,6 +1,7 @@
 package com.clipclap.rego.service;
 
 import com.clipclap.rego.model.dto.PlannerDTO;
+import com.clipclap.rego.model.entitiy.Planner;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,5 +19,7 @@ public interface PlannerService {
     List<PlannerDTO> findTop4RecentPlanners();
 
     Integer save(PlannerDTO dto);
+
+    Planner copyPlanner(Integer sourcePlanId, String userEmail);
 
 }
