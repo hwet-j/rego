@@ -34,4 +34,6 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
 
     // 페이징 기능이 있는 질문 목록 조회
     Page<Question> findAll(Pageable pageable);
+
+    List<Question> findByWriter_Email(String email);
 }
