@@ -19,5 +19,4 @@ public interface DetailPlanService {
 
     List<PreviewDTO> findPreview(Integer planId);
 
-
 }

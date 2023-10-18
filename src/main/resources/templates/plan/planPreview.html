@@ -463,7 +463,7 @@
             color: black;
         }
 
-        .button-edit {
+        .button-edit,.startPlanButton {
             padding: 15px
         }
     </style>
@@ -489,15 +489,15 @@
                     루트수정
                 </div>
             </a>
-            <a th:href="@{/plan/Preview(planId=${planID})}">
-                <div class="button-edit"
+            <a th:href="@{|/plan/copy/${planID}|}">
+                <div class="startPlanButton"
                      th:unless="${#strings.toLowerCase(#authentication.principal.username) eq #strings.toLowerCase(userEmail)}">
                     이 플랜으로 시작하기
                 </div>
             </a>
         </div>
         <div class="button-edit" onclick="location.href='/login'" style="text-align:center; cursor:pointer;"
-             th:unless="${#authorization.expression('isAuthenticated()')}"><br>로그인 하러가기<br></div>
+             th:unless="${#authorization.expression('isAuthenticated()')}">로그인 하러가기</div>
     </div>
     <div class="hidden" style="overflow: auto; max-height: 880px;">
         <div id="container-before"></div>

@@ -30,5 +30,7 @@ public interface PlannerRepository extends JpaRepository<Planner, Integer> {
     @Transactional
     @Query("UPDATE Planner p SET p.startDate = :startDate, p.endDate = :endDate WHERE p.planId = :planId")
     void updateStartDateAndEndDate(@Param("planId") Integer planId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+
 }
 

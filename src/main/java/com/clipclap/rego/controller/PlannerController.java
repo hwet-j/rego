@@ -5,6 +5,7 @@ import com.clipclap.rego.model.dto.DetailPlanDTO;
 import com.clipclap.rego.model.dto.FlightInfo;
 import com.clipclap.rego.model.dto.PlannerDTO;
 import com.clipclap.rego.model.dto.TouristAttractionDTO;
+import com.clipclap.rego.model.entitiy.Planner;
 import com.clipclap.rego.repository.PlannerRepository;
 import com.clipclap.rego.repository.TouristAttractionRepository;
 import com.clipclap.rego.service.DetailPlanService;
@@ -255,6 +256,11 @@ public class PlannerController {
 
         return "success";
     }
-
+    @GetMapping("/copy/{planId}")
+    public String copyPlanner(@PathVariable Integer planId, Principal principal) {
+        String loggedInUserEmail = principal.getName();
+        Planner newPlanner = plannerService.copyPlanner(planId, loggedInUserEmail);
+        return "redirect:/plan/detail?planId=" + newPlanner.getPlanId();
+    }
 
 }
