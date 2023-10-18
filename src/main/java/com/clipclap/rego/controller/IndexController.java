@@ -91,7 +91,7 @@ public class IndexController {
 			String username = authentication.getName();
 
 
-			
+
 			return "main";
 		} else {
 
@@ -118,7 +118,7 @@ public class IndexController {
 	public @ResponseBody String admin() {
 		return "어드민 페이지입니다.";
 	}
-	
+
 	//@PostAuthorize("hasRole('ROLE_MANAGER')")
 	//@PreAuthorize("hasRole('ROLE_MANAGER')")
 	@Secured("ROLE_MANAGER")
@@ -149,7 +149,7 @@ public class IndexController {
 			model.addAttribute("user", userRepository.findByEmail(form.getEmail()).get());
 			return "login";
 		}
-	
+
 		/* 닉네임 중복 체크 */
 		if (authService.nicknameDuplicateCheck(form.getNickname()).equals("Duplicate")){
 			model.addAttribute("user", userRepository.findByEmail(form.getEmail()).get());
