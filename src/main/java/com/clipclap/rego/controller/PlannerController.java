@@ -1,10 +1,9 @@
 package com.clipclap.rego.controller;
 
 
-import com.clipclap.rego.model.dto.DetailPlanDTO;
-import com.clipclap.rego.model.dto.FlightInfo;
-import com.clipclap.rego.model.dto.PlannerDTO;
-import com.clipclap.rego.model.dto.TouristAttractionDTO;
+import com.clipclap.rego.model.dto.*;
+import com.clipclap.rego.model.entitiy.PlannerDetail;
+import com.clipclap.rego.repository.DetailPlanRepository;
 import com.clipclap.rego.repository.PlannerRepository;
 import com.clipclap.rego.repository.TouristAttractionRepository;
 import com.clipclap.rego.service.DetailPlanService;
@@ -18,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -31,6 +31,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +49,7 @@ public class PlannerController {
     private final PlannerRepository plannerRepository;
     private final DetailPlanService detailPlanService;
     private final PlannerService plannerService;
+    private final DetailPlanRepository detailPlanRepository;
 
     @GetMapping("/list")
     public String myPlanList(Model model , PlannerDTO plannerDTO ) {
@@ -146,20 +149,86 @@ public class PlannerController {
 
     @PostMapping("/addPlanwithfly")
     @ResponseBody
-    public String myPlanAddwithFly(@RequestBody JsonNode requestData) {
+    @Transactional
+    public Integer myPlanAddwithFly(@RequestBody JsonNode requestData) {
         ObjectMapper objectMapper = new ObjectMapper();
 
         JsonNode formDataNode = requestData.get("formData");
         JsonNode flightInfoNode = requestData.get("flightInfo");
 
-        System.out.println(flightInfoNode);
-        System.out.println(formDataNode);
+        try {
+            FlightInfo flightInfoDTO = objectMapper.treeToValue(flightInfoNode, FlightInfo.class);
+            TravelInfoDTO travelInfoDTO = objectMapper.treeToValue(formDataNode, TravelInfoDTO.class);
+
+            // System.out.println(flightInfoDTO.getRoutes().size());
+            // 왕복 정보만 존재하기 때문에 이렇게 가능하지만 편도를 구현한다면 조건을 만들어서 구현
+            RouteInfo fromHome = flightInfoDTO.getRoutes().get(0);
+            RouteInfo toHome = flightInfoDTO.getRoutes().get(1);
+
+            // Plan 생성
+            PlannerDTO plannerDTO = new PlannerDTO();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            plannerDTO.setNumberOfPeople(Integer.parseInt(travelInfoDTO.getNumberOfPeople()));
+            plannerDTO.setUserEmail(travelInfoDTO.getUserEmail());
+            plannerDTO.setContent(travelInfoDTO.getContent());
+            plannerDTO.setType(travelInfoDTO.getType());
+            plannerDTO.setStartDate(LocalDate.parse(travelInfoDTO.getStartDate(), formatter));
+            plannerDTO.setEndDate(LocalDate.parse(travelInfoDTO.getEndDate(), formatter));
+
+            System.out.println(LocalDateTime.parse(flightInfoDTO.getArrivalDate() + "T" + fromHome.getDepartureTime()));
+            System.out.println(LocalDateTime.parse(flightInfoDTO.getArrivalDate() + "T" + fromHome.getDepartureTime()));
+
+            Integer id = plannerService.save(plannerDTO);
+
+            String priceString = flightInfoDTO.getPrice().replace(",", "").trim();
 
 
+            // DetailPlan에 저장하기 위해 객체 입력 (가는편)
+            PlannerDetail fromHomePlan = new PlannerDetail();
+
+            fromHomePlan.setDetailPlanId(1);
+            fromHomePlan.setPlan(plannerRepository.findById(id).get());
+            fromHomePlan.setContent("Go");
+            fromHomePlan.setStartTime(LocalDateTime.parse(flightInfoDTO.getDepartureDate() + "T" + fromHome.getDepartureTime()));
+            fromHomePlan.setEndTime(LocalDateTime.parse(flightInfoDTO.getDepartureDate() + "T" + fromHome.getArrivalTime()));
+            fromHomePlan.setAllday(true);
+            fromHomePlan.setTouristAttraction(touristAttractionRepository.findById(1000).get());
+            fromHomePlan.setPrice(Integer.parseInt(priceString));
+            fromHomePlan.setAirlineImg(fromHome.getAirlineImg());
+            fromHomePlan.setAirlineName(fromHome.getAirlineName());
+            fromHomePlan.setDepartureTime(fromHome.getDepartureTime());
+            fromHomePlan.setDepartureAirport(fromHome.getDepartureAirport());
+            fromHomePlan.setArrivalTime(fromHome.getArrivalTime());
+            fromHomePlan.setArrivalAirport(fromHome.getArrivalAirport());
+
+            detailPlanRepository.save(fromHomePlan);
+            // 오는편
+            PlannerDetail toHomePlan = new PlannerDetail();
+
+            toHomePlan.setDetailPlanId(2);
+            toHomePlan.setPlan(plannerRepository.findById(id).get());
+            toHomePlan.setContent("Re");
+            toHomePlan.setStartTime(LocalDateTime.parse(flightInfoDTO.getArrivalDate() + "T" + toHome.getDepartureTime()));
+            toHomePlan.setEndTime(LocalDateTime.parse(flightInfoDTO.getArrivalDate() + "T" + toHome.getArrivalTime()));
+            toHomePlan.setAllday(true);
+            toHomePlan.setTouristAttraction(touristAttractionRepository.findById(1001).get());
+            toHomePlan.setPrice(Integer.parseInt(priceString));
+            toHomePlan.setAirlineImg(toHome.getAirlineImg());
+            toHomePlan.setAirlineName(toHome.getAirlineName());
+            toHomePlan.setDepartureTime(toHome.getDepartureTime());
+            toHomePlan.setDepartureAirport(toHome.getDepartureAirport());
+            toHomePlan.setArrivalTime(toHome.getArrivalTime());
+            toHomePlan.setArrivalAirport(toHome.getArrivalAirport());
+
+            detailPlanRepository.save(toHomePlan);
+
+            return id;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return null;
-//        Integer id = 2;
-//        return "redirect:/plan/detail?planId=" + id;
     }
 
 

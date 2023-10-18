@@ -38,9 +38,7 @@
                 contentType: false, // 중요: 컨텐츠 유형을 false로 설정
                 success: function (data) {
                     if (data.isValid) {
-                        alert("유효성 통과");
                         if(flightInfo == null){
-                            alert("비행정보 없음");
                             $.ajax({
                                 type: "POST",
                                 url: "/plan/addPlan",
@@ -55,8 +53,6 @@
                                 }
                             });
                         } else {
-                            alert("비행정보 있음");
-
                             var formInfo = {
                                 type: $("#search-type").val(),
                                 userEmail: $("#userEmail").val(),
@@ -66,13 +62,6 @@
                                 numberOfPeople: $("#numberOfPeople").val()
                             };
 
-                            // JavaScript 객체를 JSON 문자열로 변환
-                            // var formDataJSON = JSON.stringify(formInfo);
-                            // var flightInfoJSON = JSON.stringify(flightInfo);
-                            var formDataArray = [formInfo];
-                            var flightInfoArray = [flightInfo];
-                            // console.log(formDataJSON);
-                            // console.log(flightInfoJSON);
                             console.log(formInfo);
                             console.log(flightInfo);
                             $.ajax({
@@ -85,7 +74,7 @@
                                 processData: false,
                                 contentType: "application/json",
                                 success: function (data) {
-                                    alert('썽공');
+                                    window.location.href = "/plan/detail?planId="+data;
                                 },
                                 error: function (xhr, status, error) {
                                     console.error(error); // 오류 메시지 확인
@@ -195,13 +184,13 @@
 
                     <div class="label-box" style="position: relative;">
                         <label class="input-label">여행 시작일</label>
-                        <input class="input-content" id="startDate" name="startDate" type="date">
+                        <input class="input-content" id="startDate" name="startDate" th:value="${flightInfo != null ? flightInfo.departureDate : ''}" type="date">
                         <div class="error" id="startDateError"></div>
                     </div>
 
                     <div class="label-box" style="position: relative;">
                         <label class="input-label">여행 종료일</label>
-                        <input class="input-content" id="endDate" name="endDate" type="date">
+                        <input class="input-content" id="endDate" th:value="${flightInfo != null ? flightInfo.arrivalDate : ''}" name="endDate" type="date">
                         <div class="error" id="endDateError"></div>
                         <div class="error" id="endDateAfterStartDateError"></div>
                     </div>

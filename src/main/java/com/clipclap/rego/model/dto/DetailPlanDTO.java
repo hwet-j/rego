@@ -11,6 +11,16 @@ public class DetailPlanDTO {
     private String endTime;
     private boolean allDay;
     private Integer touristAttractionId;
+    private Integer price;
+
+
+    /* 항공정보 */
+    private String airlineImg;
+    private String airlineName;
+    private String departureTime;
+    private String departureAirport;
+    private String arrivalTime;
+    private String arrivalAirport;
 
     /*
     private String type; // 항공, 식당, 관광지 등등...
