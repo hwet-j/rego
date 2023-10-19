@@ -175,4 +175,11 @@ public class PlannerServiceImpl implements PlannerService {
         return updatePlannerCnt;
     }
 
+    @Override
+    public void changeIsComplete(Integer planId) {
+        Planner planner = plannerRepository.findByPlanId(planId);
+        planner.setIsWritten(1);
+        plannerRepository.save(planner);
+    }
+
 }
