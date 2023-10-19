@@ -149,6 +149,9 @@
                         <table>
                             <!-- 첫 번째 루트 (편도) -->
                             <tr>
+                                <td>
+                                    <div class="flightDate" th:text="${departureDate}"></div>
+                                </td>
                                 <td><div class="Airline">
                                     <span><img th:src="${flight.routes[0].airlineImg}" alt="${flight.routes[0].airlineName}" width="50"></span><br>
                                     <span class="airlineName" th:text="${flight.routes[0].airlineName}"></span>
@@ -172,6 +175,9 @@
                             </tr>
                             <!-- 두 번째 루트 (복귀) -->
                             <tr>
+                                <td>
+                                    <div class="flightDate" th:text="${arrivalDate}"></div>
+                                </td>
                                 <td><div class="Airline">
                                     <span><img th:src="${flight.routes[1].airlineImg}" alt="${flight.routes[1].airlineName}" width="50"></span><br>
                                     <span class="airlineName" th:text="${flight.routes[1].airlineName}"></span>
