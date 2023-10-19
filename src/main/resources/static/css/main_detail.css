@@ -560,3 +560,8 @@ object-fit: cover;
     width: 30px;
     height: 30px;
 }
+
+.custom-modal-width{
+    width: 700px;
+    height: 1000px;
+}

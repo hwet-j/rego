@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link href="/css/main_detail.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <title>Welcome to Planner!</title>
 </head>
@@ -17,7 +18,8 @@
 <div class="nav">
     <ul class="" style="list-style-type:none;">
         <li class="">
-            <a class="logo" th:href="@{/}"><img src="/img/logo.png" style="float: left; width: 63px; height: 58px; margin-left: 10px; background-repeat: no-repeat;"></a>
+            <a class="logo" th:href="@{/}"><img src="/img/logo.png"
+                                                style="float: left; width: 63px; height: 58px; margin-left: 10px; background-repeat: no-repeat;"></a>
             <div class="nav-left"
                  style="float:left;   margin-left: 440px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 500;">
                 <a class="" th:href="@{/flightResult}"
@@ -157,7 +159,6 @@
             -->
 
 
-
         </div>
     </div>
 
@@ -196,51 +197,99 @@
 <script th:inline="javascript">
     /* Thymeleaf에서 모델 변수를 JavaScript 변수로 가져오기 */
     var touristAttractionList = [[${touristAttractionList}]];
+    /* 로그인 상태를 가져오기 */
+    var isLoggedIn = [[${#authorization.expression('isAuthenticated()')}]];
 
-    document.addEventListener("DOMContentLoaded", function() {
+    //불러오는 card-box의 좋아요 상태를체크해주는 비동기함수
+    function checkLikeStatus(attractionId, callback) {
+        // 서버에 찜 상태 확인 요청
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/likeAttraction/checkLike?attractionId=" + attractionId, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var response = xhr.responseText;
+                console.log(response); // 이 부분에서 서버 응답을 콘솔에 로깅합니다.
+                callback(response.trim());
+            }
+        };
+        xhr.send();
+    }
+
+    // '좋아요' 상태를 토글하는 비동기 함수
+    function toggleLikeStatus(attractionId, callback) {
+        // 서버에 '좋아요' 상태 변경 요청
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/likeAttraction/toggleLike", true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var newStatus = xhr.responseText;
+                callback(newStatus.trim());
+            }
+        };
+        xhr.send("attractionId=" + attractionId);
+    }
+
+    // 이미지 클릭하면 알림창으로 관광지 정보를 출력해줄 함수
+    function infoFuntion(attractionObj) {
+        Swal.fire({
+            title: `${attractionObj.touristAttractionName}`,
+            imageUrl: `${attractionObj.image}`,
+            imageWidth: 800,
+            imageHeight: 600,
+            customClass: {      // 클래스명을 줘서 알림창의 크기를 조절이 가능함
+                popup: 'custom-modal-width',
+            },
+            html: `<div>
+                  <div class="attraction-address">주소: ${attractionObj.address}</div>
+                  <div class="attraction-address">소개: ${attractionObj.introduction}</div>
+               </div>`
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
         var attractionListContainer = document.getElementById("attraction-list");
         attractionListContainer.innerHTML = '';
 
-         console.log(touristAttractionList);
+        console.log(touristAttractionList);
 
         // 새로운 목록을 추가 (알맞게 정보를 수정)
-        touristAttractionList.forEach(function(attraction) {
+        touristAttractionList.forEach(function (attraction) {
             //li 만들고 class="card-box"
             var li = document.createElement("li");
             li.classList.add("card-box");
 
             // 'li' 요소에 'data-country' 속성을 추가합니다. 이 속성은 나중에 필터링할 때 사용됩니다.
-            li.setAttribute("data-country", attraction.countryName); // 속성에 국가 추가
-            li.setAttribute("data-city", attraction.countryCity); //  속성에 도시 추가
-            li.setAttribute("data-type", attraction.contentType); // 속성에 타입 추가
+            // li.setAttribute("data-country", attraction.countryName); // 속성에 국가 추가
+            // li.setAttribute("data-city", attraction.countryCity); //  속성에 도시 추가
+            // li.setAttribute("data-type", attraction.contentType); // 속성에 타입 추가
 
 
-                // 이미지 요소 생성
-                var img = document.createElement("img");
-                img.src = attraction.image;     // 이미지 URL은 attraction 객체에서 실제 이미지 URL 필드로 수정해야 합니다
-                img.classList.add("card-image");
+            // 이미지 요소 생성
+            var img = document.createElement("img");
+            img.src = attraction.image;     // 이미지 URL은 attraction 객체에서 실제 이미지 URL 필드로 수정해야 합니다
+            img.classList.add("card-image");
 
-                // 이름 텍스트 생성
-                var nameText = document.createElement("p");
-                nameText.textContent = " " + attraction.touristAttractionName;
-                nameText.classList.add("attraction-name");
+            // 이름 텍스트 생성
+            var nameText = document.createElement("p");
+            nameText.textContent = " " + attraction.touristAttractionName;
+            nameText.classList.add("attraction-name");
 
-                // div 요소생성
-                var div=document.createElement("div");
-                div.classList.add("lineDivide");
+            // div 요소생성
+            var div = document.createElement("div");
+            div.classList.add("lineDivide");
 
-                    // 도시 텍스트 생성
-                    var addressText = document.createElement("p");
-                    addressText.textContent = " " + attraction.cityName;
-                    addressText.classList.add("attraction-cityName");
-
-                    //이미지 미리 만들기
-                    var likeImg = document.createElement("img");
-                    likeImg.classList.add("like-img"); // 클래스를 미리 추가합니다.
+            // 도시 텍스트 생성
+            var addressText = document.createElement("p");
+            addressText.textContent = "주소 : " + attraction.address;
+            addressText.classList.add("attraction-address");
+            //이미지 미리 만들기
+            var likeImg = document.createElement("img");
+            likeImg.classList.add("like-img"); // 클래스를 미리 추가합니다.
 
             // '좋아요' 이미지 클릭 이벤트
-            likeImg.addEventListener('click', function() {
-                toggleLikeStatus(attraction.touristAttractionId, function(newStatus) {
+            likeImg.addEventListener('click', function () {
+                toggleLikeStatus(attraction.touristAttractionId, function (newStatus) {
                     // 새로운 상태에 따라 이미지 변경
                     if (newStatus === "success") {
                         likeImg.src = "/img/like/afterLike.png"; // '좋아요' 상태일 때의 이미지
@@ -254,62 +303,31 @@
             li.appendChild(img);
             li.appendChild(nameText);
             li.appendChild(div);
-                div.appendChild(addressText);
-                div.appendChild(likeImg); // 이미지를 div에 추가합니다.
+            div.appendChild(addressText);
+            div.appendChild(likeImg); // 이미지를 div에 추가합니다.
 
-                    // 찜 상태 확인 및 이미지 설정
-                    checkLikeStatus(attraction.touristAttractionId, function(status) {
-                        likeImg.src = status === "afterLike" ? "/img/like/afterLike.png" : "/img/like/beforeLike.png";
-                    });
+            // 찜 상태 확인 및 이미지 설정
+            checkLikeStatus(attraction.touristAttractionId, function (status) {
+                likeImg.src = status === "afterLike" ? "/img/like/afterLike.png" : "/img/like/beforeLike.png";
+            });
 
             attractionListContainer.appendChild(li);
         });
 
-        //불러오는 card-box의 좋아요 상태를체크해주는 비동기함수
-        function checkLikeStatus(attractionId, callback) {
-            // 서버에 찜 상태 확인 요청
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/likeAttraction/checkLike?attractionId=" + attractionId, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var response = xhr.responseText;
-                    console.log(response); // 이 부분에서 서버 응답을 콘솔에 로깅합니다.
-                    callback(response.trim());
-                }
-            };
-            xhr.send();
-        }
-
-        // '좋아요' 상태를 토글하는 비동기 함수
-        function toggleLikeStatus(attractionId, callback) {
-            // 서버에 '좋아요' 상태 변경 요청
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/likeAttraction/toggleLike", true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var newStatus = xhr.responseText;
-                    callback(newStatus.trim());
-                }
-            };
-            xhr.send("attractionId=" + attractionId);
-        }
 
     });
 
 
-
-
     // 나라 버튼을 눌렀을 때 나라별 도시 목록을 출력해주는 함수
     function countryListFuncion(countryName) {  // 변수 이름을 countryName으로 수정
-        var filteredData = touristAttractionList.filter(function(attraction) {
+        var filteredData = touristAttractionList.filter(function (attraction) {
             return attraction.countryName == countryName;
         });
 
         var uniqueCities = {};
 
         // 중복된 도시를 필터링
-        filteredData.forEach(function(attraction) {
+        filteredData.forEach(function (attraction) {
             uniqueCities[attraction.cityName] = true;
         });
 
@@ -324,7 +342,7 @@
         sightListContainer.innerHTML = '';
 
         // 검색된 도시목록 버튼 생성
-        uniqueCityList.forEach(function(city, index) {
+        uniqueCityList.forEach(function (city, index) {
             var button = document.createElement("button");
             button.className = "fetch-data-button";
             button.setAttribute("data-keyword", city);
@@ -334,51 +352,60 @@
 
         // 도시 버튼 클릭시 실행될 이벤트 등록
         var buttons = document.querySelectorAll(".fetch-data-button");
-        buttons.forEach(function(button) {
-            button.addEventListener("click", function() {
+        buttons.forEach(function (button) {
+            button.addEventListener("click", function () {
                 var keyword = button.getAttribute("data-keyword");  // data-keyword에 설정되어있는 값을 가져와 keyword에 저장
                 cityListFunction(keyword);        // 버튼 클릭시 실행될 함수
             });
         });
 
-
         var attractionListContainer = document.getElementById("attraction-list");
         attractionListContainer.innerHTML = '';
 
-        filteredData.forEach(function(attraction) {
-            var li = document.createElement("li");
-            li.classList.add("card-box");
+        filteredData.forEach(function (attraction) {
 
-            // 이미지 요소 생성
-            var img = document.createElement("img");
-            img.src = attraction.image;  // 이미지 URL은 attraction 객체에서 실제 이미지 URL 필드로 수정해야 합니다
-            img.width = 200;  // 이미지의 가로 크기 설정
-            img.height = 150; // 이미지의 세로 크기 설정
+            var li = document.createElement("li");      // li 요소 생성
+            li.classList.add("card-box");               // 생성한 li 요소에 Class명 추가
 
-            // 이름 텍스트 생성
-            var nameText = document.createElement("p");
-            nameText.textContent = " " + attraction.touristAttractionName;
-            nameText.classList.add("attraction-name");
+            // li 요소에 넣어줄 HTML 작성
+            var html = `
+                        <img src="${attraction.image}" class="card-image">
+                        <p class="attraction-name"> ${attraction.touristAttractionName}</p>
+                        <div class="lineDivide">
+                            <p class="attraction-address">주소: ${attraction.address}</p>
+                            <img class="like-img" src="/img/like/beforeLike.png" alt="좋아요">
+                        </div>
+                    `;
+            // li 내부 HTML 코드 입력
+            li.innerHTML = html;
 
-            // 주소 텍스트 생성
-            var addressText = document.createElement("p");
-            addressText.textContent = " " + attraction.address;
-            addressText.classList.add("attraction-address");
+            // 좋아요 이미지 요소 불러오기
+            var likeImg = li.querySelector(".like-img");
 
-            // 이미지와 텍스트를 <li> 요소에 추가
-            li.appendChild(img);
-            li.appendChild(nameText);
-            li.appendChild(addressText);
+            likeImg.addEventListener('click', function () {
+                toggleLikeStatus(attraction.touristAttractionId, function (newStatus) {
+                    if (newStatus === "success") {
+                        likeImg.src = "/img/like/afterLike.png";
+                    } else if (newStatus === "fail") {
+                        likeImg.src = "/img/like/beforeLike.png";
+                    }
+                });
+            });
+
+            checkLikeStatus(attraction.touristAttractionId, function (status) {
+                likeImg.src = status === "afterLike" ? "/img/like/afterLike.png" : "/img/like/beforeLike.png";
+            });
+
+            // ul요소 (attractionListContainer) 안에 li 추가
             attractionListContainer.appendChild(li);
 
         });
     }
 
-
     // 버튼 클릭 이벤트 핸들러 등록
     var buttons = document.querySelectorAll(".country-button");
-    buttons.forEach(function(button) {
-        button.addEventListener("click", function() {
+    buttons.forEach(function (button) {
+        button.addEventListener("click", function () {
             var keyword = button.getAttribute("data-keyword");  // data-keyword에 설정되어있는 값을 가져와 keyword에 저장
             countryListFuncion(keyword);        // 버튼 클릭시 실행될 함수
         });
@@ -386,7 +413,7 @@
 
     // 도시 버튼을 눌렀을 때 나라별 도시 목록을 출력해주는 함수
     function cityListFunction(cityName) {
-        var filteredData = touristAttractionList.filter(function(attraction) {
+        var filteredData = touristAttractionList.filter(function (attraction) {
             return attraction.cityName == cityName;
         });
 
@@ -396,7 +423,7 @@
         sightListContainer.innerHTML = '';
 
         // 검색된 도시목록 버튼 생성
-        sightList.forEach(function(sight, index) {
+        sightList.forEach(function (sight, index) {
             var button = document.createElement("button");
             button.className = "classify-button";
             button.setAttribute("data-keyword", sight);
@@ -405,8 +432,8 @@
         });
 
         var buttons = document.querySelectorAll(".classify-button");
-        buttons.forEach(function(button) {
-            button.addEventListener("click", function() {
+        buttons.forEach(function (button) {
+            button.addEventListener("click", function () {
                 var keyword = button.getAttribute("data-keyword");  // data-keyword에 설정되어있는 값을 가져와 keyword에 저장
                 sightFuncion(filteredData, keyword);                // 버튼 클릭시 실행될 함수
             });
@@ -416,71 +443,126 @@
         var attractionListContainer = document.getElementById("attraction-list");
         attractionListContainer.innerHTML = '';
 
-        filteredData.forEach(function(attraction) {
-            var li = document.createElement("li");
-            li.classList.add("card-box");
+        filteredData.forEach(function (attraction) {
+            var li = document.createElement("li");      // li 요소 생성
+            li.classList.add("card-box");               // 생성한 li 요소에 Class명 추가
 
-            // 이미지 요소 생성
-            var img = document.createElement("img");
-            img.src = attraction.image;
-            img.width = 200;                // 이미지의 가로 크기 설정
-            img.height = 150;               // 이미지의 세로 크기 설정
+            // li 요소에 넣어줄 HTML 작성
+            var html = `
+                        <img src="${attraction.image}" class="card-image">
+                        <p class="attraction-name"> ${attraction.touristAttractionName}</p>
+                        <div class="lineDivide">
+                            <p class="attraction-address">주소: ${attraction.address}</p>
+                            <img class="like-img" src="/img/like/beforeLike.png" alt="좋아요">
+                        </div>
+                    `;
+            // li 내부 HTML 코드 입력
+            li.innerHTML = html;
 
-    // 이름 텍스트 생성
-    var nameText = document.createElement("p");
-    nameText.textContent = " " + attraction.touristAttractionName;
-    nameText.classList.add("attraction-name");
+            // 좋아요 이미지 요소 불러오기
+            var likeImg = li.querySelector(".like-img");
 
-    // 주소 텍스트 생성
-    var addressText = document.createElement("p");
-    addressText.textContent = " " + attraction.address;
-    addressText.classList.add("attraction-address");
+            likeImg.addEventListener('click', function () {
+                toggleLikeStatus(attraction.touristAttractionId, function (newStatus) {
+                    if (newStatus === "success") {
+                        likeImg.src = "/img/like/afterLike.png";
+                    } else if (newStatus === "fail") {
+                        likeImg.src = "/img/like/beforeLike.png";
+                    }
+                });
+            });
 
-    // 이미지와 텍스트를 <li> 요소에 추가
-    li.appendChild(img);
-    li.appendChild(nameText);
-    li.appendChild(addressText);
-    attractionListContainer.appendChild(li);
+            checkLikeStatus(attraction.touristAttractionId, function (status) {
+                likeImg.src = status === "afterLike" ? "/img/like/afterLike.png" : "/img/like/beforeLike.png";
+            });
+
+            // ul요소 (attractionListContainer) 안에 li 추가
+            attractionListContainer.appendChild(li);
 
         });
     }
 
     function sightFuncion(data, sight) {
-        var filteredData = data.filter(function(attraction) {
+        var filteredData = data.filter(function (attraction) {
             return attraction.contentType == sight;
         });
 
         var attractionListContainer = document.getElementById("attraction-list");
         attractionListContainer.innerHTML = '';
 
-        filteredData.forEach(function(attraction) {
-            var li = document.createElement("li");
-            li.classList.add("card-box");
+        filteredData.forEach(function (attraction) {
+            var li = document.createElement("li");      // li 요소 생성
+            li.classList.add("card-box");               // 생성한 li 요소에 Class명 추가
 
-            // 이미지 요소 생성
-            var img = document.createElement("img");
-            img.src = attraction.image;
-            img.width = 200;                // 이미지의 가로 크기 설정
-            img.height = 150;               // 이미지의 세로 크기 설정
+            // li 요소에 넣어줄 HTML 작성
+            var html = `
+                        <img id="attraction_${attraction.touristAttractionId}" src="${attraction.image}" class="card-image">
+                        <p class="attraction-name"> ${attraction.touristAttractionName}</p>
+                        <div class="lineDivide">
+                            <p class="attraction-address">주소: ${attraction.address}</p>
+                            <img class="like-img" src="/img/like/beforeLike.png" alt="좋아요">
+                        </div>
+                    `;
+            // li 내부 HTML 코드 입력
+            li.innerHTML = html;
 
-    // 이름 텍스트 생성
-    var nameText = document.createElement("p");
-    nameText.textContent = " " + attraction.touristAttractionName;
-    nameText.classList.add("attraction-name");
+            // 이미지 요소에 클릭 이벤트 리스너 추가
+            var img = li.querySelector(".card-image");
+            img.addEventListener("click", function () {
+                // 클릭 시 클로저를 사용하여 attraction 객체를 함수 내에 전달
+                infoFuntion(attraction);
+            });
 
-    // 주소 텍스트 생성
-    var addressText = document.createElement("p");
-    addressText.textContent = "주소: " + attraction.address;
-    addressText.classList.add("attraction-address");
+            // 좋아요 이미지 요소 불러오기
+            var likeImg = li.querySelector(".like-img");
 
-    // 이미지와 텍스트를 <li> 요소에 추가
-    li.appendChild(img);
-    li.appendChild(nameText);
-    li.appendChild(addressText);
-    attractionListContainer.appendChild(li);
+            // 좋아요 이미지에 클릭 이벤트 추가
+            likeImg.addEventListener('click', function () {
+                if (isLoggedIn) {       // isLoggedIn이 true (로그인한 경우)
+                    toggleLikeStatus(attraction.touristAttractionId, function (newStatus) {
+                        var currentSrc = likeImg.src;
+                        if (newStatus === "success") {
+                            if (currentSrc.includes("/img/like/afterLike.png")) {
+                                likeImg.src = "/img/like/beforeLike.png";
+                            } else {
+                                likeImg.src = "/img/like/afterLike.png";
+                            }
+                        } else if (newStatus === "fail") {
+                            // 실패하면 찜 등록기능이 작동안한거니 구현 X
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: '로그인 하시겠습니까?',
+                        text: '찜등록은 로그인 기능입니다.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: '확인',
+                        cancelButtonText: '취소'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // 확인 버튼이 클릭
+                            Swal.fire('확인', '로그인 페이지로 이동합니다.', 'success').then(() => {
+                                window.location.href = '/login';
+                            });
+                        } else if (result.isDismissed) {
+                            // 취소 버튼 클릭 또는 모달을 닫은 경우
+                            Swal.fire('취소됨', '작업이 취소되었습니다.', 'error');
+                        }
+                    });
+
+                }
+            });
+
+            // 하트 이미지를 불러올때 비동기로 체크해서 좋아요를 눌렀는지 확인하여 조건에 맞게 이미지 설정
+            checkLikeStatus(attraction.touristAttractionId, function (status) {
+                likeImg.src = status === "afterLike" ? "/img/like/afterLike.png" : "/img/like/beforeLike.png";
+            });
+
+            // ul요소 (attractionListContainer) 안에 li 추가
+            attractionListContainer.appendChild(li);
         });
     }
-
 
 </script>
 <!--<script>

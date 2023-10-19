@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/plan_list.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <title>리스트</title>
 
@@ -11,7 +12,33 @@
 <body>
 
 <script>
-    // 버튼 클릭 이벤트 핸들러
+    // 버튼 클릭 이벤트 핸들러(로그인 안했을경우)
+    document.addEventListener('DOMContentLoaded', function () {
+        // JavaScript 코드
+        var heartLogin = document.getElementById('heartLogin');
+        if (heartLogin) {
+            heartLogin.addEventListener('click', function (event) {
+                Swal.fire({
+                    title: '로그인 하시겠습니까?',
+                    text: '찜등록은 로그인 기능입니다.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: '확인',
+                    cancelButtonText: '취소'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // 확인 버튼이 클릭
+                        Swal.fire('확인', '로그인 페이지로 이동합니다.', 'success').then(() => {
+                            window.location.href = '/login';
+                        });
+                    } else if (result.isDismissed) {
+                        // 취소 버튼 클릭 또는 모달을 닫은 경우
+                        Swal.fire('취소됨', '작업이 취소되었습니다.', 'error');
+                    }
+                });
+            });
+        }
+    });
 
     function buttonHeart(planId) {
         var buttonId = 'heartButton_' + planId;
@@ -22,7 +49,7 @@
         xhr.open('POST', '/plan/vote/' + planId, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
 
-        xhr.onload = function() {
+        xhr.onload = function () {
             if (xhr.status === 200) {
                 var img = document.getElementById('heartImage_' + planId);
                 var currentSrc = img.src;
@@ -49,13 +76,13 @@
 <div class="background2"></div>
 
 
-
 <div class="container">
 
     <div class="nav">
         <ul class="" style="list-style-type:none;">
             <li class="">
-                <a class="logo" th:href="@{/}"><img src="/img/logo.png" style="float: left; width: 63px; height: 58px; margin-left: 10px; background-repeat: no-repeat;"></a>
+                <a class="logo" th:href="@{/}"><img src="/img/logo.png"
+                                                    style="float: left; width: 63px; height: 58px; margin-left: 10px; background-repeat: no-repeat;"></a>
                 <div class="nav-left"
                      style="float:left;   margin-left: 440px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 500;">
                     <a class="" th:href="@{/flightResult}"
@@ -93,54 +120,51 @@
         <div class="card-list" th:each="item : ${planList}">
 
             <a th:href="@{|/plan/detail?planId=${item.planId}|}">
-                <div>
-
-                    <div class="image-container">
-                        <div class="left-side">
-                            <div>
-                                <img class="left-image" th:src="@{|${item.imagePath}|}"/>
-                            </div>
-                            <div th:text="|여행 테마 : ${item.type}|"></div>
-                            <div th:text="${item.content}"></div>
-
-                            <span th:if="${#authorization.expression('isAuthenticated()')}">
-                                <a href="javascript:void(0);" th:id="'linkButton_' + ${item.planId}" th:onclick="'buttonHeart(' + ${item.planId} + ')'">
-                                    <button class="heart-button">
-                                        <img th:src="${item.voter.contains(#authentication.principal.username) ? '/img/PlanLike.png' : '/img/PlanUnlike.png'}" width="10px;"  th:id="'heartImage_' + ${item.planId}">
-                                    </button>
-                                </a>
-                            </span>
-
-                            <span th:unless="${#authorization.expression('isAuthenticated()')}">
-                                <a th:href="@{|/login|}">
-                                     <img src="/img/PlanUnlike.png" width="20px;">
-                                </a>
-                            </span>
+                <div class="image-container">
+                    <div class="left-side">
+                        <div>
+                            <img class="left-image" th:src="@{|${item.imagePath}|}"/>
                         </div>
+                        <div th:text="|여행 테마 : ${item.type}|"></div>
+                        <div th:text="${item.content}"></div>
 
-                        <div class="right-side">
-                            <div>
-                                <img class="right-image"  th:src="@{|/preview/${item.planId}.png|}" onerror="this.src='/preview/map_basic.png'"/>
-                            </div>
+                        <span th:if="${#authorization.expression('isAuthenticated()')}">
+                            <a href="javascript:void(0);" th:id="'linkButton_' + ${item.planId}"
+                               th:onclick="'buttonHeart(' + ${item.planId} + ')'">
+                                <button class="heart-button">
+                                    <img class="heart-img"
+                                         th:src="${item.voter.contains(#authentication.principal.username) ? '/img/PlanLike.png' : '/img/PlanUnlike.png'}"
+                                         th:id="'heartImage_' + ${item.planId}">
+                                </button>
+                            </a>
+                        </span>
 
-                            <div th:text="|여정시작 : ${item.startDate}|"></div>
-                            <div th:text="|여정종료 : ${item.endDate}|"></div>
-                            <div th:text="|항공 : ${item.flightPrice}|"></div>
-                            <div th:text="|경비 : ${item.withoutFlightPrice}|"></div>
-                        </div>
+                        <span th:unless="${#authorization.expression('isAuthenticated()')}">
+                            <a href="javascript:void(0);" id="heartLogin">
+                                <button class="heart-button">
+                                     <img class="heart-img" src="/img/PlanUnlike.png">
+                                </button>
+                            </a>
+                        </span>
                     </div>
 
+                    <div class="right-side">
+                        <div>
+                            <img class="right-image" th:src="@{|/preview/${item.planId}.png|}"
+                                 onerror="this.src='/preview/map_basic.png'"/>
+                        </div>
+
+                        <div th:text="|여정시작 : ${item.startDate}|"></div>
+                        <div th:text="|여정종료 : ${item.endDate}|"></div>
+                        <div th:text="|항공 : ${item.flightPrice}|"></div>
+                        <div th:text="|경비 : ${item.withoutFlightPrice}|"></div>
                     </div>
-                </a>
+                </div>
+            </a>
+
+        </div>
 
     </div>
-
-</div>
-
-
-
-
-
 
 
 </body>
