@@ -26,8 +26,8 @@ body {
 }
 
 .attraction-image{
-    width:180px;
-    height:150px;
+    width:170px;
+    height:125px;
 
 }
 
@@ -79,10 +79,10 @@ body {
 
 /* SweetAlert창 크기 */
 .custom-modal-width {
-    width: 720px;
+    width: 800px;
 }
 .custom-modal-width2{
-    width: 720px;
+    width: 800px;
 }
 
 .modal-image{
@@ -107,7 +107,8 @@ body {
 }
 
 .fc-event-container{
-    background-color: cornflowerblue;
+    background-color: none;
+    box-shadow: 0px 3px 3px 0px gray;
 }
 
 /* 지도,캘린더를 묶는 cotainer */
@@ -137,11 +138,12 @@ body {
 
 .content-button-container{
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    height: 180px;
-    padding-top: 10px;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        height: 155px;
+        padding-top: 10px;
+        padding-left: 38px;
 }
 
 #searchSelect{
@@ -157,6 +159,7 @@ body {
 #wrap{
     display: flex;
     height: 200px;
+    width: 1628px;
 }
 
 #calendar-wrap {
@@ -180,8 +183,8 @@ body {
 #external-events-list{
     display: flex;
     flex-direction: row;
-    overflow-x: auto;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
 
     /* 스크롤바 숨김 */
     &::-webkit-scrollbar {
@@ -229,9 +232,9 @@ body {
     position: absolute;
     bottom: 23px;
     right: 75px;
-    background-color: #ba4bce;
+    background-color: #FFFFFF;
     font-size:13px;
-    color: white;
+    color: black;
     border: none;
     padding: 10px;
     border-radius: 5px;
@@ -241,16 +244,21 @@ body {
 
 .preview-button{
     position: absolute;
-    top: 15px;
-    right: 26px;
-    background-color: #ba4bce;
-    font-size:13px;
-    color: white;
-    border: none;
+    top: 8px;
+    right: 17px;
+    background-image: url('https://github.com/hwet-j/rego/assets/125880480/96f02df3-c3b3-4a2c-98aa-5e7de86886a9');
+    background-size: cover; /* 이미지를 버튼에 맞게 조절 */
+    background-position: center; /* 이미지를 가운데로 정렬 */
+    width: 30px;
+    height:30px;
     padding: 5px;
     border-radius: 5px;
-    height: 30px;
-    width: 30px;
+
+    background-repeat: no-repeat;
+}
+
+.preview-button img {
+    width: 10px;
 }
 
 #modifyButton{
@@ -258,16 +266,17 @@ body {
     bottom: 15px;
     right: 8px;
     font-size:13px;
-    color: white;
+    color: black;
     height: 28px;
     background-color: transparent;
 }
 
 .buttonBox{
-    height: 45px;
+    height: 1px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    margin: 1px 25px 0px 0px;
 }
 
 .savebtn{
