@@ -1,6 +1,7 @@
 package com.clipclap.rego.service;
 
 import com.clipclap.rego.mapper.PlannerMapper;
+import com.clipclap.rego.model.dto.PlanCard;
 import com.clipclap.rego.model.dto.PlannerDTO;
 import com.clipclap.rego.model.entitiy.Planner;
 import com.clipclap.rego.model.entitiy.PlannerDetail;
@@ -13,8 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -26,6 +26,7 @@ public class PlannerServiceImpl implements PlannerService {
     private final DetailPlanRepository detailPlanRepository;
     private final PlannerMapper plannerMapper;
     private final UserRepository userRepository;
+    private final DetailPlanService detailPlanService;
 
 
 
@@ -180,6 +181,105 @@ public class PlannerServiceImpl implements PlannerService {
         Planner planner = plannerRepository.findByPlanId(planId);
         planner.setIsWritten(1);
         plannerRepository.save(planner);
+    }
+
+    @Override
+    public List<PlanCard> findAllPlanCard() {
+        List<Planner> plannerList =  plannerRepository.findAll();
+
+        List<PlanCard> planCardList = new ArrayList<>();
+
+        for (Planner plan : plannerList) {
+            int flight = detailPlanService.calculateTotalPriceForPlanWithFlight(plan.getPlanId());
+            int withoutFlight = detailPlanService.calculateTotalPriceForPlanWithoutFlight(plan.getPlanId());
+            List<User> voters = plannerRepository.findVotersByPlanId(plan.getPlanId());
+
+
+
+
+            PlanCard planCard = new PlanCard();
+            planCard.setPlanId(plan.getPlanId());
+            planCard.setType(plan.getType());
+            planCard.setContent(plan.getContent());
+            planCard.setStartDate(plan.getStartDate());
+            planCard.setEndDate(plan.getEndDate());
+            planCard.setUserEmail(plan.getUser().getEmail());
+            planCard.setNumberOfPeople(plan.getNumberOfPeople());
+            planCard.setImagePath(plan.getImagePath());
+            planCard.setFlightPrice(String.valueOf(flight));
+            planCard.setWithoutFlightPrice(String.valueOf(withoutFlight));
+
+            Set<String> voteEmails = new HashSet<>();
+            if (voters != null) {
+                for (User user : voters) {
+                    voteEmails.add(user.getEmail());
+                }
+            }
+            planCard.setVoter(voteEmails);
+
+            planCardList.add(planCard);
+        }
+
+        return planCardList;
+    }
+
+    @Override
+    public void vote(Integer planId,String email) {
+        Optional<Planner> optionalPlanner = plannerRepository.findById(planId);
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+
+        List<User> voters = plannerRepository.findVotersByPlanId(planId);
+
+        Set<String> voteEmails = new HashSet<>();
+        if (voters != null) {
+            for (User user : voters) {
+                voteEmails.add(user.getEmail());
+            }
+        }
+
+        Planner planner = null;
+        User user = null;
+        if (optionalPlanner.isPresent()){
+            planner = optionalPlanner.get();
+        }
+        if (optionalUser.isPresent()){
+            user = optionalUser.get();
+        }
+
+        if(!voteEmails.contains(email)){
+            System.out.println("11111111111");
+            planner.getVoter().add(user);
+            plannerRepository.save(planner);
+        } else {
+            System.out.println("22222222222");
+            planner.getVoter().remove(user);
+            plannerRepository.save(planner);
+        }
+
+
+    }
+
+    @Override
+    public List<Integer> userPlanVotes(String email) {
+        List<Integer> planIds = plannerRepository.findAllPlanIds();
+
+        List<Integer> list = new ArrayList<>();
+
+        for(Integer id : planIds){
+            List<User> voters = plannerRepository.findVotersByPlanId(id);
+
+            Set<String> voteEmails = new HashSet<>();
+            if (voters != null) {
+                for (User user : voters) {
+                    if(user.getEmail().equals(email)){
+                        list.add(id);
+                    }
+                }
+            }
+        }
+
+        return list;
     }
 
 }

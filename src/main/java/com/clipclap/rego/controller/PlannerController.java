@@ -7,6 +7,7 @@ import com.clipclap.rego.model.entitiy.PlannerDetail;
 import com.clipclap.rego.repository.DetailPlanRepository;
 import com.clipclap.rego.repository.PlannerRepository;
 import com.clipclap.rego.repository.TouristAttractionRepository;
+import com.clipclap.rego.repository.UserRepository;
 import com.clipclap.rego.service.DetailPlanService;
 import com.clipclap.rego.service.PlannerService;
 import com.clipclap.rego.service.TouristAttractionService;
@@ -52,11 +53,13 @@ public class PlannerController {
     private final DetailPlanService detailPlanService;
     private final PlannerService plannerService;
     private final DetailPlanRepository detailPlanRepository;
+    private final UserRepository userRepository;
 
     @GetMapping("/list")
     public String myPlanList(Model model , PlannerDTO plannerDTO ) {
 
-        List<PlannerDTO> planList = plannerService.findByAllId();
+        List<PlanCard> planList = plannerService.findAllPlanCard();
+
 
         model.addAttribute("planList", planList);
 
@@ -370,4 +373,28 @@ public class PlannerController {
         plannerService.changeIsComplete(planId);
         return "redirect:/plan/Preview?planId="+planId;
     }
+
+
+    @PostMapping("/vote/{id}")
+    @ResponseBody
+    public String planVote(@PathVariable("id") Integer id,Principal principal){
+        principal.getName();
+        plannerService.vote(id, principal.getName());
+
+        return "Success";
+    }
+
+
+    @GetMapping("/test")
+    @ResponseBody
+    public String asdlasdf(){
+        List<Integer> list = plannerService.userPlanVotes("ghlckd5424@gmail.com");
+
+        for (Integer id: list){
+            System.out.println("id = " + id);
+        }
+
+        return "gg";
+    }
+
 }

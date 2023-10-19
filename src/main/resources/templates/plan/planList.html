@@ -5,8 +5,46 @@
     <link rel="stylesheet" href="/css/plan_list.css">
 
     <title>리스트</title>
+
+
 </head>
 <body>
+
+<script>
+    // 버튼 클릭 이벤트 핸들러
+
+    function buttonHeart(planId) {
+        var buttonId = 'heartButton_' + planId;
+        var button = document.getElementById(buttonId);
+
+        // AJAX 요청을 보냅니다.
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/plan/vote/' + planId, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var img = document.getElementById('heartImage_' + planId);
+                var currentSrc = img.src;
+
+                // 이미지 경로를 변경하거나 토글합니다.
+                if (currentSrc.includes('PlanUnlike.png')) {
+                    img.src = '/img/PlanLike.png'; // 이미지를 좋아요 이미지로 변경
+                } else {
+                    img.src = '/img/PlanUnlike.png'; // 이미지를 다시 좋아요하지 않음 이미지로 변경
+                }
+            } else {
+                console.error('서버 오류');
+            }
+        };
+
+        xhr.send();
+    }
+
+
+</script>
+
+
 <div class="background"></div>
 <div class="background2"></div>
 
@@ -63,6 +101,20 @@
                             </div>
                             <div th:text="|여행 테마 : ${item.type}|"></div>
                             <div th:text="${item.content}"></div>
+
+                            <span th:if="${#authorization.expression('isAuthenticated()')}">
+                                <a href="javascript:void(0);" th:id="'linkButton_' + ${item.planId}" th:onclick="'buttonHeart(' + ${item.planId} + ')'">
+                                    <button class="heart-button">
+                                        <img th:src="${item.voter.contains(#authentication.principal.username) ? '/img/PlanLike.png' : '/img/PlanUnlike.png'}" width="10px;"  th:id="'heartImage_' + ${item.planId}">
+                                    </button>
+                                </a>
+                            </span>
+
+                            <span th:unless="${#authorization.expression('isAuthenticated()')}">
+                                <a th:href="@{|/login|}">
+                                     <img src="/img/PlanUnlike.png" width="20px;">
+                                </a>
+                            </span>
                         </div>
 
                         <div class="right-side">
@@ -72,6 +124,8 @@
 
                             <div th:text="|여정시작 : ${item.startDate}|"></div>
                             <div th:text="|여정종료 : ${item.endDate}|"></div>
+                            <div th:text="|항공 : ${item.flightPrice}|"></div>
+                            <div th:text="|경비 : ${item.withoutFlightPrice}|"></div>
                         </div>
                     </div>
 

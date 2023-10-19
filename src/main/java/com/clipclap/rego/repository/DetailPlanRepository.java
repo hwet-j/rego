@@ -30,4 +30,14 @@ public interface DetailPlanRepository extends JpaRepository<PlannerDetail, Integ
 
     List<PlannerDetail> findByPlan(Planner sourcePlanner);
 
+    // 비행정보 금액
+    @Query("SELECT SUM(pd.price) FROM PlannerDetail pd WHERE pd.plan.planId = :planId AND pd.airlineImg IS NOT NULL AND pd.airlineImg <> ''")
+    Integer calculateTotalPriceForPlanWithFlight(@Param("planId") int planId);
+
+    // 비행정보 제외 금액
+    @Query("SELECT SUM(pd.price) FROM PlannerDetail pd WHERE pd.plan.planId = :planId AND (pd.airlineImg IS NULL OR pd.airlineImg = '')")
+    Integer calculateTotalPriceForPlanWithoutFlight(@Param("planId") int planId);
+
+
+
 }

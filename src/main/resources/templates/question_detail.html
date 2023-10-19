@@ -1,6 +1,8 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+
 <head>
     <link rel="stylesheet" href="/css/question_detail.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
@@ -11,181 +13,155 @@
     <div class="nav">
         <ul class="" style="list-style-type:none;">
             <li class="">
-                <a class="logo" th:href="@{/}"><img src="/img/logo.png"
-                                                    style="float: left; width: 63px; height: 58px; margin-left: 10px; background-repeat: no-repeat;"></a>
-                <div class="nav-left"
-                     style="float:left;   margin-left: 440px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 500;">
-                    <a class="" th:href="@{/flightResult}"
-                       style="margin-right: 50px; color:#4F54B4;">AIRPORT</a>
-                    <a class="" th:href="@{/plan/add}"
-                       style="margin-right: 50px; color:#4F54B4;">START PLAN</a>
-                    <a class="" th:href="@{/touristAttraction/list}"
-                       style="margin-right: 50px; color:#4F54B4;">ATTRACTIONS</a>
-                    <a class="" th:href="@{/plan/list}"
-                       style="color:#4F54B4;">PLAN LIST</a>
+                <a class="logo" th:href="@{/}">
+                    <img src="/img/logo.png" style="float: left; width: 63px; height: 58px; margin-left: 10px; background-repeat: no-repeat;">
+                </a>
+                <div class="nav-left" style="float: left; margin-left: 440px; margin-top: 19px; font-size: 20px; font-family: 'Roboto', sans-serif; font-weight: 500;">
+                    <a class="" th:href="@{/flightResult}" style="margin-right: 50px; color: #4F54B4;">AIRPORT</a>
+                    <a class="" th:href="@{/plan/add}" style="margin-right: 50px; color: #4F54B4;">START PLAN</a>
+                    <a class="" th:href="@{/touristAttraction/list}" style="margin-right: 50px; color: #4F54B4;">ATTRACTIONS</a>
+                    <a class="" th:href="@{/plan/list}" style="color: #4F54B4;">PLAN LIST</a>
                 </div>
 
-                <div class="nav-right"
-                     style="float:right;    margin-right: 35px; margin-top: 27px;  font-size: 12px;  font-family: 'Roboto', sans-serif; font-weight: 600;">
-                    <a class="" th:href="@{/notice/list}"
-                       style="margin-right: 20px; color:#4F54B4;">공지사항</a>
-                    <a class="" th:href="@{/question/list}"
-                       style="margin-right: 20px; color:#4F54B4;">고객센터</a>
-                    <a class="loginBtn" sec:authorize="isAnonymous()" th:href="@{/login}"
-                       style="margin-right: 20px; color:#4F54B4;">로그인</a>
-                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/myPage}"
-                       style="margin-right: 20px; color:#4F54B4;">마이페이지</a>
-                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/logout}"
-                       style="margin-right: 20px; color:#4F54B4;">로그아웃</a>
-                    <a class="" sec:authorize="hasRole('ADMIN')" th:href="@{/user/list}"
-                       style="color:#4F54B4;">ADMIN</a>
+                <div class="nav-right" style="float: right; margin-right: 35px; margin-top: 27px; font-size: 12px; font-family: 'Roboto', sans-serif; font-weight: 600;">
+                    <a class="" th:href="@{/notice/list}" style="margin-right: 20px; color: #4F54B4;">공지사항</a>
+                    <a class="" th:href="@{/question/list}" style="margin-right: 20px; color: #4F54B4;">고객센터</a>
+                    <a class="loginBtn" sec:authorize="isAnonymous()" th:href="@{/login}" style="margin-right: 20px; color: #4F54B4;">로그인</a>
+                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/}" style="margin-right: 20px; color: #4F54B4;">마이페이지</a>
+                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/logout}" style="margin-right: 20px; color: #4F54B4;">로그아웃</a>
+                    <a class="" sec:authorize="hasRole('ADMIN')" th:href="@{/}" style="color: #4F54B4;">ADMIN</a>
                 </div>
             </li>
         </ul>
     </div>
-    <!-- 모바일에서 화면배율을 디바이스 크기 기준으로 설정 -->
-    <!-- 이게 안되면 pc에서의 100px과 모바일에서의 100px이 디바이스 성능에 따라 달라집니다. -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- 질문 -->
     <div class="main-contents">
         <div class="left-side">
             <h2 class="title" th:text="${question.subject}"></h2>
             <div class="card">
-                <div class="card-body"> <!-- white-space:pre-line; 줄바꿈 인식하고, 공백은 앞쪽만 인식 -->
-                    <div class="card-text" style="white-space:pre-line;" th:text="${question.content}"></div>
-                    <div class="d-flex justify-content-end">  <!--d-flex:한개의 row를 block레벨로 처리-->
-                        <div class="badge bg-light text-dark p-2 text-start">
-                            <div class="text-below" th:if="${question.writer!=null}"
-                                 th:text="${question.writer.email}"></div>
-                        </div>
-                        <div th:text="${#temporals.format(question.createDate,'yyyy-MM-dd HH:mm')}"/>
-                    </div>
-
-                    <div class="box">
-                        <!-- 질문수정버튼 - 로그인해야지만 수정가능, 로그인한유저가 글쓴이와 동일해야만 한다 -->
-                        <a th:href="@{|/question/modify/${question.id}|}"
-                           class="update btn"
-                           sec:authorize="isAuthenticated()"
-                           th:if="${ question.writer!=null and #authentication.getPrincipal().getUsername()==question.writer.email}"
-                           th:text="수정"></a>
-
-                        <!-- 질문삭제버튼 - 로그인해야지만 삭제가능, 로그인한유저가 글쓴이와 동일해야만 한다-->
-                        <a th:href="@{|/question/delete/${question.id}|}"
-                           class="delete btn"
-                           sec:authorize="isAuthenticated()"
-                           th:if="${ question.writer!=null and #authentication.getPrincipal().getUsername()==question.writer.email}"
-                           th:text="삭제"></a>
-
-
+                <div class="card-body">
+                    <!-- white-space: pre-line; 줄바꿈 인식하고, 공백은 앞쪽만 인식 -->
+                    <div class="card-text" style="white-space: pre-line;" th:text="${question.content}"></div>
+                    <div class="d-flex justify-content-end">
+                        <!-- d-flex: 한 개의 row를 block 레벨로 처리 -->
+                        <div class="badge bg-light text-dark p-2 text-start"></div>
                     </div>
                 </div>
+            </div>
+            <div class="nameCard">
+                <div class="text-below" th:if="${question.writer != null}" th:text="${question.writer.email}"></div>
+                <div th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+            </div>
+            <div class="box">
+                <!-- 질문 수정버튼 - 로그인해야만 수정 가능, 로그인한 유저가 글쓴이와 동일해야만 한다 -->
+                <a th:href="@{|/question/modify/${question.id}|}" class="update btn" sec:authorize="isAuthenticated()"
+                   th:if="${question.writer != null and #authentication.getPrincipal().getUsername() == question.writer.email}" th:text="수정"></a>
+                <!-- 질문 삭제버튼 - 로그인해야만 삭제 가능, 로그인한 유저가 글쓴이와 동일해야만 한다 -->
+                <a th:href="@{|/question/delete/${question.id}|}" class="delete btn"
+                   sec:authorize="isAuthenticated() || hasRole('ADMIN')"
+                   th:if="${question.writer != null and #authentication.getPrincipal().getUsername() == question.writer.email}" th:text="삭제"></a>
             </div>
 
             <!-- 답변 수정 버튼 및 수정 폼 요소 추가 -->
             <div class="reply-list" th:each="answer, answerStat : ${question.answerList}">
-                <div class="reply-text" id="reply-text" style="white-space:pre-line;"
-                     th:text="${answer.content}"></div>
-                <div class="d-flex justify-content-end">
-                    <div class="d-flex justify-content-end">
-                        <div class="badge bg-light text-dark p-2 text-start">
-                            <div class="my-2">
-                                <span th:if="${answer.writer!=null}" th:text="${answer.writer.nickname}"></span>
-                            </div>
-                            <div th:text="${#temporals.format(answer.createDate,'yyyy-MM-dd HH:mm')}"/>
-                        </div>
-                    </div>
-
-                    <!-- 답변 수정 버튼 -->
-                    <a href="javascript:void(0);" class="edit btn"
-                       th:if="${answer.writer!=null and #authentication.getPrincipal().getUsername()==answer.writer.email}"
-                       th:data-answerid="${answer.id}"
-                       th:onclick="'toggleEditForm(' + ${answer.id} + ')'"
-                       th:text="수정"></a>
-
+                <div class="reply-body">
+                    <div class="reply-text" th:id="'reply-text_' + ${answer.id}" style="white-space: pre-line;" th:text="${answer.content}"></div>
                     <!-- 수정 폼 요소 (초기에는 숨김) -->
                     <div class="edit-form" th:id="'editForm_' + ${answer.id}" style="display: none;">
-                    <textarea class="form-control"
-                              th:id="'editedContent_' + ${answer.id}" rows="4" cols="50"
-                              th:text="${answer.content}"></textarea>
-                        <button class="btn btn-primary" th:onclick="'saveEdit(' + ${answer.id} + ')'"
-                                th:text="저장"></button>
+                        <textarea class="form-control" th:id="'editedContent_' + ${answer.id}" rows="4" cols="50" th:text="${answer.content}"></textarea>
                     </div>
-
-                    <!-- 답변삭제버튼 - 로그인해야지만 삭제가능, 로그인한유저가 글쓴이와 동일해야만 한다 -->
-                    <a th:href="@{|/answer/delete/${answer.id}|}"
-                       class="delete btn"
-                       sec:authorize="isAuthenticated()"
-                       th:if="${answer.writer!=null and #authentication.getPrincipal().getUsername()==answer.writer.email}"
-                       th:text="삭제"></a>
-
-
+                </div>
+                <div sec:authorize="hasRole('ADMIN')">ddddddddddddddd</div>
+                <div sec:authorize="isAuthenticated()">ffffffffffffffff</div>
+                <div class="d-flex justify-content-end">
+                    <div class="d-flex justify-content-end">
+                        <div class="badge bg-light text-dark p-2 text-start"></div>
+                    </div>
+                </div>
+                <div class="my-2">
+                    <span th:if="${answer.writer != null}" th:text="${answer.writer.nickname}"></span>
+                    <div th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+                </div>
+                <div sec:authorize="hasRole('ADMIN')">ddddddddddddddd</div>
+                <div sec:authorize="isAuthenticated()">ffffffffffffffff</div>
+                <div class="qBox">
+                    <!-- 답변 수정 버튼 -->
+                    <a href="javascript:void(0);" class="edit btn" th:if="${answer.writer != null and #authentication.getPrincipal().getUsername() == answer.writer.email}"
+                       th:id="'editButton_' + ${answer.id}" th:data-answerid="${answer.id}" th:onclick="'toggleEditForm(' + ${answer.id} + ')'" th:text="수정"></a>
+                    <div sec:authorize="hasRole('ADMIN')">ddddddddddddddd</div>
+                    <div sec:authorize="isAuthenticated()">ffffffffffffffff</div>
+                    <!-- 답변 삭제버튼 - 로그인해야지만 삭제 가능, 로그인한 유저가 글쓴이와 동일해야만 한다 -->
+                    <a th:href="@{|/answer/delete/${answer.id}|}" class="delete btn" sec:authorize="isAuthenticated() || hasRole('ADMIN')"
+                       th:if="${answer.writer != null and #authentication.getPrincipal().getUsername() == answer.writer.email}" th:text="삭제"></a>
+                </div>
+                <!-- 답변등록폼 -->
+                <div sec:authorize="isAnonymous()">미로그인</div>
+                <div sec:authorize="isAuthenticated()">로그인</div>
+                <div sec:authorize="hasRole('ADMIN')">
+                    <form id="answerForm" class="my-3" th:object="${answerForm}" th:action="@{|/answer/add/${question.id}|}" method="post">
+                        <!--<form id="answerForm" class="my-3" action="/answer/add" method="post">-->
+                        <!--<input type="text" name="id" value="301"/>-->
+                        <!-- 유효성검사시 에러메세지 출력영역 -->
+                        <!--        <div th:replace="~{form_errors::formErrorsFragment}"></div>-->
+                        <!-- 타임리프의 security 이용 sec:authorize="isAnonymous()"은 로그인하지 않는 경우 -> 답변등록사용불가 sec:authorize="isAuthenticated()"은 로그인한 경우 -> 답변등록사용가능-->
+                        <textarea th:field="*{content}" disabled="disabled" rows="8" class="form-control"></textarea>
+                        <textarea th:field="*{content}" rows="8" class="form-control"></textarea>
+                        <input type="hidden" th:value="${question.writer.email}" th:name="email">
+                        <input type="submit" value="답변등록" class="btn btn-primary">
+                    </form>
                 </div>
             </div>
-
-
-            <!-- 답변등록폼 -->
-            <form id="answerForm" class="my-3"
-                  th:object="${answerForm}"
-                  th:action="@{|/answer/add/${question.id}|}"
-                  method="post"
-                  sec:authorize="isAuthenticated() and hasRole('ADMIN')">
-
-                <!--<form id="answerForm" class="my-3" action="/answer/add" method="post">-->
-                <!--<input type="text" name="id" value="301"/>-->
-                <!-- 유효성검사시 에러메세지 출력영역 -->
-                <!--        <div th:replace="~{form_errors::formErrorsFragment}"></div>-->
-                <!-- 타임리프의 security이용
-                            sec:authorize="isAnonymous()"은 로그인하지않는 경우-> 답변등록사용불가
-                            sec:authorize="isAuthenticated()"은 로그인한 경유-> 답변등록사용가능-->
-                <textarea sec:authorize="isAnonymous()" th:field="*{content}" disabled="disabled" rows="8"
-                          class="form-control"></textarea>
-                <textarea sec:authorize="isAuthenticated()" th:field="*{content}" rows="8"
-                          class="form-control"></textarea>
-                <input type="hidden" th:value="${question.writer.email}" th:name="email">
-                <input type="submit" value="답변등록" class="btn btn-primary"/>
-            </form>
         </div>
-
-
-    </div>
-    <div class="vertical-line"></div>
-    <div class="right-side">
-        <div class="tab1-img5"><h3>피렌체</h3>
-            <p>피렌체(Florence)는 이탈리아의 중부 토스카나(Tuscany) 지역에 위치한 아름다운 도시로, 예술과 문화의 중심지로서 유명합니다. 이 도시는 이탈리아
-                르네상스(Renaissance)의 탄생지로서, 많은 유명한 예술가와 작품들을 탄생시킨 곳으로 알려져 있습니다.<br/><br/>
-
-                피렌체의 주요 관광 명소 중 하나는 '우피치 갈러리(Uffizi Gallery)'입니다. 이 갤러리는 세계적인 화가들의 작품을 소장한 곳으로, 보통 르네상스
-                예술의 명작들을 감상할 수 있습니다. '피렌체 대성당(Florence Cathedral)'는 뚜르네 메종(Metropolitan Cathedral of
-                Saint Mary of the Assumption)로도 불리며, 그 아름다운 돔 구조와 예술적 장식으로 유명합니다. '피트치 궁전(Pitti
-                Palace)'과 '보벨로 정원(Boboli Gardens)'은 르네상스 시대의 궁전과 정원으로, 아름다운 조각과 조경을 즐길 수 있습니다.<br/><br/>
-
-                또한 피렌체는 '다비디(David)'와 같은 미켈란젤로(Michelangelo)의 작품이 있는 '아카데미 갤러리(Academy Gallery)'도 가지고
-                있으며, 레오나르도 다 빈치(Lionardo da Vinci)의 작품도 소장한 '국립 레오나르도 다 빈치 박물관(National Museum of
-                Leonardo da Vinci)'도 있습니다.<br/><br/>
-                피렌체는 또한 아름다운 강 '아르노 강(Arno River)'을 따라 거리를 걸어다니며 로맨틱한 분위기를 느낄 수 있는 도시입니다. 이탈리안 요리와 와인
-                문화도 피렌체에서 풍부하며, 현지 레스토랑에서 토스카나 지역의 특색 있는 요리를 맛볼 수 있습니다. 피렌체는 예술과 아름다움을 사랑하는 이들에게 꼭 가볼 만한
-                곳 중 하나입니다.
-            </p>
-            <div class="blueScreen"></div>
-            <img src="/css/mainCountry/Italy/pirenche.jfif">
+        <div class="vertical-line"></div>
+        <div class="right-side">
+            <div class="tab1-img5">
+                <h3>피렌체</h3>
+                <p>피렌체(Florence)는 이탈리아의 중부 토스카나(Tuscany) 지역에 위치한 아름다운 도시로, 예술과 문화의 중심지로서 유명합니다. 이 도시는 이탈리아
+                    르네상스(Renaissance)의 탄생지로서, 많은 유명한 예술가와 작품들을 탄생시킨 곳으로 알려져 있습니다.<br/><br/>
+                    피렌체의 주요 관광 명소 중 하나는 '우피치 갈러리(Uffizi Gallery)'입니다. 이 갤러리는 세계적인 화가들의 작품을 소장한 곳으로, 보통 르네상스
+                    예술의 명작들을 감상할 수 있습니다. '피렌체 대성당(Florence Cathedral)'는 뚜르네 메종(Metropolitan Cathedral of Saint Mary of
+                    the Assumption)로도 불리며, 그 아름다운 돔 구조와 예술적 장식으로 유명합니다. '피트치 궁전(Pitti Palace)'과 '보벨로 정원(Boboli Gardens)'은
+                    르네상스 시대의 궁전과 정원으로, 아름다운 조각과 조경을 즐길 수 있습니다.<br/><br/>
+                    또한 피렌체는 '다비드(David)'와 같은 미켈란젤로(Michelangelo)의 작품이 있는 '아카데미 갤러리(Academy Gallery)'도 가지고
+                    있으며, 레오나르도 다 빈치(Lionardo da Vinci)의 작품도 소장한 '국립 레오나르도 다 빈치 박물관(National Museum of
+                    Leonardo da Vinci)'도 있습니다.<br/><br/>
+                    피렌체는 또한 아름다운 강 '아르노 강(Arno River)'을 따라 거리를 걸어다니며 로맨틱한 분위기를 느낄 수 있는 도시입니다. 이탈리안 요리와 와인
+                    문화도 피렌체에서 풍부하며, 현지 레스토랑에서 토스카나 지역의 특색 있는 요리를 맛볼 수 있습니다. 피렌체는 예술과 아름다움을 사랑하는 이들에게 꼭 가볼 만한
+                    곳 중 하나입니다.
+                </p>
+                <div class="blueScreen"></div>
+                <img src="/css/mainCountry/Italy/pirenche.jfif">
+            </div>
         </div>
     </div>
 </div>
-</div>
 
-<!-- javascript부분 -- ----------------------------->
+<!-- JavaScript 부분 -->
 <script>
     // 수정 폼 토글 함수
     function toggleEditForm(answerId) {
         var editFormId = 'editForm_' + answerId;
         var editForm = document.getElementById(editFormId);
+
+        var editButtonId = 'editButton_' + answerId;
+        var editButton = document.getElementById(editButtonId);
+
+        var replyTextId = 'reply-text_' + answerId;
+        var replyTextElement = document.getElementById(replyTextId);
+
         if (editForm.style.display === 'none') {
             // 수정 폼을 표시
             editForm.style.display = 'block';
+            replyTextElement.style.display = 'none';
+            editButton.innerText = '저장';
         } else {
             // 수정 폼을 숨김
-            editForm.style.display = 'none';
+            editForm.style display = 'none';
+            replyTextElement.style.display = 'block';
+            editButton.innerText = '수정';
+
+            saveEdit(answerId);
         }
     }
 
@@ -193,7 +169,9 @@
     function saveEdit(answerId) {
         var editedContentId = 'editedContent_' + answerId;
         var editedContent = document.getElementById(editedContentId).value;
-        var replyTextElement = document.getElementById("reply-text");
+
+        var replyTextId = 'reply-text_' + answerId;
+        var replyTextElement = document.getElementById(replyTextId);
         var editFormId = 'editForm_' + answerId;
         var editForm = document.getElementById(editFormId);
 
@@ -227,21 +205,7 @@
 
         editForm.style.display = 'none';
     }
-
 </script>
-
 </body>
+
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-

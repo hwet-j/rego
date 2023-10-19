@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 /*
 
@@ -64,8 +65,8 @@ public class Planner {
     @OneToMany(mappedBy = "detailPlanId", cascade = CascadeType.REMOVE)
     private List<PlannerDetail> detailPlans;
 
-    @OneToMany(mappedBy = "plan", cascade = CascadeType.REMOVE)
-    private List<LikePlan> likePlans;
-
+    @ManyToMany
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    Set<User> voter;
 
 }

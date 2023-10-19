@@ -20,4 +20,8 @@ public interface DetailPlanService {
     List<PreviewDTO> findPreview(Integer planId);
 
     int updateStartTimeAndEndTime(Integer planId, long daysBetween);
+
+    Integer calculateTotalPriceForPlanWithFlight(Integer planId);
+
+    Integer calculateTotalPriceForPlanWithoutFlight(Integer planId);
 }
