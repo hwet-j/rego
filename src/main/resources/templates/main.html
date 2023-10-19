@@ -51,7 +51,7 @@
 
 
                 <div class="nav-left"
-                     style="float:left;   margin-left: 460px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 500;">
+                     style="float:left;   margin-left: 460px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 400;">
                     <a href="#airportSection"
                        style="margin-right: 50px; color:#4F54B4;">AIRPORT</a>
                     <a href="#startPlanSection"
@@ -59,7 +59,7 @@
                     <a href="#recommendSection"
                        style="margin-right: 50px; color:#4F54B4;">RECOMMEND</a>
                     <a href="#aboutSection"
-                       style="color:#4F54B4;">ABOUT</a>
+                       style="color:#4F54B4;">PLAN LIST</a>
                 </div>
                 <div class="nav-right"
                      style="float:right;    margin-right: 35px; margin-top: 27px;  font-size: 12px;  font-family: 'Roboto', sans-serif; font-weight: 600;">
@@ -74,7 +74,7 @@
                        style="margin-right: 20px; color:#4F54B4;">마이페이지</a>
                     <a class="" sec:authorize="isAuthenticated()" th:href="@{/logout}"
                        style="margin-right: 20px; color:#4F54B4;">로그아웃</a>
-                    <a class="" sec:authorize="hasRole('ADMIN')" th:href="@{/}"
+                    <a class="" sec:authorize="hasRole('ADMIN')" th:href="@{/user/list}"
                        style="color:#4F54B4;">ADMIN</a>
                 </div>
             </li>
@@ -661,9 +661,9 @@
 
 
     </div>
-
     <div class="bottom-back">
         <div class="bottom-content">
+    <div id="aboutSection"></div>
             <div class="bottom-title">
                 <h2>준비중인 여행자들의 플래너</h2>
             </div>
@@ -685,7 +685,7 @@
                 </div>
             </div>
 
-            <div id="aboutSection"></div>
+
             <div class="about">
                 <h2 class="about-title">About</h2>
                 <h2 class="about-rkcl">우리가 추구하는 가치</h2>
