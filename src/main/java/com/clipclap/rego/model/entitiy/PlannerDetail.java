@@ -30,6 +30,7 @@ import java.time.LocalDateTime;
 public class PlannerDetail {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer detailPlanId;
 
     @ManyToOne

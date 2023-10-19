@@ -289,10 +289,8 @@
                             var move = function () {
                                 if (numSteps <= 500){
                                     fraction += numSteps / 80;
-                                    console.log("ㅎㅎ");
                                 }else {
                                     fraction += numSteps / 300;
-                                    console.log("ㅋㅋ");
                                 }
 
                                 if (fraction <= numSteps) {
@@ -511,7 +509,7 @@
 
 <div id="map"></div>
 <div id="other-content">
-    <div style="height:50px; background-color:#59BAFF;">
+    <div style="height:5%; background-color:#59BAFF;">
         <div style="text-align:center;" th:if="${#authorization.expression('isAuthenticated()')}">
             <a th:href="@{/plan/detail(planId=${planID})}">
                 <div class="button-edit"
@@ -528,13 +526,13 @@
         <div class="button-edit" onclick="location.href='/login'" style="text-align:center; cursor:pointer;"
              th:unless="${#authorization.expression('isAuthenticated()')}">로그인 하러가기</div>
     </div>
-    <div class="hidden" style="overflow: auto; height: 831px;">
+    <div class="hidden" style="overflow: auto; height: 90%;">
         <div id="container-before"></div>
         <div id="container"></div>
         <div id="container-after"></div>
     </div>
 
-        <div style="bottom: 0px; height:50px; background-color:#59BAFF;">
+        <div style="bottom: 0px; height:5%; background-color:#59BAFF;">
             <div style="text-align:center;">
         <a href="/"><div class="goMain">메인페이지로 이동</div></a>
             </div>
@@ -619,15 +617,15 @@
     const groupedData = {};
 
     // startDate와 endDate 설정
-    const startDate = new Date(document.getElementById('startDate').getAttribute('data-variable')); // 시작 날짜 설정
+    const startDate2 = new Date(document.getElementById('startDate').getAttribute('data-variable')); // 시작 날짜 설정
     const endDate = new Date(document.getElementById('endDate').getAttribute('data-variable')); // 종료 날짜 설정
-
+    const startDate=new Date(startDate2-((9*60*60)*1000));
     previewList.forEach(function (preview) {
         const cityName = preview.cityName;
         const startTime = new Date(preview.startTime);
         const endTime = new Date(preview.endTime);
-        startTime.setHours(startTime.getHours() + 9); // 9시간 추가
-        endTime.setMinutes(endTime.getMinutes() + 539);
+        startTime.setHours(startTime.getHours() +9); // 9시간 추가
+        endTime.setMinutes(endTime.getMinutes() +539);
         const previewDetailId = preview.detailPlanId;
 
         // 시작 시간과 종료 시간이 범위 내에 있는 경우에만 처리
@@ -737,8 +735,8 @@
                 });
             });
 
-            //startTime 및 endTime 표시
-            /*const timeElement = document.createElement('p');
+            /*//startTime 및 endTime 표시
+            const timeElement = document.createElement('p');
              timeElement.textContent = `Start Time: ${data.startTime.toLocaleString()} - End Time: ${data.endTime.toLocaleString()}`;
              dateContainer.appendChild(timeElement);*/
         });
@@ -832,6 +830,10 @@
                     },
                 });
             });
+             /*//startTime 및 endTime 표시
+            const timeElement = document.createElement('p');
+             timeElement.textContent = `Start Time: ${data.startTime.toLocaleString()} - End Time: ${data.endTime.toLocaleString()}`;
+             dateContainer.appendChild(timeElement);*/
         });
 
         container.appendChild(dateContainer);
