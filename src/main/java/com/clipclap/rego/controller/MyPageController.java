@@ -1,10 +1,14 @@
 package com.clipclap.rego.controller;
 
+import com.clipclap.rego.model.dto.PlannerDTO;
+import com.clipclap.rego.model.entitiy.Planner;
 import com.clipclap.rego.model.entitiy.Question;
 import com.clipclap.rego.model.entitiy.User;
+import com.clipclap.rego.repository.PlannerRepository;
 import com.clipclap.rego.repository.QuestionRepository;
 import com.clipclap.rego.service.DataNotFoundException;
 import com.clipclap.rego.service.ImageUpload;
+import com.clipclap.rego.service.PlannerService;
 import com.clipclap.rego.service.UserService;
 import com.clipclap.rego.validation.JoinForm2;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -40,7 +45,8 @@ public class MyPageController {
     @Autowired
     private final QuestionRepository questionRepository;
 
-
+    @Autowired
+    private final PlannerService plannerService;
 
 
 
@@ -53,9 +59,13 @@ public class MyPageController {
             try {
                 User userInfo = userService.getUserByEmail(email);
                 List<Question> userQuestions = questionRepository.findByWriter_Email(email);
+                List<PlannerDTO> myPlanners = plannerService.findByUserEmail(email);
 
                 model.addAttribute("userInfo", userInfo);
                 model.addAttribute("userQuestions", userQuestions);
+                model.addAttribute("myPlanners", myPlanners);
+
+                System.out.println(myPlanners);
             } catch (DataNotFoundException e) {
                 // 이메일로 사용자를 찾을 수 없을 때의 처리
                 model.addAttribute("errorMessage", "사용자 정보를 찾을 수 없습니다.");

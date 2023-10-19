@@ -24,4 +24,5 @@ public interface PlannerService {
 
     int updateContentAndTypeAndNumberOfPeople(Integer planId, String content, String type, int numberOfPeople);
 
+    void changeIsComplete(Integer planId);
 }

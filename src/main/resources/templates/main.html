@@ -175,7 +175,7 @@
                     <li data-tab="tab5">USA</li>
                 </ul>
                 <div class="tab-content">
-                    <div id="tab1" class="tabcontent active" ><a th:href="@{/main/detail}"></a>
+                    <div id="tab1" class="tabcontent active"><a th:href="@{/main/detail}"></a>
                         <div class="tab1-img1"><h2>베네치아</h2>
                             <p>베네치아는 이탈리아의 도시로서, 그 유명한 수도로서도 알려져 있습니다. 이 도시는 아드리아 해의 북쪽 끝에 위치하며, 수십 개의 작은 섬들과 여러 개의 운하로
                                 연결된 고유한 지리적 특징을 가지고 있습니다. 이러한 특징으로 인해 베네치아는 "물의 도시" 또는 "운하의 도시"로 불립니다.<br/><br/>
@@ -634,7 +634,7 @@
             <h1>여행계획 세우기가 힘드신가요?<br/>프로여행러들의 여행계획을 참고해보세요!</h1>
         </div>
 
-
+        <div class="swiper-back"><p>Add expert travel plans to your plans</p></div>
         <!-- Slider main container -->
         <div class="swiper-container">
             <!-- Additional required wrapper -->
@@ -659,7 +659,7 @@
 
         </div>
 
-        <div class="swiper-back">  <p>Add expert travel plans to your plans</p></div>
+
     </div>
 
     <div class="bottom-back">
@@ -669,15 +669,18 @@
             </div>
             <div class="card-box">
                 <div class="card-list" th:each="item : ${findTop4RecentPlanners}">
-                    <div class="card">
-                        <img th:src="@{|/preview/${item.planId}.png|}" onerror="this.src='/preview/map_basic.png'"/>
-                        <div style="width: 300px; height: 33px;">
-                            <div th:text="|${item.startDate} 출발|"
-                                 style="float:left; margin-left:50px; margin-top:5px; font-size:12px; font-family:'Noto sans KR', sans-serif;" ></div>
-                            <div th:text="|${item.endDate} 도착|"
-                                 style="float:left; margin-left:15px; margin-top:5px; font-size:12px; font-family:'Noto sans KR', sans-serif;"></div>
+                    <a th:href="@{|/plan/detail?planId=${item.planId}|}">
+                        <div class="card">
+                            <img th:src="@{|/preview/${item.planId}.png|}" onerror="this.src='/preview/map_basic.png'"/>
+
+                            <div style="width: 300px; height: 33px;">
+                                <div th:text="|${item.startDate} 출발|"
+                                     style="float:left; margin-left:50px; margin-top:5px; font-size:12px; font-family:'Noto sans KR', sans-serif;"></div>
+                                <div th:text="|${item.endDate} 도착|"
+                                     style="float:left; margin-left:15px; margin-top:5px; font-size:12px; font-family:'Noto sans KR', sans-serif;"></div>
+                            </div>
                         </div>
-                    </div>
+                    </a>
 
                 </div>
             </div>
@@ -864,8 +867,6 @@ window.addEventListener('load', function() {
     // 로딩 div를 숨깁니다.
     document.querySelector('.loading').style.display = 'none';
 });
-
-
 
 
 </script>

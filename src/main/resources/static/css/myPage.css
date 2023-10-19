@@ -232,6 +232,41 @@ body {
 .myPlan {
     border: 1px solid #E0E0E0;
     border-radius: 15px;
-    width: 250px;
-        height: 640px;
+    width: 230px;
+    height: 595px;
+    overflow-y: auto; /* 세로로 스크롤 허용 */
+    overflow-x: hidden; /* 가로로 스크롤 방지 */
+    padding: 10px; /* 패딩 추가 */
+
+
 }
+
+.myPlan::-webkit-scrollbar {
+    display: none;
+}
+
+.card {
+    display:flex;
+    flex-direction: column;  /* 자식 요소들을 세로 방향으로 배열합니다. */
+    align-items: center;     /* 자식 요소들을 가로 방향으로 중앙에 배치합니다. */
+
+    width: 200px;
+    border-radius: 15px;
+    box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    margin-top: 30px;
+    margin-left: 15px;
+    text-align:center;
+}
+
+.card img{
+    width: 200px;
+}
+
+.plan-title {
+    float: left;
+    font-family: 'Noto sans KR', sans-serif;
+    padding: 4px 0;
+    font-size: 14px;
+    text-align:center;
+ }
