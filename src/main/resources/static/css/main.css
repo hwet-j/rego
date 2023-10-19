@@ -38,7 +38,7 @@ button {
      flex-direction: column;
      align-items: center;
      justify-content: center;
-
+    z-index: -10;
  }
 
 
@@ -1013,9 +1013,13 @@ font-family: 'Nunito', sans-serif;
   margin-top: 50px;
   width: 1700px;
   height: 540px;
-}
-.swiper-slide{
+  position: relative;
 
+}
+
+.swiper-slide{
+    position: relative;
+    z-index: 2;
 }
 
 .swiper-slide .img {
@@ -1024,6 +1028,7 @@ font-family: 'Nunito', sans-serif;
     height: 530px;
     background-color: white;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+
 }
 
 /*.swiper-slide img {
@@ -1038,13 +1043,14 @@ font-family: 'Nunito', sans-serif;
 }
 
 .swiper-back {
-    position:relative;
+    position:absolute;
     width: 1450px;
     height: 400px;
     background-color: white;
-    z-index: -1;
-    margin-left: 7.5%;
-    margin-top: -20%;
+    z-index: 1;
+    justify-content: center;
+    margin-top: 240px;
+    margin-left: 130px;
     border-radius: 40px;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
 
@@ -1067,7 +1073,6 @@ font-family: 'Nunito', sans-serif;
     height: 1800px;
     background-color: white;
     position: relative; /* 부모 요소를 상대적으로 위치 지정합니다. */
-    z-index: -2;
     text-align:center;
 }
 
@@ -1089,6 +1094,7 @@ font-family: 'Nunito', sans-serif;
     width: 1300px;
     height: 540px;
     margin-left: 11.5%;
+
 
 }
 

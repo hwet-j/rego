@@ -90,6 +90,21 @@
                     내 여행계획</h4>
                 <div class="myPlan">
 
+                    <div th:each="plan : ${myPlanners}">
+                        <a th:href="@{|/plan/detail?planId=${plan.planId}|}">
+                            <div class="card">
+                                <div class="plan-title" th:text="${plan.content}"></div>
+                                <img th:src="@{|/preview/${plan.planId}.png|}"
+                                     onerror="this.src='/preview/map_basic.png'"/>
+                                <div style="width: 200px; height: 30px;">
+                                    <div th:text="|${plan.startDate} 출발|"
+                                         style="float:left; margin-left:23px; margin-top:7px; margin-bottom:30px; font-size:10px; font-family:'Noto sans KR', sans-serif;"></div>
+                                    <div th:text="|${plan.endDate} 도착|"
+                                         style="float:left; margin-left:10px; margin-top:7px; font-size:10px; font-family:'Noto sans KR', sans-serif;"></div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
 
                 </div>
             </div>
