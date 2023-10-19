@@ -367,4 +367,10 @@ public class PlannerController {
         return "redirect:/plan/detail?planId=" + newPlanner.getPlanId();
     }
 
+
+    @RequestMapping("/Complete")
+    public String completePlanner(@RequestParam Integer planId){
+        plannerService.changeIsComplete(planId);
+        return "redirect:/plan/Preview?planId="+planId;
+    }
 }
