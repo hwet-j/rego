@@ -125,7 +125,7 @@
 
         <div style="height:5%; background-color:#59BAFF;">
             <div style="text-align:center;">
-        <a href="/"><div class="goMain">메인페이지로 이동</div></a>
+        <a href="/" id="goMain"><div class="goMain">메인페이지로 이동</div></a>
             </div>
         </div>
 </div>
@@ -137,63 +137,42 @@
     var countMarker = 0;
     var iconMarker;
 
-    document.addEventListener('DOMContentLoaded', function () {
 
-        window.captureMap = function () {
-            setTimeout(function () {
-                const mapContainer = document.getElementById("map-container");
+function captureMap() {
+        const mapContainer = document.getElementById("map");
+        if (mapContainer) {
+            html2canvas(mapContainer, { useCORS: true }).then(function (canvas) {
+                const imageDataURL = canvas.toDataURL("image/png");
 
-                html2canvas(mapContainer, {useCORS: true}).then(function (canvas) {
-                    const imageDataURL = canvas.toDataURL("image/png");
+                const urlParams = new URLSearchParams(window.location.search);
+                const planId = urlParams.get('planId');
 
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const planId = urlParams.get('planId');
+                if (imageDataURL !== null && planId !== null) {
+                    const dataToSend = {
+                        imageDataURL: imageDataURL,
+                        planId: planId
+                    };
 
-                    if (imageDataURL !== null && planId !== null) {
-                        const dataToSend = {
-                            imageDataURL: imageDataURL,
-                            planId: planId
-                        };
-
-                        fetch('/plan/saveImage', {
-                            method: 'POST',
-                            body: JSON.stringify(dataToSend),
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                        }).then(response => response.json())
-                            .then(data => {
-                                // 서버 응답 처리
-                            });
-                    } else {
-                        console.error("imageDataURL 또는 planId가 null입니다.");
-                    }
-                });
-            }, 1500);// 밀리초
-        };
-
-
-        /******************************************************************************************
-         Controller -> Html -> Js 로 받아온 정보의 사용
-         Html에서 Js로 받아올 경우 String으로 변환되어 온다.
-         Controller에서 JSON형식으로 변환하여 전송해 JS에서 String으로 받아온 정보를 JSON타입으로 변환하여 사용한다.
-         ******************************************************************************************/
-        var detailIdMax = document.getElementById('detailIdMax').getAttribute('data-variable');
-        var planID = document.getElementById('planID').getAttribute('data-variable');
-        var startDate = document.getElementById('startDate').getAttribute('data-variable');
-        var endDate = document.getElementById('endDate').getAttribute('data-variable');
-
-        /* 계획 생성 시 사용할 ID값 (다음으로 사용될 DetailPlan PK 값을 가져온다) */
-        let currentEventId = parseInt(detailIdMax) + 1;
-
-        /* INSERT문이 작동될 때(계획을 생성할 때) +1 */
-        function generateEventId() {
-            return String(currentEventId++);
+                    fetch('/plan/saveImage', {
+                        method: 'POST',
+                        body: JSON.stringify(dataToSend),
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    }).then(response => response.json())
+                        .then(data => {
+                            // 서버 응답 처리
+                        });
+                } else {
+                    console.error("imageDataURL 또는 planId가 null입니다.");
+                }
+            });
+        } else {
+            console.error("요소를 찾을 수 없음");
         }
+    }
 
 
-        // updateMap(detailData);
-    });
 
     window.initMap = function () {
 
@@ -254,6 +233,13 @@
             mapTypeControl: false,
             fullscreenControl: false,
         });
+
+        /*google.maps.event.addDomListener(window, 'load', function() {
+            // 이곳에 지도 로딩이 완료된 후 실행할 코드를 작성합니다.
+            captureMap();
+            console.log('load');
+        });*/
+
 
         // console.log("지도지도지도");
         updateMap(detailData);
@@ -459,6 +445,12 @@
 
                 }
             }
+            window.addEventListener('load', function() {
+                captureMap();
+
+                console.log('지도 로딩이 완료되었습니다.');
+            });
+
         }
 
         function attractionMarker(attractionOriginData) {
@@ -536,6 +528,7 @@
             window.attractionMarker = attractionMarker;
 
         }
+
     }
 
 </script>
