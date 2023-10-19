@@ -106,14 +106,18 @@
                             <span th:if="${#authorization.expression('isAuthenticated()')}">
                                 <a href="javascript:void(0);" th:id="'linkButton_' + ${item.planId}" th:onclick="'buttonHeart(' + ${item.planId} + ')'">
                                     <button class="heart-button">
-                                        <img th:src="${item.voter.contains(#authentication.principal.username) ? '/img/PlanLike.png' : '/img/PlanUnlike.png'}" width="10px;"  th:id="'heartImage_' + ${item.planId}">
+                                        <img class="heart-img" th:src="${item.voter.contains(#authentication.principal.username) ? '/img/PlanLike.png' : '/img/PlanUnlike.png'}" th:id="'heartImage_' + ${item.planId}">
                                     </button>
                                 </a>
                             </span>
 
                             <span th:unless="${#authorization.expression('isAuthenticated()')}">
                                 <a th:href="@{|/login|}">
-                                     <img src="/img/PlanUnlike.png" width="20px;">
+                                </a>
+                                <a href="javascript:void(0);" onclick="heartLogin">
+                                    <button class="heart-button">
+                                         <img class="heart-img" src="/img/PlanUnlike.png">
+                                    </button>
                                 </a>
                             </span>
                         </div>

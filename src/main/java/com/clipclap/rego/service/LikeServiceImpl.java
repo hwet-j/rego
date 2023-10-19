@@ -149,10 +149,12 @@ public class LikeServiceImpl implements LikeService {
 
         likeCnt = likeRepository.countByUserAndAttraction(user,touristAttraction);
         if(likeCnt==1){
+            System.out.println("삭제");
             LikeAttraction likeAttraction = likeRepository.findByUserAndAttraction(user,touristAttraction);
-            likeRepository.deleteByLikeId(likeAttraction.getLikeId());
+            likeRepository.delete(likeAttraction);
             return true;
         }else{
+            System.out.println("추가");
             LikeAttraction likeAttraction = new LikeAttraction();
             likeAttraction.setAttraction(touristAttraction);
             likeAttraction.setUser(user);
