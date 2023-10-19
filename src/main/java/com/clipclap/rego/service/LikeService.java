@@ -12,4 +12,8 @@ public interface LikeService {
     List<LikeAttraction> getUserLikes(String userEmail);
 
     List<LikeAttraction> getAttractionLikes(Integer attractionId);
+
+    int countByAttactionIdAndUserEmail(Integer attractionId, String userEmail);
+
+    boolean toggleLike(Integer attractionId, String userEmail);
 }
