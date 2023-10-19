@@ -99,4 +99,66 @@ public class LikeServiceImpl implements LikeService {
         }
         return null;  // 관광지를 찾을 수 없는 경우 빈 목록 또는 예외 처리를 고려
     }
+
+    @Override
+    public int countByAttactionIdAndUserEmail(Integer attractionId, String userEmail) {
+        long likeCnt = 0;
+
+        User user;
+        TouristAttraction touristAttraction;
+
+        Optional<User> optionalUser = userRepository.findByEmail(userEmail);
+        if (optionalUser.isEmpty()){
+            return -1;
+        } else {
+            user = optionalUser.get();
+        }
+
+        Optional<TouristAttraction> optionalTouristAttraction = attractionRepository.findByTouristAttractionId(attractionId);
+        if(optionalTouristAttraction.isEmpty()){
+            return -1;
+        }else {
+            touristAttraction = optionalTouristAttraction.get();
+        }
+
+        likeCnt = likeRepository.countByUserAndAttraction(user,touristAttraction);
+        return (int) likeCnt;
+    }
+
+    @Override
+    public boolean toggleLike(Integer attractionId, String userEmail) {
+        long likeCnt = 0;
+        //user, toursitAttraction 객체 생성
+        User user;
+        TouristAttraction touristAttraction;
+        
+        //DB에 존재하지 않을시 에러이므로 false 존재하면 위의 빈객체에 담음
+        Optional<User> optionalUser = userRepository.findByEmail(userEmail);
+        if (optionalUser.isEmpty()){
+            return false;
+        } else {
+            user = optionalUser.get();
+        }
+
+        Optional<TouristAttraction> optionalTouristAttraction = attractionRepository.findByTouristAttractionId(attractionId);
+        if(optionalTouristAttraction.isEmpty()){
+            return false;
+        }else {
+            touristAttraction = optionalTouristAttraction.get();
+        }
+
+        likeCnt = likeRepository.countByUserAndAttraction(user,touristAttraction);
+        if(likeCnt==1){
+            LikeAttraction likeAttraction = likeRepository.findByUserAndAttraction(user,touristAttraction);
+            likeRepository.deleteByLikeId(likeAttraction.getLikeId());
+            return true;
+        }else{
+            LikeAttraction likeAttraction = new LikeAttraction();
+            likeAttraction.setAttraction(touristAttraction);
+            likeAttraction.setUser(user);
+            likeAttraction.setAddTime(LocalDateTime.now());
+            likeRepository.save(likeAttraction);
+            return true;
+        }
+    }
 }

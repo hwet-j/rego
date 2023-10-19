@@ -427,7 +427,26 @@ color:#9F71FF;
     overflow: hidden;
     duration:200;
 }
-
+.card-image{
+   box-sizing: border-box;
+    display: block;
+    border: 0px;
+    width: initial;
+    height: initial;
+    float: left;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background: none;
+    opacity: 1;
+    inset: 0px;
+    cursor: pointer;
+    hover:scale:105;
+    overflow: hidden;
+    duration:200;
+    width:200px;
+    height:150px;
+}
 
 .card-box2 {
     border: 1px solid red;
@@ -535,4 +554,9 @@ object-fit: cover;
     background-color: blue;
     width: 700px;
         height: 190px;
+}
+
+.like-img{
+    width: 30px;
+    height: 30px;
 }
