@@ -86,3 +86,13 @@ body {
     flex: 1; /* 동일한 너비를 가짐 */
     text-align: center; /* 텍스트 가운데 정렬 */
 }
+
+.left-image{
+    width: 180px;
+    height: 180px;
+}
+
+.right-image{
+    width: 180px;
+    height: 180px;
+}

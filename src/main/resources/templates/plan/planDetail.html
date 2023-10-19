@@ -65,7 +65,24 @@
                 select: function (arg) {
                     Swal.fire({
                         title: '일정 관리',
-                        html: '<div id="image-preview"><img src="/pictures/base.jpg" class="modal-image" onerror="this.src=\'/pictures/base.jpg\';"></div>' + getSelectOptions(attractionData) + '<input id="event-title" placeholder="계획을 입력하세요.">',
+                        html: `
+                            <div id="image-preview">
+                                <img src="/pictures/base.jpg" alt="Selected Image" class="modal-image" onerror="this.src='/pictures/base.jpg';">
+                            </div>
+                            ${getSelectOptions(attractionData)}
+                            <div>
+                                <span class="swal2-text-area">메모</span>
+                                <span>
+                                    <input id="event-title" class="swal2-input"  placeholder="계획을 입력하세요."/>
+                                </span>
+                            </div>
+                            <div>
+                                 <span class="swal2-text-area">예상경비</span>
+                                 <span>
+                                    <input id="event-price" class="swal2-input" type="number" placeholder="예상 금액을 입력해주세요."/>
+                                 </span>
+                            </div>
+                        `,
                         showCancelButton: true,
                         showCloseButton: true,
                         confirmButtonText: '추가',
@@ -90,6 +107,7 @@
                         },
                         preConfirm: () => {         // 확인(수정) 버튼을 눌렀을 때 설정할 작업
                             const eventTitle = document.getElementById('event-title').value;
+                            const newEventPrice = document.getElementById('event-price').value;
                             const eventType = document.getElementById('event-type').value;
                             const selectedAttraction = attractionData.find((attraction) => attraction.touristAttractionId === eventType);
 
@@ -117,6 +135,7 @@
                                         detailPlanId: newId,
                                         touristAttractionId:eventType,
                                         content: eventTitle,        // 내용
+                                        price: newEventPrice,        // 내용
                                         planId: planID,
                                         startTime: arg.start,
                                         endTime: arg.end,
@@ -197,7 +216,7 @@
                 },
                 eventClick: function (arg) {            // 이벤트를 클릭했을때
                     var eventId = arg.event.id;
-                    console.log(eventId);
+                    // console.log(eventId);
                     var eventImage = arg.event.extendedProps.image;
                     openDialog(eventId, calendar);      // 수정창을 연다.
                 },
@@ -209,12 +228,12 @@
                     var newEvent = info.event;
                     var newId= generateEventId();
 
-                    console.log('before : ' + JSON.stringify(newEvent));
+                    // console.log('before : ' + JSON.stringify(newEvent));
 
                     newEvent.setProp('id', newId);
                     // newEvent.setExtendedProp('touristAttractionId', info.event._def.extendedProps.touristAttractionId);
 
-                    console.log('before : ' + JSON.stringify(newEvent));
+                    // console.log('before : ' + JSON.stringify(newEvent));
 
                     // const originalStart = new Date(newEvent.start);
                     // const modifiedStart = new Date(originalStart.getTime() - (9 * 60 * 60 * 1000));
@@ -379,7 +398,18 @@
                                 <img src="${selectedAttraction.imageUrl}" alt="Selected Image" class="modal-image" onerror="this.src='/pictures/base.jpg';">
                             </div>
                             ${getSelectOptions(attractionData, selectedAttraction.touristAttractionId)}
-                            <input id="event-title" class="swal2-input" value="${selectedPlan.title}" placeholder="계획을 입력하세요."/>
+                            <div>
+                                <span class="swal2-text-area">메모</span>
+                                <span>
+                                    <input id="event-title" class="swal2-input" value="${selectedPlan.title}" placeholder="계획을 입력하세요."/>
+                                </span>
+                            </div>
+                            <div>
+                                 <span class="swal2-text-area">예상경비</span>
+                                 <span>
+                                    <input id="event-price" class="swal2-input" type="number" value="${selectedPlan.price}" placeholder="예상 금액을 입력해주세요."/>
+                                 </span>
+                            </div>
                         `,
                     showCancelButton: true,
                     showDenyButton: true,
@@ -407,6 +437,7 @@
                     },
                     preConfirm: () => {
                         const newEventTitle = document.getElementById('event-title').value;
+                        const newEventPrice = document.getElementById('event-price').value;
                         const selectedAttractionId = document.getElementById('event-type').value;
                         const selectedAttraction = attractionData.find((attraction) => attraction.touristAttractionId === selectedAttractionId);
 
@@ -430,6 +461,7 @@
                                     planId: planID,
                                     touristAttractionId:selectedAttractionId,
                                     content: newEventTitle, // 내용
+                                    price: newEventPrice, // 금액
                                 }), // 데이터를 JSON 형식으로 보냄
                                 contentType: "application/json; charset=UTF-8",
                                 dataType: "text",
@@ -442,6 +474,7 @@
 
                                     if (itemToUpdate) {
                                         itemToUpdate.title = newEventTitle;
+                                        itemToUpdate.price = newEventPrice;
                                         itemToUpdate.touristAttractionId = selectedAttractionId;
                                         itemToUpdate.lat = selectedAttraction.latitude;
                                         itemToUpdate.lng = selectedAttraction.longitude;
@@ -595,6 +628,7 @@
                         end: detail.endTime,
                         allDay: detail.allDay,
                         touristAttractionId:detail.touristAttractionId,
+                        price:detail.price,
 
                         label: detail.touristAttractionId.toString(),
                         name: attraction.name,
@@ -612,8 +646,10 @@
                         end: detail.endTime,
                         allDay: detail.allDay,
                         touristAttractionId: detail.touristAttractionId,
+                        price:detail.price,
                     });
                 }
+                console.log(detail.price);
             });
 
             detailData.sort(function(a, b) {
@@ -1095,7 +1131,19 @@
                 });
             }
         });
+        function formatMoney(inputElement) {
+            // Get the numeric value from the input element
+            const numericValue = parseFloat(inputElement.value);
 
+            // Check if the input is a valid number
+            if (!isNaN(numericValue)) {
+                // Format the numeric value as currency (Korean Won)
+                const moneyFormatted = new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(numericValue);
+
+                // Set the formatted value back to the input element
+                inputElement.value = moneyFormatted;
+            }
+        }
 
 
     </script>

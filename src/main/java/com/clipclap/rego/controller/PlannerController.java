@@ -178,7 +178,6 @@ public class PlannerController {
             // DetailPlan에 저장하기 위해 객체 입력 (가는편)
             PlannerDetail fromHomePlan = new PlannerDetail();
 
-            fromHomePlan.setDetailPlanId(1);
             fromHomePlan.setPlan(plannerRepository.findById(id).get());
             fromHomePlan.setContent("Go");
             fromHomePlan.setStartTime(LocalDateTime.parse(flightInfoDTO.getDepartureDate() + "T" + fromHome.getDepartureTime()));
@@ -197,7 +196,6 @@ public class PlannerController {
             // 오는편
             PlannerDetail toHomePlan = new PlannerDetail();
 
-            toHomePlan.setDetailPlanId(2);
             toHomePlan.setPlan(plannerRepository.findById(id).get());
             toHomePlan.setContent("Re");
             toHomePlan.setStartTime(LocalDateTime.parse(flightInfoDTO.getArrivalDate() + "T" + toHome.getDepartureTime()));
@@ -223,7 +221,7 @@ public class PlannerController {
     }
 
 
-
+    /* 계획 상세페이지 */
     @GetMapping("/detail")
     public String map(@RequestParam(required = false) Integer planId, Model model) throws JsonProcessingException {
         PlannerDTO plannerDTO = plannerService.findById(planId);
@@ -244,9 +242,13 @@ public class PlannerController {
         String type = plannerDTO.getType();
         int numberOfPeople = plannerDTO.getNumberOfPeople();
 
+        /* Plan정보 (하나로 합쳐도 될듯함) */
         model.addAttribute("content",content);
         model.addAttribute("type",type);
         model.addAttribute("numberOfPeople",numberOfPeople);
+        model.addAttribute("startDate" , plannerDTO.getStartDate());
+        model.addAttribute("endDate" , plannerDTO.getEndDate());
+        System.out.println(detailPlan);
 
         // 상세플랜 목록
         model.addAttribute("detailPlan" , detailPlan);
@@ -258,11 +260,6 @@ public class PlannerController {
         model.addAttribute("detailIdMax" , detailPlanService.findMaxDetailPlanIdByPlanId(planId));
         // 이후에 정보를 받아오면 필요없을듯
         model.addAttribute("planID" , planId);
-        // 플래너의 시작날짜 (이것도 굳이 필요없을 수도)
-        // model.addAttribute("startDate" , plannerService.findStartTimeByPlanId(planId));
-        model.addAttribute("startDate" , plannerDTO.getStartDate());
-
-        model.addAttribute("endDate" , plannerDTO.getEndDate());
 
         return "plan/planDetail";
     }
