@@ -554,6 +554,7 @@
                 }
             });
 
+            // 하트 이미지를 불러올때 비동기로 체크해서 좋아요를 눌렀는지 확인하여 조건에 맞게 이미지 설정
             checkLikeStatus(attraction.touristAttractionId, function (status) {
                 likeImg.src = status === "afterLike" ? "/img/like/afterLike.png" : "/img/like/beforeLike.png";
             });
