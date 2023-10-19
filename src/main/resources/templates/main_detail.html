@@ -102,15 +102,14 @@
         <div class="button-box" id="country-buttons">
 
             <!-- 나라 목록 버튼 (Controller에서 전달받음) -->
-            <span th:each="countryName : ${countryNames}">
-                <button class="country-button" th:data-keyword="${countryName}"
-                        th:text="${countryName}"></button>
+            <span th:each="country : ${countries}">
+                <button class="country-button" th:data-keyword="${country.countryName}"
+                        th:text="${country.countryName}"></button>
             </span>
         </div>
 
 
         <div class="button-box" id="city-type-buttons">
-            <!-- 도시 목록 버튼 (AJAX를 통해서 전달받음) -->
             <span id="city-list">
                 <!-- 도시 목록 -->
             </span>
@@ -130,7 +129,35 @@
                 <ul id="attraction-list">
 
                 </ul>
+
             </div>
+
+            <!--
+                        <div class="likeDiv">
+                            <div th:text="${attractionId}" class="likeBox"></div>
+                            <div class="likeDiv-rightspace">
+                                <div th:if="${touristAttraction.wish != -1}">
+                                    <button th:if="${touristAttraction.wish == 1}" class="heart-button filled" th:onclick="'toggleWish(\'' + ${attractionId} + '\', event)">
+                                        &lt;!&ndash; 하트 버튼 &ndash;&gt;
+                                        &lt;!&ndash; SVG 코드가 포함된 버튼 &ndash;&gt;
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="#9A97FF" stroke="#9A97FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 21.35l-1.45-1.32C5.4 16.25 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 7.75-8.55 11.54L12 21.35z" />
+                                        </svg>
+                                    </button>
+                                    <button th:if="${touristAttraction.wish == 0}" class="heart-button" th:onclick="'toggleWish(\'' + ${attractionId} + '\', event)">
+                                        &lt;!&ndash; 하트 버튼 (빈 상태) &ndash;&gt;
+                                        &lt;!&ndash; SVG 코드가 포함된 버튼 &ndash;&gt;
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#9A97FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 21.35l-1.45-1.32C5.4 16.25 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 7.75-8.55 11.54L12 21.35z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+            -->
+
+
+
         </div>
     </div>
 
@@ -178,49 +205,99 @@
 
         // 새로운 목록을 추가 (알맞게 정보를 수정)
         touristAttractionList.forEach(function(attraction) {
+            //li 만들고 class="card-box"
             var li = document.createElement("li");
             li.classList.add("card-box");
 
-            // div 요소생성
-            var div=document.createElement("div");
-            div.classList.add("lineDivide");
-            // 이미지 요소 생성
-            var img = document.createElement("img");
-            img.src = attraction.image;     // 이미지 URL은 attraction 객체에서 실제 이미지 URL 필드로 수정해야 합니다
-            img.width = 200;                // 이미지의 가로 크기 설정
-            img.height = 150;               // 이미지의 세로 크기 설정
+            // 'li' 요소에 'data-country' 속성을 추가합니다. 이 속성은 나중에 필터링할 때 사용됩니다.
+            li.setAttribute("data-country", attraction.countryName); // 속성에 국가 추가
+            li.setAttribute("data-city", attraction.countryCity); //  속성에 도시 추가
+            li.setAttribute("data-type", attraction.contentType); // 속성에 타입 추가
 
 
-            // 이름 텍스트 생성
-            var nameText = document.createElement("p");
-            nameText.textContent = " " + attraction.touristAttractionName;
-            nameText.classList.add("attraction-name");
+                // 이미지 요소 생성
+                var img = document.createElement("img");
+                img.src = attraction.image;     // 이미지 URL은 attraction 객체에서 실제 이미지 URL 필드로 수정해야 합니다
+                img.classList.add("card-image");
 
-            // 도시 텍스트 생성
-            var addressText = document.createElement("p");
-            addressText.textContent = " " + attraction.cityName;
-            addressText.classList.add("attraction-cityName");
+                // 이름 텍스트 생성
+                var nameText = document.createElement("p");
+                nameText.textContent = " " + attraction.touristAttractionName;
+                nameText.classList.add("attraction-name");
 
+                // div 요소생성
+                var div=document.createElement("div");
+                div.classList.add("lineDivide");
 
-            // 좋아요 요소 생성
-            // <img>
-            var img2 = document.createElement("img");
-            // <img src="/img/like.png">
-            img2.src = '/img/like.png';
-            // <img src="/img/like.png" style="width:20">
-            img2.width = 20;                // 이미지의 가로 크기 설정
-            img2.height = 10;               // 이미지의 세로 크기 설정
+                    // 도시 텍스트 생성
+                    var addressText = document.createElement("p");
+                    addressText.textContent = " " + attraction.cityName;
+                    addressText.classList.add("attraction-cityName");
+
+                    //이미지 미리 만들기
+                    var likeImg = document.createElement("img");
+                    likeImg.classList.add("like-img"); // 클래스를 미리 추가합니다.
+
+            // '좋아요' 이미지 클릭 이벤트
+            likeImg.addEventListener('click', function() {
+                toggleLikeStatus(attraction.touristAttractionId, function(newStatus) {
+                    // 새로운 상태에 따라 이미지 변경
+                    if (newStatus === "success") {
+                        likeImg.src = "/img/like/afterLike.png"; // '좋아요' 상태일 때의 이미지
+                    } else if (newStatus === "fail") {
+                        likeImg.src = "/img/like/beforeLike.png"; // '좋아요' 취소 상태일 때의 이미지
+                    }
+                });
+            });
 
             // 이미지와 텍스트를 <li> 요소에 추가
             li.appendChild(img);
             li.appendChild(nameText);
             li.appendChild(div);
                 div.appendChild(addressText);
-                div.appendChild(img2);
+                div.appendChild(likeImg); // 이미지를 div에 추가합니다.
+
+                    // 찜 상태 확인 및 이미지 설정
+                    checkLikeStatus(attraction.touristAttractionId, function(status) {
+                        likeImg.src = status === "afterLike" ? "/img/like/afterLike.png" : "/img/like/beforeLike.png";
+                    });
 
             attractionListContainer.appendChild(li);
         });
+
+        //불러오는 card-box의 좋아요 상태를체크해주는 비동기함수
+        function checkLikeStatus(attractionId, callback) {
+            // 서버에 찜 상태 확인 요청
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/likeAttraction/checkLike?attractionId=" + attractionId, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = xhr.responseText;
+                    console.log(response); // 이 부분에서 서버 응답을 콘솔에 로깅합니다.
+                    callback(response.trim());
+                }
+            };
+            xhr.send();
+        }
+
+        // '좋아요' 상태를 토글하는 비동기 함수
+        function toggleLikeStatus(attractionId, callback) {
+            // 서버에 '좋아요' 상태 변경 요청
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/likeAttraction/toggleLike", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var newStatus = xhr.responseText;
+                    callback(newStatus.trim());
+                }
+            };
+            xhr.send("attractionId=" + attractionId);
+        }
+
     });
+
+
 
 
     // 나라 버튼을 눌렀을 때 나라별 도시 목록을 출력해주는 함수
@@ -260,7 +337,7 @@
         buttons.forEach(function(button) {
             button.addEventListener("click", function() {
                 var keyword = button.getAttribute("data-keyword");  // data-keyword에 설정되어있는 값을 가져와 keyword에 저장
-                cityListFuncion(keyword);        // 버튼 클릭시 실행될 함수
+                cityListFunction(keyword);        // 버튼 클릭시 실행될 함수
             });
         });
 
@@ -278,21 +355,21 @@
             img.width = 200;  // 이미지의 가로 크기 설정
             img.height = 150; // 이미지의 세로 크기 설정
 
-    // 이름 텍스트 생성
-    var nameText = document.createElement("p");
-    nameText.textContent = " " + attraction.touristAttractionName;
-    nameText.classList.add("attraction-name");
+            // 이름 텍스트 생성
+            var nameText = document.createElement("p");
+            nameText.textContent = " " + attraction.touristAttractionName;
+            nameText.classList.add("attraction-name");
 
-    // 주소 텍스트 생성
-    var addressText = document.createElement("p");
-    addressText.textContent = " " + attraction.address;
-    addressText.classList.add("attraction-address");
+            // 주소 텍스트 생성
+            var addressText = document.createElement("p");
+            addressText.textContent = " " + attraction.address;
+            addressText.classList.add("attraction-address");
 
-    // 이미지와 텍스트를 <li> 요소에 추가
-    li.appendChild(img);
-    li.appendChild(nameText);
-    li.appendChild(addressText);
-    attractionListContainer.appendChild(li);
+            // 이미지와 텍스트를 <li> 요소에 추가
+            li.appendChild(img);
+            li.appendChild(nameText);
+            li.appendChild(addressText);
+            attractionListContainer.appendChild(li);
 
         });
     }
@@ -308,7 +385,7 @@
     });
 
     // 도시 버튼을 눌렀을 때 나라별 도시 목록을 출력해주는 함수
-    function cityListFuncion(cityName) {
+    function cityListFunction(cityName) {
         var filteredData = touristAttractionList.filter(function(attraction) {
             return attraction.cityName == cityName;
         });
