@@ -55,6 +55,7 @@ public class DetailPlanServiceImpl implements DetailPlanService {
     @Override
     public List<PreviewDTO> findPreview(Integer planId) {
         List<Object[]> results=detailPlanRepository.findCityNameAndImageByPlanId(planId);
+        System.out.println(results);
         List<PreviewDTO> dtoList= new ArrayList<>();
         for (Object[] result : results) {
             PreviewDTO previewDTO = new PreviewDTO();
@@ -64,9 +65,8 @@ public class DetailPlanServiceImpl implements DetailPlanService {
             previewDTO.setStartTime((LocalDateTime)result[3]);
             previewDTO.setEndTime((LocalDateTime)result[4]);
             previewDTO.setDetailPlanId(result[5].toString());
-
             dtoList.add(previewDTO);
-        }
+            }
             return dtoList;
             }
 

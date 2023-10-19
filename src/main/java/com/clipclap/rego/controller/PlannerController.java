@@ -248,7 +248,6 @@ public class PlannerController {
         model.addAttribute("numberOfPeople",numberOfPeople);
         model.addAttribute("startDate" , plannerDTO.getStartDate());
         model.addAttribute("endDate" , plannerDTO.getEndDate());
-        System.out.println(detailPlan);
 
         // 상세플랜 목록
         model.addAttribute("detailPlan" , detailPlan);
@@ -281,6 +280,7 @@ public class PlannerController {
         // 상세플랜 목록
         model.addAttribute("detailPlan" , detailPlan);
         model.addAttribute("previewPlan" , objectMapper.writeValueAsString(detailPlanService.findPreview(planId)));
+        System.out.println( objectMapper.writeValueAsString(detailPlanService.findPreview(planId)));
         // 전체 관광지 리스트
         model.addAttribute("attractionList" , listAll);
         // 도시 리스트 (검색)
