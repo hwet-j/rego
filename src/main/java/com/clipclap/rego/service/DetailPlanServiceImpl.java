@@ -105,7 +105,28 @@ public class DetailPlanServiceImpl implements DetailPlanService {
     }
 
 
+    @Override
+    public Integer calculateTotalPriceForPlanWithFlight(Integer planId) {
+        Integer flightPrice = detailPlanRepository.calculateTotalPriceForPlanWithFlight(planId);
+        if (flightPrice == null){
+            return 0;
+        } else {
+            return flightPrice;
+        }
 
+    }
+
+
+    @Override
+    public Integer calculateTotalPriceForPlanWithoutFlight(Integer planId) {
+        Integer withoutFlightPrice = detailPlanRepository.calculateTotalPriceForPlanWithoutFlight(planId);
+
+        if (withoutFlightPrice == null){
+            return 0;
+        } else {
+            return withoutFlightPrice;
+        }
+    }
 
 
 }

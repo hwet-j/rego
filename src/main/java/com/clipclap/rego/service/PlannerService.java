@@ -1,5 +1,6 @@
 package com.clipclap.rego.service;
 
+import com.clipclap.rego.model.dto.PlanCard;
 import com.clipclap.rego.model.dto.PlannerDTO;
 import com.clipclap.rego.model.entitiy.Planner;
 
@@ -25,4 +26,10 @@ public interface PlannerService {
     int updateContentAndTypeAndNumberOfPeople(Integer planId, String content, String type, int numberOfPeople);
 
     void changeIsComplete(Integer planId);
+
+    List<PlanCard> findAllPlanCard();
+
+    void vote(Integer planId,String email);
+
+    List<Integer> userPlanVotes(String email);
 }
