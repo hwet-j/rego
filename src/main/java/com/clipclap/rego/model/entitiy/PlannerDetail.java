@@ -50,6 +50,7 @@ public class PlannerDetail {
     @Column(nullable = false)
     private LocalDateTime endTime;
 
+    @Column(nullable = false, columnDefinition = "DEFAULT 0")
     private Integer price;
 
     private String airlineImg;
@@ -62,6 +63,13 @@ public class PlannerDetail {
     @ManyToOne
     @JoinColumn(name = "touristAttraction", referencedColumnName = "touristAttractionId")
     private TouristAttraction touristAttraction;
+
+    @PrePersist
+    public void setDefaultPrice() {
+        if (price == null) {
+            price = 0;
+        }
+    }
 
 }
 

@@ -26,6 +26,18 @@ public class DetailPlanMapper {
         dto.setEndTime(entity.getEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")));
         dto.setAllDay(entity.isAllday());
 
+        dto.setPrice(entity.getPrice());
+
+        /* 비행기 정보 매핑 */
+        dto.setAirlineImg(entity.getAirlineImg());
+        dto.setAirlineName(entity.getAirlineName());
+        dto.setDepartureTime(entity.getDepartureTime());
+        dto.setDepartureAirport(entity.getDepartureAirport());
+        dto.setArrivalTime(entity.getArrivalTime());
+        dto.setArrivalAirport(entity.getArrivalAirport());
+
+
+
         // entity.getTouristAttraction() 및 entity.getPlan()으로부터 관광지 ID 및 플랜 ID 설정
 
         if (entity.getTouristAttraction() != null) {
@@ -50,6 +62,22 @@ public class DetailPlanMapper {
         entity.setStartTime(LocalDateTime.parse(dto.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")));
         entity.setEndTime(LocalDateTime.parse(dto.getEndTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")));
         entity.setAllday(dto.isAllDay());
+
+
+        if(dto.getPrice() == null){
+            entity.setPrice(0);
+        } else {
+            entity.setPrice(dto.getPrice());
+        }
+
+
+        /* 비행기 정보 매핑 */
+        entity.setAirlineImg(dto.getAirlineImg());
+        entity.setAirlineName(dto.getAirlineName());
+        entity.setDepartureTime(dto.getDepartureTime());
+        entity.setDepartureAirport(dto.getDepartureAirport());
+        entity.setArrivalTime(dto.getArrivalTime());
+        entity.setArrivalAirport(dto.getArrivalAirport());
 
         // dto.getTouristAttractionId() 및 dto.getPlanId()로부터 관광지 및 플랜 설정
 

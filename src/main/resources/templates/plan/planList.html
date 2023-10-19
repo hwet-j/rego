@@ -53,35 +53,33 @@
 
 
     <div class="card-container">
-        <div class="card-list" th:each="item, iterStat : ${planList}">
-            <!--<div th:classappend="${iterStat.odd} ? 'odd' : 'even'">-->
+        <div class="card-list" th:each="item : ${planList}">
 
-                <a th:href="@{|/plan/detail?planId=${item.planId}|}">
-                    <div>
+            <a th:href="@{|/plan/detail?planId=${item.planId}|}">
+                <div>
 
-                        <div class="image-container">
-                            <div class="left-side">
-                                <div>
-                                    <img  th:src="@{|${item.imagePath}|}" style="width: 180px;height: 180px;"/>
-                                </div>
-                                <div th:text="|여행 테마 : ${item.type}|"></div>
-                                <div th:text="${item.content}"></div>
+                    <div class="image-container">
+                        <div class="left-side">
+                            <div>
+                                <img class="left-image" th:src="@{|${item.imagePath}|}"/>
                             </div>
-
-                            <div class="right-side">
-                                <div>
-                                    <img  th:src="@{|/preview/${item.planId}.png|}" onerror="this.src='/preview/map_basic.png'" style="width: 180px;height: 180px;"/>
-                                </div>
-
-                                <div th:text="|여정시작 : ${item.startDate}|"></div>
-                                <div th:text="|여정종료 : ${item.endDate}|"></div>
-                            </div>
+                            <div th:text="|여행 테마 : ${item.type}|"></div>
+                            <div th:text="${item.content}"></div>
                         </div>
 
-                    </div>
-                </a>
+                        <div class="right-side">
+                            <div>
+                                <img class="right-image"  th:src="@{|/preview/${item.planId}.png|}" onerror="this.src='/preview/map_basic.png'"/>
+                            </div>
 
-        </div>
+                            <div th:text="|여정시작 : ${item.startDate}|"></div>
+                            <div th:text="|여정종료 : ${item.endDate}|"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </a>
+
     </div>
 
 </div>
