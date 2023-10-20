@@ -4,6 +4,10 @@ body {
     font-family: Arial, sans-serif;
     margin:0;
     padding:0;
+        background-image: url('/img/bg.png');
+         background-repeat: repeat-y;
+
+
 }
 
 .background {
@@ -64,39 +68,61 @@ body {
 }
 
 .card-container{
-    margin-top:100px;
-    width: 450px;
-
+    width: 1500px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 200px;
 }
 
 .card-list{
-    justify-content: center;
+
+    margin: 30px 45px 30px 0px;
+
 }
 
 
 .image-container {
-    display: flex;
     justify-content: space-between; /* 왼쪽과 오른쪽 정렬 */
     align-items: center; /* 세로 중앙 정렬 */
     width: 100%; /* 부모 요소의 100% 너비를 차지하도록 설정 */
 }
 
-.left-side,
-.right-side {
-    flex: 1; /* 동일한 너비를 가짐 */
+.left-side{
+    display:flex;
     text-align: center; /* 텍스트 가운데 정렬 */
+}
+.right-side{
+    display:flex;
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+#content3,#content4,#content1,#content2{
+border:1px solid gray;
+width:300px;
+box-shadow: 1px 3px 3px 0px #80808021;
 }
 
 .left-image{
-    width: 180px;
-    height: 180px;
+    width: 300px;
+    height: 300px;
 }
 
 .right-image{
-    width: 180px;
-    height: 180px;
+    width: 300px;
+    height: 300px;
 }
 
 .heart-img{
     width: 15px;
 }
+#moneySet{
+display:flex;
+flex-direction: row;
+flex-wrap: nowrap;
+justify-content: center;
+}
+
+#h1{
+margin-top:100px;
+text-align:center;
+color: #4F54B4;
+font-size:20px;}
