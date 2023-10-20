@@ -48,33 +48,19 @@
         .btn{
      border-color:#4F54B4;}
 
-  .nav {
+    .nav {
     left: 110px;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
     padding-bottom: 15px;
     background-color: white;
     width: 1700px;
     height: 80px;
-    text-align: center;
     position:fixed;
     top: 0px;
 
-    position: absolute;
-    /* 다른 스타일 속성들 유지 */
+        position: absolute;
+        /* 다른 스타일 속성들 유지 */
     }
-
-    a {
-    text-decoration: none;
-    }
-
-    a:hover {
-    text-decoration: none;
-    }
-
-    a:link, a:visited, a:hover, a:active, a:focus {
-    color: inherit; /* 상속받은 색상을 사용합니다. */
-    outline: none; /* 클릭 시에 표시되는 외곽선 제거 */
-}
 
 .container {
     max-width: 1660px;
@@ -90,8 +76,9 @@
     .grey {
      color: #727272;}
      #strong { font-weight: 900;}
-
-
+        a {
+  text-decoration: none;
+}
        .table {
                width: 80%;
                margin: 0 auto;
@@ -169,13 +156,12 @@ deleteForm.submit(); // form 제출
 <div class="background2"></div>
 
 <div class="container">
-
     <div class="nav">
         <ul class="" style="list-style-type:none;">
             <li class="">
                 <a class="logo" th:href="@{/}"><img src="/img/logo.png" style="float: left; width: 63px; height: 58px; margin-left: 10px; background-repeat: no-repeat;"></a>
                 <div class="nav-left"
-                     style="float:left;   margin-left: 440px; margin-top: 19px;  font-size: 20px;  font-family:'Roboto', sans-serif; font-weight: 500;">
+                     style="float:left;   margin-left: 440px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 500;">
                     <a class="" th:href="@{/flightResult}"
                        style="margin-right: 50px; color:#4F54B4;">AIRPORT</a>
                     <a class="" th:href="@{/plan/add}"
@@ -206,7 +192,7 @@ deleteForm.submit(); // form 제출
     </div>
     <!-- 모바일에서 화면배율을 디바이스 크기 기준으로 설정 -->
     <!-- 이게 안되면 pc에서의 100px과 모바일에서의 100px이 디바이스 성능에 따라 달라집니다. -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
 
     <div style="margin-top:100px;">
         <h1 style="text-align:center">회원목록</h1>

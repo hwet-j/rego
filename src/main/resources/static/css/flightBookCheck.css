@@ -1,7 +1,10 @@
 body {
+    margin:0;
+    padding:0;
     font-family: 'Noto Sans KR', 'Roboto', sans-serif;
     display: flex;
     justify-content: center; /* 좌우 중앙 정렬 */
+    margin-bottom: 70px;
 }
 
 a {
@@ -18,7 +21,38 @@ a:hover {
 }
 
 .navEmptyBox{
-     margin-top: 83px;
+}
+
+.background {
+    background-color:#1b4995;
+    opacity:0.5;
+    width:100%;
+    height:100%;
+    position:fixed;
+    z-index:-998;
+
+}
+
+.background2 {
+    width:100%;
+    height:100%;
+    position:fixed;
+    z-index:-999;
+    background-image: url('/img/bg.png');
+    background-repeat: no-repeat;
+}
+
+
+.nav {
+    padding-top: 1px;
+    padding-bottom: 12px;
+    background-color: white;
+    width: 1700px;
+    height: 80px;
+    text-align: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    position:relative;
+    z-index: 999;
 }
 
 
@@ -28,7 +62,10 @@ a:hover {
     align-items: center; /* 플렉스박스의 자식 요소들을 좌우 중앙에 배치 */
     background-color: #F0F1F2;
     width:1700px;
+    border-radius: 0 0 20px 20px;
 }
+
+
 .center-content {
     display: flex;
     align-items: center; /* 수직 중앙 정렬 */
@@ -54,16 +91,19 @@ a:hover {
 }
 
 .flightInfoBox{
-    width:1700px;
-    display:flex;
-    flex-direction:row;
-    padding-top:50px;
-    margin-right: 40px;
-    height:1200px;
+      width: 1700px;
+      display: flex;
+      flex-direction: row;
+      padding-top: 50px;
+      padding-bottom: 50px;
+
+      margin-right: 40px;
+      border-radius: 0 0 15px 15px;
+
 }
 
 .flightPrice{
-    width:700px;
+    width:400px;
 }
 
 .direction{
@@ -160,7 +200,7 @@ table td{
 }
 
 .flightPrice{
-    border-left: 3px solid #DFE1E6;
+    border-left: 1px solid #DFE1E6;
     padding-left:40px;
 }
 
@@ -179,60 +219,75 @@ table td{
     justify-content: center; /* 수평 중앙 정렬 */
     text-align:center;
     align-items: center; /* 수직 중앙 정렬 */
-    border-radius: 10px 10px 0 0;
-    width:400px;
-    height:250px;
+    border-radius: 15px 15px 0 0;
+    width:350px;
+    height:200px;
     color:white;
     font-size: 45px;
     text-shadow: 2px 2px 4px #000;
 }
 
 .flightPriceAmount{
-    border-radius: 0 0 10px 10px ;
+    border-radius: 0 0 15px 15px ;
     background-color:white;
-    width:400px;
-    height:330px;
+    width:350px;
+    height:300px;
     display:flex;
     flex-direction: column;
     align-items: center;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;
 }
 
 .flightPriceButton{
-    width:162px;
-    border: 4px solid #62BEFF;
-    background-color:white;
-    color:#62BEFF;
-    border-radius:15px;
-    text-align:center;
-    font-weight: bolder;
-    padding:5px;
-    font-size: 20px;
-}
-
-input[type=submit].flightPriceButton {
-    width: 180px;
-    border: 4px solid #62BEFF;
+    margin-top: 20px;
+    margin-left: 155px;
+    width: 125px;
+    height: 29px;
+    border: 3px solid #62BEFF;
     background-color: white;
     color: #62BEFF;
-    border-radius: 15px;
+    border-radius: 17px;
     text-align: center;
     font-weight: bolder;
-    padding: 5px;
-    font-size: 20px;
-    cursor: pointer; /* 마우스를 올렸을 때 커서를 손가락 모양으로 변경 */
-    outline: none; /* 클릭 시 생기는 외곽선 제거 */
-    -webkit-appearance: none; /* iOS와 같은 플랫폼에서 기본 스타일 제거 */
-    -moz-appearance: none; /* Firefox에서의 기본 스타일 제거 */
-    appearance: none; /* 표준 방식으로 기본 스타일 제거 */
+    padding: 7px;
+    font-size: 19px;
 }
 
-input[type=submit].flightPriceButton:hover {
-    opacity: 0.8; /* 마우스를 올렸을 때 약간 투명해지도록 */
+
+
+.flightPriceButton:hover {
+    background-color: #62BEFF;
+    color: white;
+    cursor: pointer;
 }
 
-input[type=submit].flightPriceButton:active {
-    opacity: 1; /* 클릭할 때 다시 불투명하게 */
+
+
+.flightPriceButton2{
+    margin-top: -50px;
+    margin-left: -153px;
+    height: 50px;
+    width: 145px;
+    border: 3px solid #62BEFF;
+    background-color: white;
+    color: #62BEFF;
+    border-radius: 17px;
+    text-align: center;
+    font-weight: bolder;
+    padding: 8px;
+    font-size: 19px;
 }
+
+
+
+input[type=submit].flightPriceButton2:hover {
+    background-color: #62BEFF;
+    color: white;
+     cursor: pointer;
+}
+
+
+
 
 .dropBtn-content h4 {
         color: #333;
