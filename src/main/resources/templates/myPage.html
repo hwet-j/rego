@@ -82,7 +82,7 @@
                             <div class="attraction-title" th:text="${item.attraction.name}"></div>
                             <img th:src="${item.attraction.image}"/>
                             <img src="img/like/afterLike.png" th:id="'attrationLikeImage_' + ${item.attraction.touristAttractionId}"
-                                 th:onclick="'buttonHeart(' + ${item.attraction.touristAttractionId} + ')'"
+                                 th:onclick="'attractionHeart(' + ${item.attraction.touristAttractionId} + ')'"
                                  style="position:absolute; width: 20px; height:20px; right: 10px; top: 130px;">
                         </div>
                     </div>
@@ -143,14 +143,17 @@
                 <div class="likeList">
                     <div th:each="Vote : ${myVotePlanList}">
                         <a th:href="@{|/plan/detail?planId=${Vote.planId}|}">
-                            <div class="card2">
+                            <div class="card2" th:id="'planLikeImage_' + ${Vote.planId}">
                                 <div class="plan-title2" th:text="${Vote.content}"></div>
                                 <img th:src="@{${Vote.imagePath}}"
                                      onerror="this.src='/preview/map_basic.png'"/>
                                 <img th:src="@{|/preview/${Vote.planId}.png|}"
                                      onerror="this.src='/preview/map_basic.png'"/>
                                 <div style="width: 200px; height: 30px;">
-                                        <img src="img/like/afterLike.png" style="position:relative; width: 20px; height:20px; top:-25px; left:57px;">
+
+                                        <img src="img/like/afterLike.png" th:id="'planLikeImage_' + ${Vote.planId}"
+                                             th:onclick="'event.preventDefault(); planHeart(' + ${Vote.planId} + ')'"
+                                             style="position:relative; width: 20px; height:20px; top:-25px; left:57px;">
 
                                         <div th:text="|항공 : ${Vote.flightPrice}원|"
                                              style="margin-top:-13px; font-size:10px; font-family:'Noto sans KR', sans-serif;"></div>
@@ -193,18 +196,41 @@
 });
 
 
-    function buttonHeart(touristAttractionId) {
+    function attractionHeart(touristAttractionId) {
         var buttonId = 'attrationLikeImage_' + touristAttractionId;
         var button = document.getElementById(buttonId);
+        console.log(touristAttractionId);
 
         // AJAX 요청을 보냅니다.
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/plan/vote/' + touristAttractionId, true);
+        xhr.open('GET', '/likeAttraction/addLike?attractionId=' + touristAttractionId, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
 
         xhr.onload = function () {
             if (xhr.status === 200) {
                 var div = document.getElementById('attrationLike_' + touristAttractionId);
+                div.style.display = 'none';
+            } else {
+                console.error('서버 오류');
+            }
+        };
+
+        xhr.send();
+    }
+
+    function planHeart(planId) {
+        alert(planId);
+        var buttonId = 'planLikeImage_' + planId;
+        var button = document.getElementById(buttonId);
+
+        // AJAX 요청을 보냅니다.
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/plan/vote/' + planId, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var div = document.getElementById('planLikeImage_' + planId);
                 div.style.display = 'none';
             } else {
                 console.error('서버 오류');
