@@ -4,11 +4,13 @@ import com.clipclap.rego.mapper.TouristAttractionMapper;
 import com.clipclap.rego.model.dto.TouristAttractionDTO;
 import com.clipclap.rego.model.dto.TouristAttractionFullDTO;
 import com.clipclap.rego.model.entitiy.City;
+import com.clipclap.rego.model.entitiy.LikeAttraction;
 import com.clipclap.rego.model.entitiy.TouristAttraction;
 import com.clipclap.rego.repository.TouristAttractionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 public class TouristAttractionServiceImpl implements TouristAttractionService {
 
     private final TouristAttractionRepository touristAttractionRepository;
+    private final LikeService likeService;
 
     @Override
     public List<TouristAttractionDTO> touristListAll() {
@@ -77,6 +80,30 @@ public class TouristAttractionServiceImpl implements TouristAttractionService {
     public List<TouristAttractionFullDTO> getTouristAttractionsWithCityAndCountry() {
 
         List<TouristAttractionFullDTO> touristAttractions = touristAttractionRepository.getTouristAttractionsWithCityAndCountry();
+
+        return touristAttractions;
+    }
+
+    @Override
+    public List<TouristAttractionDTO> getAttractionsLike(String email) {
+
+        List<LikeAttraction> userAttractionLikes = likeService.getUserLikes(email);
+
+        List<TouristAttractionDTO> touristAttractions = new ArrayList<>();
+
+        for (LikeAttraction like : userAttractionLikes){
+            TouristAttractionDTO dto = new TouristAttractionDTO();
+            dto.setAddress(like.getAttraction().getAddress());
+            dto.setTouristAttractionId(like.getAttraction().getTouristAttractionId());
+            dto.setCityName(like.getAttraction().getCityName().getCityName());
+            dto.setIntroduction(like.getAttraction().getIntroduction());
+            dto.setImage(like.getAttraction().getImage());
+            dto.setLatitude(like.getAttraction().getLatitude());
+            dto.setLongitude(like.getAttraction().getLongitude());
+            dto.setContentType(like.getAttraction().getContentType());
+            dto.setName(like.getAttraction().getName());
+            touristAttractions.add(dto);
+        }
 
         return touristAttractions;
     }

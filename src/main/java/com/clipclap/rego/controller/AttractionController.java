@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -26,6 +27,8 @@ public class AttractionController {
 	private final DetailPlanRepository detailPlanRepository;
 	private final TouristAttractionService touristAttractionService;
 	private final DetailPlanService detailPlanService;
+
+
 	/* 관광지를 도시별로 검색 */
 	@GetMapping("/selectAttraction")
 	public List<TouristAttractionDTO> getAttractionsByKeyword(@RequestParam String keyword, @RequestParam String contentType) {
@@ -42,6 +45,12 @@ public class AttractionController {
 		List<TouristAttractionDTO> touristAttractions = touristAttractionService.cityContentTypeList(city,contentType);
 
 		return touristAttractions;
+	}
+
+	@GetMapping("/likeList")
+	public List<TouristAttractionDTO> getAttractionsLike(Principal principal) {
+
+		return touristAttractionService.getAttractionsLike(principal.getName());
 	}
 
 

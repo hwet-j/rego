@@ -19,4 +19,7 @@ public interface TouristAttractionService {
 
     // 도시, 나라를 포함한 모든 관광지 리스트
     List<TouristAttractionFullDTO> getTouristAttractionsWithCityAndCountry();
+
+    // 회원의 찜리스트
+    List<TouristAttractionDTO> getAttractionsLike(String email);
 }

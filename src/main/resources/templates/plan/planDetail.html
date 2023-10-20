@@ -1073,6 +1073,7 @@
             var searchSelect = document.getElementById("searchSelect");
             var externalEventsList = document.getElementById("external-events-list");
             var contentTypeButtons = document.querySelectorAll(".content-type-button");
+            var likeButton = document.querySelector(".like-button");
 
             // 선택된 contentType 값을 초기화
             var selectedContentType = "";
@@ -1083,6 +1084,44 @@
                     selectedContentType = button.getAttribute("data-content-type");
                     // 버튼을 클릭할 때 선택된 contentType 값을 저장
                     fetchData(); // 버튼 클릭 시 데이터 가져오는 함수 호출
+                });
+            });
+
+            likeButton.addEventListener("click", function () {
+                $.ajax({
+                    url: '/likeList',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        // 받아온 JSON 데이터를 사용하여 external-events 업데이트
+                        externalEventsList.innerHTML = ""; // 기존 목록 비우기
+
+                        for (var i = 0; i < data.length; i++) {
+                            var attraction = data[i];
+                            // external-events를 업데이트하는 로직을 작성
+                            var eventHtml = '<div class="fc-event-container" data-image="' + attraction.image + '" ' +
+                                'data-title="' + attraction.name + '">' +
+                                '<div class="image-container"><img class="attraction-image" src="' + attraction.image + '">' +
+                                '<div style="text-align: center;">' + attraction.name + '</div>' +
+                                '</div></div>';
+
+                            var draggableEl = document.createElement('div');
+                            draggableEl.innerHTML = eventHtml;
+                            externalEventsList.appendChild(draggableEl);
+
+                            // 드래그 가능한 외부 이벤트로 만들기
+                            var draggableEvent = new FullCalendar.Draggable(draggableEl, {
+                                eventData: {
+                                    title: attraction.name,
+                                    image: attraction.image,
+                                    touristAttractionId: attraction.touristAttractionId,
+                                }
+                            });
+                        }
+                    },
+                    error: function () {
+                        console.error('데이터를 가져오는 중에 오류가 발생했습니다.');
+                    }
                 });
             });
 
@@ -1341,7 +1380,7 @@
             </select>
             <button class="content-type-button" data-content-type="관광지" id="tourAttraction">관광지</button>
             <button class="content-type-button" data-content-type="식당" id="restaurant">식당</button>
-            <button class="content-type-button" data-content-type="호텔" id="hotel">찜목록</button>
+            <button class="like-button" data-content-type="찜" id="hotel">찜목록</button>
         </div>
 
         <div id='external-events'>
@@ -1350,6 +1389,8 @@
         </div>
     </div>
     <div class="buttonBox">
+        <a class="deletebtn" href="javascript:void(0);" th:text="삭제"  th:onclick="'performDelete(' + ${planID} + ')'"></a>
+
         <a class="savebtn" href="/" th:text="임시저장"></a>
         <a class="savebtn" th:href="@{/plan/Complete(planId=${planID})}" th:text="저장"></a>
     </div>
@@ -1361,6 +1402,21 @@
         wrap.scrollLeft += e.deltaY; // 좌우 스크롤
         e.preventDefault(); // 스크롤 이벤트의 기본 동작을 중지
     });
+
+    function performDelete(planID) {
+        Swal.fire({
+            title: '삭제 확인',
+            text: '정말로 삭제하시겠습니까?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '예',
+            cancelButtonText: '아니오'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href="/plan/delete/" + planID;
+            }
+        });
+    }
 </script>
 </body>
 </html>
