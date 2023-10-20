@@ -313,16 +313,7 @@ p {
 }
 
 
-.right-side-image{
-    float: left;
-    width: 560px;
-    height: 540px;
-    margin-left: 90px;
-    margin-top: 70px;
-    position: relative;
-    overflow: hidden;
-    z-index: 900;
-}
+
 
 .departMain{
      display: flex;
@@ -424,3 +415,40 @@ height:48px;
  label{
     margin-bottom:10px;
  }
+
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.right-side-image {
+    padding-top:80px;
+    width: 560px;
+    height: 540px;
+}
+
+/*.right-side-image{
+    float: left;
+
+    margin-left: 90px;
+    margin-top: 70px;
+    position: relative;
+    overflow: hidden;
+    z-index: 900;
+}*/
+
+.start-plan-btn {
+    position: absolute;
+    bottom: 130px;
+    right: 180px;
+    border: 2px solid transparent;
+    transition: border-color 0.3s;
+    padding: 15px;
+    font-weight: bold;
+    border-radius: 15px;
+    font-size: 16px;
+    text-align: center;
+    background-color: #FFFFFF;
+    color: #000; /* 텍스트 색상 설정 */
+    border-color: #59BAFF;
+}

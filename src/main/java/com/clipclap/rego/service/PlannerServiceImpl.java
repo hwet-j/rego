@@ -282,4 +282,18 @@ public class PlannerServiceImpl implements PlannerService {
         return list;
     }
 
+    @Override
+    public List<PlanCard> findTop5PlanCard() {
+        List<PlanCard> allPlanCard = findAllPlanCard();
+
+        List<PlanCard> topFivePlanCards = allPlanCard.stream()
+                .sorted((pc1, pc2) -> Integer.compare(pc2.getVoter().size(), pc1.getVoter().size())) // 크기 역순으로 정렬
+                .limit(5) // 상위 5개 요소만 선택
+                .collect(Collectors.toList()); // List로 변환
+
+
+
+        return topFivePlanCards;
+    }
+
 }
