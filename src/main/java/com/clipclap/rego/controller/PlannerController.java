@@ -368,6 +368,19 @@ public class PlannerController {
         return "Success";
     }
 
+    @GetMapping("/delete/{planId}")
+    public String deletePlan(@PathVariable Integer planId,Principal principal){
+        PlannerDTO dto = plannerService.findById(planId);
+
+        if(dto.getUserEmail().equals(principal.getName())){
+
+            plannerRepository.delete(plannerRepository.findById(planId).get());
+            return "redirect:/";
+        }
+
+        return "redirect:/plan/detail?planId=" + planId;
+
+    }
 
 
 
