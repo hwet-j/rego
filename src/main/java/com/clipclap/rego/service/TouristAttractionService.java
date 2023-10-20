@@ -3,6 +3,7 @@ package com.clipclap.rego.service;
 import com.clipclap.rego.model.dto.TouristAttractionDTO;
 import com.clipclap.rego.model.dto.TouristAttractionFullDTO;
 import com.clipclap.rego.model.entitiy.City;
+import com.clipclap.rego.model.entitiy.TouristAttraction;
 
 import java.util.List;
 
@@ -22,4 +23,6 @@ public interface TouristAttractionService {
 
     // 회원의 찜리스트
     List<TouristAttractionDTO> getAttractionsLike(String email);
+
+    List<TouristAttraction> getTop5AttractioinByLike();
 }

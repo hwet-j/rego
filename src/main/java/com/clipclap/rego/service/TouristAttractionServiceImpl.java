@@ -6,8 +6,11 @@ import com.clipclap.rego.model.dto.TouristAttractionFullDTO;
 import com.clipclap.rego.model.entitiy.City;
 import com.clipclap.rego.model.entitiy.LikeAttraction;
 import com.clipclap.rego.model.entitiy.TouristAttraction;
+import com.clipclap.rego.repository.LikeRepository;
 import com.clipclap.rego.repository.TouristAttractionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,6 +24,7 @@ public class TouristAttractionServiceImpl implements TouristAttractionService {
 
     private final TouristAttractionRepository touristAttractionRepository;
     private final LikeService likeService;
+    private final LikeRepository likeRepository;
 
     @Override
     public List<TouristAttractionDTO> touristListAll() {
@@ -106,6 +110,13 @@ public class TouristAttractionServiceImpl implements TouristAttractionService {
         }
 
         return touristAttractions;
+    }
+
+    @Override
+    public List<TouristAttraction> getTop5AttractioinByLike() {
+        Pageable pageable = PageRequest.of(0,5);
+        List<TouristAttraction> touristAttractionList = likeRepository.findTopAttractions(pageable);
+        return touristAttractionList;
     }
 
 }
