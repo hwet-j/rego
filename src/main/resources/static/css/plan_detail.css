@@ -27,16 +27,14 @@ body {
 
 .attraction-image{
     margin-top:5px;
-    width:180px;
+    margin-bottom:-4px;
+    width:165px;
     height:125px;
     border-radius:10% 10% 0% 0%;
 
 }
 
-.image-container{
-    margin-right:5px;
-    margin-left:5px;
-}
+
 
 
 .nav {
@@ -68,7 +66,7 @@ body {
 
 .container {
     max-width: 1660px;
-    height:880px;
+    height:870px;
     margin: 0 auto;
     padding: 20px;
     background-color: white;
@@ -88,7 +86,7 @@ body {
 }
 
 .modal-image{
-    width:580px;
+    width:680px;
     height:450px;
 }
 
@@ -103,16 +101,20 @@ body {
     padding-top: 1em;
 }
 
-#external-events .fc-event-container {
-    margin: 0px 5px 5px 5px;
-    cursor: move;
-    height: 165px;
+
+div:where(.swal2-container).swal2-center>.swal2-popup {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: center;
+    justify-self: center;
+    border-radius: 15px;
 }
+
 
 .fc-event-container {
     background-color: none;
     border-radius: 10px;
-    box-shadow: 1px 3px 3px 0px #80808021;
+    box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* 지도,캘린더를 묶는 cotainer */
@@ -127,9 +129,9 @@ body {
 
 /* 캘린더 전체 */
 #calendar {
-    width: 780px;
+    width: 760px;
     height: 520px;
-    margin-left: 10px;
+    margin-left: 30px;
 }
 
 /* 지도 */
@@ -164,29 +166,30 @@ body {
     border:none;
     border-radius:10%;
     cursor:pointer;
-    background-color:#FFFFFF;
+    background-color:white;
+    color: #7b7b7b;
+    font-family: 'Noto sans KR', sans-serif;
 }
 
-.content-type-button:hover {
-    color: #FFFFFF; /* 원하는 색상으로 변경 */
-}
 
-
-/* 버튼에 호버 시 테두리 색상 변경 */
+ 버튼에 호버 시 테두리 색상 변경
 .content-type-button:hover {
-    border-color: #2B3D4F; /* 호버 시 테두리 색상 설정 */
-    background-color: #2B3D4F;
-    transition: background-color 0.3s; /* 부드러운 전환 효과 추가 */
+    background-color: none;
+    color:#364E9B;
+          font-weight: bold;
+          font-family: 'Noto sans KR', sans-serif;
 }
 
 
 
 .content-type-button:focus {
-      border-color: #2B3D4F; /* 호버 시 테두리 색상 설정 */
-      background-color: #2B3D4F;
-      color:white;
-      transition: background-color 0.3s; /* 부드러운 전환 효과 추가 */
-
+     color: #364E9B;
+         background: linear-gradient(to right, white, white 20%, #364E9B 20%, #364E9B 80%, white 80%, white);
+         background-repeat: no-repeat;
+         background-position: bottom;
+         background-size: 100% 3px; /* "border"의 두께 결정 */
+      font-weight: bold;
+      font-family: 'Noto sans KR', sans-serif;
 }
 
 .like-button{
@@ -233,17 +236,52 @@ body {
 }
 
 
+#searchButton{
+    border: none;
+    background-color: white;
+    width: 45px;
+        height: 21px;
+        font-size: 12px;
+        margin-left: -1px;
+}
+#cancelButton {
+        border: none;
+        background-color: white;
+        width: 70px;
+        height: 21px;
+        font-size: 12px;
+        margin-left: -5px;
+}
+
+#searchInput {
+       border: none;
+       background-color: white;
+       width: 173px;
+       height: 19px;
+       font-size: 12px;
+}
+
 
 #searchResults {
-    background-color: rgba(255, 255, 255, 0.25); /* 흰 배경색 및 투명도 설정 */
-    /*border: 1px solid #ccc; !* 테두리 설정 *!*/
-    /*border-radius: 5px; !* 둥근 테두리 설정 *!*/
-    padding: 10px; /* 내부 여백 설정 */
-    height: 250px; /* 최대 높이 설정 (내용이 너무 길 경우 스크롤 표시) */
-    overflow-y: scroll; /* 세로 스크롤바 표시 (내용이 길 경우) */
-    scrollbar-width: thin; /* 스크롤바 너비 설정 */
-    scrollbar-color: transparent transparent; /* 스크롤바 색상 투명으로 설정 */
+   background-color: rgba(255, 255, 255, 0.7);
+       padding: 10px;
+       height: 200px;
+       overflow-y: scroll;
+       margin-top: -15px;
 
+}
+
+.fc .fc-daygrid-day-number {
+    padding: 4px;
+    position: relative;
+    font-size: 13px;
+    z-index: 4;
+}
+
+.fc .fc-col-header-cell-cushion {
+    display: inline-block;
+    padding: 2px 4px;
+    font-size: 12px;
 }
 
 #external-events-list{
@@ -267,6 +305,11 @@ body {
 
 
 /* 알림창 내용 input 태그  */
+#swal2-title.swal2-title {
+    font-family:'Noto sans KR',sans-serif;
+    font-size: 24px;
+}
+
 .swal2-text-area {
     width: 20%;
     font-size: 16px;
@@ -318,37 +361,36 @@ font-size:12px;}
     left: 290px;
 }
 .fc-direction-ltr .fc-toolbar > * > :not(:first-child) {
-    margin-left: -17.25em;
+    margin-left: -16.25em !important;
 }
 
 
-#custom-startDate-button{
+#custom-startDate-button {
     position: absolute;
     top: 0px;
-    left: 190px;
+    left: 172px;
     background-color: #2B3D4F;
     color: white;
     border: none;
     padding: 10px 10px;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 0px 5px 5px 0px;
     height: 30px;
     font-size: 10px;
-    width: 69px;
-    }
+}
 
 .start-end-date{
-    position: absolute;
-    bottom: 23px;
-    right: 75px;
-    background-color: #FFFFFF;
-    font-size:13px;
-    color: black;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    height: 38px;
-    padding-right:60px;
+       position: absolute;
+       bottom: 24px;
+       right: 75px;
+       background-color: #FFFFFF;
+       font-size: 13px;
+       color: black;
+       border: none;
+       padding: 10px;
+       border-radius: 5px;
+       height: 33px;
+       padding-right: 60px;
 }
 
 .preview-button{
@@ -372,11 +414,13 @@ font-size:12px;}
 
 #modifyButton{
     position: absolute;
-    bottom: 15px;
-    right: 8px;
+    bottom: 11px;
+    right: 10px;
     font-size:13px;
     color: black;
     height: 28px;
+    border: 1px solid grey;
+    border-radius: 5px;
     background-color: transparent;
 }
 
@@ -388,25 +432,24 @@ font-size:12px;}
     margin: 10px 25px 0px 0px;
 }/*버튼*/
 
-
-.savebtn{
-        display: inline-block;
-        width: 90px;
-        height:20px;
-        margin: 10px;
-        margin-top: 25px; /* 버튼을 아래로 내리는 여백 추가 */
-        padding: 10px 15px; /* 버튼 내부 여백 설정 */
-        border: 2px solid transparent; /* 테두리 설정 */
-        border-radius: 15px; /* 모서리를 둥글게 만들기 */
-        cursor: pointer;
-        transition: background-color 0.3s, color 0.3s; /* 버튼 색상 변경 시 부드러운 전환 효과 추가 */
-        font-size: 14px; /* 글자 크기 설정 */
-        font-weight: bold;
-        text-align: center;
-        text-decoration: none;
-        background-color: #FFFFFF; /* 배경색 설정 */
-        border-color: #59BAFF;
-        color: #000000; /* 글자색 설정 */
+.savebtn {
+    display: inline-block;
+    width: 90px;
+    height: 16px;
+    margin: 5px;
+    margin-top: 15px;
+    padding: 6px 0px;
+    border: 2px solid transparent;
+    border-radius: 13px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: #FFFFFF;
+    border-color: #59BAFF;
+    color: #000000;
 }
 
 a.savebtn {
@@ -433,6 +476,77 @@ a.savebtn:hover {
       transition: background-color 0.3s; /* 부드러운 전환 효과 추가 */
 
 }
+
+.fc .fc-button .fc-icon {
+    font-size: 1.5em;
+    margin-top: -3px;
+    vertical-align: middle;
+}
+
+.fc-direction-ltr .fc-button-group > .fc-button:not(:last-child) {
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+    margin-top: -2px;
+}
+.fc-direction-ltr .fc-button-group > .fc-button:not(:first-child) {
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+    margin-left: -1px;
+    margin-top: -2px;
+}
+
+
+
+
+#searchSelect {
+    width: 80px;
+    height: 20px;
+    border: none;
+    border-radius: 0px;
+    text-align: left;
+}
+
+.fc-direction-ltr .fc-toolbar > * > :not(:first-child) {
+    margin-left: -17.25em;
+    border-radius: 5px 0px 0px 5px;
+}
+
+#external-events .fc-event-container {
+    margin: 0px 20px 5px 5px;
+    cursor: move;
+    width: 165px;
+    height: 165px;
+    font-size: 12px;
+        font-family: 'Noto sans KR',sans-serif;
+}
+
+
+
+
+
+div:where(.swal2-container) .swal2-select {
+    min-width: 15% !important;
+    height: 30px;
+    border-radius: 3px;
+    margin-left: -340px !important;
+    color: inherit;
+    font-size: 0.6em !important;
+ }
+
+ .swal2-text-area {
+     width: 20%;
+     font-size: 16px;
+     margin-right: -25px !important;
+ }
+
+ div:where(.swal2-container) button:where(.swal2-styled).swal2-deny {
+     border: 0;
+     border-radius: 0.25em;
+     background: initial;
+     background-color: #6e7881ad !important;
+     color: #fff;
+     font-size: 1em;
+ }
 
 
 .deletebtn{
