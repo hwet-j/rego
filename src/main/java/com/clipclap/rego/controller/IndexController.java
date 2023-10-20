@@ -1,6 +1,5 @@
 package com.clipclap.rego.controller;
 
-import com.clipclap.rego.config.auth.PrincipalDetails;
 import com.clipclap.rego.model.dto.PlannerDTO;
 import com.clipclap.rego.model.entitiy.User;
 import com.clipclap.rego.repository.DetailPlanRepository;
@@ -16,10 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
@@ -30,9 +27,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,15 +44,6 @@ public class IndexController {
 	private final DetailPlanRepository detailPlanRepository;
 	private final DetailPlanService detailPlanService;
 	private final PlannerService plannerService;
-
-
-
-
-	@GetMapping("email")
-	public String emailForm(){
-		return "email";
-	}
-
 
 	// 로그인이 완료되면 실행되는 페이지로 수정 X
 	// API로 로그인한 경우에 DB정보를 확인해서 회원가입한 이력이 있다면, 로그인 그렇지않으면 회원가입창으로 이동
@@ -98,33 +84,6 @@ public class IndexController {
 			return "main";
 
 		}
-	}
-
-	@GetMapping("/user")
-	public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principal) {
-		System.out.println("Principal : " + principal);
-		System.out.println("OAuth2 : "+principal.getUser().getProvider());
-		// iterator 순차 출력 해보기
-		Iterator<? extends GrantedAuthority> iter = principal.getAuthorities().iterator();
-		while (iter.hasNext()) {
-			GrantedAuthority auth = iter.next();
-			System.out.println(auth.getAuthority());
-		}
-
-		return "유저 페이지입니다.";
-	}
-
-	@GetMapping("/admin")
-	public @ResponseBody String admin() {
-		return "어드민 페이지입니다.";
-	}
-
-	//@PostAuthorize("hasRole('ROLE_MANAGER')")
-	//@PreAuthorize("hasRole('ROLE_MANAGER')")
-	@Secured("ROLE_MANAGER")
-	@GetMapping("/manager")
-	public @ResponseBody String manager() {
-		return "매니저 페이지입니다.";
 	}
 
 	@GetMapping("/login")
@@ -171,6 +130,7 @@ public class IndexController {
 
 
 	/* 탈퇴 */
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/apiUnlink")
 	public String apiUnlink(@RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient auth2AuthorizedClient) {
 
