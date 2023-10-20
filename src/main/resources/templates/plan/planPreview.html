@@ -141,6 +141,7 @@
 function captureMap() {
         const mapContainer = document.getElementById("map");
         if (mapContainer) {
+            console.log('찰칵');
             html2canvas(mapContainer, { useCORS: true }).then(function (canvas) {
                 const imageDataURL = canvas.toDataURL("image/png");
 
@@ -234,12 +235,9 @@ function captureMap() {
             fullscreenControl: false,
         });
 
-        /*google.maps.event.addDomListener(window, 'load', function() {
-            // 이곳에 지도 로딩이 완료된 후 실행할 코드를 작성합니다.
+        map.addListener('tilesloaded', function() {
             captureMap();
-            console.log('load');
-        });*/
-
+        });
 
         // console.log("지도지도지도");
         updateMap(detailData);
@@ -445,11 +443,6 @@ function captureMap() {
 
                 }
             }
-            window.addEventListener('load', function() {
-                captureMap();
-
-                console.log('지도 로딩이 완료되었습니다.');
-            });
 
         }
 
