@@ -7,7 +7,6 @@ import com.clipclap.rego.model.entitiy.PlannerDetail;
 import com.clipclap.rego.repository.DetailPlanRepository;
 import com.clipclap.rego.repository.PlannerRepository;
 import com.clipclap.rego.repository.TouristAttractionRepository;
-import com.clipclap.rego.repository.UserRepository;
 import com.clipclap.rego.service.DetailPlanService;
 import com.clipclap.rego.service.PlannerService;
 import com.clipclap.rego.service.TouristAttractionService;
@@ -53,35 +52,17 @@ public class PlannerController {
     private final DetailPlanService detailPlanService;
     private final PlannerService plannerService;
     private final DetailPlanRepository detailPlanRepository;
-    private final UserRepository userRepository;
 
     @GetMapping("/list")
     public String myPlanList(Model model , PlannerDTO plannerDTO ) {
 
         List<PlanCard> planList = plannerService.findAllPlanCard();
 
-
         model.addAttribute("planList", planList);
 
         return "plan/planList";
     }
 
-    /* 특정회원의 계획 리스트 --> 마이페이지에서 활용하면 될거같음
-    @GetMapping("/list")
-    @PreAuthorize("isAuthenticated()")
-    public String myPlanList(Model model, Principal principal , PlannerDTO plannerDTO ) {
-
-        if (principal != null){
-            List<PlannerDTO> dtos = plannerService.findByUserEmail(principal.getName());
-
-            System.out.println(dtos);
-            model.addAttribute("test", dtos);
-        } else {
-            return "redirect:/login";
-        }
-
-        return "plan/planList";
-    }*/
 
     /* 항공권을 통하지 않고 일반 계획 생성폼 요청 */
     @GetMapping("/add")
@@ -107,6 +88,7 @@ public class PlannerController {
         return "plan/planAdd";
     }
 
+    /* 유효성 검사 */
     @PostMapping("/ajaxValid")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> planAddValid(@ModelAttribute @Valid PlannerDTO plannerDTO, BindingResult bindingResult) {
@@ -141,9 +123,11 @@ public class PlannerController {
         return ResponseEntity.ok(id);
     }
 
+    /* 비행 정보가 존재할 때 계획 생성 */
     @PostMapping("/addPlanwithfly")
     @ResponseBody
     @Transactional
+    @PreAuthorize("isAuthenticated()")
     public Integer myPlanAddwithFly(@RequestBody JsonNode requestData) {
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -169,9 +153,6 @@ public class PlannerController {
             plannerDTO.setType(travelInfoDTO.getType());
             plannerDTO.setStartDate(LocalDate.parse(travelInfoDTO.getStartDate(), formatter));
             plannerDTO.setEndDate(LocalDate.parse(travelInfoDTO.getEndDate(), formatter));
-
-            System.out.println(LocalDateTime.parse(flightInfoDTO.getArrivalDate() + "T" + fromHome.getDepartureTime()));
-            System.out.println(LocalDateTime.parse(flightInfoDTO.getArrivalDate() + "T" + fromHome.getDepartureTime()));
 
             Integer id = plannerService.save(plannerDTO);
 
@@ -226,6 +207,7 @@ public class PlannerController {
 
     /* 계획 상세페이지 */
     @GetMapping("/detail")
+    @PreAuthorize("isAuthenticated()")
     public String map(@RequestParam(required = false) Integer planId, Model model) throws JsonProcessingException {
         PlannerDTO plannerDTO = plannerService.findById(planId);
         if (plannerDTO == null){
@@ -336,6 +318,7 @@ public class PlannerController {
 
     @PostMapping("/dateEdit")
     @ResponseBody
+    @PreAuthorize("isAuthenticated()")
     public String editDate(@RequestParam("start") LocalDate startDate,
                            @RequestParam("end") LocalDate endDate,
                            @RequestParam("planId") Integer planId,
@@ -361,6 +344,7 @@ public class PlannerController {
     }
 
     @GetMapping("/copy/{planId}")
+    @PreAuthorize("isAuthenticated()")
     public String copyPlanner(@PathVariable Integer planId, Principal principal) {
         String loggedInUserEmail = principal.getName();
         Planner newPlanner = plannerService.copyPlanner(planId, loggedInUserEmail);
@@ -374,7 +358,7 @@ public class PlannerController {
         return "redirect:/plan/Preview?planId="+planId;
     }
 
-
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/vote/{id}")
     @ResponseBody
     public String planVote(@PathVariable("id") Integer id,Principal principal){
@@ -382,19 +366,6 @@ public class PlannerController {
         plannerService.vote(id, principal.getName());
 
         return "Success";
-    }
-
-
-    @GetMapping("/test")
-    @ResponseBody
-    public String asdlasdf(){
-        List<PlanCard> list = plannerService.findTop5PlanCard();
-
-        for (PlanCard id: list){
-            System.out.println("id = " + id);
-        }
-
-        return "gg";
     }
 
 

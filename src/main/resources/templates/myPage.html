@@ -78,10 +78,11 @@
                     찜 어트랙션</h4>
                 <div class="attraction">
                     <div th:each="item : ${userAttractionLikes}">
-                        <div class="card3">
+                        <div th:id="'attrationLike_' + ${item.attraction.touristAttractionId}" class="card3">
                             <div class="attraction-title" th:text="${item.attraction.name}"></div>
                             <img th:src="${item.attraction.image}"/>
-                            <img src="img/like/afterLike.png"
+                            <img src="img/like/afterLike.png" th:id="'attrationLikeImage_' + ${item.attraction.touristAttractionId}"
+                                 th:onclick="'buttonHeart(' + ${item.attraction.touristAttractionId} + ')'"
                                  style="position:absolute; width: 20px; height:20px; right: 10px; top: 130px;">
                         </div>
                     </div>
@@ -190,6 +191,29 @@
        event.preventDefault();
    }
 });
+
+
+    function buttonHeart(touristAttractionId) {
+        var buttonId = 'attrationLikeImage_' + touristAttractionId;
+        var button = document.getElementById(buttonId);
+
+        // AJAX 요청을 보냅니다.
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/plan/vote/' + touristAttractionId, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var div = document.getElementById('attrationLike_' + touristAttractionId);
+                div.style.display = 'none';
+            } else {
+                console.error('서버 오류');
+            }
+        };
+
+        xhr.send();
+    }
+
 </script>
 </body>
 </html>

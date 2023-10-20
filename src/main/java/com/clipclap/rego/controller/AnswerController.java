@@ -24,6 +24,7 @@ import java.util.Map;
 
 @RequestMapping("/answer")
 @RequiredArgsConstructor
+@PreAuthorize("isAuthenticated()")
 @Controller
 public class AnswerController {
 
@@ -62,7 +63,6 @@ public class AnswerController {
 
     // 답변 등록 처리
 
-    @PreAuthorize("isAuthenticated()")
     @PostMapping("/add/{id}")
     public String addAnswer(@PathVariable("id") Integer id, Model model, @Valid AnswerForm answerForm,
                             BindingResult bindingResult, Principal principal, String email) {
