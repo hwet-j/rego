@@ -144,7 +144,6 @@ justify-content: center;
 display:flex;
 align-items: center;
 flex-direction: row;
-flex-wrap: wrap;
 justify-content: flex-.container;
 height: 235px;
 width:1000px;
@@ -175,15 +174,7 @@ line-height: 55px;
   letter-spacing:2px;
 }
 
-.container2-right {
-    border: 1px solid red;
-    float: left;
-  width: 700px;
-  height: 200px;
-  text-align: left;
-  padding:10px;
-  margin-left: 40px;
-}
+
 
 
 .right-sidebar {
@@ -564,4 +555,22 @@ object-fit: cover;
 .custom-modal-width{
     width: 700px;
     height: 1000px;
+}
+
+
+.container2-right{
+    border:none;
+    width:700px;
+    height:230px;
+}
+
+.swiper-container {
+    height: 230px; /* Swiper 컨테이너의 높이를 .container2-right와 일치 */
+    overflow: hidden;
+}
+.swiper-slide {
+    height: 230px !important;/* 이 값은 Swiper 컨테이너의 높이와 슬라이드 간의 여백을 고려하여 조정해야 합니다 */
+    max-height: 230px !important;
+    box-sizing: border-box; /* border와 padding을 width와 height에 포함 */
+    background-color:#444653 !important;
 }

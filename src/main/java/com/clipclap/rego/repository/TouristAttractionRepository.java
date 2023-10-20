@@ -31,4 +31,6 @@ public interface TouristAttractionRepository extends JpaRepository<TouristAttrac
 
 
     Optional<TouristAttraction> findByTouristAttractionId(Integer attractionId);
+
+
 }

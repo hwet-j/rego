@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <link href="/css/main_detail.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Welcome to Planner!</title>
 </head>
 
@@ -63,26 +63,33 @@
             <div class="list-container">
                 <div class="container2">
                     <div class="container2-left">
-                        Today's<br>
+                        Top 5<br>
                         Popular<br>
                         Place<br>
                         ♡
                     </div>
-                    <!--   <div class="container2-right">
-                           <div class="swiper-container">
-
-                               <div class="swiper-wrapper">
-
-                                   <div class="swiper-slide">내용 1</div>
-                                   <div class="swiper-slide">내용 2</div>
-                                   <div class="swiper-slide">내용 3</div>
-
-                               </div>
-                           </div>
-
-                       </div>-->
-
-
+                    <div class="container2-right">
+                        <div class="swiper-container">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide" th:each="Attraction : ${TouristAttraction}">
+                                        ===========
+                                        <div th:text="${Attraction.name}">Name</div>
+<!--                                        <div th:text="${Attraction.address}">Address</div>-->
+<!--                                        &lt;!&ndash; Image displayed using the <img> tag &ndash;&gt;-->
+<!--                                        <img class="swiper-image" th:src="${Attraction.image}" alt="Image" />-->
+<!--                                        <div th:text="${Attraction.introduction}">Introduction</div>-->
+<!--                                        <div th:text="${Attraction.latitude}">Latitude</div>-->
+<!--                                        <div th:text="${Attraction.longitude}">Longitude</div>-->
+<!--                                        <div th:text="${Attraction.contentType}">Content Type</div>-->
+<!--                                        &lt;!&ndash; Check if cityName is not null before accessing its properties &ndash;&gt;-->
+<!--                                        <div th:text="${Attraction.cityName != null ? Attraction.cityName.cityName : 'No City'}"></div>-->
+<!--                                        &lt;!&ndash; Likes count, assuming that 'likeAttractions' is a list of likes &ndash;&gt;-->
+<!--                                        <div th:text="${#lists.size(Attraction.likeAttractions)}">Likes Count</div>-->
+                                        ==========
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -649,22 +656,20 @@
     }
 
 </script>
-<!--<script>
-
-&lt;!&ndash;
-            new Swiper('.swiper-container', {
-     direction: 'vertical',
-
-  autoplay: {
-    // 자동재생 여부
-    delay: 2000, // 시작시간 설정
-  },
-  loop: true, // 반복재생 여부
-  slidesPerView: 1, // 한번에 보여줄 슬라이드 개수
-  spaceBetween: 10, // 슬라이드 사이 여백
-  centeredSlides: true // 1번 슬라이드가 가운데 보이기
-});&ndash;&gt;
-</script>-->
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      new Swiper('.swiper-container', {
+        direction: 'vertical',
+        autoplay: {
+          delay: 2000, // 2초 후 자동 재생
+        },
+        loop: true, // 반복 재생
+        slidesPerView: 1, // 한 번에 하나의 슬라이드 보이기
+        spaceBetween: 10, // 슬라이드 간 간격 10px
+        centeredSlides: true, // 첫 번째 슬라이드가 가운데에 위치
+      });
+    });
+</script>
 
 
 </body>
