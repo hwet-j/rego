@@ -282,4 +282,61 @@ public class PlannerServiceImpl implements PlannerService {
         return list;
     }
 
+    @Override
+    public List<PlanCard> findTop5PlanCard() {
+        List<PlanCard> allPlanCard = findAllPlanCard();
+
+        List<PlanCard> topFivePlanCards = allPlanCard.stream()
+                .sorted((pc1, pc2) -> Integer.compare(pc2.getVoter().size(), pc1.getVoter().size())) // 크기 역순으로 정렬
+                .limit(5) // 상위 5개 요소만 선택
+                .collect(Collectors.toList()); // List로 변환
+
+
+
+        return topFivePlanCards;
+    }
+
+    @Override
+    public List<PlanCard> userPlanVotePlans(List<Integer> plans) {
+        List<PlannerDTO> plannerDTOS = new ArrayList<>();
+
+        for(Integer id : plans) {
+            PlannerDTO dto = findById(id);
+            plannerDTOS.add(dto);
+        }
+
+        List<PlanCard> planCardList = new ArrayList<>();
+
+        for (PlannerDTO plan : plannerDTOS) {
+            int flight = detailPlanService.calculateTotalPriceForPlanWithFlight(plan.getPlanId());
+            int withoutFlight = detailPlanService.calculateTotalPriceForPlanWithoutFlight(plan.getPlanId());
+            List<User> voters = plannerRepository.findVotersByPlanId(plan.getPlanId());
+
+
+            PlanCard planCard = new PlanCard();
+            planCard.setPlanId(plan.getPlanId());
+            planCard.setType(plan.getType());
+            planCard.setContent(plan.getContent());
+            planCard.setStartDate(plan.getStartDate());
+            planCard.setEndDate(plan.getEndDate());
+            planCard.setUserEmail(plan.getUserEmail());
+            planCard.setNumberOfPeople(plan.getNumberOfPeople());
+            planCard.setImagePath(plan.getImagePath());
+            planCard.setFlightPrice(String.valueOf(flight));
+            planCard.setWithoutFlightPrice(String.valueOf(withoutFlight));
+
+            Set<String> voteEmails = new HashSet<>();
+            if (voters != null) {
+                for (User user : voters) {
+                    voteEmails.add(user.getEmail());
+                }
+            }
+            planCard.setVoter(voteEmails);
+
+            planCardList.add(planCard);
+        }
+
+        return planCardList;
+    }
+
 }

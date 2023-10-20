@@ -13,77 +13,77 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-    body {
-   background-color: #ffffff;
-    font-family: 'Noto Sans KR', sans-serif;
-     font-family: 'Roboto', sans-serif;
-      align: center;
-      font-size: 13px;
-      margin:0;
-      padding:0;
-  }
-      /* SweetAlert창 크기 */
-      .custom-modal-width {
-          width: 800px;
+        body {
+       background-color: #ffffff;
+        font-family: 'Noto Sans KR', sans-serif;
+         font-family: 'Roboto', sans-serif;
+          align: center;
+          font-size: 13px;
+          margin:0;
+          padding:0;
       }
+          /* SweetAlert창 크기 */
+          .custom-modal-width {
+              width: 800px;
+          }
 
-      html, body {
-          height: 100%;
-          margin: 0;
-          padding: 0;
-          overflow: hidden;
-      }
+          html, body {
+              height: 100%;
+              margin: 0;
+              padding: 0;
+              overflow: hidden;
+          }
 
-      #map {
-          width: 70%;
-          height: 100%;
-          float: left;
-          z-index: 1;
+          #map {
+              width: 70%;
+              height: 100%;
+              float: left;
+              z-index: 1;
 
-      }
+          }
 
-      #other-content {
-          width: 30%; /* 다른 콘텐츠의 너비 조절 */
-          height: 100%; /* 맵과 동일한 높이로 설정 */
-          float: right; /* 왼쪽으로 띄우기 (맵 왼쪽에 배치) */
-          /* 다른 스타일 속성 추가 */
-      }
+          #other-content {
+              width: 30%; /* 다른 콘텐츠의 너비 조절 */
+              height: 100%; /* 맵과 동일한 높이로 설정 */
+              float: right; /* 왼쪽으로 띄우기 (맵 왼쪽에 배치) */
+              /* 다른 스타일 속성 추가 */
+          }
 
-      /* 알림창 내용 input 태그  */
-      #event-title {
-          width: 80%;
-          padding: 5px;
-          font-size: 16px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-      }
+          /* 알림창 내용 input 태그  */
+          #event-title {
+              width: 80%;
+              padding: 5px;
+              font-size: 16px;
+              border: 1px solid #ccc;
+              border-radius: 5px;
+          }
 
-      a, a:link {
-          text-decoration: none;
-          color: black;
-      }
+          a, a:link {
+              text-decoration: none;
+              color: black;
+          }
 
-      .button-edit,
-      .startPlanButton{
-          padding: 15px;
-          color:white;
-          font-size:15px;
-      }
-      .goMain{
-          padding: 15px;
-          color:white;
-          font-size:15px;
-      }
+          .button-edit,
+          .startPlanButton{
+              padding: 15px;
+              color:white;
+              font-size:15px;
+          }
+          .goMain{
+              padding: 15px;
+              color:white;
+              font-size:15px;
+          }
 
-      .date-container{
-      margin-top:10px;
-      margin-left:10px;
-      padding:5px;
-      }
-      .rounded-image{
-      margin-top:10px;
+          .date-container{
+          margin-top:10px;
+          margin-left:10px;
+          padding:5px;
+          }
+          .rounded-image{
+          margin-top:10px;
 
-      }
+          }
 
     </style>
 </head>
@@ -123,11 +123,11 @@
         <div id="container-after"></div>
     </div>
 
-        <div style="height:5%; background-color:#59BAFF;">
-            <div style="text-align:center;">
-        <a href="/" id="goMain"><div class="goMain">메인페이지로 이동</div></a>
-            </div>
+    <div style="height:5%; background-color:#59BAFF;">
+        <div style="text-align:center;">
+            <a href="/" id="goMain"><div class="goMain">메인페이지로 이동</div></a>
         </div>
+    </div>
 </div>
 <script>
 
@@ -422,7 +422,7 @@ function captureMap() {
 
                     var lineSymbol = {
                         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW, // 화살표 모양
-                        scale: 2,               // 화살표 크기
+                        scale: 3,               // 화살표 크기
                         strokeColor: "black" // 화살표의 색상
                     };
 
@@ -438,7 +438,7 @@ function captureMap() {
                         ],
                         strokeColor: "black", // 선의 색상
                         strokeOpacity: 1.0,     // 선의 불투명도 (0.0 - 1.0)
-                        strokeWeight: 1,        // 선의 두께
+                        strokeWeight: 2,        // 선의 두께
                         map: map
                     });
 

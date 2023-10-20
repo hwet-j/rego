@@ -388,13 +388,16 @@ public class PlannerController {
     @GetMapping("/test")
     @ResponseBody
     public String asdlasdf(){
-        List<Integer> list = plannerService.userPlanVotes("ghlckd5424@gmail.com");
+        List<PlanCard> list = plannerService.findTop5PlanCard();
 
-        for (Integer id: list){
+        for (PlanCard id: list){
             System.out.println("id = " + id);
         }
 
         return "gg";
     }
+
+
+
 
 }

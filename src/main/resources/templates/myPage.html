@@ -14,7 +14,8 @@
 <div class="nav">
     <ul class="" style="list-style-type:none;">
         <li class="">
-            <a class="logo" th:href="@{/}"><img src="/img/logo.png" style="float: left; width: 63px; height: 58px; margin-left: 10px; background-repeat: no-repeat;"></a>
+            <a class="logo" th:href="@{/}"><img src="/img/logo.png"
+                                                style="float: left; width: 63px; height: 58px; margin-left: 10px; background-repeat: no-repeat;"></a>
             <div class="nav-left"
                  style="float:left;   margin-left: 440px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 500;">
                 <a class="" th:href="@{/flightResult}"
@@ -47,9 +48,6 @@
 </div>
 
 
-
-
-
 <div class="container">
     <div class="content">
         <div class="top-box">
@@ -75,12 +73,18 @@
             </div>
 
 
-            <div class="reservation-box">
+            <div class="attraction-box">
                 <h4 style="font-family: 'Noto sans KR', sans-serif; font-weight:400; margin-bottom:10px; margin-top: 10px; margin-left: 5px;">
-                    찜 컨텐츠</h4>
-                <div class="reservation">
-
-
+                    찜 어트랙션</h4>
+                <div class="attraction">
+                    <div th:each="item : ${userAttractionLikes}">
+                        <div class="card3">
+                            <div class="attraction-title" th:text="${item.attraction.name}"></div>
+                            <img th:src="${item.attraction.image}"/>
+                            <img src="img/like/afterLike.png"
+                                 style="position:absolute; width: 20px; height:20px; right: 10px; top: 130px;">
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -136,7 +140,30 @@
                 <h4 style="font-family: 'Noto sans KR', sans-serif; font-weight:400; margin-bottom:10px; margin-top: 10px; margin-left: 5px;">
                     찜 여행 계획</h4>
                 <div class="likeList">
+                    <div th:each="Vote : ${myVotePlanList}">
+                        <a th:href="@{|/plan/detail?planId=${Vote.planId}|}">
+                            <div class="card2">
+                                <div class="plan-title2" th:text="${Vote.content}"></div>
+                                <img th:src="@{${Vote.imagePath}}"
+                                     onerror="this.src='/preview/map_basic.png'"/>
+                                <img th:src="@{|/preview/${Vote.planId}.png|}"
+                                     onerror="this.src='/preview/map_basic.png'"/>
+                                <div style="width: 200px; height: 30px;">
+                                        <img src="img/like/afterLike.png" style="position:relative; width: 20px; height:20px; top:-25px; left:57px;">
 
+                                        <div th:text="|항공 : ${Vote.flightPrice}원|"
+                                             style="margin-top:-13px; font-size:10px; font-family:'Noto sans KR', sans-serif;"></div>
+                                        <div th:text="|경비 : ${Vote.withoutFlightPrice}원|"
+                                             style="margin-bottom:5px; font-size:10px; font-family:'Noto sans KR', sans-serif;"></div>
+                                        <!--<div th:text="|${Vote.startDate} 출발|"
+                                             style="float:left; margin-left:23px; margin-top:7px; margin-bottom:30px; font-size:10px; font-family:'Noto sans KR', sans-serif;"></div>
+                                        <div th:text="|${Vote.endDate} 도착|"
+                                             style="float:left; margin-left:10px; margin-top:7px; font-size:10px; font-family:'Noto sans KR', sans-serif;"></div>-->
+
+                                </div>
+                            </div>
+                        </a>
+                    </div>
 
                 </div>
             </div>
@@ -150,5 +177,19 @@
 
 </div>
 
+<script>
+    document.querySelector('.attraction').addEventListener('wheel', function(event) {
+   if (event.deltaY !== 0) {
+       this.scrollLeft += event.deltaY;
+       event.preventDefault();
+   }
+});
+   document.querySelector('.likeList').addEventListener('wheel', function(event) {
+   if (event.deltaY !== 0) {
+       this.scrollLeft += event.deltaY;
+       event.preventDefault();
+   }
+});
+</script>
 </body>
 </html>

@@ -71,7 +71,7 @@ public class LikeController {
         // 현재 인증된 사용자의 정보 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = "";
-    // 사용자의 이메일 가져오기 (사용자가 UserDetails를 구현한 경우)
+        // 사용자의 이메일 가져오기 (사용자가 UserDetails를 구현한 경우)
         if (1==1) {
             System.out.println("if문 돌파");
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();

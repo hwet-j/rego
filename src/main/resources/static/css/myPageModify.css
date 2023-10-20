@@ -313,11 +313,20 @@ h5 {
 }
 
 .confirm-btn {
+    background-color: white;
     width: 80px;
     padding-right: 13px;
     color: #a8d1ff;
     border: 2px solid #a8d1ff;
     font-family: 'Noto sans KR', sans-serif;
     letter-spacing: 3px;
+    cursor:pointer;
 }
+
+.confirm-btn:hover {
+    color:white;
+    background-color: #a8d1ff;
+}
+
+
 

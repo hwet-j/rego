@@ -98,6 +98,14 @@
         }
     }
 
+
+    window.onload = function() {
+    var durationElements = document.querySelectorAll(".duration");
+    durationElements.forEach(function(element) {
+        element.textContent = element.textContent.replace("직항,", "").trim();
+        element.textContent = element.textContent.replace("경유,", "").trim();
+    });
+};
 </script>
 
 
@@ -198,7 +206,7 @@
 
                     <div class="label-box">
                         <span class="btn-container">
-                            <button class="btn" type="submit" id="submitBtn">작성완료</button>
+                            <button class="btn" type="submit" id="submitBtn">생성하기</button>
                         </span>
                     </div>
                 </div>
@@ -214,8 +222,8 @@
     <div class="right-side">
         <!-- 크기 조절을 위해 테스트 -->
         <div th:if="${flightInfo == null}">
-            <img class="right-side-image" src="/img/side.png">
-            <div class="start-btn"><a class="start-plan-btn" th:href="@{/}">항공 예약하고 오기</a></div>
+            <a th:href="@{/flightResult}"><img class="right-side-image" src="/img/side.png"></a>
+            <div class="start-btn"><a class="start-plan-btn" th:href="@{/flightResult}"><p>항공권 예약하기</p></a></div>
         </div>
         <div th:unless="${flightInfo == null}" class="">
             <div class="flightPriceBox" >
@@ -230,7 +238,7 @@
                                 <span th:text="${flightInfo.routes[0].departureAirport}"></span>
                             </div></td>
                             <td><div class="center-content">
-                                <span class="duration" th:text="${flightInfo.routes[0].duration}"></span><img src="/img/flight/plane.png">
+                                <span class="duration" th:text="${#strings.substringAfter(flightInfo.routes[0].duration, ',')}"></span><img src="/img/flight/plane.png">
                             </div></td>
                             <td><div class="arrive">
                                 <span th:text="${flightInfo.routes[0].arrivalTime}"></span>
@@ -257,7 +265,7 @@
                     </div>
                 </div>
                 <div class="amountBox">
-                    <span>항공기 이용권 : </span><span class="amount" th:text="| ₩${flightInfo.price}|"></span>
+                    <span class="amount-before">항공기 이용권&nbsp;&nbsp;&nbsp;: </span><span class="amount" th:text="| ₩${flightInfo.price}|"></span>
                 </div>
             </div>
         </div>
