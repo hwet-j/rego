@@ -28,7 +28,7 @@ body {
 
 
 .nav {
-    left: 110px;
+    left: 102px;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
     padding-bottom: 15px;
     background-color: white;
@@ -69,18 +69,17 @@ body {
 
 
 .bbox{
- margin-left: -200px; /* 왼쪽으로 50px 이동 */
-
+    margin-left: 50px; /* 왼쪽으로 50px 이동 */
+    margin-top: 101px;
 }
 
 /* 제목 스타일 */
 h1.box {
     font-size: 30px;
-        color: #464DB7;
-        margin-bottom: -100px;
-        margin-left: 115px;
-        margin-right: 10px;
-        margin-top: 50px;
+    color: #464DB7;
+    margin-bottom: -100px;
+    margin-left: 280px;
+    margin-top: 50px;
 }
 
 
@@ -118,7 +117,7 @@ h1.box {
     background-color: #ffffff;
     font-size: 14px;
     color: #333;
-    outline: none;
+
 }
 
 /* 입력 상자 스타일 */
@@ -180,17 +179,19 @@ h1.box {
 
 
 
+
 /*이미지*/
 
 .tab1-img5{
     float: left;
-    width: 650px;
-    height: 600px;
-    margin-left: 100px;
-    margin-top: 70px;
+    width: 610px;
+    height: 560px;
+    margin-left: 250px;
+    margin-top: 110px;
     position: relative;
-         overflow: hidden;
-         z-index: 900;
+    overflow: hidden;
+    z-index: 900;
+     border-radius: 4%; /* 동그라미 모양으로 만들기 */
 }
 
 
@@ -225,8 +226,6 @@ h1.box {
 }
 
 .tab1-img5 p {
-
-
     position: absolute;
     left: 52.5%;
     width:40%;
@@ -242,7 +241,7 @@ h1.box {
 
 
 p {
-    margin: 70px;
+    margin: 35px;
     margin-left: 30px;
     padding: 0;
     text-align: left;
@@ -263,13 +262,13 @@ p {
 
 .vertical-line {
 
-margin-left: 825px;
-position:absolute;
-margin-top: 200px;
-width:1px;
-height:515px;
-background-color:#EEEFF2;
-z-index:999;
+    margin-left: 825px;
+    position:absolute;
+    margin-top: 200px;
+    width:1px;
+    height:515px;
+    background-color:#EEEFF2;
+    z-index:999;
 
 }
 
@@ -284,7 +283,7 @@ z-index:999;
     height:45px;
     padding: 10px;
     margin: 385px;
-    margin-left: 520px;
+    margin-left: 385px;
     border: 2px solid transparent; /* 테두리를 투명으로 설정 */
     transition: border-color 0.3s; /* 테두리 색상 변경 시 부드러운 전환 효과 추가 */
     border-radius: 5px; /* 모서리를 둥글게 만들기 */

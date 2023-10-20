@@ -56,11 +56,13 @@
                 <div class="d-flex justify-content-end">  <!--d-flex:한개의 row를 block레벨로 처리-->
                     <div class="badge bg-light text-dark p-2 text-start">
                     </div>
-                    <div class="text-below" th:text="${#temporals.format(notice.createDate,'yyyy-MM-dd HH:mm')}"/>
                 </div>
 
+                    <div class="text-below" th:text="${#temporals.format(notice.createDate,'yyyy-MM-dd HH:mm')}"/>
+                </div>
+        </div>
 
-                <div class="box">
+                <div class="btnBox">
                     <div th:object="${notice}">
                         <!-- 공지 수정버튼 - 관리자로 로그인한 경우에만 보이도록 설정 -->
                         <a th:href="@{|/notice/modify/${notice.id}|}"
@@ -77,11 +79,12 @@
                 </div>
 
                 </div>
-            </div>
-        </div>
+
+
 
     <div class="vertical-line"></div>
     <div class="right-side">
+        <a href="/touristAttraction/list">
         <div class="tab1-img1"><h3>보르도</h3>
             <p>보르도(Bordeaux)는 프랑스의 남서 지역에 위치한 도시로, 와인으로 유명한 지역으로 알려져 있습니다. 이 지역은 브루고드(Bordeaux) 지방 와인을
                 생산하는 중심지로, 세계적으로 고품질의 와인을 생산하는 지역 중 하나로 인정받고 있습니다.<br/><br/>
@@ -98,6 +101,7 @@
             <div class="blueScreen"></div>
             <img src="/css/mainCountry/France/bordeaux.webp">
         </div>
+        </a>
         </div>
     </div>
 </div>
