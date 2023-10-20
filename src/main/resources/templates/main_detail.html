@@ -255,62 +255,75 @@
 
         // 새로운 목록을 추가 (알맞게 정보를 수정)
         touristAttractionList.forEach(function (attraction) {
-            //li 만들고 class="card-box"
-            var li = document.createElement("li");
-            li.classList.add("card-box");
+            var li = document.createElement("li");      // li 요소 생성
+            li.classList.add("card-box");               // 생성한 li 요소에 Class명 추가
 
-            // 'li' 요소에 'data-country' 속성을 추가합니다. 이 속성은 나중에 필터링할 때 사용됩니다.
-            // li.setAttribute("data-country", attraction.countryName); // 속성에 국가 추가
-            // li.setAttribute("data-city", attraction.countryCity); //  속성에 도시 추가
-            // li.setAttribute("data-type", attraction.contentType); // 속성에 타입 추가
+            // li 요소에 넣어줄 HTML 작성
+            var html = `
+                        <img id="attraction_${attraction.touristAttractionId}" src="${attraction.image}" class="card-image">
+                        <p class="attraction-name"> ${attraction.touristAttractionName}</p>
+                        <div class="lineDivide">
+                            <p class="attraction-address">주소: ${attraction.address}</p>
+                            <img class="like-img" src="/img/like/beforeLike.png" alt="좋아요">
+                        </div>
+                    `;
+            // li 내부 HTML 코드 입력
+            li.innerHTML = html;
 
-
-            // 이미지 요소 생성
-            var img = document.createElement("img");
-            img.src = attraction.image;     // 이미지 URL은 attraction 객체에서 실제 이미지 URL 필드로 수정해야 합니다
-            img.classList.add("card-image");
-
-            // 이름 텍스트 생성
-            var nameText = document.createElement("p");
-            nameText.textContent = " " + attraction.touristAttractionName;
-            nameText.classList.add("attraction-name");
-
-            // div 요소생성
-            var div = document.createElement("div");
-            div.classList.add("lineDivide");
-
-            // 도시 텍스트 생성
-            var addressText = document.createElement("p");
-            addressText.textContent = "주소 : " + attraction.address;
-            addressText.classList.add("attraction-address");
-            //이미지 미리 만들기
-            var likeImg = document.createElement("img");
-            likeImg.classList.add("like-img"); // 클래스를 미리 추가합니다.
-
-            // '좋아요' 이미지 클릭 이벤트
-            likeImg.addEventListener('click', function () {
-                toggleLikeStatus(attraction.touristAttractionId, function (newStatus) {
-                    // 새로운 상태에 따라 이미지 변경
-                    if (newStatus === "success") {
-                        likeImg.src = "/img/like/afterLike.png"; // '좋아요' 상태일 때의 이미지
-                    } else if (newStatus === "fail") {
-                        likeImg.src = "/img/like/beforeLike.png"; // '좋아요' 취소 상태일 때의 이미지
-                    }
-                });
+            // 이미지 요소에 클릭 이벤트 리스너 추가
+            var img = li.querySelector(".card-image");
+            img.addEventListener("click", function () {
+                // 클릭 시 클로저를 사용하여 attraction 객체를 함수 내에 전달
+                infoFuntion(attraction);
             });
 
-            // 이미지와 텍스트를 <li> 요소에 추가
-            li.appendChild(img);
-            li.appendChild(nameText);
-            li.appendChild(div);
-            div.appendChild(addressText);
-            div.appendChild(likeImg); // 이미지를 div에 추가합니다.
+            // 좋아요 이미지 요소 불러오기
+            var likeImg = li.querySelector(".like-img");
 
-            // 찜 상태 확인 및 이미지 설정
+            // 좋아요 이미지에 클릭 이벤트 추가
+            likeImg.addEventListener('click', function () {
+                if (isLoggedIn) {       // isLoggedIn이 true (로그인한 경우)
+                    toggleLikeStatus(attraction.touristAttractionId, function (newStatus) {
+                        var currentSrc = likeImg.src;
+                        if (newStatus === "success") {
+                            if (currentSrc.includes("/img/like/afterLike.png")) {
+                                likeImg.src = "/img/like/beforeLike.png";
+                            } else {
+                                likeImg.src = "/img/like/afterLike.png";
+                            }
+                        } else if (newStatus === "fail") {
+                            // 실패하면 찜 등록기능이 작동안한거니 구현 X
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: '로그인 하시겠습니까?',
+                        text: '찜등록은 로그인 기능입니다.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: '확인',
+                        cancelButtonText: '취소'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // 확인 버튼이 클릭
+                            Swal.fire('확인', '로그인 페이지로 이동합니다.', 'success').then(() => {
+                                window.location.href = '/login';
+                            });
+                        } else if (result.isDismissed) {
+                            // 취소 버튼 클릭 또는 모달을 닫은 경우
+                            Swal.fire('취소됨', '작업이 취소되었습니다.', 'error');
+                        }
+                    });
+
+                }
+            });
+
+            // 하트 이미지를 불러올때 비동기로 체크해서 좋아요를 눌렀는지 확인하여 조건에 맞게 이미지 설정
             checkLikeStatus(attraction.touristAttractionId, function (status) {
                 likeImg.src = status === "afterLike" ? "/img/like/afterLike.png" : "/img/like/beforeLike.png";
             });
 
+            // ul요소 (attractionListContainer) 안에 li 추가
             attractionListContainer.appendChild(li);
         });
 
@@ -363,13 +376,12 @@
         attractionListContainer.innerHTML = '';
 
         filteredData.forEach(function (attraction) {
-
             var li = document.createElement("li");      // li 요소 생성
             li.classList.add("card-box");               // 생성한 li 요소에 Class명 추가
 
             // li 요소에 넣어줄 HTML 작성
             var html = `
-                        <img src="${attraction.image}" class="card-image">
+                        <img id="attraction_${attraction.touristAttractionId}" src="${attraction.image}" class="card-image">
                         <p class="attraction-name"> ${attraction.touristAttractionName}</p>
                         <div class="lineDivide">
                             <p class="attraction-address">주소: ${attraction.address}</p>
@@ -379,19 +391,55 @@
             // li 내부 HTML 코드 입력
             li.innerHTML = html;
 
+            // 이미지 요소에 클릭 이벤트 리스너 추가
+            var img = li.querySelector(".card-image");
+            img.addEventListener("click", function () {
+                // 클릭 시 클로저를 사용하여 attraction 객체를 함수 내에 전달
+                infoFuntion(attraction);
+            });
+
             // 좋아요 이미지 요소 불러오기
             var likeImg = li.querySelector(".like-img");
 
+            // 좋아요 이미지에 클릭 이벤트 추가
             likeImg.addEventListener('click', function () {
-                toggleLikeStatus(attraction.touristAttractionId, function (newStatus) {
-                    if (newStatus === "success") {
-                        likeImg.src = "/img/like/afterLike.png";
-                    } else if (newStatus === "fail") {
-                        likeImg.src = "/img/like/beforeLike.png";
-                    }
-                });
+                if (isLoggedIn) {       // isLoggedIn이 true (로그인한 경우)
+                    toggleLikeStatus(attraction.touristAttractionId, function (newStatus) {
+                        var currentSrc = likeImg.src;
+                        if (newStatus === "success") {
+                            if (currentSrc.includes("/img/like/afterLike.png")) {
+                                likeImg.src = "/img/like/beforeLike.png";
+                            } else {
+                                likeImg.src = "/img/like/afterLike.png";
+                            }
+                        } else if (newStatus === "fail") {
+                            // 실패하면 찜 등록기능이 작동안한거니 구현 X
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: '로그인 하시겠습니까?',
+                        text: '찜등록은 로그인 기능입니다.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: '확인',
+                        cancelButtonText: '취소'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // 확인 버튼이 클릭
+                            Swal.fire('확인', '로그인 페이지로 이동합니다.', 'success').then(() => {
+                                window.location.href = '/login';
+                            });
+                        } else if (result.isDismissed) {
+                            // 취소 버튼 클릭 또는 모달을 닫은 경우
+                            Swal.fire('취소됨', '작업이 취소되었습니다.', 'error');
+                        }
+                    });
+
+                }
             });
 
+            // 하트 이미지를 불러올때 비동기로 체크해서 좋아요를 눌렀는지 확인하여 조건에 맞게 이미지 설정
             checkLikeStatus(attraction.touristAttractionId, function (status) {
                 likeImg.src = status === "afterLike" ? "/img/like/afterLike.png" : "/img/like/beforeLike.png";
             });
@@ -449,7 +497,7 @@
 
             // li 요소에 넣어줄 HTML 작성
             var html = `
-                        <img src="${attraction.image}" class="card-image">
+                        <img id="attraction_${attraction.touristAttractionId}" src="${attraction.image}" class="card-image">
                         <p class="attraction-name"> ${attraction.touristAttractionName}</p>
                         <div class="lineDivide">
                             <p class="attraction-address">주소: ${attraction.address}</p>
@@ -459,19 +507,55 @@
             // li 내부 HTML 코드 입력
             li.innerHTML = html;
 
+            // 이미지 요소에 클릭 이벤트 리스너 추가
+            var img = li.querySelector(".card-image");
+            img.addEventListener("click", function () {
+                // 클릭 시 클로저를 사용하여 attraction 객체를 함수 내에 전달
+                infoFuntion(attraction);
+            });
+
             // 좋아요 이미지 요소 불러오기
             var likeImg = li.querySelector(".like-img");
 
+            // 좋아요 이미지에 클릭 이벤트 추가
             likeImg.addEventListener('click', function () {
-                toggleLikeStatus(attraction.touristAttractionId, function (newStatus) {
-                    if (newStatus === "success") {
-                        likeImg.src = "/img/like/afterLike.png";
-                    } else if (newStatus === "fail") {
-                        likeImg.src = "/img/like/beforeLike.png";
-                    }
-                });
+                if (isLoggedIn) {       // isLoggedIn이 true (로그인한 경우)
+                    toggleLikeStatus(attraction.touristAttractionId, function (newStatus) {
+                        var currentSrc = likeImg.src;
+                        if (newStatus === "success") {
+                            if (currentSrc.includes("/img/like/afterLike.png")) {
+                                likeImg.src = "/img/like/beforeLike.png";
+                            } else {
+                                likeImg.src = "/img/like/afterLike.png";
+                            }
+                        } else if (newStatus === "fail") {
+                            // 실패하면 찜 등록기능이 작동안한거니 구현 X
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: '로그인 하시겠습니까?',
+                        text: '찜등록은 로그인 기능입니다.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: '확인',
+                        cancelButtonText: '취소'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // 확인 버튼이 클릭
+                            Swal.fire('확인', '로그인 페이지로 이동합니다.', 'success').then(() => {
+                                window.location.href = '/login';
+                            });
+                        } else if (result.isDismissed) {
+                            // 취소 버튼 클릭 또는 모달을 닫은 경우
+                            Swal.fire('취소됨', '작업이 취소되었습니다.', 'error');
+                        }
+                    });
+
+                }
             });
 
+            // 하트 이미지를 불러올때 비동기로 체크해서 좋아요를 눌렀는지 확인하여 조건에 맞게 이미지 설정
             checkLikeStatus(attraction.touristAttractionId, function (status) {
                 likeImg.src = status === "afterLike" ? "/img/like/afterLike.png" : "/img/like/beforeLike.png";
             });

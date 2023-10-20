@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/css/plan_list.css">
+    <link href="/css/plan_list.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <title>리스트</title>
@@ -85,79 +85,81 @@
                                                     style="float: left; width: 63px; height: 58px; margin-left: 10px; background-repeat: no-repeat;"></a>
                 <div class="nav-left"
                      style="float:left;   margin-left: 440px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 500;">
-                    <a class="" th:href="@{/flightResult}"
-                       style="margin-right: 50px; color:#4F54B4;">AIRPORT</a>
-                    <a class="" th:href="@{/plan/add}"
-                       style="margin-right: 50px; color:#4F54B4;">START PLAN</a>
-                    <a class="" th:href="@{/touristAttraction/list}"
-                       style="margin-right: 50px; color:#4F54B4;">ATTRACTIONS</a>
-                    <a class="" th:href="@{/plan/list}"
-                       style="color:#4F54B4;">PLAN LIST</a>
+                    <a class="" style="margin-right: 50px; color:#4F54B4;"
+                       th:href="@{/flightResult}">AIRPORT</a>
+                    <a class="" style="margin-right: 50px; color:#4F54B4;"
+                       th:href="@{/plan/add}">START PLAN</a>
+                    <a class="" style="margin-right: 50px; color:#4F54B4;"
+                       th:href="@{/touristAttraction/list}">ATTRACTIONS</a>
+                    <a class="" style="color:#4F54B4;"
+                       th:href="@{/plan/list}">PLAN LIST</a>
                 </div>
 
                 <div class="nav-right"
                      style="float:right;    margin-right: 35px; margin-top: 27px;  font-size: 12px;  font-family: 'Roboto', sans-serif; font-weight: 600;">
-                    <a class="" th:href="@{/notice/list}"
-                       style="margin-right: 20px; color:#4F54B4;">공지사항</a>
-                    <a class="" th:href="@{/question/list}"
-                       style="margin-right: 20px; color:#4F54B4;">고객센터</a>
-                    <a class="loginBtn" sec:authorize="isAnonymous()" th:href="@{/login}"
-                       style="margin-right: 20px; color:#4F54B4;">로그인</a>
-                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/myPage}"
-                       style="margin-right: 20px; color:#4F54B4;">마이페이지</a>
-                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/logout}"
-                       style="margin-right: 20px; color:#4F54B4;">로그아웃</a>
-                    <a class="" sec:authorize="hasRole('ADMIN')" th:href="@{/user/list}"
-                       style="color:#4F54B4;">ADMIN</a>
+                    <a class="" style="margin-right: 20px; color:#4F54B4;"
+                       th:href="@{/notice/list}">공지사항</a>
+                    <a class="" style="margin-right: 20px; color:#4F54B4;"
+                       th:href="@{/question/list}">고객센터</a>
+                    <a class="loginBtn" sec:authorize="isAnonymous()" style="margin-right: 20px; color:#4F54B4;"
+                       th:href="@{/login}">로그인</a>
+                    <a class="" sec:authorize="isAuthenticated()" style="margin-right: 20px; color:#4F54B4;"
+                       th:href="@{/myPage}">마이페이지</a>
+                    <a class="" sec:authorize="isAuthenticated()" style="margin-right: 20px; color:#4F54B4;"
+                       th:href="@{/logout}">로그아웃</a>
+                    <a class="" sec:authorize="hasRole('ADMIN')" style="color:#4F54B4;"
+                       th:href="@{/user/list}">ADMIN</a>
                 </div>
             </li>
         </ul>
 
     </div>
 
-
+    <div id="h1"><h1>프로 여행러들의 계획을 담아보세요!</h1></div>
     <div class="card-container">
         <div class="card-list" th:each="item : ${planList}">
 
             <a th:href="@{|/plan/detail?planId=${item.planId}|}">
                 <div class="image-container">
                     <div class="left-side">
-                        <div>
-                            <img class="left-image" th:src="@{|${item.imagePath}|}"/>
+                            <img class="left-image" id="content1" th:src="@{|${item.imagePath}|}"/>
+                            <img class="right-image" id="content2" onerror="this.src='/preview/map_basic.png'"
+                                 th:src="@{|/preview/${item.planId}.png|}"/>
                         </div>
-                        <div th:text="|여행 테마 : ${item.type}|"></div>
-                        <div th:text="${item.content}"></div>
 
-                        <span th:if="${#authorization.expression('isAuthenticated()')}">
+
+                    <div class="right-side">
+                        <div id="content3">
+                            <div th:text="|여행 테마 : ${item.type}|"></div>
+                            <div th:text="${item.content}"></div>
+
+                            <span th:if="${#authorization.expression('isAuthenticated()')}">
                             <a href="javascript:void(0);" th:id="'linkButton_' + ${item.planId}"
                                th:onclick="'buttonHeart(' + ${item.planId} + ')'">
                                 <button class="heart-button">
                                     <img class="heart-img"
-                                         th:src="${item.voter.contains(#authentication.principal.username) ? '/img/PlanLike.png' : '/img/PlanUnlike.png'}"
-                                         th:id="'heartImage_' + ${item.planId}">
+                                         th:id="'heartImage_' + ${item.planId}"
+                                         th:src="${item.voter.contains(#authentication.principal.username) ? '/img/PlanLike.png' : '/img/PlanUnlike.png'}">
                                 </button>
                             </a>
                         </span>
 
-                        <span th:unless="${#authorization.expression('isAuthenticated()')}">
+                            <span th:unless="${#authorization.expression('isAuthenticated()')}">
                             <a href="javascript:void(0);" id="heartLogin">
                                 <button class="heart-button">
                                      <img class="heart-img" src="/img/PlanUnlike.png">
                                 </button>
                             </a>
                         </span>
-                    </div>
-
-                    <div class="right-side">
-                        <div>
-                            <img class="right-image" th:src="@{|/preview/${item.planId}.png|}"
-                                 onerror="this.src='/preview/map_basic.png'"/>
                         </div>
-
+                        <div id="content4">
                         <div th:text="|여정시작 : ${item.startDate}|"></div>
                         <div th:text="|여정종료 : ${item.endDate}|"></div>
-                        <div th:text="|항공 : ${item.flightPrice}|"></div>
-                        <div th:text="|경비 : ${item.withoutFlightPrice}|"></div>
+                        <div id="moneySet"  >
+                        <div data-th-text="|항공 : ${#numbers.formatInteger(item.flightPrice, 0, 'COMMA') + '원'}|"></div>&nbsp;&nbsp;&nbsp;
+                        <div data-th-text="|경비 : ${#numbers.formatInteger(item.withoutFlightPrice, 0, 'COMMA') + '원'}|"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </a>
@@ -165,7 +167,7 @@
         </div>
 
     </div>
-
+</div>
 
 </body>
 </html>

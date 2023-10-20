@@ -131,7 +131,7 @@ public class LikeServiceImpl implements LikeService {
         //user, toursitAttraction 객체 생성
         User user;
         TouristAttraction touristAttraction;
-        
+
         //DB에 존재하지 않을시 에러이므로 false 존재하면 위의 빈객체에 담음
         Optional<User> optionalUser = userRepository.findByEmail(userEmail);
         if (optionalUser.isEmpty()){
@@ -149,12 +149,10 @@ public class LikeServiceImpl implements LikeService {
 
         likeCnt = likeRepository.countByUserAndAttraction(user,touristAttraction);
         if(likeCnt==1){
-            System.out.println("삭제");
             LikeAttraction likeAttraction = likeRepository.findByUserAndAttraction(user,touristAttraction);
-            likeRepository.delete(likeAttraction);
+            likeRepository.deleteByLikeId(likeAttraction.getLikeId());
             return true;
         }else{
-            System.out.println("추가");
             LikeAttraction likeAttraction = new LikeAttraction();
             likeAttraction.setAttraction(touristAttraction);
             likeAttraction.setUser(user);

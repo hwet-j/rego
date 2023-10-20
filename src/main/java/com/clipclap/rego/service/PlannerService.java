@@ -44,5 +44,7 @@ public interface PlannerService {
     // 찜 개수가 많은 5개의 플랜 정보
     List<PlanCard> findTop5PlanCard();
 
+    List<PlanCard> userPlanVotePlans(List<Integer> plans);
+
 
 }
