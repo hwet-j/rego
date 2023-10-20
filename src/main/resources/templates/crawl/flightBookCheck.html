@@ -6,47 +6,43 @@
     <title>Airline Booking</title>
 </head>
 <body>
-<div class="content">
-    <div class="nav"
-         style=" box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2); padding-bottom: 15px; background-color: white; width: 1700px; height: 73px;  text-align: center; position:fixed; top: 0px;">
+<div class="background"></div>
+<div class="background2"></div>
 
+<div class="content">
+    <div class="nav">
         <ul class="" style="list-style-type:none;">
             <li class="">
-                <!-- 타임리프의 security이용
-                sec:authorize="isAnonymous()은 로그인하지않는 경우->로그인 출력
-                sec:authorize="isAuthenticated()은 로그인한 경유->로그아웃 출력
-                -->
-                <a class="logo" th:href="@{/}"><img src="/img/logo.png"
-                                                    style="float: left; width: 63px; height: 58px; margin-left: 10px; background-repeat: no-repeat;"></a>
+                <a class="logo" th:href="@{/}"><img src="/img/logo.png" style="float: left; width: 63px; height: 58px; margin-left: 10px; background-repeat: no-repeat;"></a>
                 <div class="nav-left"
-                     style="float:left;   margin-left: 470px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 500;">
-                    <a class="" th:href="@{/}"
-                       style="margin-right: 50px; color:#4F54B4;">HOME</a>
-                    <a class="" th:href="@{/}"
+                     style="float:left;   margin-left: 440px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 500;">
+                    <a class="" th:href="@{/flightResult}"
                        style="margin-right: 50px; color:#4F54B4;">AIRPORT</a>
-                    <a class="" th:href="@{/}"
+                    <a class="" th:href="@{/plan/add}"
                        style="margin-right: 50px; color:#4F54B4;">START PLAN</a>
-                    <a class="" th:href="@{/}"
-                       style="color:#4F54B4;">RECOMMEND</a>
+                    <a class="" th:href="@{/touristAttraction/list}"
+                       style="margin-right: 50px; color:#4F54B4;">ATTRACTIONS</a>
+                    <a class="" th:href="@{/plan/list}"
+                       style="color:#4F54B4;">PLAN LIST</a>
                 </div>
+
                 <div class="nav-right"
                      style="float:right;    margin-right: 35px; margin-top: 27px;  font-size: 12px;  font-family: 'Roboto', sans-serif; font-weight: 600;">
-                    <a class="" th:href="@{/}"
+                    <a class="" th:href="@{/notice/list}"
+                       style="margin-right: 20px; color:#4F54B4;">공지사항</a>
+                    <a class="" th:href="@{/question/list}"
                        style="margin-right: 20px; color:#4F54B4;">고객센터</a>
                     <a class="loginBtn" sec:authorize="isAnonymous()" th:href="@{/login}"
                        style="margin-right: 20px; color:#4F54B4;">로그인</a>
-                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/}"
+                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/myPage}"
                        style="margin-right: 20px; color:#4F54B4;">마이페이지</a>
-                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/}"
+                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/logout}"
                        style="margin-right: 20px; color:#4F54B4;">로그아웃</a>
-                    <a class="" sec:authorize="hasRole('ADMIN')" th:href="@{/}"
+                    <a class="" sec:authorize="hasRole('ADMIN')" th:href="@{/user/list}"
                        style="color:#4F54B4;">ADMIN</a>
                 </div>
             </li>
         </ul>
-        <div>
-
-        </div>
     </div>
     <!-- nav끝   -->
     <div class="navEmptyBox">
@@ -148,12 +144,12 @@
                 <div class="flightPriceBox" >
                     <div class="flightPriceRoute" th:text="|${flightInfo.routes[0].departureAirport} &#x2192; ${flightInfo.routes[0].arrivalAirport}|"></div>
                     <div class="flightPriceAmount">
-                        <div class="airLineName" style="font-size: 20px; margin-top:15px; font-weight: bolder;" th:text="|${flightInfo.routes[0].airlineName} & ${flightInfo.routes[0].airlineName}|"></div>
-                        <div class="sum" style="font-size: 18px; margin:10px; font-weight: bold;">합계</div>
-                        <div class="amount" style="font-size: 30px; margin:5px; margin-bottom:35px;" th:text="|₩${flightInfo.price}|"></div>
+                        <div class="airLineName" style="font-size: 20px; margin-top:40px; font-weight: bolder;" th:text="|${flightInfo.routes[0].airlineName} & ${flightInfo.routes[0].airlineName}|"></div>
+                        <div class="sum" style="font-size: 18px;  margin-top: 30px; font-weight: bold;">합계</div>
+                        <div class="amount" style="font-size: 40px; margin:10px;" th:text="|₩${flightInfo.price}|"></div>
                         <a><div class="flightPriceButton">결제하기</div></a>
-                        <div style="height: 2px; background-color: #CBCED8; margin: 15px 0; width:160px;"></div>
-                        <input type="submit" value="플랜 시작하기" class="flightPriceButton"/>
+                        <!--<div style="height: 2px; background-color: #CBCED8; margin: 15px 0; width:160px;"></div>-->
+                        <input type="submit" value="플랜 시작" class="flightPriceButton2"/>
                     </div>
                 </div>
             </div>

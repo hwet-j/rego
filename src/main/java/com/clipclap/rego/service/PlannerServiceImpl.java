@@ -296,4 +296,47 @@ public class PlannerServiceImpl implements PlannerService {
         return topFivePlanCards;
     }
 
+    @Override
+    public List<PlanCard> userPlanVotePlans(List<Integer> plans) {
+        List<PlannerDTO> plannerDTOS = new ArrayList<>();
+
+        for(Integer id : plans) {
+            PlannerDTO dto = findById(id);
+            plannerDTOS.add(dto);
+        }
+
+        List<PlanCard> planCardList = new ArrayList<>();
+
+        for (PlannerDTO plan : plannerDTOS) {
+            int flight = detailPlanService.calculateTotalPriceForPlanWithFlight(plan.getPlanId());
+            int withoutFlight = detailPlanService.calculateTotalPriceForPlanWithoutFlight(plan.getPlanId());
+            List<User> voters = plannerRepository.findVotersByPlanId(plan.getPlanId());
+
+
+            PlanCard planCard = new PlanCard();
+            planCard.setPlanId(plan.getPlanId());
+            planCard.setType(plan.getType());
+            planCard.setContent(plan.getContent());
+            planCard.setStartDate(plan.getStartDate());
+            planCard.setEndDate(plan.getEndDate());
+            planCard.setUserEmail(plan.getUserEmail());
+            planCard.setNumberOfPeople(plan.getNumberOfPeople());
+            planCard.setImagePath(plan.getImagePath());
+            planCard.setFlightPrice(String.valueOf(flight));
+            planCard.setWithoutFlightPrice(String.valueOf(withoutFlight));
+
+            Set<String> voteEmails = new HashSet<>();
+            if (voters != null) {
+                for (User user : voters) {
+                    voteEmails.add(user.getEmail());
+                }
+            }
+            planCard.setVoter(voteEmails);
+
+            planCardList.add(planCard);
+        }
+
+        return planCardList;
+    }
+
 }
