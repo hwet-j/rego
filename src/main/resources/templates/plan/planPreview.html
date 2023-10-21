@@ -14,8 +14,8 @@
 
     <style>
         body {
-       background-color: #ffffff;
-        font-family: 'Noto Sans KR', sans-serif;
+         background-color: #ffffff;
+         font-family: 'Noto Sans KR', sans-serif;
          font-family: 'Roboto', sans-serif;
           align: center;
           font-size: 13px;
@@ -35,7 +35,7 @@
           }
 
           #map {
-              width: 70%;
+              width: 75%;
               height: 100%;
               float: left;
               z-index: 1;
@@ -43,8 +43,8 @@
           }
 
           #other-content {
-              width: 30%; /* 다른 콘텐츠의 너비 조절 */
-              height: 100%; /* 맵과 동일한 높이로 설정 */
+              width: 25%; /* 다른 콘텐츠의 너비 조절 */
+              height: 930px; /* 맵과 동일한 높이로 설정 */
               float: right; /* 왼쪽으로 띄우기 (맵 왼쪽에 배치) */
               /* 다른 스타일 속성 추가 */
           }
@@ -63,18 +63,22 @@
               color: black;
           }
 
-          .button-edit,
-          .startPlanButton{
-              padding: 15px;
-              color:white;
-              font-size:15px;
-          }
-          .goMain{
-              padding: 15px;
-              color:white;
-              font-size:15px;
-          }
+       .button-edit,
+        .startPlanButton,
+        .goMain {
+            padding: 14px;
+            color: white;
+            font-size: 15px;
 
+            transition: background-color 0.2s;
+            background-color: transparent; /* 배경색을 초기에 투명으로 설정 */
+
+            /* 일반 상태 스타일 */
+
+            &:hover {
+               font-weight: bold;
+            }
+        }
           .date-container{
           margin-top:10px;
           margin-left:10px;
@@ -84,6 +88,18 @@
           margin-top:10px;
 
           }
+
+        div:where(.swal2-container) img:where(.swal2-image) {
+        max-width: 100%;
+        margin: 0em auto 1em;
+        object-fit: cover;
+        width: ;
+        height: ;
+        overflow: hidden;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+}
+
 
     </style>
 </head>
@@ -309,7 +325,7 @@ function captureMap() {
                             text: `${introduction}`,
                             imageUrl: `${imageUrl}`,
                             imageWidth: 1000,
-                            imageHeight: 600,
+                            imageHeight: 400,
                             customClass: {
                                 popup: 'custom-modal-width',
                             },
@@ -420,7 +436,7 @@ function captureMap() {
 
                     var lineSymbol = {
                         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW, // 화살표 모양
-                        scale: 3,               // 화살표 크기
+                        scale: 2,               // 화살표 크기
                         strokeColor: "black" // 화살표의 색상
                     };
 
@@ -497,7 +513,7 @@ function captureMap() {
                             text: `${introduction}`,
                             imageUrl: `${imageUrl}`,
                             imageWidth: 1000,
-                            imageHeight: 600,
+                            imageHeight: 400,
                             customClass: {
                                 popup: 'custom-modal-width',
                             },
@@ -715,7 +731,7 @@ function captureMap() {
                     imageUrl: `${previewAlert.imageUrl}`,
                     text: `${previewAlert.title}`,
                     imageWidth: 1000,
-                    imageHeight: 600,
+                    imageHeight: 400,
                     customClass: {
                         popup: 'custom-modal-width',
                     },
@@ -811,7 +827,7 @@ function captureMap() {
                     imageUrl: `${previewAlert.imageUrl}`,
                     text: `${previewAlert.title}`,
                     imageWidth: 1000,
-                    imageHeight: 600,
+                    imageHeight: 400,
                     customClass: {
                         popup: 'custom-modal-width',
                     },
