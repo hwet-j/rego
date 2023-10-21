@@ -1208,18 +1208,18 @@
                     Swal.fire({
                         title: '날짜 선택',
                         html: `
-                            <div>검색 유형 <select class="form-control" id="editSearchType" name="type">
+                            <div>검색 유형 :   <select class="form-control" id="editSearchType" name="type">
                             <option value="">미선택</option>
                             <option value="자유" ${type === "자유" ? "selected" : ""}>자유</option>
                             <option value="힐링" ${type === "힐링" ? "selected" : ""}>힐링</option>
                             <option value="문화" ${type === "문화" ? "selected" : ""}>문화</option>
                             <option value="쇼핑" ${type === "쇼핑" ? "selected" : ""}>쇼핑</option>
                             <option value="식도락" ${type === "식도락" ? "selected" : ""}>식도락</option>
-                            </select></div>
-                            <div>여행 제목 <input class="input-content" id="editContent" name="content" type="text" value="${content}"></div>
-                            <div>시작일 <input type="date" id="editStartDate" value="${defaultStartDate}" ></div>
-                            <div>종료일 <input type="date" id="editEndDate" value="${defaultEndDate}"></div>
-                            <div>여행 인원 <input class="input-content" id="editNumberOfPeople" value="${numberOfPeople}" name="numberOfPeople" type="number"></div>
+                            </select></div><br/>
+                            <div>여행 제목 :  <input class="input-content" id="editContent" name="content" type="text" value="${content}"></div><br/>
+                            <div>여행 시작 :  <input type="date" id="editStartDate" value="${defaultStartDate}" ></div><br/>
+                            <div>여행 종료 :  <input type="date" id="editEndDate" value="${defaultEndDate}"></div><br/>
+                            <div>여행 인원 :  <input class="input-content" id="editNumberOfPeople" value="${numberOfPeople}" name="numberOfPeople" type="number"></div>
                         `,
                         showCancelButton: true,
                         confirmButtonText: '확인',
@@ -1389,7 +1389,7 @@
         </div>
     </div>
     <div class="buttonBox">
-        <a class="deletebtn" href="javascript:void(0);" th:text="삭제"  th:onclick="'performDelete(' + ${planID} + ')'"></a>
+        <a class="deletebtn" href="javascript:void(0);"   th:onclick="'performDelete(' + ${planID} + ')'">삭제</a>
 
         <a class="savebtn" href="/" th:text="임시저장"></a>
         <a class="savebtn" th:href="@{/plan/Complete(planId=${planID})}" th:text="저장"></a>

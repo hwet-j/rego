@@ -34,15 +34,13 @@ body {
 
 .left-side{
 
-    border: 1px solid black;
-    width: 1000px;
+    width: 1200px;
 }
 
 .right-side {
     float:left;
-    border: 1px solid green;
-    width: 400px;
-    height: 1000px;
+    width: 270px;
+    margin-left: 20px;
 }
 
 .container {
@@ -56,7 +54,7 @@ body {
     z-index: 100;
     border-radius: 0 0 20px 20px ;
 justify-content: center;
-
+    margin-bottom: 90px;
 }
 
   a {
@@ -103,15 +101,39 @@ justify-content: center;
 
 
 
+#backToTop {
+    display: none; /* 초기 상태에서는 숨김 */
+    position: fixed;
+    bottom: 20px;
+    right: 135px;
+    z-index: 9999; /* 화면의 최상위에 위치하도록 함 */
+    font-size: 14px;
+    border: none;
+    outline: none;
+    background-color: #555;
+    color: white;
+    cursor: pointer;
+    padding: 12px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    transition: opacity 0.3s;
+}
+
+#backToTop:hover {
+    background-color: #333;
+}
 
 
 .bg-blue {
+position:fixed;
     top:0px;
     background-color:#1b4995;
     opacity:0.4;
     width:100%;
-    height:5000px;
-    position:absolute;
+    height:930px;
+
+
     z-index:-998;
 
 }
@@ -132,7 +154,7 @@ justify-content: center;
 }
 
 .main-container {
-    border: 1px solid blue;
+
     float: left;
     width: 1000px;
     height: 200px;
@@ -140,17 +162,17 @@ justify-content: center;
 }
 
 .container2{
-
-display:flex;
-align-items: center;
-flex-direction: row;
-justify-content: flex-.container;
-height: 235px;
-width:1000px;
-box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.7);
-background-color : #FFFFFF;
-border-radius:15px;
-
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-.container;
+    height: 265px;
+    width: 1165px;
+    margin-left: 195px;
+    box-shadow: 2px 3px 7px rgba(0, 0, 0, 0.2);
+    background-color: #FFFFFF;
+    border-radius: 15px;
+    font-family: 'Nunito', sans-serif;
 }
 
 
@@ -166,14 +188,14 @@ display: flex;
 }
 
 .container2-left {
-line-height: 55px;
-  width: 220px;
-  text-align: left;
-  font-size:30px;
-  font-weight:bolder;
-  letter-spacing:2px;
+    line-height: 65px;
+    width: 220px;
+    text-align: left;
+    font-size: 45px;
+    font-weight: bolder;
+    letter-spacing: 1px;
+    padding-left: 30px;
 }
-
 
 
 
@@ -191,23 +213,14 @@ line-height: 55px;
     position: fixed;
 
     display: flex;
-    flex-direction:column;
-    justify-content: center;
     align-items:center;
-    height:87vh;
+    height:420px;
     z-index: 990;
 }
 
 
-.tad0-center {
-    position:relative;
-    width: 332px;
-    height: 280px;
-    background-color: #7BB2F0;
-     z-index: 990;
-     left: 41px;
-      float: left;
-      margin-left: -15px;
+.tad1-img-box {
+    width:270px;
 
 }
 
@@ -217,7 +230,11 @@ line-height: 55px;
 }
 .image-container img {
     width: 100%; /* 각 이미지 가로 크기 100%로 설정 */
-    height: 280px; /* 이미지 비율에 맞게 세로 크기 조절 */
+    height: 235px; /* 이미지 비율에 맞게 세로 크기 조절 */
+    position: relative;
+    margin-top: 50px;
+    object-fit: cover; /* 이미지의 비율을 유지하면서 박스를 채우게 합니다. */
+    border-radius: 15px 15px 0 0;
 }
 
 
@@ -228,7 +245,13 @@ tab1-center {
     margin-left: 20px;
     z-index: 900;
 }
+.tab1-start {
+    width:270px;
 
+    text-align: center;
+         overflow: hidden;  /* 이미지가 박스를 넘어가면 잘라냅니다. */
+    border-radius: 0 0 15px 15px;
+}
 
 .tab1-start-box {
     color: white;
@@ -236,17 +259,22 @@ tab1-center {
     font-family: 'Nunito', sans-serif;
     order-radius: 0px 0px 20px 20px;
     border: 1px solid  #7BB2F0;
-    margin-left: 10%;
     top: 10%;
-    width: 330px;
-    height: 280px;
+    width: 270px;
+    height: 230px;
     z-index: 900;
     text-align:center;
 
 }
 
 .tab1-start-box h1 {
-    margin-top: 20%;
+    margin-top: 15%;
+    font-size:24px;
+     z-index: 900;
+}
+.tab1-start-box p {
+    margin-top: 6%;
+    font-size:12px;
      z-index: 900;
 }
 
@@ -258,7 +286,7 @@ tab1-center {
     height: 30px;
     border: 5px solid white;
     border-radius: 30px;
-    margin-left: 60px;
+    margin-left: 30px;
         margin-top: 10px;
         font-weight: 600;
          z-index: 900;
@@ -275,7 +303,7 @@ tab1-center {
     border: 5px solid white;
     background-color: white;
     border-radius: 30px;
-    margin-left: 60px;
+    margin-left: 30px;
     font-weight: 600;
         margin-top: 10px;
          z-index: 900;
@@ -348,96 +376,169 @@ color:#9F71FF;
 }
 
 .country-button{
+    font-family: 'Noto sans KR',sans-serif;
     margin-top: 110px;
-    background-color:transparent;
+    background-color: transparent;
     display: inline-block;
     padding: 10px 15px;
-    color: #000000;
+    color: #858585;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 300;
     transition: background-color 0.3s;
 }
+
+.country-button:focus {
+     padding-bottom: 4px;
+    font-weight: 500;
+    color: #364E9B;
+    background: linear-gradient(to right, white, white 20%, #364E9B 20%, #364E9B 80%, white 80%, white);
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: 100% 3px; /* "border"의 두께 결정 */
+}
+
+
+.country-button.active {
+    padding-bottom: 4px;
+    font-weight: 500;
+    color: #364E9B;
+    background: linear-gradient(to right, white, white 20%, #364E9B 20%, #364E9B 80%, white 80%, white);
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: 100% 3px; /* "border"의 두께 결정 */
+}
+
+
+.classify-button.active {
+    padding-bottom: 4px;
+    font-weight: 500;
+    color: #364E9B;
+    background: linear-gradient(to right, white, white 25%, #364E9B 25%, #364E9B 75%, white 75%, white);
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: 100% 3px; /* "border"의 두께 결정 */
+}
+
+.fetch-data-button.active {
+ padding-bottom: 4px;
+     font-weight: 500;
+     color: #364E9B;
+     background: linear-gradient(to right, white, white 15%, #364E9B 15%, #364E9B 85%, white 85%, white);
+     background-repeat: no-repeat;
+     background-position: bottom;
+     background-size: 100% 3px; /* "border"의 두께 결정 */
+}
+
+
 
 
 
 .fetch-data-button {
-   background-color:transparent;
+font-family: 'Noto sans KR',sans-serif;
+    background-color: transparent;
     display: inline-block;
-    padding: 10px 20px;
-    color: #000000;
+    padding: 10px 15px;
+    color: #858585;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 300;
     transition: background-color 0.3s;
-    margin: 5px; /* 버튼 간격 설정 */
+
 }
+
+.fetch-data-button:focus {
+  padding-bottom: 4px;
+      font-weight: 500;
+      color: #364E9B;
+     background: linear-gradient(to right, white, white 15%, #364E9B 15%, #364E9B 85%, white 85%, white);
+      background-repeat: no-repeat;
+      background-position: bottom;
+      background-size: 100% 3px; /* "border"의 두께 결정 */
+}
+
+
 
 
 
 .classify-button {
-       background-color:transparent;
-        display: inline-block;
-        padding: 10px 20px;
-        color: #000000;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        text-align: center;
-        text-decoration: none;
-        font-size: 16px;
-        font-weight: 600;
-        transition: background-color 0.3s;
-        margin: 5px; /* 버튼 간격 설정 */
+    font-family: 'Noto sans KR',sans-serif;
+    background-color: transparent;
+    display: inline-block;
+    padding: 10px 15px;
+    color: #858585;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 300;
+    transition: background-color 0.3s;
+
 }
 
-.card-box {
+.classify-button:focus {
+    padding-bottom: 4px;
+       font-weight: 500;
+       color: #364E9B;
+       background: linear-gradient(to right, white, white 25%, #364E9B 25%, #364E9B 75%, white 75%, white);
+       background-repeat: no-repeat;
+       background-position: bottom;
+       background-size: 100% 3px; /* "border"의 두께 결정 */
+}
 
+
+.card-box {
+    position:relative;
     box-sizing: border-box;
     display: block;
     border: 0px;
     width: initial;
     height: initial;
     float: left;
-    margin: 10px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     background: none;
     opacity: 1;
     inset: 0px;
     cursor: pointer;
-    hover:scale:105;
     overflow: hidden;
-    duration:200;
+    width:300px;
+    height:440px;
+    transition: transform 0.3s; /* 전환 효과를 설정 */
+        transform-origin: center;
 }
+
 .card-image{
-   box-sizing: border-box;
-    display: block;
     border: 0px;
-    width: initial;
-    height: initial;
-    float: left;
-    margin: 10px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+/*    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);*/
     background: none;
     opacity: 1;
     inset: 0px;
     cursor: pointer;
-    hover:scale:105;
     overflow: hidden;
-    duration:200;
-    width:200px;
-    height:150px;
+    width:270px;
+    height: 270px;
+    position: relative;
+    object-fit: cover; /* 이미지의 비율을 유지하면서 박스를 채우게 합니다. */
 }
+
+
+.card-box:hover {
+
+    transform: scale(1.05); /* 이미지 크기를 110%로 확대 */
+    transition: transform 0.3s; /* 0.3
+}
+
 
 .card-box2 {
     border: 1px solid red;
@@ -451,9 +552,10 @@ color:#9F71FF;
 
 
 #attraction-list {
-    border: 1px solid blue;
-    width: 955px;
+
+    width: 1200px;
     height: 100%;
+    margin-left: -45px;
 }
 
 li {
@@ -465,10 +567,8 @@ li {
 
 .card-list-container {
     float: left;
-    border: 1px solid pink;
-    widtH: 1000px;
-
-
+    width: 1300px;
+    margin-left: -27px;
 }
 
 .attraction-image {
@@ -491,7 +591,7 @@ object-fit: cover;
 .attraction-name {
     font: medium;
    font-family: Montserrat,Noto Sans KR,sans-serif;
-    font-size: 1.5rem;
+    font-size: 16px;
     color: #092443;
     margin: 5px 0;
     font-weight: 500;
@@ -511,10 +611,9 @@ object-fit: cover;
 /* 주소 텍스트 스타일 */
 .attraction-address {
     font-family: Montserrat,Noto Sans KR,sans-serif;
-    font-size: 1rem;
+    font-size: 12px;
     color: #A4B6D5;
     margin: 5px 0; /* 주소와 다음 카드 간 간격 */
-    whiteSpace : pre-wrap;
 }
 
 
@@ -526,30 +625,17 @@ object-fit: cover;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 150px;
 }
 
 
-.swiper-slide {
-    background-color: yellow;
-    width: 700px;
-    max-height: 190px;
-}
-
-.swiper-slide2 {
-    background-color: red;
-    width: 700px;
-        height: 190px;
-}
-
-.swiper-slide3 {
-    background-color: blue;
-    width: 700px;
-        height: 190px;
-}
 
 .like-img{
-    width: 30px;
-    height: 30px;
+    width: 22px;
+    height: 22px;
+    position:absolute;
+    right: 36px;
+    top: 282px;
 }
 
 .custom-modal-width{
@@ -560,7 +646,7 @@ object-fit: cover;
 
 .container2-right{
     border:none;
-    width:700px;
+    width:1000px;
     height:230px;
 }
 
@@ -569,8 +655,63 @@ object-fit: cover;
     overflow: hidden;
 }
 .swiper-slide {
+    width: 870px !important;
     height: 230px !important;/* 이 값은 Swiper 컨테이너의 높이와 슬라이드 간의 여백을 고려하여 조정해야 합니다 */
     max-height: 230px !important;
     box-sizing: border-box; /* border와 padding을 width와 height에 포함 */
-    background-color:#444653 !important;
+    background-color: white !important;
+}
+
+
+
+div:where(.swal2-container).swal2-center>.swal2-popup {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: center;
+    justify-self: center;
+
+}
+
+.custom-modal-width {
+    width: 500px;
+    height: 600px;
+}
+
+div:where(.swal2-container) img:where(.swal2-image) {
+    max-width: 100%;
+    margin: 2em auto 1em;
+    margin-top: -1px !important;
+    border-radius: 5px 5px 0 0 ;
+    object-fit: cover;
+    overflow: hidden;
+
+}
+
+.swiper-image {
+ align-items: center;
+    max-width: 400px;
+    float: left;
+    margin-left: 40px;
+    margin-right: 50px;
+    border-radius: 10px;
+    max-height: 228px;
+}
+
+.introduction {
+ align-items: center;
+}
+
+.title-top {
+
+    font-family:'Noto sans KR',sans-serif;
+    font-size: 24px;
+}
+
+.address-top {
+    font-family:'Nunito',sans-serif;
+    font-size: 10px;
+}
+.introduction-top {
+     font-family:'Noto sans KR',sans-serif;
+     font-size: 13px;
 }
