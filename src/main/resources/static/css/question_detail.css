@@ -76,12 +76,13 @@ h1, h2 {
 
 /* Question Styles */
 .title {
-    margin-top: 75px;
+    margin-top: 70px;
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 20px;
     color: #333;
     text-align: left;
+    margin-left:173px;
 }
 
 .card {
@@ -93,7 +94,7 @@ h1, h2 {
     text-align: left;
     width: 500px;
     height: 150px; /* 높이를 고정값으로 설정 */
-    margin-left: 80px;
+    margin-left: 170px;
     margin-top: 10px;
     overflow: hidden; /* 내용이 카드를 넘어갈 때 숨김 처리 */
 }
@@ -161,12 +162,12 @@ h1, h2 {
     float: left;
     width: 615px;
     height: 560px;
-    margin-left: 65px;
+    margin-left: 125px;
     margin-top: 120px;
     position: relative;
          overflow: hidden;
          z-index: 900;
-         border-radius: 1%;
+         border-radius: 4%;
 
 }
 
@@ -220,7 +221,7 @@ h1, h2 {
 
 
 p {
-    margin: 35px;
+    margin: 70px;
     margin-left: 20px;
     padding: 0;
     text-align: left;
@@ -243,7 +244,7 @@ p {
 
 .vertical-line {
 
-margin-left: 820px;
+margin-left: 825px;
 position:absolute;
 margin-top: 200px;
 width:1px;
@@ -256,12 +257,12 @@ z-index:999;
 
 
 .box {
-    margin-left : 485px;
+    margin-left : 500px;
     margin-top: -40px;
 }
 
 .nameCard {
-     margin-left: 90px;
+     margin-left: 180px;
      margin-top: -37px;
 
 }
@@ -310,7 +311,6 @@ z-index:999;
        transition: background-color 0.3s; /* 부드러운 전환 효과 추가 */
 }
 
-/* 버튼에 포커스 시 테두리 색상 변경 */
 .btn:focus {
       border-color: #59BAFF; /* 호버 시 테두리 색상 설정 */
        background-color: #59BAFF;
@@ -352,16 +352,17 @@ z-index:999;
 
 
 .reply-list {
-    margin-top: 75px;
-    margin-left: 80px;
+    margin-top: 45px;
+    margin-left: 170px;
     max-width: 600px; /* 가로 최대 길이 설정 (원하는 가로 길이로 변경 가능) */
 }
 
 .reply-body {
-   overflow: auto; /* 세로 스크롤바를 표시하도록 설정 */
+    overflow: auto; /* 세로 스크롤바를 표시하도록 설정 */
     max-height: 110px; /* 원하는 최대 높이 설정 */
-    max-width: 431px; /* 가로 최대 길이 설정 (원하는 가로 길이로 변경 가능) */
-    margin-top: 45px;
+    max-width: 550px; /* 가로 최대 길이 설정 (원하는 가로 길이로 변경 가능) */
+    margin-top: 50px;
+    border-radius: 10px;
 }
 
 .reply-body::-webkit-scrollbar {
@@ -390,20 +391,21 @@ z-index:999;
 /* Form Styles */
 #answerForm {
     position: fixed;
-    top: 630px;
+    top: 600px;
+    max-width: 450px;
+    height: 115px;
+    margin-left: 170px;
 }
 
 
 .form-control {
-    width: 430px;
+    width: 530px;
     height:110px;
     padding: 10px;
     font-size: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-top: 10px;
     resize: vertical;
-
 }
 
 .form-control:disabled {
@@ -435,15 +437,13 @@ z-index:999;
 
 
 .form-control2 {
-    width: 100%;
-    max-width: 430px; /* 최대 폭 설정 */
+    width: 530px;
     height: 110px;
     padding: 10px;
     font-size: 16px; /* 조금 큰 글꼴 크기 */
     border: 2px solid #ccc; /* 두께를 늘림 */
     border-radius: 8px; /* 더 둥근 모서리 */
     resize: vertical;
-    margin-left: 80px; /* 왼쪽 여백 제거 */
     margin-right: auto; /* 오른쪽 여백 제거 */
     display: block;
     background-color: #f8f9fa;
@@ -468,7 +468,7 @@ z-index:999;
         height:45px;
         padding: 10px;
         border: 2px solid color: #59BAFF;
-        margin-left: 80px;
+        margin-left: 400px;
 
 }
 
@@ -483,7 +483,6 @@ z-index:999;
     width: 700px;
     margin-top: 35px;
     margin-right: 125px;
-    margin-left:57px;
 }
 
 .right-side {
