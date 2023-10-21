@@ -3,7 +3,9 @@ package com.clipclap.rego.repository;
 import com.clipclap.rego.model.entitiy.LikeAttraction;
 import com.clipclap.rego.model.entitiy.TouristAttraction;
 import com.clipclap.rego.model.entitiy.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,4 +25,7 @@ public interface LikeRepository extends JpaRepository<LikeAttraction, Integer> {
     void deleteByLikeId(Integer likeId);
 
     long countByUserAndAttraction(User user, TouristAttraction touristAttraction);
+
+    @Query("SELECT l.attraction FROM LikeAttraction l GROUP BY l.attraction ORDER BY COUNT(l.attraction) DESC")
+    List<TouristAttraction> findTopAttractions(Pageable pageable);
 }

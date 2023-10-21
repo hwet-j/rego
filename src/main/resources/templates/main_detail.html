@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <link href="/css/main_detail.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Welcome to Planner!</title>
 </head>
 
@@ -14,7 +14,7 @@
 <div class="background"></div>
 <div class="background2"></div>
 
-
+<button id="backToTop" title="Go to top">Top</button>
 <div class="nav">
     <ul class="" style="list-style-type:none;">
         <li class="">
@@ -63,32 +63,38 @@
             <div class="list-container">
                 <div class="container2">
                     <div class="container2-left">
-                        Today's<br>
+                        Top 5<br>
                         Popular<br>
-                        Place<br>
-                        ♡
+                        Place
                     </div>
-                    <!--   <div class="container2-right">
-                           <div class="swiper-container">
+                    <div class="container2-right">
+                        <div class="swiper-container" style="">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide" th:each="Attraction : ${TouristAttraction}">
 
-                               <div class="swiper-wrapper">
-
-                                   <div class="swiper-slide">내용 1</div>
-                                   <div class="swiper-slide">내용 2</div>
-                                   <div class="swiper-slide">내용 3</div>
-
-                               </div>
-                           </div>
-
-                       </div>-->
+                                    <img class="swiper-image" th:src="${Attraction.image}" alt="Image"/>
+                                    <div class="introduction">
+                                        <div class="title-top" th:text="${Attraction.name}">Name</div>
+                                        <div class="address-top" th:text="${Attraction.address}">Address</div><br/>
+                                        <div class="introduction-top" th:text="${Attraction.introduction}">
+                                            Introduction
+                                        </div>
 
 
+                                    </div>
+                                    <!--<div th:text="${#lists.size(Attraction.likeAttractions)}">Likes Count</div>-->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
 
         <!--
+
             &lt;!&ndash; 맨 위로 스크롤 버튼 &ndash;&gt;
             <button id="scrollTopBtn" style="display:none; position: fixed; bottom: 70px; right: 130px;">
                 <img src="/pictures/topbtn.png">
@@ -98,7 +104,7 @@
 
         <div class="button-head">
 
-            <div class="scroller-head-text">New Place</div>
+            <!--<div class="scroller-head-text">New Place</div>-->
         </div>
 
         <div class="button-box" id="country-buttons">
@@ -167,15 +173,15 @@
         <div class="right-sidebar">
             <!-- 사이드바 부분을 나타내는 컨테이너입니다. -->
             <div class="fixed-content">
-                <div class="tad0-center">
-                    <div class="image-container">
-                        <img src="/img/slide1.png" alt="Image 1">
-                    </div>
-                </div>
 
 
                 <div class="tab1-center">
                     <div class="tab1-start">
+                        <div class="tab1-img-box">
+                            <div class="image-container">
+                                <img src="/img/side.png" alt="Image 1">
+                            </div>
+                        </div>
                         <div class="tab1-start-box">
                             <h1>PLAN ITINERARY</h1>
                             <P>PLANIT과 함께 당신만의 여행일정을<br/> 계획해보세요!</P>
@@ -235,8 +241,8 @@
         Swal.fire({
             title: `${attractionObj.touristAttractionName}`,
             imageUrl: `${attractionObj.image}`,
-            imageWidth: 800,
-            imageHeight: 600,
+            imageWidth: 600,
+            imageHeight: 300,
             customClass: {      // 클래스명을 줘서 알림창의 크기를 조절이 가능함
                 popup: 'custom-modal-width',
             },
@@ -649,22 +655,79 @@
     }
 
 </script>
-<!--<script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      new Swiper('.swiper-container', {
+        direction: 'vertical',
+        autoplay: {
+          delay: 3000, // 2초 후 자동 재생
+        },
+        loop: true, // 반복 재생
+        slidesPerView: 1, // 한 번에 하나의 슬라이드 보이기
+        spaceBetween: 10, // 슬라이드 간 간격 10px
+        centeredSlides: true, // 첫 번째 슬라이드가 가운데에 위치
+      });
+    });
 
-&lt;!&ndash;
-            new Swiper('.swiper-container', {
-     direction: 'vertical',
 
-  autoplay: {
-    // 자동재생 여부
-    delay: 2000, // 시작시간 설정
-  },
-  loop: true, // 반복재생 여부
-  slidesPerView: 1, // 한번에 보여줄 슬라이드 개수
-  spaceBetween: 10, // 슬라이드 사이 여백
-  centeredSlides: true // 1번 슬라이드가 가운데 보이기
-});&ndash;&gt;
-</script>-->
+
+
+
+        window.onscroll = function() { scrollFunction() };
+
+function scrollFunction() {
+if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+document.getElementById("backToTop").style.display = "block";
+} else {
+document.getElementById("backToTop").style.display = "none";
+}
+}
+
+// "맨 위로 가기" 버튼 클릭 시 페이지 상단으로 이동
+document.getElementById("backToTop").addEventListener("click", function() {
+document.body.scrollTop = 0; // For Safari
+document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
+});
+
+
+
+
+
+// 나라 목록 버튼 클릭 이벤트 리스너
+const countryButtons = document.querySelectorAll('.country-button');
+countryButtons.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        countryButtons.forEach(innerBtn => {
+            innerBtn.classList.remove('active');
+        });
+        btn.classList.add('active');
+    });
+});
+
+// 도시 목록 버튼 클릭 이벤트 리스너
+const cityButtons = document.querySelectorAll('.fetch-data-button');
+cityButtons.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        cityButtons.forEach(innerBtn => {
+            innerBtn.classList.remove('active');
+        });
+        btn.classList.add('active');
+    });
+});
+
+// 관광지, 식당 버튼 클릭 이벤트 리스너
+const sightsButtons = document.querySelectorAll('.classify-button');
+sightsButtons.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        sightsButtons.forEach(innerBtn => {
+            innerBtn.classList.remove('active');
+        });
+        btn.classList.add('active');
+    });
+});
+
+
+</script>
 
 
 </body>

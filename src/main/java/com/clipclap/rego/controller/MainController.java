@@ -4,6 +4,7 @@ import com.clipclap.rego.model.dto.TouristAttractionDTO;
 import com.clipclap.rego.model.dto.TouristAttractionFullDTO;
 import com.clipclap.rego.model.entitiy.City;
 import com.clipclap.rego.model.entitiy.Country;
+import com.clipclap.rego.model.entitiy.TouristAttraction;
 import com.clipclap.rego.repository.CityRepository;
 import com.clipclap.rego.repository.CountryRepository;
 import com.clipclap.rego.service.TouristAttractionService;
@@ -39,6 +40,10 @@ public class MainController {
         // 초기 전달 정보는 나라이름 뿐이며 나머지 정보는 AJAX를 통해서 값을 불러와 구현중
         model.addAttribute("countries", countries);
         model.addAttribute("touristAttractionList", touristAttractionDTOList);
+
+        // 좋아요를 가장 많이 받은 상위 5 TouristAttraction 객체 가져옴
+        List<TouristAttraction> touristAttractionList = touristAttractionService.getTop5AttractioinByLike();
+        model.addAttribute("TouristAttraction", touristAttractionList);
 
         return "main_detail";
     }

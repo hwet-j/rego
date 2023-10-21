@@ -77,7 +77,7 @@
 
 
 <div class="container">
-
+    <button id="backToTop" title="Go to top">Top</button>
     <div class="nav">
         <ul class="" style="list-style-type:none;">
             <li class="">
@@ -130,9 +130,6 @@
 
                     <div class="right-side">
                         <div id="content3">
-                            <div th:text="|여행 테마 : ${item.type}|"></div>
-                            <div th:text="${item.content}"></div>
-
                             <span th:if="${#authorization.expression('isAuthenticated()')}">
                             <a href="javascript:void(0);" th:id="'linkButton_' + ${item.planId}"
                                th:onclick="'buttonHeart(' + ${item.planId} + ')'">
@@ -142,6 +139,10 @@
                                          th:src="${item.voter.contains(#authentication.principal.username) ? '/img/PlanLike.png' : '/img/PlanUnlike.png'}">
                                 </button>
                             </a>
+                                <div class="theme1">theme</div>
+                            <div th:text="${item.type}" class="theme"></div>
+                            <div th:text="${item.content}" class="title"></div>
+
                         </span>
 
                             <span th:unless="${#authorization.expression('isAuthenticated()')}">
@@ -153,8 +154,9 @@
                         </span>
                         </div>
                         <div id="content4">
-                        <div th:text="|여정시작 : ${item.startDate}|"></div>
-                        <div th:text="|여정종료 : ${item.endDate}|"></div>
+                            <div class="trip-title">여행기간</div>
+                        <div th:text="|${item.startDate} ~ ${item.endDate}|" class="period"></div>
+
                         <div id="moneySet"  >
                         <div data-th-text="|항공 : ${#numbers.formatInteger(item.flightPrice, 0, 'COMMA') + '원'}|"></div>&nbsp;&nbsp;&nbsp;
                         <div data-th-text="|경비 : ${#numbers.formatInteger(item.withoutFlightPrice, 0, 'COMMA') + '원'}|"></div>
@@ -169,5 +171,23 @@
     </div>
 </div>
 
+<script>
+    window.onscroll = function() { scrollFunction() };
+
+function scrollFunction() {
+if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+document.getElementById("backToTop").style.display = "block";
+} else {
+document.getElementById("backToTop").style.display = "none";
+}
+}
+
+// "맨 위로 가기" 버튼 클릭 시 페이지 상단으로 이동
+document.getElementById("backToTop").addEventListener("click", function() {
+document.body.scrollTop = 0; // For Safari
+document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
+});
+
+</script>
 </body>
 </html>
