@@ -549,28 +549,31 @@ div:where(.swal2-container) .swal2-select {
  }
 
 
-.deletebtn{
+.deletebtn {
     display: inline-block;
     width: 90px;
-    height:20px;
-    margin: 10px;
-    margin-top: 25px; /* 버튼을 아래로 내리는 여백 추가 */
-    padding: 10px 15px; /* 버튼 내부 여백 설정 */
-    border: 2px solid transparent; /* 테두리 설정 */
-    border-radius: 15px; /* 모서리를 둥글게 만들기 */
+    height: 23px;
+    /* margin: 10px; */
+    margin-top: 11px;
+    margin-right: 5px;
+    padding-top: 5px;
+    /* padding: 10px 15px; */
+    border: 2px solid transparent;
+    border-radius: 13px;
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s; /* 버튼 색상 변경 시 부드러운 전환 효과 추가 */
-    font-size: 14px; /* 글자 크기 설정 */
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 14px;
     font-weight: bold;
     text-align: center;
     text-decoration: none;
-    background-color: #FFFFFF; /* 배경색 설정 */
-    border-color: #da0035;
-    color: #000000; /* 글자색 설정 */
+    background-color: #FFFFFF;
+    border-color: #ff819f;
 }
 
+
+
 a.deletebtn {
-    color: #da0035; /* 원하는 색상으로 변경 */
+    color: #ff819f; /* 원하는 색상으로 변경 */
 }
 
 a.deletebtn:hover {
@@ -580,8 +583,8 @@ a.deletebtn:hover {
 
 /* 버튼에 호버 시 테두리 색상 변경 */
 .deletebtn:hover {
-    border-color: #da0035; /* 호버 시 테두리 색상 설정 */
-    background-color: #da0035;
+    border-color: #ff819f; /* 호버 시 테두리 색상 설정 */
+    background-color: #ff819f;
     transition: background-color 0.3s; /* 부드러운 전환 효과 추가 */
 }
 
@@ -592,4 +595,30 @@ a.deletebtn:hover {
     background-color: #da0035;
     transition: background-color 0.3s; /* 부드러운 전환 효과 추가 */
 
+}
+
+
+div:where(.swal2-container).swal2-center>.swal2-popup {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: center;
+    justify-self: center;
+    font-size: 12px !important;
+}
+
+div:where(.swal2-container) .swal2-html-container {
+    z-index: 1;
+    justify-content: center;
+    margin: 1em 1.6em 0.3em;
+    padding: 0;
+    overflow: auto;
+    color: inherit;
+    font-size: 1.125em;
+    font-weight: normal;
+    line-height: normal;
+    text-align: center;
+    word-wrap: break-word;
+    word-break: break-word;
+    text-align: left !important;
+    margin-left: 65px !important;
 }
