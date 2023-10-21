@@ -11,7 +11,7 @@ body {
 
 h1, h2 {
     margin: 100;
-    margin-left: 15px;
+    margin-left: 25px;
     padding: 0;
     text-align: left;
 }
@@ -93,7 +93,7 @@ h1, h2 {
     text-align: left;
     width: 555px;
     height: 465; /* 높이를 자동으로 조정하도록 설정 */
-    margin-left: 5px;
+    margin-left:20px;
     margin-top: 10px;
 }
 
@@ -249,7 +249,7 @@ z-index:999;
 }
 
 .btnbox {
-    margin-left:465px;
+    margin-left:485px;
 }
 
 /* Button Styles */
