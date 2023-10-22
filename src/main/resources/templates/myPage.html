@@ -142,7 +142,7 @@
                     찜 여행 계획</h4>
                 <div class="likeList">
                     <div th:each="Vote : ${myVotePlanList}">
-                        <a th:href="@{|/plan/detail?planId=${Vote.planId}|}">
+                        <a th:href="@{|/plan/Preview?planId=${Vote.planId}|}">
                             <div class="card2" th:id="'planLikeImage_' + ${Vote.planId}">
                                 <div class="plan-title2" th:text="${Vote.content}"></div>
                                 <img th:src="@{${Vote.imagePath}}"
