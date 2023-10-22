@@ -119,7 +119,7 @@
     <div class="card-container">
         <div class="card-list" th:each="item : ${planList}">
 
-            <a th:href="@{|/plan/detail?planId=${item.planId}|}">
+            <a th:href="@{|/plan/Preview?planId=${item.planId}|}">
                 <div class="image-container">
                     <div class="left-side">
                             <img class="left-image" id="content1" th:src="@{|${item.imagePath}|}"/>

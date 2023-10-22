@@ -60,7 +60,6 @@ public class MyPageController {
                 List<PlannerDTO> myPlanners = plannerService.findByUserEmail(email);
                 List<Integer> userPlanVotes = plannerService.userPlanVotes(email);
                 List<PlanCard> myVotePlanList =  plannerService.userPlanVotePlans(userPlanVotes);
-
                 List<LikeAttraction> userAttractionLikes = likeService.getUserLikes(email);
 
 

@@ -1031,6 +1031,65 @@ font-family: 'Nunito', sans-serif;
 
 }
 
+
+.swiper1 {
+margin-left: 700px;
+ position: relative;
+    z-index: 3;
+    background-image:url('/img/swiper1.png');
+    width: 320px;
+    height: 530px;
+     box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.2);
+     border-radius: 10px;
+}
+
+.swiper2 {
+margin-left: 700px;
+ position: relative;
+    z-index: 3;
+    background-image:url('/img/swiper2.png');
+    width: 320px;
+    height: 530px;
+     box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.2);
+     border-radius: 10px;
+}
+
+.swiper3 {
+margin-left: 700px;
+ position: relative;
+    z-index: 3;
+    background-image:url('/img/swiper3.png');
+    width: 320px;
+    height: 530px;
+     box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.2);
+       border-radius: 10px;
+}
+
+.swiper4 {
+margin-left: 700px;
+ position: relative;
+    z-index: 3;
+    background-image:url('/img/swiper4.png');
+    width: 320px;
+    height: 530px;
+     box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.2);
+       border-radius: 10px;
+}
+
+.swiper5 {
+margin-left: 700px;
+ position: relative;
+    z-index: 3;
+    background-image:url('/img/swiper5.png');
+    width: 320px;
+    height: 530px;
+     box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.2);
+       border-radius: 10px;
+}
+
+
+
+
 /*.swiper-slide img {
     margin-left: 700px;
 

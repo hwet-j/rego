@@ -66,6 +66,7 @@
        .button-edit,
         .startPlanButton,
         .goMain {
+
             padding: 14px;
             color: white;
             font-size: 15px;
@@ -79,6 +80,9 @@
                font-weight: bold;
             }
         }
+
+
+
           .date-container{
           margin-top:10px;
           margin-left:10px;
@@ -133,14 +137,14 @@
         <div class="button-edit" onclick="location.href='/login'" style="text-align:center; cursor:pointer;"
              th:unless="${#authorization.expression('isAuthenticated()')}">로그인 하러가기</div>
     </div>
-    <div class="hidden" style="overflow: auto; height: 90%;">
+    <div class="hidden" style="overflow: auto; height: 94.5%;">
         <div id="container-before"></div>
         <div id="container"></div>
         <div id="container-after"></div>
     </div>
 
     <div style="height:5%; background-color:#59BAFF;">
-        <div style="text-align:center;">
+        <div class="goMain-box" style="text-align:center;">
             <a href="/" id="goMain"><div class="goMain">메인페이지로 이동</div></a>
         </div>
     </div>
