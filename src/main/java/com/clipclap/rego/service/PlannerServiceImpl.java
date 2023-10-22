@@ -11,6 +11,7 @@ import com.clipclap.rego.repository.PlannerRepository;
 import com.clipclap.rego.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -40,7 +41,7 @@ public class PlannerServiceImpl implements PlannerService {
 
     @Override
     public List<PlannerDTO> findByUserEmail(String userEmail) {
-        List<Planner> plannerEntities = plannerRepository.findByUserEmail_Email(userEmail);
+        List<Planner> plannerEntities = plannerRepository.findByUserEmail_Email(userEmail, Sort.by(Sort.Order.desc("planId")));
 
         List<PlannerDTO> plannerDTOs = plannerEntities.stream()
                 .map(PlannerMapper::entityToDto)        // 엔티티를 DTO로 변환

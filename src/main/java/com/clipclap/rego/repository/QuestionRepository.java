@@ -4,6 +4,7 @@ package com.clipclap.rego.repository;
 import com.clipclap.rego.model.entitiy.Question;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -35,5 +36,5 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
     // 페이징 기능이 있는 질문 목록 조회
     Page<Question> findAll(Pageable pageable);
 
-    List<Question> findByWriter_Email(String email);
+    List<Question> findByWriter_Email(String email, Sort sort);
 }
