@@ -2,6 +2,7 @@ package com.clipclap.rego.repository;
 
 import com.clipclap.rego.model.entitiy.Planner;
 import com.clipclap.rego.model.entitiy.User;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +16,7 @@ public interface PlannerRepository extends JpaRepository<Planner, Integer> {
 
     Planner findByPlanId(Integer planId);
 
-    List<Planner> findByUserEmail_Email(String email);
+    List<Planner> findByUserEmail_Email(String email, Sort sort);
 
     List<Planner> findTop4ByOrderByPlanIdDesc();
 

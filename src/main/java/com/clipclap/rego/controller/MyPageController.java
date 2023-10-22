@@ -3,15 +3,14 @@ package com.clipclap.rego.controller;
 import com.clipclap.rego.model.dto.PlanCard;
 import com.clipclap.rego.model.dto.PlannerDTO;
 import com.clipclap.rego.model.entitiy.LikeAttraction;
-import com.clipclap.rego.model.entitiy.Planner;
 import com.clipclap.rego.model.entitiy.Question;
 import com.clipclap.rego.model.entitiy.User;
-import com.clipclap.rego.repository.PlannerRepository;
 import com.clipclap.rego.repository.QuestionRepository;
 import com.clipclap.rego.service.*;
 import com.clipclap.rego.validation.JoinForm2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Controller
@@ -58,7 +56,7 @@ public class MyPageController {
             String email = authentication.getName();
             try {
                 User userInfo = userService.getUserByEmail(email);
-                List<Question> userQuestions = questionRepository.findByWriter_Email(email);
+                List<Question> userQuestions = questionRepository.findByWriter_Email(email, Sort.by(Sort.Order.desc("createDate")));    // createDate로 정렬
                 List<PlannerDTO> myPlanners = plannerService.findByUserEmail(email);
                 List<Integer> userPlanVotes = plannerService.userPlanVotes(email);
                 List<PlanCard> myVotePlanList =  plannerService.userPlanVotePlans(userPlanVotes);
