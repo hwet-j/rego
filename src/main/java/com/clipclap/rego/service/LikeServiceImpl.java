@@ -7,6 +7,7 @@ import com.clipclap.rego.repository.LikeRepository;
 import com.clipclap.rego.repository.TouristAttractionRepository;
 import com.clipclap.rego.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -84,7 +85,7 @@ public class LikeServiceImpl implements LikeService {
         // 실제로 목록을 조회하도록 구현해야 합니다.
         Optional<User> user = userRepository.findByEmail(userEmail);
         if (user != null) {
-            return likeRepository.findByUser(user);
+            return likeRepository.findByUser(user, Sort.by(Sort.Order.desc("addTime")));
         }
         return null;  // 사용자를 찾을 수 없는 경우 빈 목록 또는 예외 처리를 고려
     }
