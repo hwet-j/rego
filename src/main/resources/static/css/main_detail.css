@@ -88,7 +88,7 @@ justify-content: center;
                 position:fixed;
                 top: 0px;
                 width: 100%;
-                height: 930px;
+                height: 100%;
                 background-image:url('/img/bg2.png');
                 background-repeat: no-repeat;
                 background-position: center center;
@@ -131,7 +131,7 @@ position:fixed;
     background-color:#1b4995;
     opacity:0.4;
     width:100%;
-    height:930px;
+    height:100%;
 
 
     z-index:-998;
@@ -167,12 +167,16 @@ position:fixed;
     flex-direction: row;
     justify-content: flex-.container;
     height: 265px;
-    width: 1165px;
+    width: 1160px;
     margin-left: 195px;
-    box-shadow: 2px 3px 7px rgba(0, 0, 0, 0.2);
-    background-color: #FFFFFF;
+    /*box-shadow: 2px 3px 7px rgba(0, 0, 0, 0.2);*/
+    background-color: white;
     border-radius: 15px;
     font-family: 'Nunito', sans-serif;
+    margin-top: 5px;
+    border: 4px solid #7BB2F0;
+    color: #4a94e8;
+
 }
 
 
@@ -188,13 +192,14 @@ display: flex;
 }
 
 .container2-left {
-    line-height: 65px;
+    line-height: 55px;
     width: 220px;
     text-align: left;
-    font-size: 45px;
+    font-size: 40px;
     font-weight: bolder;
-    letter-spacing: 1px;
+    letter-spacing: -1px;
     padding-left: 30px;
+    color:#4a94e8;
 }
 
 
@@ -651,6 +656,7 @@ object-fit: cover;
 }
 
 .swiper-container {
+
     height: 230px; /* Swiper 컨테이너의 높이를 .container2-right와 일치 */
     overflow: hidden;
 }
@@ -659,9 +665,17 @@ object-fit: cover;
     height: 230px !important;/* 이 값은 Swiper 컨테이너의 높이와 슬라이드 간의 여백을 고려하여 조정해야 합니다 */
     max-height: 230px !important;
     box-sizing: border-box; /* border와 padding을 width와 height에 포함 */
-    background-color: white !important;
+    background-color: none !important;
 }
 
+.swiper-backface-hidden .swiper-slide {
+display:flex;
+justify-content: center;
+
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
 
 
 div:where(.swal2-container).swal2-center>.swal2-popup {
@@ -695,6 +709,7 @@ div:where(.swal2-container) img:where(.swal2-image) {
     margin-right: 50px;
     border-radius: 10px;
     max-height: 228px;
+
 }
 
 .introduction {
@@ -704,14 +719,17 @@ div:where(.swal2-container) img:where(.swal2-image) {
 .title-top {
 
     font-family:'Noto sans KR',sans-serif;
-    font-size: 24px;
+    font-size: 32px;
+
 }
 
 .address-top {
     font-family:'Nunito',sans-serif;
-    font-size: 10px;
+    font-size: 12px;
+
 }
 .introduction-top {
      font-family:'Noto sans KR',sans-serif;
-     font-size: 13px;
+     font-size: 16px;
+
 }

@@ -175,42 +175,56 @@
                     <li data-tab="tab5">USA</li>
                 </ul>
                 <div class="tab-content">
-                    <div id="tab1" class="tabcontent active"><a th:href="@{/main/detail}"></a>
-                        <div class="tab1-img1"><h2>베네치아</h2>
-                            <p>베네치아는 이탈리아의 도시로서, 그 유명한 수도로서도 알려져 있습니다. 이 도시는 아드리아 해의 북쪽 끝에 위치하며, 수십 개의 작은 섬들과 여러 개의 운하로
-                                연결된 고유한 지리적 특징을 가지고 있습니다. 이러한 특징으로 인해 베네치아는 "물의 도시" 또는 "운하의 도시"로 불립니다.<br/><br/>
 
-                                베네치아는 그 독특한 건축물과 예술 작품으로 유명하며, 특히 세계적으로 유명한 성당인 세인트 마크 성당과 도심의 운하를 따라 건설된 아름다운 건물들로
-                                유명합니다. 또한 베네치아는 가로등의 불빛이 반사되는 유명한 수로인 그랑드 캐널(Grand Canal)을 가지고 있으며, 이를 통해 고전적인 골동품 가게,
-                                레스토랑, 카페, 아트 갤러리 등이 나열되어 있습니다.<br/><br/>
+                    <div id="tab1" class="tabcontent active">
+                        <a th:href="@{/touristAttraction/list}">
+                            <div class="tab1-img1"><h2>베네치아</h2>
+                                <p>베네치아는 이탈리아의 도시로서, 그 유명한 수도로서도 알려져 있습니다. 이 도시는 아드리아 해의 북쪽 끝에 위치하며, 수십 개의 작은 섬들과 여러 개의
+                                    운하로
+                                    연결된 고유한 지리적 특징을 가지고 있습니다. 이러한 특징으로 인해 베네치아는 "물의 도시" 또는 "운하의 도시"로 불립니다.<br/><br/>
 
-                                베네치아는 역사적으로 중요한 도시로서 중세 시대에는 상업과 예술의 중심지로 번성했습니다. 현재는 관광객들에게 인기 있는 명소로, 그 아름다운 아치텍처, 예술
-                                작품, 그리고 로맨틱한 운하들을 즐기러 오는 방문객들이 많습니다. 또한, 베네치아의 고유한 수중 교통 수단인 '바포레토'도 이 도시를 탐험하는 재미있는 경험이
-                                될 것입니다.</p>
-                            <div class="blueScreen"></div>
-                            <img src="/css/mainCountry/Italy/benecia.webp">
-                        </div>
+                                    베네치아는 그 독특한 건축물과 예술 작품으로 유명하며, 특히 세계적으로 유명한 성당인 세인트 마크 성당과 도심의 운하를 따라 건설된 아름다운 건물들로
+                                    유명합니다. 또한 베네치아는 가로등의 불빛이 반사되는 유명한 수로인 그랑드 캐널(Grand Canal)을 가지고 있으며, 이를 통해 고전적인 골동품
+                                    가게,
+                                    레스토랑, 카페, 아트 갤러리 등이 나열되어 있습니다.<br/><br/>
+
+                                    베네치아는 역사적으로 중요한 도시로서 중세 시대에는 상업과 예술의 중심지로 번성했습니다. 현재는 관광객들에게 인기 있는 명소로, 그 아름다운 아치텍처,
+                                    예술
+                                    작품, 그리고 로맨틱한 운하들을 즐기러 오는 방문객들이 많습니다. 또한, 베네치아의 고유한 수중 교통 수단인 '바포레토'도 이 도시를 탐험하는 재미있는
+                                    경험이
+                                    될 것입니다.</p>
+                                <div class="blueScreen"></div>
+                                <img src="/css/mainCountry/Italy/benecia.webp">
+                            </div>
+                        </a>
                         <div class="tab1-center">
                             <div class="tab1-start">
                                 <div class="tab1-start-box">
                                     <h1>PLAN ITINERARY</h1>
                                     <P>PLANIT과 함께 당신만의 여행일정을<br/> 계획해보세요!</P>
-                                    <div class="start-btn"><a class="start-plan-btn" th:href="@{/plan/add}">START
-                                        PLAN</a></div>
+                                    <a class="start-plan-btn" th:href="@{/plan/add}">
+                                        <div class="start-btn">START
+                                            PLAN
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
 
 
-                            <div class="tab1-img2"><h2>나폴리</h2>
-                                <p>나폴리는 이탈리아 남부에 위치한 도시로, 지중해 연안에 있습니다. 이 도시는 아름다운 해안선과 역사적으로 풍부한 유산으로 유명합니다.<br/><br/>
+                            <div class="tab1-img2">
+                                <a th:href="@{/touristAttraction/list}"><h2>나폴리</h2>
+                                    <p>나폴리는 이탈리아 남부에 위치한 도시로, 지중해 연안에 있습니다. 이 도시는 아름다운 해안선과 역사적으로 풍부한 유산으로
+                                        유명합니다.<br/><br/>
 
-                                    나폴리는 그 유명한 피자의 고향으로 알려져 있으며, 이곳에서 맛볼 수 있는 피자는 전 세계적으로 유명합니다. 광장 주변에는 역사적인 건축물과 아름다운
-                                    성당들이 자리하고 있습니다.</p>
-                                <div class="blueScreen2"></div>
-                                <img src="/css/mainCountry/Italy/napoli.avif">
+                                        나폴리는 그 유명한 피자의 고향으로 알려져 있으며, 이곳에서 맛볼 수 있는 피자는 전 세계적으로 유명합니다. 광장 주변에는 역사적인 건축물과
+                                        아름다운
+                                        성당들이 자리하고 있습니다.</p>
+                                    <div class="blueScreen2"></div>
+                                    <img src="/css/mainCountry/Italy/napoli.avif">
+                                </a>
                             </div>
                         </div>
-                        <div class="tab1-img3"><h2>피사</h2>
+                        <div class="tab1-img3"><a th:href="@{/touristAttraction/list}"><h2>피사</h2>
                             <p>
                                 피사(Pisa)는 이탈리아의 중부 지역인 토스카나(Tuscany)에 위치한 중요한 도시로, 그 유명한 피사의 사탑(Tower of Pisa)으로 유명합니다.
                                 이 도시는 아르노 강(Arno River)의 근처에 있으며, 중세 시대의 건축물과 역사적인 유산으로 가득 차 있습니다.<br/><br/>
@@ -219,20 +233,28 @@
                                 관심을 받고 있습니다. 피사의 사탑은 피사의 대성당 광장에 있으며, 대성당, 성당물리관, 성벽 등과 함께 아름다운 중세 건축물의 일부입니다.<br/><br/>
                             </p>
                             <div class="blueScreen2"></div>
+                        </a>
                             <img src="/css/mainCountry/Italy/pisa.jpg">
                         </div>
-                        <div class="tab1-img4"><h2>로마</h2>
-                            <p>로마는 이탈리아의 수도이자 역사적으로도 매우 중요한 도시로, 그 유명한 로마 제국의 중심지로서 전 세계에서 많은 관광객과 학자들이 찾는 곳입니다. 로마는 그
-                                유적, 예술, 문화, 그리고 역사적인 중요성으로 유명하며, 이 도시의 건축물과 유산은 오랜 세월 동안 이곳을 방문하는 이들을 매료시킵니다.<br/><br/>
+                        <div class="tab1-img4">
+                            <a th:href="@{/touristAttraction/list}"><h2>로마</h2>
+                                <p>로마는 이탈리아의 수도이자 역사적으로도 매우 중요한 도시로, 그 유명한 로마 제국의 중심지로서 전 세계에서 많은 관광객과 학자들이 찾는 곳입니다. 로마는
+                                    그
+                                    유적, 예술, 문화, 그리고 역사적인 중요성으로 유명하며, 이 도시의 건축물과 유산은 오랜 세월 동안 이곳을 방문하는 이들을
+                                    매료시킵니다.<br/><br/>
 
-                                로마의 주요 관광 명소 중 하나는 콜로세움(Colosseum)입니다. 이는 로마 제국 시대에 사용된 대형 경기장으로, 고대 로마의 긴장과 문화를 엿볼 수 있는
-                                곳입니다. 또한 판테온(Pantheon), 로마 제국의 역사적인 유산인 로마 포럼(Roman Forum), 시스티나 성당(Sistine Chapel)의 천장
-                                화가 미켈란젤로(Michelangelo)의 작품, 스페인 광장(Spanish Steps), 트레비 분수(Trevi Fountain) 등도 로마에서 볼 만한
-                                명소 중 일부입니다.</p>
-                            <div class="blueScreen"></div>
-                            <img src="/css/mainCountry/Italy/rome.jpg">
+                                    로마의 주요 관광 명소 중 하나는 콜로세움(Colosseum)입니다. 이는 로마 제국 시대에 사용된 대형 경기장으로, 고대 로마의 긴장과 문화를 엿볼
+                                    수 있는
+                                    곳입니다. 또한 판테온(Pantheon), 로마 제국의 역사적인 유산인 로마 포럼(Roman Forum), 시스티나 성당(Sistine Chapel)의
+                                    천장
+                                    화가 미켈란젤로(Michelangelo)의 작품, 스페인 광장(Spanish Steps), 트레비 분수(Trevi Fountain) 등도 로마에서 볼
+                                    만한
+                                    명소 중 일부입니다.</p>
+                                <div class="blueScreen"></div>
+                                <img src="/css/mainCountry/Italy/rome.jpg">
+                            </a>
                         </div>
-                        <div class="tab1-img5"><h2>피렌체</h2>
+                        <div class="tab1-img5"><a th:href="@{/touristAttraction/list}"><h2>피렌체</h2>
                             <p>피렌체(Florence)는 이탈리아의 중부 토스카나(Tuscany) 지역에 위치한 아름다운 도시로, 예술과 문화의 중심지로서 유명합니다. 이 도시는 이탈리아
                                 르네상스(Renaissance)의 탄생지로서, 많은 유명한 예술가와 작품들을 탄생시킨 곳으로 알려져 있습니다.<br/><br/>
 
@@ -250,25 +272,34 @@
                             </p>
                             <div class="blueScreen"></div>
                             <img src="/css/mainCountry/Italy/pirenche.jfif">
+                        </a>
                         </div>
                     </div>
-
+                    </a>
                     <div id="tab2" class="tabcontent">
-                        <div class="tab1-img1"><h2>보르도</h2>
-                            <p>보르도(Bordeaux)는 프랑스의 남서 지역에 위치한 도시로, 와인으로 유명한 지역으로 알려져 있습니다. 이 지역은 브루고드(Bordeaux) 지방 와인을
-                                생산하는 중심지로, 세계적으로 고품질의 와인을 생산하는 지역 중 하나로 인정받고 있습니다.<br/><br/>
+                        <div class="tab1-img1">
+                            <a th:href="@{/touristAttraction/list}"><h2>보르도</h2>
+                                <p>보르도(Bordeaux)는 프랑스의 남서 지역에 위치한 도시로, 와인으로 유명한 지역으로 알려져 있습니다. 이 지역은 브루고드(Bordeaux) 지방
+                                    와인을
+                                    생산하는 중심지로, 세계적으로 고품질의 와인을 생산하는 지역 중 하나로 인정받고 있습니다.<br/><br/>
 
-                                보르도는 아름다운 강 '가론느 강(Garonne River)'의 남안에 자리하고 있으며, 그 주변에는 포도밭과 와인 양조장이 넓게 펼쳐져 있습니다. 이곳은
-                                와인 애호가들과 소비자들을 위한 와인 투어와 시음 행사가 열리는 곳으로, 다양한 와이너리에서는 다양한 종류의 와인을 생산하고 있습니다.<br/><br/>
+                                    보르도는 아름다운 강 '가론느 강(Garonne River)'의 남안에 자리하고 있으며, 그 주변에는 포도밭과 와인 양조장이 넓게 펼쳐져 있습니다.
+                                    이곳은
+                                    와인 애호가들과 소비자들을 위한 와인 투어와 시음 행사가 열리는 곳으로, 다양한 와이너리에서는 다양한 종류의 와인을 생산하고
+                                    있습니다.<br/><br/>
 
-                                또한 보르도는 그림과 조각 작품 등 예술적인 유산으로도 유명합니다. 보르도 시내에는 아름다운 건축물과 역사적인 건물이 많이 있으며, 가로수가 있는 광장과
-                                아름다운 도보 구역으로 특히 유명합니다. '피터 슈웨틔 플레이스(Place Pey Berland)'와 '보르도 대성당(Bordeaux Cathedral)'은
-                                그 중에서도 눈에 띄는 관광 명소 중 하나입니다.<br/><br/>
-                                마지막으로, 보르도 주변에는 아키타니아(Aquitaine) 지역의 해변과 해안도 있어 휴양지로도 인기가 있습니다. 보르도는 와인과 예술, 아름다운 풍경을
-                                즐기며 프랑스 남서부를 탐험하고자 하는 여행객에게 매력적인 목적지 중 하나입니다.
-                            </p>
-                            <div class="blueScreen"></div>
-                            <img src="/css/mainCountry/France/bordeaux.webp">
+                                    또한 보르도는 그림과 조각 작품 등 예술적인 유산으로도 유명합니다. 보르도 시내에는 아름다운 건축물과 역사적인 건물이 많이 있으며, 가로수가 있는
+                                    광장과
+                                    아름다운 도보 구역으로 특히 유명합니다. '피터 슈웨틔 플레이스(Place Pey Berland)'와 '보르도 대성당(Bordeaux
+                                    Cathedral)'은
+                                    그 중에서도 눈에 띄는 관광 명소 중 하나입니다.<br/><br/>
+                                    마지막으로, 보르도 주변에는 아키타니아(Aquitaine) 지역의 해변과 해안도 있어 휴양지로도 인기가 있습니다. 보르도는 와인과 예술, 아름다운
+                                    풍경을
+                                    즐기며 프랑스 남서부를 탐험하고자 하는 여행객에게 매력적인 목적지 중 하나입니다.
+                                </p>
+                                <div class="blueScreen"></div>
+                                <img src="/css/mainCountry/France/bordeaux.webp">
+                            </a>
                         </div>
                         <div class="tab1-center">
                             <div class="tab1-start">
@@ -279,7 +310,7 @@
                                         PLAN</a></div>
                                 </div>
                             </div>
-                            <div class="tab1-img2"><h2>리옹</h2>
+                            <div class="tab1-img2"><a th:href="@{/touristAttraction/list}"><h2>리옹</h2>
                                 <p>리옹(Lyon)은 프랑스의 도시로, 프랑스 동부 지역에 위치한 중요한 문화적, 역사적 중심지입니다. 이 도시는 강 '소나(Saône)'와
                                     '로뉴(Rhône)'가 만나는 곳에 자리하고 있으며, 풍부한 가정식 요리와 음식 문화로도 유명합니다.<br/><br/>
                                     리옹은 또한 유럽 내륙의 교통 중심지로서, 고속 기차와 고속도로 네트워크가 잘 발달하고 있어 다른 프랑스 도시와 유럽 다른 지역과의 연결성이 뛰어나며,
@@ -287,9 +318,10 @@
                                 </p>
                                 <div class="blueScreen2"></div>
                                 <img src="/css/mainCountry/France/lyon.jpg">
+                            </a>
                             </div>
                         </div>
-                        <div class="tab1-img3"><h2>파리</h2>
+                        <div class="tab1-img3"><a th:href="@{/touristAttraction/list}"><h2>파리</h2>
                             <p>파리(Paris)는 프랑스의 수도로서, 세계적으로 유명한 도시 중 하나입니다. 이 도시는 아름다운 건축물, 예술, 문화, 역사, 그리고 로맨스로 가득한 곳으로
                                 알려져 있습니다. 파리는 세계적인 관광 명소와 미술 박물관으로 유명하며, '관람객의 도시'로 자주 불립니다.<br/><br/>
                                 파리는 또한 세계적으로 유명한 대성당 '노트르담 대성당(Notre-Dame Cathedral)'과 아름다운 광장 '샹젤리제 광장(Place de la
@@ -301,8 +333,9 @@
                             </p>
                             <div class="blueScreen2"></div>
                             <img src="/css/mainCountry/France/paris.jfif">
+                        </a>
                         </div>
-                        <div class="tab1-img4"><h2>마르세유</h2>
+                        <div class="tab1-img4"><a th:href="@{/touristAttraction/list}"><h2>마르세유</h2>
                             <p>
                                 마르세유(Marseille)는 프랑스의 도시로, 지중해 연안에 위치한 큰 항구 도시입니다. 이 도시는 프랑스의 두 번째로 큰 도시로서 역사적으로 중요한 역할을
                                 해왔으며, 아름다운 해안선과 다양한 문화적 특성으로 유명합니다.<br/><br/>
@@ -315,8 +348,9 @@
                             </p>
                             <div class="blueScreen"></div>
                             <img src="/css/mainCountry/France/marceu.avif">
+                        </a>
                         </div>
-                        <div class="tab1-img5"><h2>모나코</h2>
+                        <div class="tab1-img5"><a th:href="@{/touristAttraction/list}"><h2>모나코</h2>
                             <p>
 
                                 모나코(Monaco)는 프랑스 남동쪽에 위치한 소도시 국가로, 프랑스 리비에라 지역에 인접한 지중해 연안의 작은 국가입니다. 이 소도시 국가는 그 작은
@@ -337,10 +371,11 @@
                             </p>
                             <div class="blueScreen"></div>
                             <img src="/css/mainCountry/France/monaco.jpg">
+                        </a>
                         </div>
                     </div>
                     <div id="tab3" class="tabcontent">
-                        <div class="tab1-img1"><h2>쿄토</h2>
+                        <div class="tab1-img1"><a th:href="@{/touristAttraction/list}"><h2>쿄토</h2>
                             <p>
                                 쿄토(Kyoto)는 일본의 중부에 위치한 역사적으로 중요한 도시로, 일본의 고전적인 문화와 역사의 중심지 중 하나입니다. 쿄토는 일본의 옛 수도로 알려져
                                 있으며, 자연의 아름다움과 아름다운 신사, 절, 정원 등으로 유명합니다.<br/><br/>
@@ -357,6 +392,7 @@
                             </p>
                             <div class="blueScreen"></div>
                             <img src="/css/mainCountry/Japan/kyoto.webp">
+                        </a>
                         </div>
                         <div class="tab1-center">
                             <div class="tab1-start">
@@ -367,7 +403,7 @@
                                         PLAN</a></div>
                                 </div>
                             </div>
-                            <div class="tab1-img2"><h2>후쿠오카</h2>
+                            <div class="tab1-img2"><a th:href="@{/touristAttraction/list}"><h2>후쿠오카</h2>
                                 <p>
                                     후쿠오카(Fukuoka)는 일본의 지역 이름으로, 일본의 주요 섬인 큐슈(Kyushu)에 위치한 중요한 도시입니다. 후쿠오카는 일본의 역사와 문화,
                                     먹거리 등으로 유명한 도시 중 하나입니다.<br/><br/>
@@ -378,9 +414,10 @@
                                 </p>
                                 <div class="blueScreen2"></div>
                                 <img src="/css/mainCountry/Japan/fukuoka.jpg">
+                            </a>
                             </div>
                         </div>
-                        <div class="tab1-img3"><h2>삿포로</h2>
+                        <div class="tab1-img3"><a th:href="@{/touristAttraction/list}"><h2>삿포로</h2>
                             <p>
                                 삿포로(Sapporo)는 일본의 홋카이도(Hokkaido) 지역에 위치한 도시로, 홋카이도의 수도이자 최대 도시입니다. 삿포로는 현대적인 도시와 아름다운 자연
                                 경관이 조화를 이루며, 다양한 관광 명소와 먹거리로 유명합니다.
@@ -394,8 +431,9 @@
                             </p>
                             <div class="blueScreen2"></div>
                             <img src="/css/mainCountry/Japan/satporo.avif">
+                        </a>
                         </div>
-                        <div class="tab1-img4"><h2>오사카</h2>
+                        <div class="tab1-img4"><a th:href="@{/touristAttraction/list}"><h2>오사카</h2>
                             <p>
                                 오사카(Osaka)는 일본의 중부에 위치한 도시로, 일본 제2의 도시로 알려져 있습니다. 오사카는 현대적인 도시와 역사적인 명소, 그리고 맛있는 음식으로
                                 유명하며, 일본을 여행하는 많은 여행객들이 방문하는 인기 도시 중 하나입니다.
@@ -406,8 +444,9 @@
                             </p>
                             <div class="blueScreen"></div>
                             <img src="/css/mainCountry/Japan/osaka.jpg">
+                        </a>
                         </div>
-                        <div class="tab1-img5"><h2>도쿄</h2>
+                        <div class="tab1-img5"><a th:href="@{/touristAttraction/list}"><h2>도쿄</h2>
                             <p>
                                 도쿄(Tokyo)는 일본의 수도이자 최대 도시로, 아시아에서 가장 인구가 많은 도시 중 하나입니다. 도쿄는 현대적인 건축물과 역사적인 명소, 다채로운 문화와
                                 엔터테인먼트로 가득한 도시로, 세계적인 관광지 중 하나로 손꼽힙니다.
@@ -428,10 +467,11 @@
                             </p>
                             <div class="blueScreen"></div>
                             <img src="/css/mainCountry/Japan/tokyotower.jpg">
+                        </a>
                         </div>
                     </div>
                     <div id="tab4" class="tabcontent">
-                        <div class="tab1-img1"><h2>발렌시아</h2>
+                        <div class="tab1-img1"><a th:href="@{/touristAttraction/list}"><h2>발렌시아</h2>
                             <p>
                                 발렌시아(Valencia)는 스페인 동부에 위치한 중요한 도시로, 발렌시아 지방의 수도이자 스페인의 세 번째로 큰 도시입니다. 발렌시아는 아름다운 해안선과
                                 역사적인 명소, 다양한 문화 이벤트로 유명하며, 특히 발렌시아 지방의 주도로서 중요한 역할을 합니다.
@@ -446,6 +486,7 @@
                             </p>
                             <div class="blueScreen"></div>
                             <img src="/css/mainCountry/Spain/ballencia.jpg">
+                        </a>
                         </div>
                         <div class="tab1-center">
                             <div class="tab1-start">
@@ -456,7 +497,7 @@
                                         PLAN</a></div>
                                 </div>
                             </div>
-                            <div class="tab1-img2"><h2>바르셀로나</h2>
+                            <div class="tab1-img2"><a th:href="@{/touristAttraction/list}"><h2>바르셀로나</h2>
                                 <p>
                                     바르셀로나는 스페인의 동북부에 위치한 도시로, 카탈루냐 지역의 수도이자 스페인의 두 번째로 큰 도시입니다. 바르셀로나는 아름다운 지중해 연안에 자리하고
                                     있으며, 현대적인 건축물과 역사적인 명소, 문화적인 풍부함으로 유명합니다.
@@ -467,9 +508,10 @@
                                 </p>
                                 <div class="blueScreen2"></div>
                                 <img src="/css/mainCountry/Spain/barcellona.webp">
+                            </a>
                             </div>
                         </div>
-                        <div class="tab1-img3"><h2>그라나다</h2>
+                        <div class="tab1-img3"><a th:href="@{/touristAttraction/list}"><h2>그라나다</h2>
                             <p>
                                 그라나다(Granada)는 스페인의 안달루시아(Andalusia) 지방에 위치한 아름다운 도시로, 역사적인 명소와 아름다운 자연 경치로 유명합니다. 그라나다는
                                 모로(Moorish) 문화와 스페인의 역사적인 유산을 고스란히 간직하고 있는 도시 중 하나로 꼽힙니다.
@@ -483,8 +525,9 @@
                             </p>
                             <div class="blueScreen2"></div>
                             <img src="/css/mainCountry/Spain/granada.jpg">
+                        </a>
                         </div>
-                        <div class="tab1-img4"><h2>마드리드</h2>
+                        <div class="tab1-img4"><a th:href="@{/touristAttraction/list}"><h2>마드리드</h2>
                             <p>
                                 마드리드(Madrid)는 스페인의 수도이자 최대 도시로, 아름다운 건축물, 예술과 문화, 다양한 레스토랑, 역사적인 명소로 가득한 도시입니다. 마드리드는
                                 스페인의 중심지로서 국내외 관광객들에게 많은 매력을 제공합니다.
@@ -495,8 +538,9 @@
                             </p>
                             <div class="blueScreen"></div>
                             <img src="/css/mainCountry/Spain/madrid.webp">
+                        </a>
                         </div>
-                        <div class="tab1-img5"><h2>세비야</h2>
+                        <div class="tab1-img5"><a th:href="@{/touristAttraction/list}"><h2>세비야</h2>
                             <p>
                                 세비야(Seville)는 스페인의 안달루시아(Andalusia) 지방에 위치한 아름다운 도시로, 역사적인 명소, 문화적인 이벤트, 아름다운 건축물로 가득한
                                 도시입니다. 세비야는 안달루시아 지방의 수도로, 스페인에서 가장 아름다운 도시 중 하나로 여겨집니다.
@@ -516,10 +560,11 @@
                             </p>
                             <div class="blueScreen"></div>
                             <img src="/css/mainCountry/Spain/seviya.avif">
+                        </a>
                         </div>
                     </div>
                     <div id="tab5" class="tabcontent">
-                        <div class="tab1-img1"><h2>뉴욕</h2>
+                        <div class="tab1-img1"><a th:href="@{/touristAttraction/list}"><h2>뉴욕</h2>
                             <p>
                                 뉴욕(New York)은 미국의 동북부에 위치한 주요 도시로, 세계적으로 유명한 도시 중 하나입니다. 뉴욕은 다양한 문화, 역사적인 명소, 아이콘적인 건축물,
                                 예술과 엔터테인먼트, 다양한 레스토랑으로 가득한 도시로, 다양한 경험을 제공합니다.
@@ -533,6 +578,7 @@
                             </p>
                             <div class="blueScreen"></div>
                             <img src="/css/mainCountry/USA/newyork.webp">
+                        </a>
                         </div>
                         <div class="tab1-center">
                             <div class="tab1-start">
@@ -543,7 +589,7 @@
                                         PLAN</a></div>
                                 </div>
                             </div>
-                            <div class="tab1-img2"><h2>라스베가스</h2>
+                            <div class="tab1-img2"><a th:href="@{/touristAttraction/list}"><h2>라스베가스</h2>
                                 <p>
                                     라스 베가스(Las Vegas)는 미국 내버다(Nevada) 주에 있는 도시로, 주로 카지노, 호텔, 쇼, 레스토랑, 엔터테인먼트로 유명한 도시입니다.
                                     이곳은 세계적인 도박과 엔터테인먼트 중심지로, 밤에 빛나는 스트립(The Strip)이라 불리는 대도시 지역이 유명합니다.
@@ -553,9 +599,10 @@
                                 </p>
                                 <div class="blueScreen2"></div>
                                 <img src="/css/mainCountry/USA/lasbegas.jpg">
+                            </a>
                             </div>
                         </div>
-                        <div class="tab1-img3"><h2>시카고</h2>
+                        <div class="tab1-img3"><a th:href="@{/touristAttraction/list}"><h2>시카고</h2>
                             <p>
                                 시카고(Chicago)는 미국의 일리노이(Illinois) 주에 위치한 큰 도시로, 미국 중서부에 있는 주요 도시 중 하나입니다. 시카고는 대도시로서의 풍부한
                                 역사와 문화, 아름다운 건축물, 예술과 음악, 다양한 레스토랑으로 유명합니다.
@@ -570,8 +617,9 @@
                             </p>
                             <div class="blueScreen2"></div>
                             <img src="/css/mainCountry/USA/chicago.jpg">
+                        </a>
                         </div>
-                        <div class="tab1-img4"><h2>산디에고</h2>
+                        <div class="tab1-img4"><a th:href="@{/touristAttraction/list}"><h2>산디에고</h2>
                             <p>
                                 산디에고(San Diego)는 미국 캘리포니아주에 위치한 도시로, 태평양 연안에 있는 아름다운 도시 중 하나입니다. 산디에고는 따뜻한 기후, 아름다운 해변,
                                 문화적 다양성, 역사적인 명소, 엔터테인먼트로 가득한 도시로, 많은 관광객들이 찾는 인기 있는 여행지 중 하나입니다.
@@ -584,8 +632,9 @@
                             </p>
                             <div class="blueScreen"></div>
                             <img src="/css/mainCountry/USA/sandiego.webp">
+                        </a>
                         </div>
-                        <div class="tab1-img5"><h2>샌프란시스코</h2>
+                        <div class="tab1-img5"><a th:href="@{/touristAttraction/list}"><h2>샌프란시스코</h2>
                             <p>
                                 샌프란시스코(San Francisco)는 미국 캘리포니아(California) 주 북부에 위치한 도시로, 글렌 카니온(Glen Canyon)과 태평양 사이에
                                 위치하여 아름다운 자연 경관과 독특한 문화로 유명합니다.
@@ -614,6 +663,7 @@
                             </p>
                             <div class="blueScreen"></div>
                             <img src="/css/mainCountry/USA/sanprancisco.jfif">
+                        </a>
                         </div>
                     </div>
                 </div>
@@ -640,20 +690,32 @@
             <!-- Additional required wrapper -->
             <div class="swiper-wrapper">
                 <!-- Slides -->
+
                 <div class="swiper-slide">
-                    <div class="img"></div>
+                    <a th:href="@{/plan/Preview?planId=198}">
+                        <div class="swiper1"></div>
+                    </a>
+                </div>
+
+                <div class="swiper-slide">
+                    <a th:href="@{@{/plan/Preview?planId=198}}">
+                        <div class="swiper2"></div>
+                    </a>
                 </div>
                 <div class="swiper-slide">
-                    <div class="img"></div>
+                    <a th:href="@{@{/plan/Preview?planId=198}}">
+                        <div class="swiper3"></div>
+                    </a>
                 </div>
                 <div class="swiper-slide">
-                    <div class="img"></div>
+                    <a th:href="@{@{/plan/Preview?planId=198}}">
+                        <div class="swiper4"></div>
+                    </a>
                 </div>
                 <div class="swiper-slide">
-                    <div class="img"></div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="img"></div>
+                    <a th:href="@{@{/plan/Preview?planId=198}}">
+                        <div class="swiper5"></div>
+                    </a>
                 </div>
             </div>
 
@@ -663,13 +725,13 @@
     </div>
     <div class="bottom-back">
         <div class="bottom-content">
-    <div id="aboutSection"></div>
+            <div id="aboutSection"></div>
             <div class="bottom-title">
                 <h2>준비중인 여행자들의 플래너</h2>
             </div>
             <div class="card-box">
                 <div class="card-list" th:each="item : ${findTop4RecentPlanners}">
-                    <a th:href="@{|/plan/detail?planId=${item.planId}|}">
+                    <a th:href="@{|/plan/Preview?planId=${item.planId}|}">
                         <div class="card">
                             <img th:src="@{|/preview/${item.planId}.png|}" onerror="this.src='/preview/map_basic.png'"/>
 
