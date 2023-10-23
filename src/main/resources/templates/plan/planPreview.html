@@ -35,18 +35,14 @@
           }
 
           #map {
-              width: 75%;
+               flex:3;
               height: 100%;
-              float: left;
               z-index: 1;
 
           }
 
           #other-content {
-              width: 25%; /* 다른 콘텐츠의 너비 조절 */
-              height: 930px; /* 맵과 동일한 높이로 설정 */
-              float: right; /* 왼쪽으로 띄우기 (맵 왼쪽에 배치) */
-              /* 다른 스타일 속성 추가 */
+            flex:1;
           }
 
           /* 알림창 내용 input 태그  */
@@ -103,7 +99,17 @@
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
 }
+.hidden{
+   -ms-overflow-style: none;
+}
+.hidden::-webkit-scrollbar{
+  display:none;
+}
 
+.container{
+display:flex;
+height:100%;
+}
 
     </style>
 </head>
@@ -117,9 +123,9 @@
 <div id="endDate" th:data-variable="${endDate}"></div>
 <div id="preview" th:data-variable="${previewPlan}"></div>
 
-
+<div class="container">
 <div id="map"></div>
-<div id="other-content">
+<div id="other-content" >
     <div style="height:5%; background-color:#59BAFF;">
         <div style="text-align:center;" th:if="${#authorization.expression('isAuthenticated()')}">
             <a th:href="@{/plan/detail(planId=${planID})}">
@@ -137,17 +143,18 @@
         <div class="button-edit" onclick="location.href='/login'" style="text-align:center; cursor:pointer;"
              th:unless="${#authorization.expression('isAuthenticated()')}">로그인 하러가기</div>
     </div>
-    <div class="hidden" style="overflow: auto; height: 94.5%;">
+    <div class="hidden" style="overflow-y: auto; height: 90%;">
         <div id="container-before"></div>
         <div id="container"></div>
         <div id="container-after"></div>
     </div>
 
-    <div style="height:5%; background-color:#59BAFF;">
+    <div style="height:5%;  width:480px; position:fixed; bottom:0; background-color:#59BAFF;">
         <div class="goMain-box" style="text-align:center;">
             <a href="/" id="goMain"><div class="goMain">메인페이지로 이동</div></a>
         </div>
     </div>
+</div>
 </div>
 <script>
 
