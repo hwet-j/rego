@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>권한 경고</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 {
+            color: #ff3e3e;
+            font-size: 2em;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<h1>권한 경고</h1>
+<p>죄송합니다, 권한이 없는 접근을 시도하셨습니다.</p>
+<p>이 페이지에 액세스할 권한이 없습니다.</p>
+<button onclick="goBack()">이전 페이지로 돌아가기</button>
+
+<script>
+    // 뒤로 가기 버튼을 클릭하면 이전 페이지로 돌아갑니다.
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>
