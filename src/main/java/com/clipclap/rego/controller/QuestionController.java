@@ -49,9 +49,9 @@ public class QuestionController {
         //1.파라미터받기
         //2.비즈니스로직수행
         Question question = questionService.getQuestion(id); //질문상세
-        if (!question.getWriter().getEmail().equals(principal.getName())) {
+        /*if (!question.getWriter().getEmail().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
-        }
+        }*/
 
         questionForm.setEmail(principal.getName());
         questionForm.setSubject(question.getSubject());

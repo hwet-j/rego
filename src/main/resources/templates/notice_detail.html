@@ -75,6 +75,11 @@
                            class="delete btn"
                            sec:authorize="hasRole('ROLE_ADMIN')"
                            th:text="삭제"></a>
+
+                        <!-- 목록으로 이동 -->
+                        <a th:href="@{|/notice/list|}"
+                           class="list btn"
+                           th:text="목록"></a>
                     </div>
                 </div>
 
