@@ -10,7 +10,6 @@ import com.clipclap.rego.validation.QuestionForm;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +19,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 
@@ -36,11 +34,10 @@ public class QuestionController {
 
     // 삭제 처리
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String questionDelete(@PathVariable("id") Integer id, Principal principal) {
         Question question = questionService.getQuestion(id);
-        if (!question.getWriter().getEmail().equals(principal.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다.");
-        }
+
         questionService.delete(question);
         return "redirect:/question/list";
     }
