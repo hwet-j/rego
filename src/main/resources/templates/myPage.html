@@ -1,8 +1,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" href="/css/myPage.css">
+    <link href="/css/myPage.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>Title</title>
 </head>
 <body>
@@ -18,30 +20,30 @@
                                                 style="float: left; width: 63px; height: 58px; margin-left: 10px; background-repeat: no-repeat;"></a>
             <div class="nav-left"
                  style="float:left;   margin-left: 440px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 500;">
-                <a class="" th:href="@{/flightResult}"
-                   style="margin-right: 50px; color:#4F54B4;">AIRPORT</a>
-                <a class="" th:href="@{/plan/add}"
-                   style="margin-right: 50px; color:#4F54B4;">START PLAN</a>
-                <a class="" th:href="@{/touristAttraction/list}"
-                   style="margin-right: 50px; color:#4F54B4;">ATTRACTIONS</a>
-                <a class="" th:href="@{/plan/list}"
-                   style="color:#4F54B4;">PLAN LIST</a>
+                <a class="" style="margin-right: 50px; color:#4F54B4;"
+                   th:href="@{/flightResult}">AIRPORT</a>
+                <a class="" style="margin-right: 50px; color:#4F54B4;"
+                   th:href="@{/plan/add}">START PLAN</a>
+                <a class="" style="margin-right: 50px; color:#4F54B4;"
+                   th:href="@{/touristAttraction/list}">ATTRACTIONS</a>
+                <a class="" style="color:#4F54B4;"
+                   th:href="@{/plan/list}">PLAN LIST</a>
             </div>
 
             <div class="nav-right"
                  style="float:right;    margin-right: 35px; margin-top: 27px;  font-size: 12px;  font-family: 'Roboto', sans-serif; font-weight: 600;">
-                <a class="" th:href="@{/notice/list}"
-                   style="margin-right: 20px; color:#4F54B4;">공지사항</a>
-                <a class="" th:href="@{/question/list}"
-                   style="margin-right: 20px; color:#4F54B4;">고객센터</a>
-                <a class="loginBtn" sec:authorize="isAnonymous()" th:href="@{/login}"
-                   style="margin-right: 20px; color:#4F54B4;">로그인</a>
-                <a class="" sec:authorize="isAuthenticated()" th:href="@{/myPage}"
-                   style="margin-right: 20px; color:#4F54B4;">마이페이지</a>
-                <a class="" sec:authorize="isAuthenticated()" th:href="@{/logout}"
-                   style="margin-right: 20px; color:#4F54B4;">로그아웃</a>
-                <a class="" sec:authorize="hasRole('ADMIN')" th:href="@{/user/list}"
-                   style="color:#4F54B4;">ADMIN</a>
+                <a class="" style="margin-right: 20px; color:#4F54B4;"
+                   th:href="@{/notice/list}">공지사항</a>
+                <a class="" style="margin-right: 20px; color:#4F54B4;"
+                   th:href="@{/question/list}">고객센터</a>
+                <a class="loginBtn" sec:authorize="isAnonymous()" style="margin-right: 20px; color:#4F54B4;"
+                   th:href="@{/login}">로그인</a>
+                <a class="" sec:authorize="isAuthenticated()" style="margin-right: 20px; color:#4F54B4;"
+                   th:href="@{/myPage}">마이페이지</a>
+                <a class="" sec:authorize="isAuthenticated()" style="margin-right: 20px; color:#4F54B4;"
+                   th:href="@{/logout}">로그아웃</a>
+                <a class="" sec:authorize="hasRole('ADMIN')" style="color:#4F54B4;"
+                   th:href="@{/user/list}">ADMIN</a>
             </div>
         </li>
     </ul>
@@ -60,12 +62,12 @@
 
                     <div class="myInfo">
 
-                        <div class="profileImage"><img th:src="${userInfo.userprofile}"
-                                                       onerror="this.onerror=null;this.src='img/profileNull.png';">
+                        <div class="profileImage"><img onerror="this.onerror=null;this.src='img/profileNull.png';"
+                                                       th:src="${userInfo.userprofile}">
                         </div>
 
                         <div class="nickname" th:text="${userInfo.nickname}"></div>
-                        <a type="submit" class="modify-btn" th:href="@{/myPageModifyConfirm}"><p>회원정보 수정</p></a>
+                        <a class="modify-btn" th:href="@{/myPageModifyConfirm}" type="submit"><p>회원정보 수정</p></a>
                     </div>
 
                     <!--<div class="email" th:text="${userInfo.email}"></div>-->
@@ -78,12 +80,21 @@
                     찜 어트랙션</h4>
                 <div class="attraction">
                     <div th:each="item : ${userAttractionLikes}">
-                        <div th:id="'attrationLike_' + ${item.attraction.touristAttractionId}" class="card3">
+                        <div class="card3"
+                             th:id="'attractionLike_' + ${item.attraction.touristAttractionId}"
+                             th:data-attraction-id="${item.attraction.touristAttractionId}"
+                             th:data-item-name="${item.attraction.name}"
+                             th:data-item-image="${item.attraction.image}"
+                             th:data-item-address="${item.attraction.address}"
+                             th:data-item-introduction="${item.attraction.introduction}"
+                             onclick="divClick(this)">
+
+                        <!--th:onclick="'divClick(event, ' + ${item.attraction.touristAttractionId} + ')'">-->
                             <div class="attraction-title" th:text="${item.attraction.name}"></div>
                             <img th:src="${item.attraction.image}"/>
-                            <img src="img/like/afterLike.png" th:id="'attrationLikeImage_' + ${item.attraction.touristAttractionId}"
-                                 th:onclick="'attractionHeart(' + ${item.attraction.touristAttractionId} + ')'"
-                                 style="position:absolute; width: 20px; height:20px; right: 10px; top: 130px;">
+                            <img src="img/like/afterLike.png"
+                                 style="position:absolute; width: 20px; height:20px; right: 10px; top: 130px;"
+                                 th:onclick="'imgClick(event, ' + ${item.attraction.touristAttractionId} + ')'">
                         </div>
                     </div>
                 </div>
@@ -98,13 +109,13 @@
                         <a th:href="@{|/plan/detail?planId=${plan.planId}|}">
                             <div class="card">
                                 <div class="plan-title" th:text="${plan.content}"></div>
-                                <img th:src="@{|/preview/${plan.planId}.png|}"
-                                     onerror="this.src='/preview/map_basic.png'"/>
+                                <img onerror="this.src='/preview/map_basic.png'"
+                                     th:src="@{|/preview/${plan.planId}.png|}"/>
                                 <div style="width: 200px; height: 30px;">
-                                    <div th:text="|${plan.startDate} 출발|"
-                                         style="float:left; margin-left:23px; margin-top:7px; margin-bottom:30px; font-size:10px; font-family:'Noto sans KR', sans-serif;"></div>
-                                    <div th:text="|${plan.endDate} 도착|"
-                                         style="float:left; margin-left:10px; margin-top:7px; font-size:10px; font-family:'Noto sans KR', sans-serif;"></div>
+                                    <div style="float:left; margin-left:23px; margin-top:7px; margin-bottom:30px; font-size:10px; font-family:'Noto sans KR', sans-serif;"
+                                         th:text="|${plan.startDate} 출발|"></div>
+                                    <div style="float:left; margin-left:10px; margin-top:7px; font-size:10px; font-family:'Noto sans KR', sans-serif;"
+                                         th:text="|${plan.endDate} 도착|"></div>
                                 </div>
                             </div>
                         </a>
@@ -145,24 +156,24 @@
                         <a th:href="@{|/plan/Preview?planId=${Vote.planId}|}">
                             <div class="card2" th:id="'planLikeImage_' + ${Vote.planId}">
                                 <div class="plan-title2" th:text="${Vote.content}"></div>
-                                <img th:src="@{${Vote.imagePath}}"
-                                     onerror="this.src='/preview/map_basic.png'"/>
-                                <img th:src="@{|/preview/${Vote.planId}.png|}"
-                                     onerror="this.src='/preview/map_basic.png'"/>
+                                <img onerror="this.src='/preview/map_basic.png'"
+                                     th:src="@{${Vote.imagePath}}"/>
+                                <img onerror="this.src='/preview/map_basic.png'"
+                                     th:src="@{|/preview/${Vote.planId}.png|}"/>
                                 <div style="width: 200px; height: 30px;">
 
-                                        <img src="img/like/afterLike.png" th:id="'planLikeImage_' + ${Vote.planId}"
-                                             th:onclick="'event.preventDefault(); planHeart(' + ${Vote.planId} + ')'"
-                                             style="position:relative; width: 20px; height:20px; top:-25px; left:57px;">
+                                    <img src="img/like/afterLike.png" style="position:relative; width: 20px; height:20px; top:-25px; left:57px;"
+                                         th:id="'planLikeImage_' + ${Vote.planId}"
+                                         th:onclick="'event.preventDefault(); planHeart(' + ${Vote.planId} + ')'">
 
-                                        <div th:text="|항공 : ${Vote.flightPrice}원|"
-                                             style="margin-top:-13px; font-size:10px; font-family:'Noto sans KR', sans-serif;"></div>
-                                        <div th:text="|경비 : ${Vote.withoutFlightPrice}원|"
-                                             style="margin-bottom:5px; font-size:10px; font-family:'Noto sans KR', sans-serif;"></div>
-                                        <!--<div th:text="|${Vote.startDate} 출발|"
-                                             style="float:left; margin-left:23px; margin-top:7px; margin-bottom:30px; font-size:10px; font-family:'Noto sans KR', sans-serif;"></div>
-                                        <div th:text="|${Vote.endDate} 도착|"
-                                             style="float:left; margin-left:10px; margin-top:7px; font-size:10px; font-family:'Noto sans KR', sans-serif;"></div>-->
+                                    <div style="margin-top:-13px; font-size:10px; font-family:'Noto sans KR', sans-serif;"
+                                         th:text="|항공 : ${Vote.flightPrice}원|"></div>
+                                    <div style="margin-bottom:5px; font-size:10px; font-family:'Noto sans KR', sans-serif;"
+                                         th:text="|경비 : ${Vote.withoutFlightPrice}원|"></div>
+                                    <!--<div th:text="|${Vote.startDate} 출발|"
+                                         style="float:left; margin-left:23px; margin-top:7px; margin-bottom:30px; font-size:10px; font-family:'Noto sans KR', sans-serif;"></div>
+                                    <div th:text="|${Vote.endDate} 도착|"
+                                         style="float:left; margin-left:10px; margin-top:7px; font-size:10px; font-family:'Noto sans KR', sans-serif;"></div>-->
 
                                 </div>
                             </div>
@@ -182,21 +193,48 @@
 </div>
 
 <script>
-    document.querySelector('.attraction').addEventListener('wheel', function(event) {
-   if (event.deltaY !== 0) {
-       this.scrollLeft += event.deltaY;
-       event.preventDefault();
-   }
-});
-   document.querySelector('.likeList').addEventListener('wheel', function(event) {
-   if (event.deltaY !== 0) {
-       this.scrollLeft += event.deltaY;
-       event.preventDefault();
-   }
-});
+    document.querySelector('.attraction').addEventListener('wheel', function (event) {
+        if (event.deltaY !== 0) {
+            this.scrollLeft += event.deltaY;
+            event.preventDefault();
+        }
+    });
+    document.querySelector('.likeList').addEventListener('wheel', function (event) {
+        if (event.deltaY !== 0) {
+            this.scrollLeft += event.deltaY;
+            event.preventDefault();
+        }
+    });
 
 
-    function attractionHeart(touristAttractionId) {
+
+    function divClick(element) {
+        var attractionId = element.getAttribute('data-attraction-id');
+        var itemName = element.getAttribute('data-item-name');
+        var itemImage = element.getAttribute('data-item-image');
+        var itemAddress = element.getAttribute('data-item-address');
+        var itemIntroduction = element.getAttribute('data-item-introduction');
+
+
+        Swal.fire({
+            title: `${itemName}`,
+            imageUrl: `${itemImage}`,
+            imageWidth: 600,
+            imageHeight: 400,
+            customClass: {      // 클래스명을 줘서 알림창의 크기를 조절이 가능함
+                popup: 'custom-modal-width',
+            },
+            html: `<div>
+                  <div class="attraction-address">주소: ${itemAddress}</div>
+                  <div class="attraction-address">소개: ${itemIntroduction}</div>
+               </div>`
+        });
+        // Div에 대한 작업 수행
+    }
+
+    function imgClick(event, touristAttractionId) {
+        event.stopPropagation();
+
         var buttonId = 'attrationLikeImage_' + touristAttractionId;
         var button = document.getElementById(buttonId);
         console.log(touristAttractionId);
@@ -208,7 +246,7 @@
 
         xhr.onload = function () {
             if (xhr.status === 200) {
-                var div = document.getElementById('attrationLike_' + touristAttractionId);
+                var div = document.getElementById('attractionLike_' + touristAttractionId);
                 div.style.display = 'none';
             } else {
                 console.error('서버 오류');
@@ -216,7 +254,9 @@
         };
 
         xhr.send();
+
     }
+
 
     function planHeart(planId) {
         var buttonId = 'planLikeImage_' + planId;

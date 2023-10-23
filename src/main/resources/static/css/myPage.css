@@ -416,5 +416,14 @@ body {
 }
 
 
+.custom-modal-width{
+    width: 500px;
+    height: 700px;
+}
 
-
+.attraction-address {
+    font-family: Montserrat,Noto Sans KR,sans-serif;
+    font-size: 12px;
+    color: #A4B6D5;
+    margin: 5px 0; /* 주소와 다음 카드 간 간격 */
+}
