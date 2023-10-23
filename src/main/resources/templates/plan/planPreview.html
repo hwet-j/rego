@@ -634,12 +634,13 @@ function captureMap() {
     const startDate2 = new Date(document.getElementById('startDate').getAttribute('data-variable')); // 시작 날짜 설정
     const endDate = new Date(document.getElementById('endDate').getAttribute('data-variable')); // 종료 날짜 설정
     const startDate=new Date(startDate2-((9*60*60)*1000));
+    endDate.setHours(endDate.getHours()+15);
     previewList.forEach(function (preview) {
         const cityName = preview.cityName;
         const startTime = new Date(preview.startTime);
         const endTime = new Date(preview.endTime);
         startTime.setHours(startTime.getHours() +9); // 9시간 추가
-        endTime.setMinutes(endTime.getMinutes() +539);
+        endTime.setMinutes(endTime.getMinutes() +530);
         const previewDetailId = preview.detailPlanId;
 
         // 시작 시간과 종료 시간이 범위 내에 있는 경우에만 처리
@@ -844,10 +845,10 @@ function captureMap() {
                     },
                 });
             });
-             /*//startTime 및 endTime 표시
+             //startTime 및 endTime 표시
             const timeElement = document.createElement('p');
              timeElement.textContent = `Start Time: ${data.startTime.toLocaleString()} - End Time: ${data.endTime.toLocaleString()}`;
-             dateContainer.appendChild(timeElement);*/
+             dateContainer.appendChild(timeElement);
         });
 
         container.appendChild(dateContainer);
