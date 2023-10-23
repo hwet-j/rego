@@ -208,10 +208,12 @@ public class PlannerController {
     /* 계획 상세페이지 */
     @GetMapping("/detail")
     @PreAuthorize("isAuthenticated()")
-    public String map(@RequestParam(required = false) Integer planId, Model model) throws JsonProcessingException {
+    public String map(@RequestParam(required = false) Integer planId, Model model, Principal principal) throws JsonProcessingException {
         PlannerDTO plannerDTO = plannerService.findById(planId);
         if (plannerDTO == null){
             return "redirect:/";
+        } else if (!principal.getName().equals(plannerDTO.getUserEmail())){
+            return "redirect:/plan/Preview?planId=" + planId;
         }
 
         List<TouristAttractionDTO> touristAttractionListAll = touristAttractionService.touristListAll();
