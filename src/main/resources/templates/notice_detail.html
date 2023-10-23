@@ -75,6 +75,11 @@
                            class="delete btn"
                            sec:authorize="hasRole('ROLE_ADMIN')"
                            th:text="삭제"></a>
+
+                        <!-- 목록으로 이동 -->
+                        <a th:href="@{|/notice/list|}"
+                           class="list btn"
+                           th:text="목록"></a>
                     </div>
                 </div>
 
@@ -85,7 +90,10 @@
     <div class="vertical-line"></div>
     <div class="right-side">
         <a href="/touristAttraction/list">
-        <div class="tab1-img1"><h3>보르도</h3>
+            <div class="tab1-img1" th:if="${notice.imagePath}">
+                    <img th:src="${notice.imagePath}">
+            </div>
+        <div class="tab1-img1" th:unless="${notice.imagePath}"><h3>보르도</h3>
             <p>보르도(Bordeaux)는 프랑스의 남서 지역에 위치한 도시로, 와인으로 유명한 지역으로 알려져 있습니다. 이 지역은 브루고드(Bordeaux) 지방 와인을
                 생산하는 중심지로, 세계적으로 고품질의 와인을 생산하는 지역 중 하나로 인정받고 있습니다.<br/><br/>
 
@@ -106,5 +114,60 @@
     </div>
 </div>
 </body>
+
+<script>
+
+    document.getElementById("imageUpload").onchange = function () {
+        const file = this.files[0]; // 이미지 파일을 가져옵니다.
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const originView = document.getElementById('originImage');
+                const preview = document.getElementById('imagePreview');
+                const previewText = document.getElementById('tab1-img5'); // 해당 코드 추가
+                preview.src = e.target.result;
+
+                preview.style.display = 'block';    // 이미지를 보이게 합니다.
+
+                if(originView){
+                    originView.style.display = 'none';
+                }
+                previewText.style.display = 'none'; // 텍스트를 숨깁니다. 이 코드 추가
+
+            };
+
+            reader.readAsDataURL(file);
+        }
+    };
+
+document.getElementById("cancelUpload").addEventListener("click", function (event) {
+
+
+    document.getElementById("imageUpload").value = null;
+    // 이미지 미리보기 숨기기
+    document.getElementById("imagePreview").style.display = "none";
+    var tab1Img5 = document.getElementById("tab1-img5");
+
+    // 텍스트 표시
+    if (tab1Img5) {
+        tab1Img5.style.display = "block";
+    }
+
+    var origin = document.getElementById("originImage");
+
+    if (origin) {
+      origin.style.display = "block"; // 이미지를 보이도록 설정
+      // 또는 다음과 같이 visibility 속성을 사용할 수도 있습니다.
+      // origin.style.visibility = "visible";
+    }
+
+    // 폼 제출 막기
+    event.stopPropagation();
+
+    event.preventDefault();
+});
+
+</script>
+
 </html>
 

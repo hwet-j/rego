@@ -360,6 +360,16 @@ z-index:999;
 }
 
 
+.list.btn {
+    color: #59BAFF;
+    transition: color 0.3s; /* 글자색 전환 효과를 0.3초 동안 적용 */
+    margin-left: -570px; /* 왼쪽으로 10px 이동 */
+}
+
+.list.btn:hover {
+   color: white;
+}
+
 .left-side {
    float: left;
     width: 700px;

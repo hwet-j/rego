@@ -36,11 +36,10 @@ public class AnswerController {
 
     // 답변 삭제
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String answerDelete(@PathVariable("id") Integer id, Principal principal) {
         Answer answer = answerService.getAnswer(id);
-        if (!answer.getWriter().getEmail().equals(principal.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다.");
-        }
+
         answerService.delete(answer);
         return "redirect:/question/detail/" + answer.getQuestion().getId();
     }

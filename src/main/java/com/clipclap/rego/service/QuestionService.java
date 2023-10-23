@@ -72,7 +72,7 @@ public class QuestionService {
 
     //질문등록처리
     //SiteUser siteUser : 질문작성자의 정보
-    public void add(QuestionForm questionForm,  User user){
+    public void add(QuestionForm questionForm,  User user, String imagePath){
         Question question = new Question();
         question.setCategory(questionForm.getCategory());
 
@@ -84,6 +84,14 @@ public class QuestionService {
         question.setContent(questionForm.getContent());
         question.setCreateDate(LocalDateTime.now());
         question.setWriter(user);
+        if(imagePath != null){
+            question.setImagePath(imagePath);
+        } else {
+            Optional<Question> optionalQuestion = questionReprository.findById(question.getId());
+            if(optionalQuestion.isPresent()){     // 원래 이미지 경로로 재저장
+                question.setImagePath(optionalQuestion.get().getImagePath());
+            }
+        }
         questionReprository.save(question);
     }
 

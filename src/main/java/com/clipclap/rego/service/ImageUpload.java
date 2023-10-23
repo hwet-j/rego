@@ -48,4 +48,68 @@ public class ImageUpload {
         }
         return "/images/Planit"  + saveFolder + "/" + uniqueFileName;
     }
+
+    public String uploadNoticeImage(MultipartFile file, Integer id) {
+        // 이미지를 저장할 경로 --> 타입별 별도의 폴더를 더 생성하여 구분
+        String saveFolder = "/notice_images";
+
+
+
+        String uploadDirectory = "C:/Planner" +  saveFolder;
+
+        File directory = new File(uploadDirectory);
+        if (!directory.exists()) {
+            directory.mkdirs(); // 폴더가 없으면 생성
+        }
+        if(file.getOriginalFilename().equals("")){
+            return null;
+        } else if(file.getOriginalFilename() == null){
+            return null;
+        }
+
+        String uniqueFileName = id + "_" + file.getOriginalFilename();
+
+        String filePath = uploadDirectory + File.separator + uniqueFileName;
+        File dest = new File(filePath);
+
+        try {
+            // 업로드된 파일의 내용을 경로에 복사하여 이미지 파일을 저장
+            FileCopyUtils.copy(file.getBytes(), dest);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "/images/Planner"  + saveFolder + "/" + uniqueFileName;
+    }
+
+    public String uploadQuestionImage(MultipartFile file, Integer id) {
+        // 이미지를 저장할 경로 --> 타입별 별도의 폴더를 더 생성하여 구분
+        String saveFolder = "/question_images";
+
+        String uploadDirectory = "C:/Planner" +  saveFolder;
+
+        File directory = new File(uploadDirectory);
+        if (!directory.exists()) {
+            directory.mkdirs(); // 폴더가 없으면 생성
+        }
+        if(file.getOriginalFilename().equals("")){
+            return null;
+        } else if(file.getOriginalFilename() == null){
+            return null;
+        }
+
+        String uniqueFileName = id + "_" + file.getOriginalFilename();
+
+        String filePath = uploadDirectory + File.separator + uniqueFileName;
+        File dest = new File(filePath);
+
+        try {
+            // 업로드된 파일의 내용을 경로에 복사하여 이미지 파일을 저장
+            FileCopyUtils.copy(file.getBytes(), dest);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "/images/Planner"  + saveFolder + "/" + uniqueFileName;
+    }
 }
