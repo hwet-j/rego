@@ -9,40 +9,37 @@
 
 <div class="container">
     <div class="nav">
-
         <ul class="" style="list-style-type:none;">
             <li class="">
-                <!-- 타임리프의 security이용
-                sec:authorize="isAnonymous()은 로그인하지않는 경우->로그인 출력
-                sec:authorize="isAuthenticated()은 로그인한 경유->로그아웃 출력
-                -->
                 <a class="logo" th:href="@{/}"><img src="/img/logo.png"
                                                     style="float: left; width: 63px; height: 58px; margin-left: 10px; background-repeat: no-repeat;"></a>
-
-
                 <div class="nav-left"
-                     style="float:left;   margin-left: 470px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 500;">
-                    <a class="" th:href="@{/}"
-                       style="margin-right: 50px; color:#4F54B4;">HOME</a>
-                    <a class="" th:href="@{/}"
+                     style="float:left;   margin-left: 440px; margin-top: 19px;  font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: 500;">
+                    <a class="" th:href="@{/flightResult}"
                        style="margin-right: 50px; color:#4F54B4;">AIRPORT</a>
-                    <a class="" th:href="@{/}"
+                    <a class="" th:href="@{/plan/add}"
                        style="margin-right: 50px; color:#4F54B4;">START PLAN</a>
-                    <a class="" th:href="@{/}"
-                       style="color:#4F54B4;">RECOMMEND</a>
+                    <a class="" th:href="@{/touristAttraction/list}"
+                       style="margin-right: 50px; color:#4F54B4;">ATTRACTIONS</a>
+                    <a class="" th:href="@{/plan/list}"
+                       style="color:#4F54B4;">PLAN LIST</a>
                 </div>
+
                 <div class="nav-right"
                      style="float:right;    margin-right: 35px; margin-top: 27px;  font-size: 12px;  font-family: 'Roboto', sans-serif; font-weight: 600;">
+                    <a class="" th:href="@{/notice/list}"
+                       style="margin-right: 20px; color:#4F54B4;">공지사항</a>
                     <a class="" th:href="@{/question/list}"
                        style="margin-right: 20px; color:#4F54B4;">고객센터</a>
                     <a class="loginBtn" sec:authorize="isAnonymous()" th:href="@{/login}"
                        style="margin-right: 20px; color:#4F54B4;">로그인</a>
-                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/}"
+                    <a class="" sec:authorize="isAuthenticated()" th:href="@{/myPage}"
                        style="margin-right: 20px; color:#4F54B4;">마이페이지</a>
                     <a class="" sec:authorize="isAuthenticated()" th:href="@{/logout}"
                        style="margin-right: 20px; color:#4F54B4;">로그아웃</a>
-                    <a class="" sec:authorize="hasRole('ADMIN')" th:href="@{/}"
+                    <a class="" sec:authorize="hasRole('ADMIN')" th:href="@{/user/list}"
                        style="color:#4F54B4;">ADMIN</a>
+
                 </div>
             </li>
 
@@ -76,12 +73,25 @@
 
             <div class="box">
                 <!-- 질문 수정버튼 - 로그인해야만 수정 가능, 로그인한 유저가 글쓴이와 동일해야만 한다 -->
-                <a th:href="@{|/question/modify/${question.id}|}" class="edit btn" sec:authorize="isAuthenticated()"
-                   th:if="${question.writer != null and #authentication.getPrincipal().getUsername() == question.writer.email}" th:text="수정"></a>
+
+                <!-- 관리자인 경우 -->
+                <span sec:authorize="hasRole('ADMIN') AND isAuthenticated()">
+                    <a th:href="@{|/question/modify/${question.id}|}" class="edit btn"
+                       th:text="수정"> </a>
+                    <a th:href="@{|/question/delete/${question.id}|}" class="delete btn"
+                      th:text="삭제"></a>
+                    </span>
+
+                <!-- 로그인했지만 관라지가 아닌경우 -->
+                <span sec:authorize="isAuthenticated() AND !hasRole('ADMIN')">
                 <!-- 질문 삭제버튼 - 로그인해야만 삭제 가능, 로그인한 유저가 글쓴이와 동일해야만 한다 -->
-                <a th:href="@{|/question/delete/${question.id}|}" class="delete btn"
-                   sec:authorize="isAuthenticated() || hasRole('ADMIN')"
-                   th:if="${question.writer != null and #authentication.getPrincipal().getUsername() == question.writer.email}" th:text="삭제"></a>
+
+                    <!-- 각 a요소에서 th:if를 사용해서 작성자와 현재 로그인한 유저의 email정보를 비교하여 작성자만 수정,삭제 버튼이 보이도록 설정 -->
+                    <a th:href="@{|/question/modify/${question.id}|}" class="edit btn"
+                       th:if="${question.writer != null and #authentication.getPrincipal().getUsername() == question.writer.email}" th:text="수정"> </a>
+                    <a th:href="@{|/question/delete/${question.id}|}" class="delete btn"
+                       th:if="${question.writer != null and #authentication.getPrincipal().getUsername() == question.writer.email}" th:text="삭제"></a>
+                </span>
             </div>
 
 
@@ -105,31 +115,31 @@
                 </div>
 
 
-                        <div class="my-2">
-                            <span th:if="${answer.writer != null}" th:text="${answer.writer.nickname}"></span>
-                            <div th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
-                        </div>
+                <div class="my-2">
+                    <span th:if="${answer.writer != null}" th:text="${answer.writer.nickname}"></span>
+                    <div th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+                </div>
 
-
-
-
-
-                    <div class="qBox">
-                        <!-- 답변 수정 버튼 -->
+                <div class="qBox">
+                    <!-- 답변 수정 버튼 -->
+                    <span sec:authorize="hasRole('ADMIN')">
                         <a href="javascript:void(0);" class="edit btn"
-                           th:if="${answer.writer != null and #authentication.getPrincipal().getUsername() == answer.writer.email}"
                            th:id="'editButton_' + ${answer.id}"
                            th:data-answerid="${answer.id}"
                            th:onclick="'toggleEditForm(' + ${answer.id} + ')'"
                            th:text="수정"></a>
-                        <!-- 답변 삭제버튼 - 로그인해야지만 삭제 가능, 로그인한 유저가 글쓴이와 동일해야만 한다 -->
-                        <a th:href="@{|/answer/delete/${answer.id}|}"
-                           class="delete btn"
-                           sec:authorize="isAuthenticated() || hasRole('ADMIN')"
-                           th:if="${answer.writer != null and #authentication.getPrincipal().getUsername() == answer.writer.email}"
-                           th:text="삭제"></a>
-                    </div>
+                    </span>
+
+
+                    <span sec:authorize="hasRole('ADMIN')">
+                            <a th:href="@{|/answer/delete/${answer.id}|}"
+                               class="delete btn"
+                               th:text="삭제"></a>
+                    </span>
+
+                </div>
             </div>
+
 
 
 
@@ -152,8 +162,14 @@
 
     <div class="vertical-line"></div>
     <div class="right-side">
-        <a href="/touristAttraction/list">
-        <div class="tab1-img5"><h3>피렌체</h3>
+        <img id="imagePreview" class="tab1-img5" style="display: none;"/>
+
+        <!-- question.imagePath가 정보를 가지고 있을 경우 -->
+        <div th:unless="${question.imagePath == null}">
+            <img id="originImage" class="tab1-img5"  th:src="${question.imagePath}"/>
+        </div>
+        <!-- question.imagePath가 정보를 가지고 있지 않을 경우 -->
+        <div id="tab1-img5" class="tab1-img5" th:if="${question.imagePath == null}"><h3>피렌체</h3>
             <p>피렌체(Florence)는 이탈리아의 중부 토스카나(Tuscany) 지역에 위치한 아름다운 도시로, 예술과 문화의 중심지로서 유명합니다. 이 도시는 이탈리아
                 르네상스(Renaissance)의 탄생지로서, 많은 유명한 예술가와 작품들을 탄생시킨 곳으로 알려져 있습니다.<br/><br/>
 
@@ -172,11 +188,11 @@
             <div class="blueScreen"></div>
             <img src="/css/mainCountry/Italy/pirenche.jfif">
         </div>
-        </a>
     </div>
-</div>
-</div>
 
+</div>
+</div>
+</body>
 <!-- javascript부분 -- ----------------------------->
 <script>
     // 수정 폼 토글 함수
@@ -248,7 +264,61 @@
     }
 </script>
 
-</body>
+<script>
+
+    document.getElementById("imageUpload").onchange = function () {
+        const file = this.files[0]; // 이미지 파일을 가져옵니다.
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const originView = document.getElementById('originImage');
+                const preview = document.getElementById('imagePreview');
+                const previewText = document.getElementById('tab1-img5'); // 해당 코드 추가
+                preview.src = e.target.result;
+
+                preview.style.display = 'block';    // 이미지를 보이게 합니다.
+
+                if(originView){
+                    originView.style.display = 'none';
+                }
+                previewText.style.display = 'none'; // 텍스트를 숨깁니다. 이 코드 추가
+
+            };
+
+            reader.readAsDataURL(file);
+        }
+    };
+
+document.getElementById("cancelUpload").addEventListener("click", function (event) {
+
+
+    document.getElementById("imageUpload").value = null;
+    // 이미지 미리보기 숨기기
+    document.getElementById("imagePreview").style.display = "none";
+    var tab1Img5 = document.getElementById("tab1-img5");
+
+    // 텍스트 표시
+    if (tab1Img5) {
+        tab1Img5.style.display = "block";
+    }
+
+    var origin = document.getElementById("originImage");
+
+    if (origin) {
+      origin.style.display = "block"; // 이미지를 보이도록 설정
+      // 또는 다음과 같이 visibility 속성을 사용할 수도 있습니다.
+      // origin.style.visibility = "visible";
+    }
+
+    // 폼 제출 막기
+    event.stopPropagation();
+
+    event.preventDefault();
+});
+
+</script>
+
+
 </html>
 
 

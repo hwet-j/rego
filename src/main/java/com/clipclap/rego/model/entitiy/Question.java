@@ -45,6 +45,8 @@ public class Question {
     @Column
     private LocalDateTime modifyDate;//수정일
 
+    private String imagePath;           //이미지경로
+
     /*@OneToMany 속성
      * mappedBy는 참조 엔티티의 속성명
      * CascadeType.REMOVE  : 질문을 삭제하면 그에 딸린 대답목록도 같이 삭제

@@ -221,7 +221,7 @@ h1, h2 {
 
 
 p {
-    margin: 70px;
+    margin: 40px;
     margin-left: 20px;
     padding: 0;
     text-align: left;
@@ -257,7 +257,7 @@ z-index:999;
 
 
 .box {
-    margin-left : 500px;
+    margin-left : 585px;
     margin-top: -40px;
 }
 
@@ -352,7 +352,7 @@ z-index:999;
 
 
 .reply-list {
-    margin-top: 45px;
+    margin-top: 40px;
     margin-left: 170px;
     max-width: 600px; /* 가로 최대 길이 설정 (원하는 가로 길이로 변경 가능) */
 }
@@ -361,7 +361,6 @@ z-index:999;
     overflow: auto; /* 세로 스크롤바를 표시하도록 설정 */
     max-height: 110px; /* 원하는 최대 높이 설정 */
     max-width: 550px; /* 가로 최대 길이 설정 (원하는 가로 길이로 변경 가능) */
-    margin-top: 50px;
     border-radius: 10px;
 }
 
@@ -391,7 +390,7 @@ z-index:999;
 /* Form Styles */
 #answerForm {
     position: fixed;
-    top: 600px;
+    top: 650px;
     max-width: 450px;
     height: 115px;
     margin-left: 170px;

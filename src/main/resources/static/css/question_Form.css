@@ -149,6 +149,7 @@ h1.box {
 }
 
 
+
 /* 컨택트 반응형 */
 @media (max-width:600px){
     .contact {
@@ -177,6 +178,30 @@ h1.box {
     }
 }
 
+.uploadTitle {
+    text-align: left;
+    padding-left: 7px; /* 왼쪽으로 10px 이동 (조절 가능) */
+    color: #464DB7;
+    margin-top: 15px;
+    font-weight: bold; /* 텍스트를 볼드체로 설정 */
+}
+
+
+#imageUpload {
+width: 510px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #ffffff;
+    font-size: 14px;
+    color: #333;
+    margin-top: 7px;
+    outline: none;
+}
+
+#cancelUpload {
+    margin-left: -70px;
+}
 
 
 
@@ -323,7 +348,6 @@ p {
 .left-side {
    float: left;
     width: 700px;
-    margin-top: 35px;
 }
 
 .right-side {
