@@ -386,6 +386,9 @@
             function openDialog(eventId, calendar) {
                 const selectedPlan = detailData.find((plan) => plan.id == eventId);
                 var selectedAttraction = null;
+                console.log(selectedPlan);
+                console.log(eventId);
+
                 if(selectedPlan.touristAttractionId == null){
                     selectedAttraction = 0;
                 } else {
@@ -594,6 +597,30 @@
                 address : '',
                 name : '선택하지 않음',
                 imageUrl : 'https://github.com/hwet-j/rego/assets/125880480/20c539ee-6568-468e-919d-3ed42cb6c56a',
+                introduction : '',
+                latitude : '',
+                longitude : '',
+                contentType : '',
+                cityName : ''
+            });
+
+            attractionData.push({
+                touristAttractionId : 1000,
+                address : '공항',
+                name : '공항',
+                imageUrl : 'https://github.com/hwet-j/rego/assets/125880480/ba5886f3-a97a-4a63-a6bd-d0fa26c7f484',
+                introduction : '',
+                latitude : '',
+                longitude : '',
+                contentType : '',
+                cityName : ''
+            });
+
+            attractionData.push({
+                touristAttractionId : 1001,
+                address : '공항',
+                name : '공항',
+                imageUrl : 'https://github.com/hwet-j/rego/assets/125880480/ba5886f3-a97a-4a63-a6bd-d0fa26c7f484',
                 introduction : '',
                 latitude : '',
                 longitude : '',

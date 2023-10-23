@@ -280,7 +280,8 @@ public class PlannerController {
         // model.addAttribute("startDate" , plannerService.findStartTimeByPlanId(planId));
         model.addAttribute("startDate" , plannerDTO.getStartDate());
 
-        model.addAttribute("endDate" , plannerDTO.getEndDate());
+        model.addAttribute("endDate" , plannerDTO.getEndDate().plusDays(1));
+
         model.addAttribute("userEmail" , plannerDTO.getUserEmail());
 
         return "plan/planPreview";

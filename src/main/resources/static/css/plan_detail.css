@@ -525,12 +525,10 @@ a.savebtn:hover {
 
 
 div:where(.swal2-container) .swal2-select {
-    min-width: 15% !important;
-    height: 30px;
+    width:75%;
+    height: 35px;
     border-radius: 3px;
-    margin-left: -340px !important;
-    color: inherit;
-    font-size: 0.6em !important;
+    margin-left: 43px !important;
  }
 
  .swal2-text-area {
