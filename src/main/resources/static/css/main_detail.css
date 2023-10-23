@@ -688,7 +688,7 @@ div:where(.swal2-container).swal2-center>.swal2-popup {
 
 .custom-modal-width {
     width: 500px;
-    height: 600px;
+    height: 750px;
 }
 
 div:where(.swal2-container) img:where(.swal2-image) {
