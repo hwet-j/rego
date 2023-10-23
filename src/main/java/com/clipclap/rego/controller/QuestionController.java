@@ -3,7 +3,9 @@ package com.clipclap.rego.controller;
 
 import com.clipclap.rego.model.entitiy.Question;
 import com.clipclap.rego.model.entitiy.User;
+import com.clipclap.rego.service.ImageUpload;
 import com.clipclap.rego.service.QuestionService;
+import com.clipclap.rego.validation.AnswerForm;
 import com.clipclap.rego.validation.QuestionForm;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
@@ -29,6 +32,7 @@ public class QuestionController {
 
     private final QuestionService questionService;
     private final com.clipclap.rego.service.UserService userService; // UserService를 주입하도록 수정
+    private final ImageUpload imageUpload;
 
     // 삭제 처리
     @GetMapping("/delete/{id}")
@@ -44,7 +48,7 @@ public class QuestionController {
     // 질문 수정 폼을 보여줌
     @PreAuthorize("isAuthenticated()") //인증을 요하는 메서드
     @GetMapping("/modify/{id}")
-    public String qeuestionModify(QuestionForm questionForm,
+    public String qeuestionModify(QuestionForm questionForm, Model model,
                                   @PathVariable("id") Integer id, Principal principal) {
         //1.파라미터받기
         //2.비즈니스로직수행
@@ -57,29 +61,11 @@ public class QuestionController {
         questionForm.setSubject(question.getSubject());
         questionForm.setContent(question.getContent());
         questionForm.setCategory(question.getCategory());
+        model.addAttribute("originImage", question.getImagePath());
         //3.Model  //4.View
         return "question_form"; //질문등록폼으로 이동
     }
 
-    // 질문 수정 처리
-    /*@PostMapping("/modify/{id}")
-    public String modify(@Valid QuestionForm questionForm, BindingResult bindingResult,
-                         @PathVariable("id") Integer id, Principal principal) {
-        if (bindingResult.hasErrors()) {
-            return "question_form";
-        }
-
-        Question question = questionService.getQuestion(id);
-        if (!question.getWriter().getEmail().equals(principal.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
-        }
-
-        System.out.println(question.toString());
-
-
-         questionService.modify(question);
-        return String.format("redirect:/question/detail/%d", id);
-    }*/
 
     // 질문 등록 폼을 보여줌
     @PreAuthorize("isAuthenticated()")
@@ -105,15 +91,21 @@ public class QuestionController {
     // 질문 등록 처리
     @PostMapping("/add")
     public String questionAdd(@Valid QuestionForm questionForm, BindingResult bindingResult,
-                              Principal principal) {
+                              Principal principal, @RequestParam("imageFile") MultipartFile imageFile) {
         if (bindingResult.hasErrors()) {
             System.out.println("fail");
             return "question_form";
         }
 
+        String imagePath = null;
+
+        if(imageFile != null){
+            imagePath = imageUpload.uploadQuestionImage(imageFile, questionForm.getQuestionId());
+        }
+
         User user = userService.getUserByEmail(principal.getName());
 
-        questionService.add(questionForm, user);
+        questionService.add(questionForm, user, imagePath);
 
         return "redirect:/question/list";
     }
@@ -121,8 +113,10 @@ public class QuestionController {
     // 질문 상세 조회
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Integer id, Model model,
-                         com.clipclap.rego.validation.AnswerForm answerForm) {
+                         AnswerForm answerForm) {
+
         Question question = questionService.getQuestion(id);
+
         model.addAttribute("question", question);
         return "question_detail";
     }

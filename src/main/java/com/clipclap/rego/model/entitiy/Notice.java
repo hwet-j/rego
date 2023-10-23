@@ -40,6 +40,8 @@ public class Notice {
     @Column
     private LocalDateTime modifyDate;//수정일
 
+    private String imagePath;           //이미지경로
+
 
 
     //한 명의 USER가 여러 개의 글을 작성할 수 있다

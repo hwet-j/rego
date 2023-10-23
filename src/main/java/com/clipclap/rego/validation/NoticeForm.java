@@ -27,6 +27,12 @@ public class NoticeForm {
     private String content;//내용
 
 
+    private String imagePath;//내용
+
+
+
+
+
 
 
 

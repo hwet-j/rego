@@ -62,7 +62,7 @@
             <div class="left-side">
                 <h1 class="box">공지</h1>
                 <form id="noticeForm" th:action="@{/notice/add}" th:object="${noticeForm}" method="post"
-                      data-aos="fade">
+                      data-aos="fade" enctype="multipart/form-data">
 
                     <div th:if="${id}">
                         <input type="hidden" th:value="${id}" name="noticeId"/>
@@ -76,6 +76,7 @@
                                 <input class="input-content" type="text" th:field="*{subject}" placeholder="제목을 입력해주세요">
                             </label>
                         </div>
+
                         <div class="label-box">
                             <label>
                                 <div for="content" class="title"></div>
@@ -84,17 +85,31 @@
                             </label>
                         </div>
 
+                        <div class="label-box">
+                            <label>
+                                <div class="uploadTitle">파일첨부</div>
+                                <input type="file" id="imageUpload" name="imageFile"/>
+                                <button id="cancelUpload">취소</button>
+                            </label>
+                        </div>
+
                         <input class="btn" type="submit" name="submit" value="작성완료">
-
                     </div>
-
                 </form>
             </div>
         </div>
 
+
+
         <div class="vertical-line"></div>
         <div class="right-side">
-            <div class="tab1-img1"><h3>보르도</h3>
+            <img id="imagePreview" class="tab1-img1" style="display: none;"/>
+
+            <div th:unless="${originImage == null}">
+                <img id="originImage" class="tab1-img1"  th:src="${originImage}"/>
+            </div>
+
+            <div id="tab1-img1" class="tab1-img1" th:if="${originImage == null}"><h3>보르도</h3>
                 <p>보르도(Bordeaux)는 프랑스의 남서 지역에 위치한 도시로, 와인으로 유명한 지역으로 알려져 있습니다. 이 지역은 브루고드(Bordeaux) 지방 와인을
                     생산하는 중심지로, 세계적으로 고품질의 와인을 생산하는 지역 중 하나로 인정받고 있습니다.<br/><br/>
 
@@ -114,5 +129,59 @@
 
     </div>
 </div>
+
+<script>
+
+    document.getElementById("imageUpload").onchange = function () {
+        const file = this.files[0]; // 이미지 파일을 가져옵니다.
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const originView = document.getElementById('originImage');
+                const preview = document.getElementById('imagePreview');
+                const previewText = document.getElementById('tab1-img1'); // 해당 코드 추가
+                console.log(previewText);
+                preview.src = e.target.result;
+                preview.style.display = 'block';    // 이미지를 보이게 합니다.
+                if(originView){
+                   originView.style.display = 'none';
+                }
+
+                previewText.style.display = "none"; // 텍스트를 숨깁니다. 이 코드 추가
+            };
+
+            reader.readAsDataURL(file);
+        }
+    };
+
+document.getElementById("cancelUpload").addEventListener("click", function (event) {
+
+
+    document.getElementById("imageUpload").value = null;
+    // 이미지 미리보기 숨기기
+    document.getElementById("imagePreview").style.display = "none";
+    var tab1Img1 = document.getElementById("tab1-img1");
+
+    // 텍스트 표시
+    if (tab1Img1) {
+        tab1Img1.style.display = "block";
+    }
+
+    var origin = document.getElementById("originImage");
+
+    if (origin) {
+      origin.style.display = "block"; // 이미지를 보이도록 설정
+
+    }
+
+    // 폼 제출 막기
+    event.stopPropagation();
+
+    event.preventDefault();
+});
+
+</script>
 </body>
 </html>

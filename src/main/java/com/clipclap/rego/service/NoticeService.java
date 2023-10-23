@@ -69,7 +69,7 @@ public class NoticeService {
 
     //공지등록처리
     //SiteUser siteUser : 공지작성자의 정보
-    public Integer add(NoticeForm noticeForm, User user){
+    public Integer add(NoticeForm noticeForm, User user, String imagePath){
         Notice notice = new Notice();
 
         if(noticeForm.getNoticeId() != null){     // 수정할 공지의 글번호 설정
@@ -80,6 +80,15 @@ public class NoticeService {
         notice.setContent(noticeForm.getContent());
         notice.setCreateDate(LocalDateTime.now());
         notice.setWriter(user);
+        if(imagePath != null){
+            notice.setImagePath(imagePath);
+        } else {
+            Optional<Notice> optionalNotice = noticeReprository.findById(notice.getId());
+            if(optionalNotice.isPresent()){     // 원래 이미지 경로로 재저장
+                notice.setImagePath(optionalNotice.get().getImagePath());
+            }
+        }
+
         noticeReprository.save(notice);
         Integer noticeId = notice.getId();
         return noticeId;
