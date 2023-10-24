@@ -78,6 +78,8 @@ public class QuestionService {
 
         if(questionForm.getQuestionId() != null){     // 수정할 질문의 글번호 설정
             question.setId(questionForm.getQuestionId());
+        } else {
+
         }
 
         question.setSubject(questionForm.getSubject());
@@ -87,10 +89,15 @@ public class QuestionService {
         if(imagePath != null){
             question.setImagePath(imagePath);
         } else {
-            Optional<Question> optionalQuestion = questionReprository.findById(question.getId());
-            if(optionalQuestion.isPresent()){     // 원래 이미지 경로로 재저장
-                question.setImagePath(optionalQuestion.get().getImagePath());
+            if( question.getId() == null){
+                question.setImagePath(null);
+            } else {
+                Optional<Question> optionalQuestion = questionReprository.findById(question.getId());
+                if(optionalQuestion.isPresent()){     // 원래 이미지 경로로 재저장
+                    question.setImagePath(optionalQuestion.get().getImagePath());
+                }
             }
+
         }
         questionReprository.save(question);
     }
