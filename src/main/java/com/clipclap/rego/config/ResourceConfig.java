@@ -13,8 +13,9 @@ public class ResourceConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/images/**")
-                .addResourceLocations("file:///C:/"); // 로컬 경로 설정
+                .addResourceLocations("file:/home/opc/asset/"); // 변경된 로컬 경로
     }
+
 
     @Bean
     public RestTemplate restTemplate() {
