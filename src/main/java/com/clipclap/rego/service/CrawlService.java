@@ -25,9 +25,9 @@ public class CrawlService {
                 +arrivalAirportName+"-"+departureAirportName+"-"+arrivalDay
                 +"?isDrirect=true";
         System.out.println(htmlLink);
-        Runtime.getRuntime().exec("Xvfb :99 -screen 0 1024x768x16 &");
-        System.setProperty("DISPLAY", ":99");
-        System.setProperty("webdriver.chrome.driver", "/usr/bin/google-chrome");
+//        Runtime.getRuntime().exec("Xvfb :99 -screen 0 1024x768x16 &");
+//        System.setProperty("DISPLAY", ":99");
+        System.setProperty("webdriver.chrome.driver", "/home/opc/asset/driver/chromedriver.exe");
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless"); // Headless 모드로 실행
