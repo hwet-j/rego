@@ -39,8 +39,6 @@ dependencies {
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
-
-
 	// xml 받는 구현체
 	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.0'
 

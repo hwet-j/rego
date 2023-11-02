@@ -27,11 +27,16 @@ public class CrawlService {
         System.setProperty("webdriver.chrome.driver", "/home/opc/asset/driver/chromedriver-linux64/chromedriver");
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
-        options.addArguments("--headless");
-        options.addArguments("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
+        options.setCapability("ignoreProtectedModeSettings", true);
+        options.addArguments("headless");
+        options.addArguments("no-sandbox");
+        options.addArguments("disable-dev-shm-usage");
+        options.addArguments("lang=ko");
+//        options.addArguments("--remote-allow-origins=*");
+//        options.addArguments("--headless");
 
         WebDriver driver = new ChromeDriver(options);
+
         driver.get(htmlLink);
 
         List<FlightInfo> flights = new ArrayList<>();
