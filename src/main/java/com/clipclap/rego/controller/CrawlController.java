@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -29,7 +30,7 @@ public class CrawlController {
                                 , @RequestParam(required = false) String departureAirport
                                 , @RequestParam(required = false) String arrivalAirport
                                 , @RequestParam(required = false) String departureDate
-                                , @RequestParam(required = false) String arrivalDate){
+                                , @RequestParam(required = false) String arrivalDate) throws IOException {
         if(departureDate != null && arrivalDate != null){
         DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("yyyyMMdd");

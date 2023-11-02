@@ -9,6 +9,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +19,14 @@ public class CrawlService {
     // 재시도횟수 //
     private static final int MAX_RETRIES = 3;
 
-    public List<FlightInfo> getFlightInfo(String departureAirportName, String arrivalAirportName, String departureDay, String arrivalDay){
+    public List<FlightInfo> getFlightInfo(String departureAirportName, String arrivalAirportName, String departureDay, String arrivalDay) throws IOException {
         String htmlLink = "https://m-flight.naver.com/flights/international/"
                 +departureAirportName+"-"+arrivalAirportName+"-"+departureDay+"/"
                 +arrivalAirportName+"-"+departureAirportName+"-"+arrivalDay
                 +"?isDrirect=true";
         System.out.println(htmlLink);
+        Runtime.getRuntime().exec("Xvfb :99 -screen 0 1024x768x16 &");
+        System.setProperty("DISPLAY", ":99");
         System.setProperty("webdriver.chrome.driver", "/usr/bin/google-chrome");
 
         ChromeOptions options = new ChromeOptions();
