@@ -27,7 +27,7 @@ public class CrawlService {
         System.out.println(htmlLink);
 //        Runtime.getRuntime().exec("Xvfb :99 -screen 0 1024x768x16 &");
 //        System.setProperty("DISPLAY", ":99");
-        System.setProperty("webdriver.chrome.driver", "/home/opc/asset/driver/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "/home/opc/asset/driver/chromedriver-linux64/chromedriver");
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless"); // Headless 모드로 실행
