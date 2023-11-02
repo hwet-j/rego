@@ -24,7 +24,7 @@ public class CrawlService {
                 +arrivalAirportName+"-"+departureAirportName+"-"+arrivalDay
                 +"?isDrirect=true";
         System.out.println(htmlLink);
-        System.setProperty("webdriver.chrome.driver", "/home/opc/asset/driver/chrome-linux64/chrome");
+        System.setProperty("webdriver.chrome.driver", "/home/opc/asset/driver/chromedriver-linux64/chromedriver");
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
