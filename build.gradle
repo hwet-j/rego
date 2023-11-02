@@ -44,7 +44,7 @@ dependencies {
 
 	// selenium
 	implementation 'org.seleniumhq.selenium:selenium-java'
-	implementation 'org.seleniumhq.selenium:selenium-devtools:4.0.0-beta-4'
+	implementation 'org.seleniumhq.selenium:selenium-devtools'
 
 }
 

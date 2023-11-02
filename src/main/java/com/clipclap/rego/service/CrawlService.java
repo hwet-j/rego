@@ -28,12 +28,12 @@ public class CrawlService {
 
         ChromeOptions options = new ChromeOptions();
         options.setCapability("ignoreProtectedModeSettings", true);
-        options.addArguments("headless");
-        options.addArguments("no-sandbox");
-        options.addArguments("disable-dev-shm-usage");
-        options.addArguments("lang=ko");
-//        options.addArguments("--remote-allow-origins=*");
-//        options.addArguments("--headless");
+        options.setHeadless(true);
+        options.addArguments("--lang=ko");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-gpu");
+        options.setCapability("ignoreProtectedModeSettings", true);
 
         WebDriver driver = new ChromeDriver(options);
 
