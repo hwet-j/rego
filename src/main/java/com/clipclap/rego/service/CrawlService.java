@@ -24,16 +24,12 @@ public class CrawlService {
                 +arrivalAirportName+"-"+departureAirportName+"-"+arrivalDay
                 +"?isDrirect=true";
         System.out.println(htmlLink);
-        System.setProperty("webdriver.chrome.driver", "/home/opc/asset/driver/chromedriver-linux64/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "/usr/bin/google-chrome");
 
         ChromeOptions options = new ChromeOptions();
-        options.setCapability("ignoreProtectedModeSettings", true);
-        options.setHeadless(true);
-        options.addArguments("--lang=ko");
-        options.addArguments("--no-sandbox");
+        options.addArguments("--headless"); // Headless 모드로 실행
         options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--disable-gpu");
-        options.setCapability("ignoreProtectedModeSettings", true);
+        options.addArguments("--no-sandbox"); // 노트: 보안 관련 설정
 
         WebDriver driver = new ChromeDriver(options);
 
