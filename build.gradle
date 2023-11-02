@@ -43,8 +43,9 @@ dependencies {
 	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.0'
 
 	// selenium
-	implementation 'org.seleniumhq.selenium:selenium-java'
-	implementation 'org.seleniumhq.selenium:selenium-devtools:4.0.0-beta-4'
+	implementation 'org.seleniumhq.selenium:selenium-java:4.8.1'
+	implementation 'io.github.bonigarcia:webdrivermanager:5.0.3'
+	implementation 'org.seleniumhq.selenium:selenium-http-jdk-client:4.8.1'
 
 }
 

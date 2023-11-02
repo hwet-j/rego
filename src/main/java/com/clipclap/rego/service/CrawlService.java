@@ -33,6 +33,7 @@ public class CrawlService {
         options.addArguments("--headless"); // Headless 모드로 실행
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--no-sandbox"); // 노트: 보안 관련 설정
+        options.addArguments("--remote-allow-origins=*");
 
         WebDriver driver = new ChromeDriver(options);
 
