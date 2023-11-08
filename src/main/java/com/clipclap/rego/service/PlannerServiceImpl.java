@@ -249,11 +249,9 @@ public class PlannerServiceImpl implements PlannerService {
         }
 
         if(!voteEmails.contains(email)){
-            System.out.println("11111111111");
             planner.getVoter().add(user);
             plannerRepository.save(planner);
         } else {
-            System.out.println("22222222222");
             planner.getVoter().remove(user);
             plannerRepository.save(planner);
         }

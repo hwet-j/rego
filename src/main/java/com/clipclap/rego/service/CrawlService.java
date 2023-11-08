@@ -25,8 +25,7 @@ public class CrawlService {
                 +arrivalAirportName+"-"+departureAirportName+"-"+arrivalDay
                 +"?isDrirect=true";
         System.out.println(htmlLink);
-//        Runtime.getRuntime().exec("Xvfb :99 -screen 0 1024x768x16 &");
-//        System.setProperty("DISPLAY", ":99");
+
         System.setProperty("webdriver.chrome.driver", "/home/opc/asset/driver/chromedriver-linux64/chromedriver");
 
         ChromeOptions options = new ChromeOptions();
